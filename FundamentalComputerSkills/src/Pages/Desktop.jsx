@@ -2,7 +2,7 @@ import AppIcon from '../Components/AppIcon.jsx'
 import Clock from '../Components/Clock.jsx'
 import SideBar from '../Components/SideBar.jsx'
 //import myImage from '../Assets/background-image.jpg'
-import desktopIcon from '../Assets/DesktopIconPlaceholder.png'
+import desktopIcon from '../assets/DesktopIconPlaceholder.png'
 
 function Desktop() {
     return <>
