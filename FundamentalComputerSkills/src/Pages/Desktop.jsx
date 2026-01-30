@@ -6,6 +6,7 @@ import desktopIcon from '../assets/DesktopIconPlaceholder.png'
 
 function Desktop() {
     return <>
+        <div class="desktop-page">
         <div className="desktop-container">
             <AppIcon name="App Name 1" icon={desktopIcon}/>
             <AppIcon name="App Name 2 App Name 2" icon={desktopIcon}/>
@@ -34,7 +35,7 @@ function Desktop() {
         <div className="sidebar-container">
             <SideBar />
         </div>
-
+        </div>
         </> 
 }
 export default Desktop;

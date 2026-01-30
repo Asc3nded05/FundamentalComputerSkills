@@ -1,0 +1,229 @@
+.desktop-page {
+    width: 100vw;
+    height: 90vh;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: top;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .desktop-container {
+    aspect-ratio: 16 / 9;
+    width: 85vw;
+    height: flex;
+    background-image: url('./assets/background-image.jpg');
+    background-size: contain;
+    position: relative;
+    border: 5px solid black;
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-left: 5px;
+  }
+  
+  
+  /* Taskbar */
+  .navbar {
+    /* Style/Position */
+    background-color: #383838eb;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 8vh;
+  
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .navbar-left, .navbar-center, .navbar-right {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-right {
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    margin-right: 1vh;
+  }
+  
+  
+  /* App Icon Styling -----------------------------------------------------*/
+  
+  .app-icon {
+    position: relative; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    color: white;
+  }
+  
+  /* Controls desktop app icon text */
+  .app-icon-name {
+    font-size: .75rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    width: 15vh;
+    text-align: center;
+  
+    white-space: normal;
+    word-break: keep-all;
+    overflow-wrap: normal;
+  
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1; 
+    line-clamp: 1;   
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .app-icon.desktop {
+    width: 7.5vw;
+    padding: 1vw;
+  }
+  
+  /* Controls app icon image for the desktop display */
+  .app-icon.desktop .app-icon-image {
+    width: 10vh;
+    height: 10vh;
+    /* Turn the black icon white */
+    filter: invert(100%);
+  }
+  
+  .app-icon.taskbar {
+    padding: 0.5rem;
+    text-align: center;
+  }
+  
+  /* Controls app icon image for the taskbar display */
+  .app-icon.taskbar .app-icon-image {
+    width: 4vh;
+    height: 4vh;
+    /* Turn the black icon white */
+    filter: invert(100%);
+  }
+  
+  .app-icon.taskbar .app-icon-name {
+    display: none; /* Hide name in taskbar */
+  }
+  
+  .app-icon-tooltip {
+    position: absolute;
+    background: rgba(40, 40, 40, 0.95);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease-in-out;
+    z-index: 999;
+  }
+  
+  .app-icon-tooltip.desktop {
+    bottom: 40%;
+    left: 50%;
+  }
+  
+  .app-icon-tooltip.taskbar {
+    top: 0rem;
+  }
+  
+  .app-icon:hover .app-icon-tooltip {
+    opacity: 1;
+  }
+  
+  /* Modal Window Styling -----------------------------------------------------*/
+  .modal-window {
+    position: fixed; /* change to absolute to make movable */
+    background-color: rgba(0, 0, 0, 0);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s;
+  }
+  
+  /* This is the key part: it applies styles when the element is targeted by the URL fragment */
+  .modal-window:target {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .modal-window > div {
+    width: 400px;
+    position: relative;
+    margin: 10% auto;
+    padding: 2rem;
+    background: #fff;
+    color: #444;
+    border-radius: 5px;
+  }
+  
+  .modal-close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 24px;
+    text-decoration: none;
+    color: #aaa;
+  }
+  
+  
+  /* Side Bar --------------------------------*/
+  .sidebar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 14vw;
+    height: 100%;
+    background-color: #ffffff00;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 1rem;
+    gap: 1rem;
+  }
+  
+  .lesson-progress {
+    border: 2px solid black;
+    border-radius: 20px;
+    padding-top: 10px;
+    padding-left: 150px;
+    margin-top: 10px;
+  }
+  
+  .lesson-instructions {
+    border: 2px solid black;
+    border-radius: 5px;
+    width: 10vw;
+    min-height: 20%;
+    padding: 10px;
+    overflow: scroll;
+  }
+  
+  .help-buttons {
+    position: absolute;
+    bottom: 30px;
+  }
+  
+  .help-buttons button {
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 5px;
+    margin-top: 10px;
+    background-color: white;
+  }
+  
