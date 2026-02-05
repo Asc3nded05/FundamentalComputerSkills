@@ -9,6 +9,9 @@ import StartButton from "../Components/StartButton.jsx";
 import StartMenu from "../Components/StartMenu.jsx";
 
 import desktopIcon from '../assets/DesktopIconPlaceholder.png'
+import FileExplorer from "../Components/FileExplorer.jsx";
+import NotepadApp from "../Components/NotepadApp.jsx";
+import FrameApp from "../Components/FrameApp.jsx";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -113,14 +116,16 @@ function Desktop() {
                     onClose={() => setIsApp1Open(false)}
                     zIndex={windows.app1.zIndex}
                     bringToFront={() => bringToFront("app1")}
+                    content={<FileExplorer />}
                 />
 
                 <AppWindow
-                    name={"App Name 2"}
+                    name={"Notepad"}
                     isOpen={isApp2Open}
                     onClose={() => setIsApp2Open(false)}
                     zIndex={windows.app2.zIndex}
                     bringToFront={() => bringToFront("app2")}
+                    content={<NotepadApp/>}
                 />
 
                 <AppWindow
@@ -129,6 +134,7 @@ function Desktop() {
                     onClose={() => setIsApp3Open(false)}
                     zIndex={windows.app3.zIndex}
                     bringToFront={() => bringToFront("app3")}
+                    content={<FrameApp/>}
                 />
 
             </div>
