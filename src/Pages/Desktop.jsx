@@ -1,17 +1,18 @@
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { useState } from 'react';
 
-import AppIcon from '../Components/AppIcon.jsx'
-import Clock from '../Components/Clock.jsx'
-import SideBar from '../Components/SideBar.jsx'
-import AppWindow from '../Components/AppWindow.jsx';
-import StartButton from "../Components/StartButton.jsx";
-import StartMenu from "../Components/StartMenu.jsx";
+import AppIcon from '../components/AppIcon.jsx'
+import Clock from '../components/Clock.jsx'
+import SideBar from '../components/SideBar.jsx'
+import AppWindow from '../components/AppWindow.jsx';
+import StartButton from "../components/StartButton.jsx";
+import StartMenu from "../components/StartMenu.jsx";
 
 import desktopIcon from '../assets/DesktopIconPlaceholder.png'
-import FileExplorer from "../Components/FileExplorer.jsx";
-import NotepadApp from "../Components/NotepadApp.jsx";
-import FrameApp from "../Components/FrameApp.jsx";
+
+import FileExplorer from "../components/FileExplorer.jsx";
+import NotepadApp from "../components/NotepadApp.jsx";
+import FrameApp from "../components/FrameApp.jsx";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 

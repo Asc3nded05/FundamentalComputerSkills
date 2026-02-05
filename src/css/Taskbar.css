@@ -1,0 +1,27 @@
+.navbar {
+  /* Style/Position */
+  background-color: #383838eb;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 8vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-left,
+.navbar-center,
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+/* Clock */
+.navbar-right {
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: right ;
+  color: white;
+  margin-right: 1vh;
+}

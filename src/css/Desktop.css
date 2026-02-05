@@ -1,0 +1,52 @@
+.desktop-page {
+  width: 100vw;
+  height: 100vh;
+  background-color: #ffffff;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: top;
+  position: relative;
+  overflow: hidden;
+}
+
+.desktop-container {
+  aspect-ratio: 16 / 9;
+  width: 80vw;
+  background-image: url('../assets/background-image.jpg');
+  background-size: contain;
+  position: relative;
+  border: 5px solid black;
+  border-radius: 5px;
+  margin: 5px;
+}
+
+.react-grid-placeholder {
+  background: transparent !important;
+}
+
+/* Prevent grid from stealing pointer events */
+.react-grid-item {
+    pointer-events: none !important;
+}
+
+/* But allow pointer events on the app icon itself */
+.react-grid-item > * {
+    pointer-events: auto !important;
+}
+
+/* Make sure app icons are fully clickable */
+.app-icon {
+    pointer-events: auto !important;
+    touch-action: manipulation;
+    cursor: pointer;
+}
+
+/* Visual feedback for clicks */
+.app-icon:active {
+    opacity: 0.8;
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+}

@@ -1,0 +1,84 @@
+.appWindow {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  pointer-events: none;
+}
+
+.appWindow:target,
+.appWindow.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.appWindow.active {
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+}
+
+.window-content {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  font-family: Arial, Helvetica, sans-serif;
+  color: black;
+  background-color: #fff;
+  /* Scrollable content */
+}
+
+.window-header {
+  padding-bottom: 20px;
+  background: #e6f0f4;
+  border-bottom: 1px solid #ddd;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+  cursor: move;
+}
+
+.window-body {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.window-body-top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px;
+}
+
+.window-body-side-nav li {
+  padding-left: 20px;
+  list-style-type:none;
+}
+
+.window-body-side-nav {
+  border-right: 1px solid #dddddd32;
+  padding-right: 10px;
+  width: 30%;
+  line-height: 25px;
+}
+
+.window-body-main-content {
+  padding-left: 20px;
+  width: 100%;
+}
+
+.appWindowClose {
+  position: absolute;
+  top: 3px;
+  right: 10px;
+  font-size: 24px;
+  text-decoration: none;
+  color: black;
+}

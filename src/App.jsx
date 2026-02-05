@@ -1,12 +1,15 @@
-import { useState } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
-import Desktop from './Pages/Desktop'
-import Lessons from './Pages/Lessons'
-import Login from './Pages/Login'
-import SideBar from './Components/SideBar'
+import Desktop from './pages/Desktop.jsx'
+import Lessons from './pages/Lessons.jsx'
+import Login from './pages/Login.jsx'
 
-import './App.css'
-import './Desktop.css'
+import './css/App.css'
+import './css/AppIcon.css'
+import './css/AppWindow.css'
+import './css/Desktop.css'
+import './css/SideBar.css'
+import './css/StartMenu.css'
+import './css/TaskBar.css'
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 

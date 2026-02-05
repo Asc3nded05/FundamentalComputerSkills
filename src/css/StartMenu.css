@@ -1,0 +1,33 @@
+.start-button {
+  margin-left: 1vh;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.start-menu-icon {
+  width: 4vh;
+  height: 4vh;
+}
+
+.start-menu {
+  position: fixed;
+  top: 20vh;
+  left: 50vh;
+
+  width: 600px;
+  height: 400px;
+
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  overflow: hidden;
+
+  background-color: #ffffff;
+  border-radius: 7px;
+}
+
+.start-menu.open {
+  opacity: 1;
+  pointer-events: auto;
+}
