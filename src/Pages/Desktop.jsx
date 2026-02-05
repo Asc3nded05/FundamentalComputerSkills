@@ -72,7 +72,7 @@ function Desktop() {
                     </div>
 
                     <div key="app2">
-                        <AppIcon name="App Name 2" icon={desktopIcon} openWindow={() => setIsApp2Open(true)} />
+                        <AppIcon name="Notepad" icon={desktopIcon} openWindow={() => setIsApp2Open(true)} />
                     </div>
 
                     <div key="app3">
@@ -94,7 +94,7 @@ function Desktop() {
                             openWindow={() => setIsApp1Open(true)} 
                             variant="taskbar" 
                             isAppOpen={isApp1Open} />
-                        <AppIcon name="App Name 2" icon={desktopIcon} openWindow={() => setIsApp2Open(true)} variant="taskbar" isAppOpen={isApp2Open} />
+                        <AppIcon name="Notepad" icon={desktopIcon} openWindow={() => setIsApp2Open(true)} variant="taskbar" isAppOpen={isApp2Open} />
                         <AppIcon name="App Name 3" icon={desktopIcon} openWindow={() => setIsApp3Open(true)} variant="taskbar" isAppOpen={isApp3Open} />
                     </div>
 

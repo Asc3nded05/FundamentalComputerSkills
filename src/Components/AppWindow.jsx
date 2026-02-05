@@ -29,6 +29,7 @@ function AppWindow({ name, isOpen, onClose, zIndex, bringToFront, content }) {
             minWidth={300}
             minHeight={100}
             onMouseDown={handleFocus}
+            dragHandleClassName='window-header'
             className={`appWindow ${isOpen ? 'open' : ''}`}
             style={{ zIndex: zIndex }}
         >
