@@ -1,6 +1,4 @@
 import { Rnd } from 'react-rnd';
-import FileExplorer from './FileExplorer';
-
 
 function AppWindow({ name, isOpen, onClose, zIndex, bringToFront, content }) {
 
@@ -23,7 +21,7 @@ function AppWindow({ name, isOpen, onClose, zIndex, bringToFront, content }) {
             default={{
                 x: 400,
                 y: 100,
-                width: 500,
+                width: 600,
                 height: 400,
             }}
             minWidth={300}
@@ -38,8 +36,14 @@ function AppWindow({ name, isOpen, onClose, zIndex, bringToFront, content }) {
                     <div className="top-header">
                         <p>{name}</p>
 
-                        <a href="#" className="appWindowClose" onClick={handleClose}>
-                            ─ &#9744; &times;
+                        <a href="#" className="appWindowMinimize"> 
+                            ─
+                        </a>
+                        <a href="#" className="appWindowMaximize"> 
+                            &#9744;
+                        </a>
+                        <a href="#" className="appWindowClose" onClick={handleClose}> 
+                            &times;
                         </a>
                     </div>
                 </div>

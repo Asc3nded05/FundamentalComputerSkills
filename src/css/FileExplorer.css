@@ -1,0 +1,46 @@
+  .file-explorer-body {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .file-explorer-top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px;
+  }
+
+  .arrows {
+    border: none;
+    background-color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 3px;
+  }
+  
+  .file-explorer-side-nav details details {
+    padding-left: 20px;
+    list-style-type:none;
+  }
+
+.file-explorer-side-nav details p{
+    padding-left: 20px;
+    list-style-type:none;
+  }
+  
+  .file-explorer-side-nav {
+    border-right: 1px solid #dddddd32;
+    padding-right: 10px;
+    width: 30%;
+    line-height: 25px;
+  }
+
+  .content-div {
+    display: none; /* Hide all divs by default */
+    padding: 1rem;
+    border: 1px solid #ccc;
+    margin-top: 1rem;
+    padding-left: 20px;
+    width: 100%;
+  }

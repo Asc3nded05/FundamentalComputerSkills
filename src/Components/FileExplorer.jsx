@@ -1,31 +1,73 @@
 function FileExplorer() {
   return <>
-            <div className="bottom-header">
+            <div className="file-explorer-bottom-header">
                 {/*various icons*/}
             </div>
 
-            <div className="window-body-top-nav">
-                <p>&#8592; &#8594; &darr;</p>
+            <div className="file-explorer-top-nav">
+                <button className="arrows"> &larr; </button>
+                <button className="arrows"> &rarr; </button>
+                <button className="arrows"> &darr; </button>
+                <button className="arrows"> &uarr;</button>
                 <input type="text" placeholder="Find..." />
                 <input type="text" placeholder="Search..." />
             </div>
 
-            <div className="window-body">
-                <div className="window-body-side-nav">
-                    <ul> &#8964; Quick Access
-                        <li>&#8250; Desktop</li>
-                        <li>&#8250; Downloads</li>
-                        <li>&#8250; Documents</li>
-                        <li>&#8250; Pictures</li>
-                        <li>&#8250; Music</li>
-                        <li>&#8250; Videos</li>
-                    </ul>
-                    <ul>&#8250; OneDrive </ul>
-                    <ul>&#8250; This PC </ul>
-                    <ul>&#8250; Network </ul>
+            <div className="file-explorer-body">
+                <div className="file-explorer-side-nav">
+                    <details>
+                        <summary>Quick Access</summary>
+                    </details>
+
+                    <details>
+                        <summary>This PC</summary>
+                        <details>
+                            <summary>Desktop</summary>
+                            <p>Desktop item</p>
+                            <p>Desktop item</p>
+                        </details>
+                        <details>
+                            <summary>Downloads</summary>
+                            <p>Downloaded item</p>
+                            <p>Downloaded item</p>
+                            <p>Downloaded image</p>
+                        </details>
+                        <details>
+                            <summary>Documents</summary>
+                            <p>Boring Document</p>
+                            <details>
+                                <summary>Folder</summary>
+                                <p>Super Secret Document</p>
+                            </details>
+                        </details>
+                        <details>
+                            <summary>Pictures</summary>
+                            <p>Cat pic</p>
+                        </details>
+                        <details>
+                            <summary>Music</summary>
+                        </details>
+                        <details>
+                            <summary>Videos</summary>
+                        </details>
+                    </details>
+
+                    <details>
+                        <summary>Network</summary>
+                        <p>Network Stuff</p>
+                    </details>
                 </div>
-                <div className="window-body-main-content">
+
+                <div id="div1" className="content-div">
                     <p>This is the main window content for File Explorer.</p>
+                </div>
+
+                <div id="div2" className="content-div">
+                    <p>This is the second window content for File Explorer.</p>
+                </div>
+
+                <div id="div3" className="content-div">
+                    <p>This is the third window content for File Explorer.</p>
                 </div>
             </div>
   </>

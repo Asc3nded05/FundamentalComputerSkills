@@ -27,14 +27,13 @@
   overflow: auto;
   font-family: Arial, Helvetica, sans-serif;
   color: black;
-  background-color: #fff;
+  background-color: #ffffff;
   /* Scrollable content */
 }
 
 .window-header {
   padding-bottom: 20px;
   background: #e6f0f4;
-  border-bottom: 1px solid #ddd;
   user-select: none;
   display: flex;
   flex-direction: column;
@@ -43,41 +42,29 @@
   cursor: move;
 }
 
-.window-body {
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.window-body-top-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 10px;
-}
-
-.window-body-side-nav li {
-  padding-left: 20px;
-  list-style-type:none;
-}
-
-.window-body-side-nav {
-  border-right: 1px solid #dddddd32;
-  padding-right: 10px;
-  width: 30%;
-  line-height: 25px;
-}
-
-.window-body-main-content {
-  padding-left: 20px;
-  width: 100%;
-}
-
 .appWindowClose {
   position: absolute;
   top: 3px;
   right: 10px;
+  font-size: 27px;
+  text-decoration: none;
+  color: black;
+}
+
+.appWindowMaximize {
+  position: absolute;
+  top: 2px;
+  right: 36px;
   font-size: 24px;
+  text-decoration: none;
+  color: black;
+}
+
+.appWindowMinimize {
+  position: absolute;
+  top: 5px;
+  right: 70px;
+  font-size: 20px;
   text-decoration: none;
   color: black;
 }

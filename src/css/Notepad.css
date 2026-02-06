@@ -1,0 +1,16 @@
+.notepad-bottom-nav {
+    display: flex;
+    justify-content: left;
+    gap: 10px;
+    padding: 10px;
+    background: #e6f0f4;
+    padding-top: 0;
+}
+
+.notepad-bottom-nav button {
+    border: none;
+    background-color: #e6f0f4;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 3px;
+}

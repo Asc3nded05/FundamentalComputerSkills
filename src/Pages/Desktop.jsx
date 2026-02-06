@@ -11,7 +11,7 @@ import StartMenu from "../components/StartMenu.jsx";
 import { APP_REGISTRY } from '../utils/apps.js';
 
 import FileExplorer from "../components/FileExplorer.jsx";
-import NotepadApp from "../components/NotepadApp.jsx";
+import Notepad from "../components/Notepad.jsx";
 import FrameApp from "../components/FrameApp.jsx";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -206,7 +206,7 @@ function Desktop() {
                     onClose={() => setIsApp2Open(false)}
                     zIndex={windows.app2.zIndex}
                     bringToFront={() => bringToFront("app2")}
-                    content={<NotepadApp />}
+                    content={<Notepad />}
                 />
 
                 <AppWindow
