@@ -1,14 +1,22 @@
 .app-icon {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
   user-select: none;
   color: white;
+    pointer-events: auto !important;
+  touch-action: manipulation;
 }
 
-/* Controls desktop app icon text */
+/* Visual feedback for clicks - but not for start menu icons */
+.app-icon:not(.start-menu):active {
+    opacity: 0.8;
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+}
+
+/* Controls desktop and start menu app icon text */
 .app-icon-name {
   font-size: .75rem;
   font-family: Arial, Helvetica, sans-serif;
@@ -28,52 +36,16 @@
   text-overflow: ellipsis;
 }
 
-.app-icon.desktop {
-  width: 7.5vw;
-  padding: 1vw;
-}
-
-/* Controls app icon image for the desktop display */
-.app-icon.desktop .app-icon-image {
-  width: 10vh;
-  height: 10vh;
-  /* Turn the black icon white */
-  filter: invert(100%);
-}
-
-.app-icon.taskbar {
-  padding: 0.5rem;
-  text-align: center;
-}
-
-/* Controls app icon image for the taskbar display */
-.app-icon.taskbar .app-icon-image {
-  width: 4vh;
-  height: 4vh;
-  /* Turn the black icon white */
-  filter: invert(100%);
-}
-
-.app-icon.taskbar .app-icon-name {
-  display: none;
-  /* Hide name in taskbar */
-}
-
-
-/* Indicator bar for open apps in taskbar */
-.app-icon.taskbar.active {
-    background-color: rgba(255, 255, 255, 0.1);
-}
 .app-icon-indicator {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60%;
-    height: 3px;
-    background-color: #6d6d6d;
-    border-radius: 2px 2px 0 0;
-    animation: fadeIn 0.2s ease;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 3px;
+  background-color: #6d6d6d;
+  border-radius: 2px 2px 0 0;
+  animation: fadeIn 0.2s ease;
 }
 
 .app-icon-tooltip {
@@ -92,15 +64,79 @@
   z-index: 999;
 }
 
+.app-icon:hover .app-icon-tooltip {
+  opacity: 1;
+}
+
+/* Desktop Icons ------------------------------------------------------------------------------------------------------------*/
+.app-icon.desktop {
+  width: 7.5vw;
+  padding: 1vw;
+}
+
+.app-icon.desktop .app-icon-image {
+  width: 10vh;
+  height: 10vh;
+  /* Turn the black icon white */
+  filter: invert(100%);
+}
+
 .app-icon-tooltip.desktop {
   bottom: 40%;
   left: 50%;
+}
+
+/* Taskbar Icons ------------------------------------------------------------------------------------------------------------*/
+.app-icon.taskbar {
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.app-icon.taskbar .app-icon-image {
+  width: 4vh;
+  height: 4vh;
+  /* Turn the black icon white */
+  filter: invert(100%);
+}
+
+.app-icon.taskbar .app-icon-name {
+  display: none;
+  /* Hide name in taskbar */
 }
 
 .app-icon-tooltip.taskbar {
   top: 0rem;
 }
 
-.app-icon:hover .app-icon-tooltip {
-  opacity: 1;
+/* Indicator bar for open apps in taskbar */
+.app-icon.taskbar.active {
+    background-color: rgba(255, 255, 255, 0.1);
 }
+
+/* Start Menu Icons ------------------------------------------------------------------------------------------------------------*/
+
+.app-icon.start-menu {
+  width: auto;
+  height: auto;
+  opacity: 1 !important;
+  overflow: hidden;
+}
+
+.app-icon.start-menu .app-icon-image {
+  width: 4rem;
+  height: 4rem;
+}
+
+.app-icon.start-menu .app-icon-name {
+  color: black;
+}
+
+/* Hide tooltip in start menu to prevent covering icon on hover */
+.app-icon-tooltip.start-menu {
+  display: none;
+}
+
+.start-menu .app-icon:hover .app-icon-tooltip {
+  display: none;
+};
+

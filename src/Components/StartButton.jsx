@@ -14,7 +14,7 @@ function StartButton({ toggleStartMenu }) {
             onMouseDown={stop}
             onTouchStart={stop}
         >
-            <img className="start-menu-icon" src={icon} alt="Start" />
+            <img className="start-button-icon" src={icon} alt="Start" />
         </div>
     )
 }

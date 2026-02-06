@@ -4,30 +4,70 @@
   padding: 0.5rem;
 }
 
-.start-menu-icon {
+.start-button-icon {
   width: 4vh;
   height: 4vh;
 }
 
 .start-menu {
-  position: fixed;
-  top: 20vh;
-  left: 50vh;
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -65%);
 
-  width: 600px;
-  height: 400px;
+  display: flex;
+  flex-direction: column; 
+  justify-content: space-between;
 
-  z-index: 999;
+  width: 40rem;
+  height: 30rem;
+
+  background-color: rgb(190, 190, 190);
+  border-radius: 7px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s;
-  overflow: hidden;
-
-  background-color: #ffffff;
-  border-radius: 7px;
+  z-index: 999;
 }
 
 .start-menu.open {
   opacity: 1;
+  pointer-events: auto !important;
+}
+
+.start-app-grid {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  margin: 0;
+  box-sizing: border-box;
+
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: start;
+  overflow: auto;
+}
+
+.react-grid-item.no-transition {
+  transition: none !important;
+  transform: none !important;
+}
+
+.start-menu .app-icon {
+  cursor: pointer;
   pointer-events: auto;
+}
+
+.start-empty {
+  padding: 16px;
+  color: #666;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.start-menu-bottom {
+  background-color: gray;
 }

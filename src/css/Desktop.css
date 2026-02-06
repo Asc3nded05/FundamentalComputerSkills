@@ -36,17 +36,3 @@
 .react-grid-item > * {
     pointer-events: auto !important;
 }
-
-/* Make sure app icons are fully clickable */
-.app-icon {
-    pointer-events: auto !important;
-    touch-action: manipulation;
-    cursor: pointer;
-}
-
-/* Visual feedback for clicks */
-.app-icon:active {
-    opacity: 0.8;
-    transform: scale(0.98);
-    transition: transform 0.1s ease;
-}

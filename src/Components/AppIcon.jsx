@@ -1,12 +1,14 @@
-function AppIcon({ name, icon, openWindow, variant = "desktop", isAppOpen = false}) {
+function AppIcon({ name, icon, openWindow, variant = "desktop", isAppOpen = false, closeMenu }) {
 
-    // functions for single click (on taskbar) and double click (on desktop)
     const handleIconClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
         
-        if (variant === "taskbar") {
+        if (variant === "taskbar" || variant === "start-menu") {
             openWindow();
+            if (variant === "start-menu" && closeMenu) {
+                closeMenu();
+            }
         }
     };
     const handleDoubleClick = (e) => {
@@ -20,23 +22,19 @@ function AppIcon({ name, icon, openWindow, variant = "desktop", isAppOpen = fals
 
     return (
         <div 
-            role="button" 
             tabIndex={0} 
             className={`app-icon ${variant}`} 
-            onClick={variant === "taskbar" ? handleIconClick : undefined}
+            onClick={(variant === "taskbar" || variant === "start-menu") ? handleIconClick : undefined}
             onDoubleClick={variant === "desktop" ? handleDoubleClick : undefined}
         >
             <img className="app-icon-image" src={icon} alt={name} />
 
-            {/* Desktop shows name under icon, taskbar hides it */}
-            {variant === "desktop" && (
+            {(variant === "desktop" || variant === "start-menu") && (
                 <div className="app-icon-name">{name}</div>
             )}
 
-            {/* Tooltip for both desktop and taskbar */}
             <div className={`app-icon-tooltip ${variant}`}>{name}</div>
 
-            {/* Active indicator for taskbar (only shown when app is open) */}
             {variant === "taskbar" && isAppOpen && (
                 <div className="app-icon-indicator"></div>
             )}

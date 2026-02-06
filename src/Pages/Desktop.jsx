@@ -8,7 +8,7 @@ import AppWindow from '../components/AppWindow.jsx';
 import StartButton from "../components/StartButton.jsx";
 import StartMenu from "../components/StartMenu.jsx";
 
-import desktopIcon from '../assets/DesktopIconPlaceholder.png'
+import { APP_REGISTRY } from '../utils/apps.js';
 
 import FileExplorer from "../components/FileExplorer.jsx";
 import NotepadApp from "../components/NotepadApp.jsx";
@@ -30,6 +30,73 @@ function Desktop() {
     const [isApp2Open, setIsApp2Open] = useState(false);
     const [isApp3Open, setIsApp3Open] = useState(false);
 
+    // Apps list for StartMenu
+    const apps = [
+        {
+            name: APP_REGISTRY[0].name,
+            icon: APP_REGISTRY[0].icon,
+            openWindow: () => setIsApp1Open(true),
+            isAppOpen: isApp1Open,
+            variant: 'start-menu'
+        },
+        {
+            name: APP_REGISTRY[1].name,
+            icon: APP_REGISTRY[1].icon,
+            openWindow: () => setIsApp2Open(true),
+            isAppOpen: isApp2Open,
+            variant: 'start-menu'
+        },
+        {
+            name: APP_REGISTRY[2].name,
+            icon: APP_REGISTRY[2].icon,
+            openWindow: () => setIsApp3Open(true),
+            isAppOpen: isApp3Open,
+            variant: 'start-menu'
+        },
+                {
+            name: APP_REGISTRY[0].name,
+            icon: APP_REGISTRY[0].icon,
+            openWindow: () => setIsApp1Open(true),
+            isAppOpen: isApp1Open,
+            variant: 'start-menu'
+        },
+        {
+            name: APP_REGISTRY[1].name,
+            icon: APP_REGISTRY[1].icon,
+            openWindow: () => setIsApp2Open(true),
+            isAppOpen: isApp2Open,
+            variant: 'start-menu'
+        },
+        {
+            name: APP_REGISTRY[2].name,
+            icon: APP_REGISTRY[2].icon,
+            openWindow: () => setIsApp3Open(true),
+            isAppOpen: isApp3Open,
+            variant: 'start-menu'
+        },
+                        {
+            name: APP_REGISTRY[0].name,
+            icon: APP_REGISTRY[0].icon,
+            openWindow: () => setIsApp1Open(true),
+            isAppOpen: isApp1Open,
+            variant: 'start-menu'
+        },
+        {
+            name: APP_REGISTRY[1].name,
+            icon: APP_REGISTRY[1].icon,
+            openWindow: () => setIsApp2Open(true),
+            isAppOpen: isApp2Open,
+            variant: 'start-menu'
+        },
+        {
+            name: APP_REGISTRY[2].name,
+            icon: APP_REGISTRY[2].icon,
+            openWindow: () => setIsApp3Open(true),
+            isAppOpen: isApp3Open,
+            variant: 'start-menu'
+        }
+    ];
+
     // Handle which App is in front
     const [windows, setWindows] = useState({
         app1: { isOpen: false, zIndex: 0 },
@@ -37,14 +104,14 @@ function Desktop() {
         app3: { isOpen: false, zIndex: 0 },
     });
     const [highestAppZIndex, setHighestAppZIndex] = useState(500);
-    
+
     const bringToFront = (appName) => {
         const newAppZIndex = highestAppZIndex + 1;
         setWindows(prev => ({
             ...prev,
-            [appName]: { 
-                ...prev[appName], 
-                zIndex: newAppZIndex 
+            [appName]: {
+                ...prev[appName],
+                zIndex: newAppZIndex
             }
         }));
         setHighestAppZIndex(newAppZIndex);
@@ -64,20 +131,19 @@ function Desktop() {
                     width={1200}
                     isResizable={false}     // Desktop icons don’t resize   
                     draggableHandle=".app-icon" // Only drag by the icon
-
                     dragStartDelay={0} // To prevent conflict with double-click to open app
                     clickDelay={200}
                 >
                     <div key="app1">
-                        <AppIcon name="File Explorer" icon={desktopIcon} openWindow={() => setIsApp1Open(true)} />
+                        <AppIcon name={APP_REGISTRY[0].name} icon={APP_REGISTRY[0].icon} openWindow={() => setIsApp1Open(true)} />
                     </div>
 
                     <div key="app2">
-                        <AppIcon name="Notepad" icon={desktopIcon} openWindow={() => setIsApp2Open(true)} />
+                        <AppIcon name={APP_REGISTRY[1].name} icon={APP_REGISTRY[1].icon} openWindow={() => setIsApp2Open(true)} />
                     </div>
 
                     <div key="app3">
-                        <AppIcon name="App Name 3" icon={desktopIcon} openWindow={() => setIsApp3Open(true)} />
+                        <AppIcon name={APP_REGISTRY[2].name} icon={APP_REGISTRY[2].icon} openWindow={() => setIsApp3Open(true)} />
                     </div>
                 </ResponsiveGridLayout>
 
@@ -89,14 +155,27 @@ function Desktop() {
 
                     <div className="navbar-center">
                         <StartButton toggleStartMenu={() => setIsStartOpen(prev => !prev)} />
-                        <AppIcon 
-                            name="File Explorer" 
-                            icon={desktopIcon} 
-                            openWindow={() => setIsApp1Open(true)} 
-                            variant="taskbar" 
-                            isAppOpen={isApp1Open} />
-                        <AppIcon name="Notepad" icon={desktopIcon} openWindow={() => setIsApp2Open(true)} variant="taskbar" isAppOpen={isApp2Open} />
-                        <AppIcon name="App Name 3" icon={desktopIcon} openWindow={() => setIsApp3Open(true)} variant="taskbar" isAppOpen={isApp3Open} />
+                        <AppIcon
+                            name={APP_REGISTRY[0].name}
+                            icon={APP_REGISTRY[0].icon}
+                            openWindow={() => setIsApp1Open(true)}
+                            variant="taskbar"
+                            isAppOpen={isApp1Open}
+                        />
+                        <AppIcon
+                            name={APP_REGISTRY[1].name}
+                            icon={APP_REGISTRY[1].icon}
+                            openWindow={() => setIsApp2Open(true)}
+                            variant="taskbar"
+                            isAppOpen={isApp2Open}
+                        />
+                        <AppIcon
+                            name={APP_REGISTRY[2].name}
+                            icon={APP_REGISTRY[2].icon}
+                            openWindow={() => setIsApp3Open(true)}
+                            variant="taskbar"
+                            isAppOpen={isApp3Open}
+                        />
                     </div>
 
                     <div className="navbar-right">
@@ -106,13 +185,14 @@ function Desktop() {
                 </div>
 
                 <StartMenu
-                    closeStartMenu={() => setIsStartOpen(false)} 
+                    closeStartMenu={() => setIsStartOpen(false)}
                     isOpen={isStartOpen}
+                    apps={apps}
                 />
 
                 {/* App Windows */}
                 <AppWindow
-                    name={"File Explorer"}
+                    name={APP_REGISTRY[0].name}
                     isOpen={isApp1Open}
                     onClose={() => setIsApp1Open(false)}
                     zIndex={windows.app1.zIndex}
@@ -121,21 +201,21 @@ function Desktop() {
                 />
 
                 <AppWindow
-                    name={"Notepad"}
+                    name={APP_REGISTRY[1].name}
                     isOpen={isApp2Open}
                     onClose={() => setIsApp2Open(false)}
                     zIndex={windows.app2.zIndex}
                     bringToFront={() => bringToFront("app2")}
-                    content={<NotepadApp/>}
+                    content={<NotepadApp />}
                 />
 
                 <AppWindow
-                    name={"App Name 3"}
+                    name={APP_REGISTRY[2].name}
                     isOpen={isApp3Open}
                     onClose={() => setIsApp3Open(false)}
                     zIndex={windows.app3.zIndex}
                     bringToFront={() => bringToFront("app3")}
-                    content={<FrameApp/>}
+                    content={<FrameApp />}
                 />
 
             </div>
