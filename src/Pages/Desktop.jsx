@@ -10,9 +10,9 @@ import StartMenu from "../Components/StartMenu.jsx";
 
 import { APP_REGISTRY } from '../utils/apps.js';
 
-import FileExplorer from "../components/FileExplorer.jsx";
-import Notepad from "../components/Notepad.jsx";
-import FrameApp from "../components/FrameApp.jsx";
+import FileExplorer from "../Components/FileExplorer.jsx";
+import Notepad from "../Components/Notepad.jsx";
+import FrameApp from "../Components/FrameApp.jsx";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
