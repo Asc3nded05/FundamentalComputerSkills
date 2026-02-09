@@ -28,11 +28,11 @@
 }
 
 /* Prevent grid from stealing pointer events */
-.react-grid-item {
+.desktop-container .layout .react-grid-item {
     pointer-events: none !important;
 }
 
 /* But allow pointer events on the app icon itself */
-.react-grid-item > * {
+.desktop-container .layout .react-grid-item > * {
     pointer-events: auto !important;
 }
