@@ -13,7 +13,7 @@ import './css/FrameApp.css'
 import './css/Notepad.css'
 import './css/SideBar.css'
 import './css/StartMenu.css'
-import './css/TaskBar.css'
+import  './css/TaskBar.css'
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 
