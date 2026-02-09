@@ -29,22 +29,29 @@
   z-index: 999;
 }
 
+.start-menu-overlay {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  z-index: 998;
+}
+
 .start-menu.open {
   opacity: 1;
-  pointer-events: auto !important;
+  pointer-events: auto;
 }
+
+.start-menu.open .app-icon {
+  pointer-events: auto !important;
+} 
 
 .start-app-grid {
   width: 100%;
   height: 100%;
   padding: 1rem;
+  padding-top: 0rem;
   margin: 0;
   box-sizing: border-box;
-
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  align-items: start;
-  overflow: auto;
 }
 
 .react-grid-item.no-transition {
@@ -52,14 +59,9 @@
   transform: none !important;
 }
 
-.start-menu .app-icon {
-  cursor: pointer;
-  pointer-events: auto;
-}
-
 .start-empty {
   padding: 16px;
-  color: #666;
+  background-color: rgb(190, 190, 190);
   text-align: center;
   width: 100%;
   height: 100%;
@@ -69,5 +71,30 @@
 }
 
 .start-menu-bottom {
+  background-color: gray;
+  height: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .5rem;
+}
+
+.user-profile-button {
+  background-color: rgb(190, 190, 190);
+  padding: .25rem;
+  border-radius: .25rem;
+}
+
+.user-profile-button:active {
+  background-color: gray;
+}
+
+.power-button {
+  background-color: rgb(190, 190, 190);
+  padding: .25rem;
+  border-radius: .25rem;
+}
+
+.power-button:active {
   background-color: gray;
 }
