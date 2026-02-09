@@ -1,24 +1,8 @@
 import { useState, useEffect } from 'react';
+import { useLesson } from '../api/useLesson.js';
 
 function Lessons() {
-    const [response, setResponse] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        fetch('/api/lessons')
-            .then(res => res.json())
-            .then(data => {
-                setResponse(data);
-                setLoading(false);
-            })
-            .catch(err => {
-                console.error('Error fetching lessons:', err);
-                setError(err);
-                setLoading(false);
-            });
-    }, []);
-
+    const { response, loading, error} = useLesson();
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error loading lessons</div>;
 

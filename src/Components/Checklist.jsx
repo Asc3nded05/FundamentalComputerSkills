@@ -1,25 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useStep } from '../api/useStep.js';
 function Checklist() {
 
-    const [response, setResponse] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-     useEffect(() => {
-        fetch('/api/step')
-            .then(res => res.json())
-            .then(data => {
-                setResponse(data);
-                setLoading(false);
-                console.log("Step data:", data);
-            })
-            .catch(err => {
-                console.error('Error fetching step data:', err);
-                setError(err);
-                setLoading(false);
-            });
-    }, []);
-
+    const { response, loading, error } = useStep(); 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error loading step data</div>;
 
