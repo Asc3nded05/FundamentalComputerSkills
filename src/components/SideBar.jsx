@@ -1,4 +1,6 @@
 import Checklist from './Checklist';
+import { useLesson } from '../api/useLesson.js';
+
 function SideBar() {
     
 
@@ -20,6 +22,7 @@ function SideBar() {
 
                 {/* Lesson number and progress */}
                 <div className='lesson-num'>
+                    <button onClick={useLesson(1,1)} className='start-button'>Start Lesson</button>
                     <p>Lesson #1</p>
                     <div className="lesson-progress"></div>
                 </div>

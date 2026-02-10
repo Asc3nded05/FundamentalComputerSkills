@@ -33,8 +33,12 @@ function FileExplorer() {
             case 'pictures-view': return <div className='grid-view'>
                 <p>Cat pic</p>
             </div>;
-            case 'music-view': return <div className='grid-view'>You have no music</div>;
-            case 'videos-view': return <div className='grid-view'>You have no videos</div>;
+            case 'music-view': return <div className='grid-view'>
+                You have no music
+            </div>;
+            case 'videos-view': return <div className='grid-view'>
+                You have no videos
+            </div>;
             case 'networks-view': return <div className='list-view'>
                 <p>Network Stuff</p>
             </div>;
