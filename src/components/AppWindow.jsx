@@ -32,7 +32,7 @@ function AppWindow({ name, isOpen, onClose, zIndex, bringToFront, content }) {
             className={`appWindow ${isOpen ? 'open' : ''}`}
             style={{ zIndex: zIndex }}
         >
-            <div className="window-content">
+            <div className="window">
                 <div className="window-header">
                     <div className="top-header">
                         <p>{name}</p>
@@ -48,7 +48,9 @@ function AppWindow({ name, isOpen, onClose, zIndex, bringToFront, content }) {
                         </a>
                     </div>
                 </div>
-                {content}
+                <div className="window-content">
+                    {content}
+                </div>
             </div>
         </Rnd>
     );
