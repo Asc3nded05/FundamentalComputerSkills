@@ -1,10 +1,14 @@
 import { Rnd } from 'react-rnd';
+import { dispatchDesktopEvent } from "../utils/eventBus";
 
-function AppWindow({ name, isOpen, onClose, zIndex, bringToFront, content }) {
+function AppWindow({ name, isOpen, onClose, closeEventName, zIndex, bringToFront, content }) {
 
     const handleClose = (e) => {
         e.preventDefault();
         e.stopPropagation();
+
+        dispatchDesktopEvent(closeEventName);
+
         onClose();
     };
 

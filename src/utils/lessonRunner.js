@@ -1,3 +1,5 @@
+import eventBus from eventBus.js;
+
 export async function runLesson(userId, lessonId) {
     // TODO: call backend API to retrieve steps by lessonId
     let steps = [];
@@ -28,7 +30,7 @@ export async function runLesson(userId, lessonId) {
     async function runStep(step) {
         let instructions = step.text;
         // TODO: display instructions in side panel
-
+        
         await waitForEvent(step.eventName);
     }
 
