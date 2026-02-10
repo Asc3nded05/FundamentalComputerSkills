@@ -28,6 +28,7 @@ function AppWindow({ name, isOpen, onClose, zIndex, bringToFront, content }) {
             minHeight={100}
             onMouseDown={handleFocus}
             dragHandleClassName='window-header'
+            bounds={"parent"} // prevent dragging outside of desktop area
             className={`appWindow ${isOpen ? 'open' : ''}`}
             style={{ zIndex: zIndex }}
         >

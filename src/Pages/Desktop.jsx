@@ -53,7 +53,7 @@ function Desktop() {
             isAppOpen: isApp3Open,
             variant: 'start-menu'
         },
-                {
+        {
             name: APP_REGISTRY[0].name,
             icon: APP_REGISTRY[0].icon,
             openWindow: () => setIsApp1Open(true),
@@ -74,7 +74,7 @@ function Desktop() {
             isAppOpen: isApp3Open,
             variant: 'start-menu'
         },
-                        {
+        {
             name: APP_REGISTRY[0].name,
             icon: APP_REGISTRY[0].icon,
             openWindow: () => setIsApp1Open(true),
@@ -117,6 +117,13 @@ function Desktop() {
         setHighestAppZIndex(newAppZIndex);
     };
 
+    const openApp = (appName) => {
+        bringToFront(appName);
+        if (appName === "app1") setIsApp1Open(prev => !prev);
+        if (appName === "app2") setIsApp2Open(prev => !prev);
+        if (appName === "app3") setIsApp3Open(prev => !prev);
+    };
+
     return <>
         <div className="desktop-page">
             <div className="desktop-container">
@@ -135,15 +142,30 @@ function Desktop() {
                     clickDelay={200}
                 >
                     <div key="app1">
-                        <AppIcon name={APP_REGISTRY[0].name} icon={APP_REGISTRY[0].icon} openWindow={() => setIsApp1Open(true)} />
+                        <AppIcon
+                            name={APP_REGISTRY[0].name}
+                            icon={APP_REGISTRY[0].icon}
+                            openWindow={() => openApp("app1")}
+                            variant="desktop"
+                        />
                     </div>
 
                     <div key="app2">
-                        <AppIcon name={APP_REGISTRY[1].name} icon={APP_REGISTRY[1].icon} openWindow={() => setIsApp2Open(true)} />
+                        <AppIcon
+                            name={APP_REGISTRY[1].name}
+                            icon={APP_REGISTRY[1].icon}
+                            openWindow={() => openApp("app2")}
+                            variant="desktop"
+                        />
                     </div>
 
                     <div key="app3">
-                        <AppIcon name={APP_REGISTRY[2].name} icon={APP_REGISTRY[2].icon} openWindow={() => setIsApp3Open(true)} />
+                        <AppIcon
+                            name={APP_REGISTRY[2].name}
+                            icon={APP_REGISTRY[2].icon}
+                            openWindow={() => openApp("app3")}
+                            variant="desktop"
+                        />
                     </div>
                 </ResponsiveGridLayout>
 
@@ -158,21 +180,21 @@ function Desktop() {
                         <AppIcon
                             name={APP_REGISTRY[0].name}
                             icon={APP_REGISTRY[0].icon}
-                            openWindow={() => setIsApp1Open(true)}
+                            openWindow={() => openApp("app1")}
                             variant="taskbar"
                             isAppOpen={isApp1Open}
                         />
                         <AppIcon
                             name={APP_REGISTRY[1].name}
                             icon={APP_REGISTRY[1].icon}
-                            openWindow={() => setIsApp2Open(true)}
+                            openWindow={() => openApp("app2")}
                             variant="taskbar"
                             isAppOpen={isApp2Open}
                         />
                         <AppIcon
                             name={APP_REGISTRY[2].name}
                             icon={APP_REGISTRY[2].icon}
-                            openWindow={() => setIsApp3Open(true)}
+                            openWindow={() => openApp("app3")}
                             variant="taskbar"
                             isAppOpen={isApp3Open}
                         />
@@ -190,33 +212,39 @@ function Desktop() {
                     apps={apps}
                 />
 
-                {/* App Windows */}
-                <AppWindow
-                    name={APP_REGISTRY[0].name}
-                    isOpen={isApp1Open}
-                    onClose={() => setIsApp1Open(false)}
-                    zIndex={windows.app1.zIndex}
-                    bringToFront={() => bringToFront("app1")}
-                    content={<FileExplorer />}
-                />
+                {/* App Windows that conditionally render (to fix resetting position on close)*/}
+                {isApp1Open &&
+                    <AppWindow
+                        name={APP_REGISTRY[0].name}
+                        isOpen={isApp1Open}
+                        onClose={() => setIsApp1Open(false)}
+                        zIndex={windows.app1.zIndex}
+                        bringToFront={() => bringToFront("app1")}
+                        content={<FileExplorer />}
+                    />
+                }
 
-                <AppWindow
-                    name={APP_REGISTRY[1].name}
-                    isOpen={isApp2Open}
-                    onClose={() => setIsApp2Open(false)}
-                    zIndex={windows.app2.zIndex}
-                    bringToFront={() => bringToFront("app2")}
-                    content={<Notepad />}
-                />
+                {isApp2Open &&
+                    <AppWindow
+                        name={APP_REGISTRY[1].name}
+                        isOpen={isApp2Open}
+                        onClose={() => setIsApp2Open(false)}
+                        zIndex={windows.app2.zIndex}
+                        bringToFront={() => bringToFront("app2")}
+                        content={<Notepad />}
+                    />
+                }
 
-                <AppWindow
-                    name={APP_REGISTRY[2].name}
-                    isOpen={isApp3Open}
-                    onClose={() => setIsApp3Open(false)}
-                    zIndex={windows.app3.zIndex}
-                    bringToFront={() => bringToFront("app3")}
-                    content={<FrameApp />}
-                />
+                {isApp3Open &&
+                    <AppWindow
+                        name={APP_REGISTRY[2].name}
+                        isOpen={isApp3Open}
+                        onClose={() => setIsApp3Open(false)}
+                        zIndex={windows.app3.zIndex}
+                        bringToFront={() => bringToFront("app3")}
+                        content={<FrameApp />}
+                    />
+                }
 
             </div>
 
