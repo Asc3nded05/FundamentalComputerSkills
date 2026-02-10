@@ -1,7 +1,12 @@
-  .file-explorer-body {
+.file-explorer-body {
     padding: 10px;
     display: flex;
     justify-content: space-between;
+    min-width: 400px;
+    min-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-size: 14px;
   }
   
   .file-explorer-top-nav {
@@ -20,12 +25,12 @@
   }
   
   .file-explorer-side-nav details details {
-    padding-left: 20px;
+    padding-left: 16px;
     list-style-type:none;
   }
 
 .file-explorer-side-nav details p{
-    padding-left: 20px;
+    padding-left: 16px;
     list-style-type:none;
   }
   
@@ -33,14 +38,57 @@
     border-right: 1px solid #dddddd32;
     padding-right: 10px;
     width: 30%;
+    max-width: 125px;
     line-height: 25px;
+    font-size: 14px;
   }
 
-  .content-div {
-    display: none; /* Hide all divs by default */
+  .file-explorer-side-nav button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+  }
+
+  .file-explorer-page-content {
     padding: 1rem;
     border: 1px solid #ccc;
     margin-top: 1rem;
     padding-left: 20px;
     width: 100%;
+  }
+
+  .file-explorer-page-content button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+  }
+
+  .grid-view {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .grid-view p {
+    border: 1px solid #ddd;
+    margin: 10px;
+  }
+
+  .list-view summary, .list-view p {
+    border-bottom: 1px solid #ddddddab;
+  }
+
+  .list-view details p {
+    margin-left: 20px;
+  }
+
+  .file-explorer-bottom-footer {
+    display: flex;
+    padding: 10px;
+    position: fixed;
+    right: 0;
+    bottom: 0;
   }

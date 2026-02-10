@@ -1,22 +1,22 @@
 .desktop-page {
-  width: 100vw;
-  height: 100vh;
+  display: flex;
   background-color: #ffffff;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
   flex-direction: row;
   justify-content: space-between;
-  align-items: top;
-  position: relative;
+  align-items: center;
+  flex: 0 0 auto;
   overflow: hidden;
+  padding: 0.4rem;
 }
 
 .desktop-container {
   aspect-ratio: 16 / 9;
-  width: 80vw;
+  height: 100%;
+  max-width: calc(100vh * 16 / 9);
   background-image: url('../assets/background-image.jpg');
   background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   position: relative;
   border: 5px solid black;
   border-radius: 5px;

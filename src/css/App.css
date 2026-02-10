@@ -1,7 +1,17 @@
-
 * {
   margin: 0;
   padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+.app-layout {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
 }
 
 .topnav {
@@ -14,12 +24,28 @@
   height: flex;
 }
 
+.sidebar-container {
+  display: flex;
+  min-width: 250px;
+  flex: 1;
+  flex-direction: column;
+  top: 0;
+  right: 0;
+  align-items: center;
+  border: 2px solid black;
+}
+
+.sidebar-links {
+  display: flex;
+  flex-direction: row;
+}
+
 .link {
   border: 2px solid black;
   border-radius: 10px;
-  padding: 5px;
-  margin: 5px;
-  margin-top: 10px;
+  padding: 0.5rem;
+  margin: 0.5rem;
+  margin-top: 0.6rem;
   color: black;
 }
 
@@ -29,7 +55,7 @@
   text-decoration: none;
 }
 
-/* Lessons Page Styles */ 
+/* Lessons Page Styles */
 .lessons-page {
   display: flex;
   flex-direction: column;
