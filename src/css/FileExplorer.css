@@ -36,8 +36,15 @@
     line-height: 25px;
   }
 
-  .content-div {
-    display: none; /* Hide all divs by default */
+  .file-explorer-side-nav button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+  }
+
+  .file-explorer-page-content {
     padding: 1rem;
     border: 1px solid #ccc;
     margin-top: 1rem;
