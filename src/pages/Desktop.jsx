@@ -245,11 +245,6 @@ function Desktop() {
                         content={<FrameApp />}
                     />
                 }
-
-            </div>
-
-            <div className="sidebar-container">
-                <SideBar />
             </div>
         </div>
     </>

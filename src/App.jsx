@@ -13,29 +13,36 @@ import './css/FrameApp.css'
 import './css/Notepad.css'
 import './css/SideBar.css'
 import './css/StartMenu.css'
-import  './css/Taskbar.css'
+import './css/Taskbar.css'
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
+import SideBar from './Components/SideBar.jsx'
 
 function App() {
   return (
     <BrowserRouter>
-      <nav className="topnav">
-        <div className="link">
-        <Link to="/">Desktop</Link>
+      <div className="app-layout">
+        <Routes>
+          <Route path="/" element={<Desktop />} />
+          <Route path="/lessons" element={<Lessons />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+
+        <div className="sidebar-container">
+          <div className="sidebar-links">
+            <div className="link">
+              <Link to="/">Desktop</Link>
+            </div>
+            <div className="link">
+              <Link to="/lessons">Lessons</Link>
+            </div>
+            <div className="link">
+              <Link to="/login">Login</Link>
+            </div>
+          </div>
+          <SideBar />
         </div>
-        <div className="link">
-        <Link to="/lessons">Lessons</Link>
-        </div>
-        <div className="link">
-        <Link to="/login">Login</Link>
-        </div>
-      </nav>
-      <Routes>
-        <Route path="/" element={<Desktop />} />
-        <Route path="/lessons" element={<Lessons />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>      
+      </div>
     </BrowserRouter>
   )
 }
