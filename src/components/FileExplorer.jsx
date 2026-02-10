@@ -2,18 +2,42 @@ import React, { useState } from 'react';
 
 function FileExplorer() {
 
-    const [activeView, setActiveView] = useState('view1');
+    const [activeView, setActiveView] = useState('pc-view');
 
     const renderView = () => {
         switch (activeView) {
-            case 'pc-view': return <div>This is the PC content</div>;
-            case 'desktop-view': return <div>This is the Desktop content</div>;
-            case 'downloads-view': return <div>This is the Downloads content</div>;
-            case 'documents-view': return <div>This is the Documents content</div>;
-            case 'pictures-view': return <div>This is the Pictures content</div>;
-            case 'music-view': return <div>This is the Music content</div>;
-            case 'videos-view': return <div>This is the Video content</div>;
-            case 'networks-view': return <div>This is the Networks content</div>;
+            case 'pc-view': return <div className='grid-view'>
+                <p><button onClick={() => setActiveView('desktop-view')}>Desktop</button></p>
+                <p><button onClick={() => setActiveView('downloads-view')}>Downloads</button></p>
+                <p><button onClick={() => setActiveView('documents-view')}>Documents</button></p>
+                <p><button onClick={() => setActiveView('pictures-view')}>Pictures</button></p>
+                <p><button onClick={() => setActiveView('music-view')}>Music</button></p>
+                <p><button onClick={() => setActiveView('videos-view')}>Videos</button></p>
+            </div>;
+            case 'desktop-view': return <div className='grid-view'>
+                <p>Notepad</p>
+                <p>App</p>
+            </div>;
+            case 'downloads-view': return <div className='list-view'>
+                <p>Downloaded item</p>
+                <p>Downloaded item</p>
+                <p>Downloaded image</p>
+            </div>;
+            case 'documents-view': return <div className='list-view'>
+                <details>
+                    <summary>Folder</summary>
+                    <p>Super Secret Document</p>
+                </details>
+                <p>Boring Document</p>
+            </div>;
+            case 'pictures-view': return <div className='grid-view'>
+                <p>Cat pic</p>
+            </div>;
+            case 'music-view': return <div className='grid-view'>You have no music</div>;
+            case 'videos-view': return <div className='grid-view'>You have no videos</div>;
+            case 'networks-view': return <div className='list-view'>
+                <p>Network Stuff</p>
+            </div>;
             default: return <div>Default View</div>;
         }
     };
@@ -64,8 +88,6 @@ function FileExplorer() {
                         </details>
                         <details>
                             <summary><button onClick={() => setActiveView('pictures-view')}>Pictures</button></summary>
-                            
-
                             <p>Cat pic</p>
                         </details>
                         <details>
@@ -86,6 +108,11 @@ function FileExplorer() {
                     {renderView()}
                 </div>
             </div>
+
+            <footer className="file-explorer-bottom-footer"> 
+                <button className='list-view-btn'>List</button>
+                <button className='grid-view-btn'>Grid</button>
+            </footer>
   </>
 }
 
