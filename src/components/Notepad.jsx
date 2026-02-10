@@ -6,9 +6,7 @@ function Notepad() {
             <button>View</button>
         </div>
         <div className="notepad-content">
-            <textarea className="notepad-body">
-                Text here
-            </textarea>
+            <textarea className="notepad-body" defaultValue="Text here"></textarea>
         </div>
     </>
     );

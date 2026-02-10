@@ -1,5 +1,6 @@
-function AppIcon({ name, icon, openWindow, variant = "desktop", isAppOpen = false, closeMenu }) {
+import { dispatchDesktopEvent } from "../utils/eventBus";
 
+function AppIcon({ name, icon, eventName, openWindow, variant = "desktop", isAppOpen = false, closeMenu }) {
     const handleIconClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -9,15 +10,19 @@ function AppIcon({ name, icon, openWindow, variant = "desktop", isAppOpen = fals
             if (variant === "start-menu" && closeMenu) {
                 closeMenu();
             }
+
+            dispatchDesktopEvent(eventName);
         }
     };
+
     const handleDoubleClick = (e) => {
-        console.log("double click");
         e.preventDefault();
         e.stopPropagation();
         if (variant === "desktop") {
             openWindow();
         }
+
+        dispatchDesktopEvent(eventName);
     };
 
     return (

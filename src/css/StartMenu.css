@@ -54,9 +54,22 @@
   box-sizing: border-box;
 }
 
+.start-app-grid.hidden {
+  visibility: hidden;
+}
+
+.start-app-grid.ready {
+  visibility: visible;
+}
+
 .react-grid-item.no-transition {
   transition: none !important;
   transform: none !important;
+}
+
+/* Disable ALL RGL animations */
+.react-grid-item {
+  transition: none !important;
 }
 
 .start-empty {

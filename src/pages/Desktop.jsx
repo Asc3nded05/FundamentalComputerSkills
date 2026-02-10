@@ -1,18 +1,19 @@
 import { Responsive, WidthProvider } from "react-grid-layout";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-import AppIcon from '../Components/AppIcon.jsx'
-import Clock from '../Components/Clock.jsx'
-import SideBar from '../Components/SideBar.jsx'
-import AppWindow from '../Components/AppWindow.jsx';
-import StartButton from "../Components/StartButton.jsx";
-import StartMenu from "../Components/StartMenu.jsx";
+import AppIcon from '../components/AppIcon.jsx'
+import Clock from '../components/Clock.jsx'
+import SideBar from '../components/SideBar.jsx'
+import AppWindow from '../components/AppWindow.jsx';
+import StartButton from "../components/StartButton.jsx";
+import StartMenu from "../components/StartMenu.jsx";
 
 import { APP_REGISTRY } from '../utils/apps.js';
 
-import FileExplorer from "../Components/FileExplorer.jsx";
-import Notepad from "../Components/Notepad.jsx";
-import FrameApp from "../Components/FrameApp.jsx";
+import FileExplorer from "../components/FileExplorer.jsx";
+import Notepad from "../components/Notepad.jsx";
+import FrameApp from "../components/FrameApp.jsx";
+// import { eventBus } from '../utils/eventBus.js';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -30,11 +31,24 @@ function Desktop() {
     const [isApp2Open, setIsApp2Open] = useState(false);
     const [isApp3Open, setIsApp3Open] = useState(false);
 
+    // Temporary debug log for eventBus events (wildcard "*")
+    // const [eventsLog, setEventsLog] = useState([]);
+    // useEffect(() => {
+    //     const handler = (e) => {
+    //         const entry = { type: e.type, detail: e.detail || {}, time: Date.now() };
+    //         console.log('eventBus:', entry);
+    //         setEventsLog(prev => [entry, ...prev].slice(0, 20));
+    //     };
+    //     eventBus.addEventListener('*', handler);
+    //     return () => eventBus.removeEventListener('*', handler);
+    // }, []);
+
     // Apps list for StartMenu
     const apps = [
         {
             name: APP_REGISTRY[0].name,
             icon: APP_REGISTRY[0].icon,
+            eventName: 'FileExplorerStartOpen',
             openWindow: () => setIsApp1Open(true),
             isAppOpen: isApp1Open,
             variant: 'start-menu'
@@ -42,6 +56,7 @@ function Desktop() {
         {
             name: APP_REGISTRY[1].name,
             icon: APP_REGISTRY[1].icon,
+            eventName: 'NotepadStartOpen',
             openWindow: () => setIsApp2Open(true),
             isAppOpen: isApp2Open,
             variant: 'start-menu'
@@ -49,6 +64,7 @@ function Desktop() {
         {
             name: APP_REGISTRY[2].name,
             icon: APP_REGISTRY[2].icon,
+            eventName: 'App3StartOpen',
             openWindow: () => setIsApp3Open(true),
             isAppOpen: isApp3Open,
             variant: 'start-menu'
@@ -56,6 +72,7 @@ function Desktop() {
         {
             name: APP_REGISTRY[0].name,
             icon: APP_REGISTRY[0].icon,
+            eventName: 'FileExplorerStartOpen',
             openWindow: () => setIsApp1Open(true),
             isAppOpen: isApp1Open,
             variant: 'start-menu'
@@ -63,6 +80,7 @@ function Desktop() {
         {
             name: APP_REGISTRY[1].name,
             icon: APP_REGISTRY[1].icon,
+            eventName: 'NotepadStartOpen',
             openWindow: () => setIsApp2Open(true),
             isAppOpen: isApp2Open,
             variant: 'start-menu'
@@ -70,6 +88,7 @@ function Desktop() {
         {
             name: APP_REGISTRY[2].name,
             icon: APP_REGISTRY[2].icon,
+            eventName: 'App3StartOpen',
             openWindow: () => setIsApp3Open(true),
             isAppOpen: isApp3Open,
             variant: 'start-menu'
@@ -77,6 +96,7 @@ function Desktop() {
         {
             name: APP_REGISTRY[0].name,
             icon: APP_REGISTRY[0].icon,
+            eventName: 'FileExplorerStartOpen',
             openWindow: () => setIsApp1Open(true),
             isAppOpen: isApp1Open,
             variant: 'start-menu'
@@ -84,6 +104,7 @@ function Desktop() {
         {
             name: APP_REGISTRY[1].name,
             icon: APP_REGISTRY[1].icon,
+            eventName: 'NotepadStartOpen',
             openWindow: () => setIsApp2Open(true),
             isAppOpen: isApp2Open,
             variant: 'start-menu'
@@ -91,6 +112,7 @@ function Desktop() {
         {
             name: APP_REGISTRY[2].name,
             icon: APP_REGISTRY[2].icon,
+            eventName: 'App3StartOpen',
             openWindow: () => setIsApp3Open(true),
             isAppOpen: isApp3Open,
             variant: 'start-menu'
@@ -145,6 +167,7 @@ function Desktop() {
                         <AppIcon
                             name={APP_REGISTRY[0].name}
                             icon={APP_REGISTRY[0].icon}
+                            eventName="FileExplorerDesktopOpen"
                             openWindow={() => openApp("app1")}
                             variant="desktop"
                         />
@@ -154,6 +177,7 @@ function Desktop() {
                         <AppIcon
                             name={APP_REGISTRY[1].name}
                             icon={APP_REGISTRY[1].icon}
+                            eventName="NotepadDesktopOpen"
                             openWindow={() => openApp("app2")}
                             variant="desktop"
                         />
@@ -163,12 +187,28 @@ function Desktop() {
                         <AppIcon
                             name={APP_REGISTRY[2].name}
                             icon={APP_REGISTRY[2].icon}
+                            eventName="App3DesktopOpen"
                             openWindow={() => openApp("app3")}
                             variant="desktop"
                         />
                     </div>
                 </ResponsiveGridLayout>
 
+                {/* Small debug panel showing recent events from eventBus (temporary) */}
+                {/* <div style={{position:'fixed', right:12, bottom:78, width:320, maxHeight:220, overflowY:'auto', background:'rgba(0,0,0,0.7)', color:'#fff', fontSize:12, padding:8, borderRadius:6, zIndex:9999}}>
+                    <strong style={{display:'block', marginBottom:6}}>Event Log</strong>
+                    {eventsLog.length === 0 ? (
+                        <div style={{opacity:0.7}}>No events yet — try opening an app or clicking icons.</div>
+                    ) : (
+                        eventsLog.map((ev, i) => (
+                            <div key={i} style={{borderBottom:'1px solid rgba(255,255,255,0.06)', padding:'4px 0'}}>
+                                <div style={{fontWeight:600}}>{ev.type}</div>
+                                <div style={{opacity:0.9, fontSize:11}}>{Object.keys(ev.detail).length ? JSON.stringify(ev.detail) : ''}</div>
+                            </div>
+                        ))
+                    )}
+                </div> */}
+                
                 {/* Taskbar */}
                 <div className="navbar">
                     <div className="navbar-left">
@@ -180,6 +220,7 @@ function Desktop() {
                         <AppIcon
                             name={APP_REGISTRY[0].name}
                             icon={APP_REGISTRY[0].icon}
+                            eventName="FileExplorerTaskbarOpen"
                             openWindow={() => openApp("app1")}
                             variant="taskbar"
                             isAppOpen={isApp1Open}
@@ -187,6 +228,7 @@ function Desktop() {
                         <AppIcon
                             name={APP_REGISTRY[1].name}
                             icon={APP_REGISTRY[1].icon}
+                            eventName="NotepadTaskbarOpen"
                             openWindow={() => openApp("app2")}
                             variant="taskbar"
                             isAppOpen={isApp2Open}
@@ -194,6 +236,7 @@ function Desktop() {
                         <AppIcon
                             name={APP_REGISTRY[2].name}
                             icon={APP_REGISTRY[2].icon}
+                            eventName="App3TaskbarOpen"
                             openWindow={() => openApp("app3")}
                             variant="taskbar"
                             isAppOpen={isApp3Open}
@@ -218,6 +261,7 @@ function Desktop() {
                         name={APP_REGISTRY[0].name}
                         isOpen={isApp1Open}
                         onClose={() => setIsApp1Open(false)}
+                        closeEventName="FileExplorerClose"
                         zIndex={windows.app1.zIndex}
                         bringToFront={() => bringToFront("app1")}
                         content={<FileExplorer />}
@@ -229,6 +273,7 @@ function Desktop() {
                         name={APP_REGISTRY[1].name}
                         isOpen={isApp2Open}
                         onClose={() => setIsApp2Open(false)}
+                        closeEventName="NotepadClose"
                         zIndex={windows.app2.zIndex}
                         bringToFront={() => bringToFront("app2")}
                         content={<Notepad />}
@@ -240,6 +285,7 @@ function Desktop() {
                         name={APP_REGISTRY[2].name}
                         isOpen={isApp3Open}
                         onClose={() => setIsApp3Open(false)}
+                        closeEventName="App3Close"
                         zIndex={windows.app3.zIndex}
                         bringToFront={() => bringToFront("app3")}
                         content={<FrameApp />}
