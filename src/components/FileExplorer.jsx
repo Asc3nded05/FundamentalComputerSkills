@@ -29,6 +29,7 @@ function FileExplorer() {
                     <p>Super Secret Document</p>
                 </details>
                 <p>Boring Document</p>
+                <p>Example Text File</p>
             </div>;
             case 'pictures-view': return <div className='grid-view'>
                 <p>Cat pic</p>

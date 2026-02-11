@@ -6,7 +6,10 @@
   align-items: center;
   flex: 0 0 auto;
   overflow: hidden;
-  padding: 0.4rem;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+  padding-left: 0.05rem;
+  padding-right: 0.05rem;
 }
 
 .desktop-container {
@@ -20,7 +23,6 @@
   position: relative;
   border: 5px solid black;
   border-radius: 5px;
-  margin: 5px;
 }
 
 .react-grid-placeholder {
