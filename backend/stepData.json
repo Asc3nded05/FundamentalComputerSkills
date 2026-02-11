@@ -1,23 +1,47 @@
 {
-  "step": [
+  "openFile": [
     {
-      "orderNum": "1",
-      "text": "Step 1: Introduction to the topic.",
-      "EventName": "Sample Event",
+      "orderNumber": "1",
+      "text": "Explain what an app is.",
+      "EventName": "Next",
       "hintText": "This is a hint for step 1."
     },
     {
-      "orderNum": "2",
-      "text": "Step 2: Understanding the basics.",
-      "EventName": "Another Event",
+      "orderNumber": "2",
+      "text": "Open File Explorer from the taskbar.",
+      "EventName": "FileExplorerTaskbarOpen",
       "hintText": "This is a hint for step 2."
     },
     {
-      "orderNum": "3",
-      "text": "Step 3: Applying concepts.",
-      "EventName": "Third Event",
+      "orderNumber": "3",
+      "text": "Close App",
+      "EventName": "FileExplorerClose",
       "hintText": "This is a hint for step 3."
-    }
+    },
+    {
+      "orderNumber": "4",
+      "text": "Open Start Menu",
+      "EventName": "StartMenuOpen",
+      "hintText": "This is a hint for step 4."
+    },
+    {
+      "orderNumber": "5",
+      "text": "Explain Start Menu",
+      "EventName": "Next",
+      "hintText": "This is a hint for step 5."
+    },
+    {
+        "orderNumber": "6",
+        "text": "Open File Explorer from the Start Menu",
+        "EventName": "FileExplorerStartMenuOpen",
+        "hintText": "This is a hint for step 6."
+    },
+      {
+          "orderNumber": "7",
+          "text": "Lesson Complete!",
+          "EventName": "LessonComplete",
+          "hintText": "This is a hint for step 7."
+      }
        
 
   ]
