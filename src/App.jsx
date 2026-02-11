@@ -16,7 +16,7 @@ import './css/StartMenu.css'
 import './css/Taskbar.css'
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
-import SideBar from './Components/SideBar.jsx'
+import SideBar from './components/SideBar.jsx'
 
 function App() {
   return (
