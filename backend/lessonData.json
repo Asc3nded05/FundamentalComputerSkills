@@ -1,26 +1,10 @@
 {
   "lessons": [
     {
-      "category": "Category #1",
-      "items": [
-        "Lesson 1",
-        "Lesson 2",
-        "Lesson 3",
-        "Lesson 4",
-        "Lesson 5"
-      ]
-    },
-    {
-      "category": "Category #2",
-      "items": [
-        "Lesson 1",
-        "Lesson 2",
-        "Lesson 3",
-        "Lesson 4",
-        "Lesson 5",
-        "Lesson 6",
-        "Lesson 7"
-      ]
+      "lessonId": 1,
+      "name": "Opening Apps",
+      "categoryId": 1,
+      "orderNumber": 1
     }
   ]
 }

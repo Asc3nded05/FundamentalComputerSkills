@@ -1,0 +1,54 @@
+{
+  "stepEvents": [
+    {
+      "stepEventId": 1,
+      "stepId": 1,
+      "eventId": 11 
+    },
+    {
+      "stepEventId": 2,
+      "stepId": 2,
+      "eventId": 2
+    },
+    {
+      "stepEventId": 3,
+      "stepId": 3,
+      "eventId": 4
+    },
+    {
+      "stepEventId": 4,
+      "stepId": 4,
+      "eventId": 1
+    },
+    {
+      "stepEventId": 5,
+      "stepId": 5,
+      "eventId": 4
+    },
+    {
+      "stepEventId": 6,
+      "stepId": 6,
+      "eventId": 9
+    },
+    {
+      "stepEventId": 7,
+      "stepId": 7,
+      "eventId": 11
+    },
+    {
+      "stepEventId": 8,
+      "stepId": 8,
+      "eventId": 3
+    },
+    {
+      "stepEventId": 9,
+      "stepId": 9,
+      "eventId": 4
+    },
+    {
+      "stepEventId": 10,
+      "stepId": 10,
+      "eventId": 12
+    }
+  ]
+}

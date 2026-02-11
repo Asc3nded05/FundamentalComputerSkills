@@ -1,0 +1,52 @@
+{
+  "events": [
+    {
+        "eventId": 1,
+        "eventName": "FileExplorerDesktopOpen"
+    },
+    {
+        "eventId": 2,
+        "eventName": "FileExplorerTaskbarOpen"
+    },
+    {
+        "eventId": 3,
+        "eventName": "FileExplorerStartOpen"
+    },
+    {
+        "eventId": 4,
+        "eventName": "FileExplorerClose"
+    },
+    {
+        "eventId": 5,
+        "eventName": "NotepadDesktopOpen"
+    },
+    {
+        "eventId": 6,
+        "eventName": "NotepadTaskbarOpen"
+    },
+    {
+        "eventId": 7,
+        "eventName": "NotepadStartOpen"
+    },
+    {
+        "eventId": 8,
+        "eventName": "NotepadClose"
+    },
+    {
+        "eventId": 9,
+        "eventName": "StartMenuOpen"
+    },
+    {
+        "eventId": 10,
+        "eventName": "StartMenuClose"
+    },
+    {
+        "eventId": 11,
+        "eventName": "Next"
+    },
+    {
+        "eventId": 12,
+        "eventName": "Finish"
+    }
+  ]
+}
