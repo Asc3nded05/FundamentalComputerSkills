@@ -4,6 +4,7 @@ import { runLesson } from '../utils/lessonRunner.js';
 import { useState } from 'react';
 import { useStep } from '../api/useStep.js';
 import { dispatchDesktopEvent } from '../utils/eventBus.js';
+
 function SideBar() {
 
     const currentLesson = 2; // Change this to 1 to test the first lesson, or 2 to test the second lesson
@@ -45,6 +46,7 @@ function SideBar() {
                     <p>Lesson #{currentLesson}</p>
                     <div className="lesson-progress"></div>
                 </div>
+
                 <p>{currentStep}</p>
                 {/* <Checklist lesson={lesson} /> */}
 

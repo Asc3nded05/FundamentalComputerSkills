@@ -1,3 +1,22 @@
+.file-explorer-bottom-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    border-bottom: 1px solid #ddddddab;
+    background: #e6f0f4;
+  }
+
+.file-explorer-add-button {
+  border: 1px solid rgba(0, 0, 0, 0.488);
+  border-radius: 5px;
+  padding: 3px;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 14px;
+}
+
 .file-explorer-body {
     padding: 10px;
     display: flex;
