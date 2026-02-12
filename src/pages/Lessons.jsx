@@ -12,7 +12,7 @@ function Lessons() {
                 <div className="lesson" key={index}>
                     <button type="button" className="lesson-header">{category.category}</button>
                     <div className="lesson-content">
-                        {category.items.map((lesson, lessonIndex) => (
+                        {category?.items?.map((lesson, lessonIndex) => (
                             <p key={lessonIndex}>{lesson}</p>
                         ))}
                     </div>
