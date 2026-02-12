@@ -4,6 +4,7 @@ import { runLesson } from '../utils/lessonRunner.js';
 import { useState } from 'react';
 import { useStep } from '../api/useStep.js';
 import { dispatchDesktopEvent } from '../utils/eventBus.js';
+
 function SideBar() {
 
     const { response: lesson, loading, error } = useLesson(1,1);
@@ -43,6 +44,7 @@ function SideBar() {
                     <p>Lesson #1</p>
                     <div className="lesson-progress"></div>
                 </div>
+
                 <p>{currentStep}</p>
                 {/* <Checklist lesson={lesson} /> */}
 
