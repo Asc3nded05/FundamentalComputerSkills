@@ -2,6 +2,8 @@
   margin-left: 1vh;
   cursor: pointer;
   padding: 0.5rem;
+  background-color: transparent;
+  border: none;
 }
 
 .start-button-icon {
