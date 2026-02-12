@@ -47,7 +47,7 @@
       "lessonId": 1,
       "text": "The start menu contains a list of all the apps on your computer. You can scroll through the list to find the app you want to open, or you can use the search bar at the top of the start menu to quickly find an app by typing its name.",
       "orderNumber": 7,
-      "eventName": "FileExplorerStartOpen"
+      "eventName": "Next"
     },
     {
       "stepId": 8,
