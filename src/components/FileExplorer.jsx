@@ -61,6 +61,7 @@ function FileExplorer() {
                 {isOpen && (
                     <div className="file-explorer-add-dropdown-content">
                         <button className="file-explorer-add-folder">Folder</button>
+                        <hr></hr>
                         <button className="file-explorer-add-txt">Text Document</button>
                     </div>
                 )}
