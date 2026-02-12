@@ -47,9 +47,24 @@ function FileExplorer() {
         }
     };
 
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleDropdown = () => {
+        setIsOpen(!isOpen);
+    };
+
   return <>
             <div className="file-explorer-bottom-header">
-                <button className="file-explorer-add-button">+ New</button>
+                <div className="file-explorer-dropdown">
+                <button onClick={toggleDropdown} className="file-explorer-add-dropdown-button">+ New</button>
+                {isOpen && (
+                    <div className="file-explorer-add-dropdown-content">
+                        <button className="file-explorer-add-folder">Folder</button>
+                        <button className="file-explorer-add-txt">Text Document</button>
+                    </div>
+                )}
+                </div>
             </div>
 
             <div className="file-explorer-top-nav">
