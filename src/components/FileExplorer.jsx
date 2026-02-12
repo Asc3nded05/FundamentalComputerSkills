@@ -49,7 +49,7 @@ function FileExplorer() {
 
   return <>
             <div className="file-explorer-bottom-header">
-                {/*various icons*/}
+                <button className="file-explorer-add-button">+ New</button>
             </div>
 
             <div className="file-explorer-top-nav">
