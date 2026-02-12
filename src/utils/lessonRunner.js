@@ -1,6 +1,6 @@
-import eventBus from eventBus.js;
+import { eventBus } from "./eventBus";
 
-export async function runLesson(userId, lessonId) {
+export async function runLesson(userId, lessonId, setInstructions) {
     // TODO: call backend API to retrieve steps by lessonId
     let steps = [];
 
@@ -29,14 +29,14 @@ export async function runLesson(userId, lessonId) {
     // Runs the specified step
     async function runStep(step) {
         let instructions = step.text;
-        // TODO: display instructions in side panel
+        setInstructions(instructions); // Update the instructions in the sidebar
         
         await waitForEvent(step.eventName);
     }
 
     async function onWrongEvent(eventType) {
         // TODO: indicate to the user that they have performed the wrong action
-        console.warn(`User triggered ${wrongEvent} instead of ${step.eventName}`);
+        console.warn(`User triggered ${eventType} instead of ${step.eventName}`);
         return;
     }
 

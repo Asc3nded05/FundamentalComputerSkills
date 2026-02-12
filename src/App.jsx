@@ -17,8 +17,18 @@ import './css/Taskbar.css'
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import SideBar from './components/SideBar.jsx'
+import { runLesson } from './utils/lessonRunner.js'
+import { useState } from 'react'
 
 function App() {
+
+  const [instructions, setInstructions] = useState(""); // For displaying the current step's instructions from the lessonrunner
+
+  // RUNS THE LESSON RUNNER SCRIPT - UNCOMMENT WHEN IT IS IMPLEMENTED
+  // useEffect(() => {
+  //   runLesson(userId, lessonId, setInstructions);
+  // }, []);
+
   return (
     <BrowserRouter>
       <div className="app-layout">

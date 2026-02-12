@@ -1,7 +1,7 @@
 import Checklist from './Checklist';
 import { useLesson } from '../api/useLesson.js';
 
-function SideBar() {
+function SideBar({instructions}) {
     
 
     return (
