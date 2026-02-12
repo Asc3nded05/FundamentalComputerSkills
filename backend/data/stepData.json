@@ -69,6 +69,69 @@
       "text": "Congratulations! You've learned how to open apps on your computer through the taskbar, desktop icons, and the start menu.",
       "orderNumber": 10,
       "eventName": "Next"
+    },
+    {
+      "stepId": 11,
+      "lessonId": 2,
+      "text": "Start by opening the Notepad app by double-clicking the Desktop icon with \"Notepad\" under it.",
+      "orderNumber": 1,
+      "eventName": "NotepadDesktopOpen"
+    }, 
+    {
+      "stepId": 12,
+      "lessonId": 2,
+      "text": "The Notepad app is a basic text editor that lets you write and edit plain text. You can use it to take notes, write lists, or even write code!",
+      "orderNumber": 2,
+      "eventName": "Next"
+    },
+    {
+      "stepId": 13,
+      "lessonId": 2,
+      "text": "Try clicking on the text area in the notepad app and typing some text in. The app has some example text to start, which you can also edit or delete.",
+      "orderNumber": 3,
+      "eventName": "Next"
+    },
+    {
+      "stepId": 14,
+      "lessonId": 2,
+      "text": "In Notepad, as well as in many other apps like your web browser, you can click and drag across text to select it. Try it out by clicking and dragging across some text to see it outlined, then hit Next when you're done.",
+      "orderNumber": 4,
+      "eventName": "Next"
+    },
+    {
+      "stepId": 15,
+      "lessonId": 2,
+      "text": "Now try highlighting some text and hitting Ctrl and C on your keyboard at the same time to copy the text. This saves a copy of the text to your clipboard, which is a special area of your computer's memory that can hold text or images that you've copied or cut.",
+      "orderNumber": 5,
+      "eventName": "NotepadCopy"
+    },
+    {
+      "stepId": 16,
+      "lessonId": 2,
+      "text": "Now try pressing Ctrl and V on your keyboard at the same time to paste the text. This pastes the text from your clipboard into the current document.",
+      "orderNumber": 6,
+      "eventName": "NotepadPaste"
+    },
+    {
+      "stepId": 17,
+      "lessonId": 2,
+      "text": "Now highlight some text and press Ctrl and X on your keyboard at the same time to cut the text. This removes the text from your document and saves it to your clipboard, so you can paste it somewhere else if you want.",
+      "orderNumber": 7,
+      "eventName": "NotepadCut"
+    },
+    {
+      "stepId": 18,
+      "lessonId": 2,
+      "text": "Press Ctrl and V to paste the text you cut back into the notepad editor.",
+      "orderNumber": 8,
+      "eventName": "NotepadPaste"
+    },
+    {
+      "stepId": 19,
+      "lessonId": 2,
+      "text": "Good job! You've learned how to select text and use the copy, cut, and paste functions in Notepad. These functions work in many other apps as well, so you can use them to easily move or copy text around on your computer.",
+      "orderNumber": 9,
+      "eventName": "Next"
     }
   ]
 }

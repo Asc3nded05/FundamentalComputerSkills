@@ -10,3 +10,7 @@ export const getStepById = async (stepId) => {
     return data.steps.find(step => step.stepId === stepId);
 }
 
+export const getStepsByLessonId = async (lessonId) => {
+    const data = await readJsonFile('stepData.json');
+    return data.steps.filter(step => step.lessonId === lessonId);
+};

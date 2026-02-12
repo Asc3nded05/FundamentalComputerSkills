@@ -1,4 +1,4 @@
-import { getAllSteps, getStepById } from '../services/stepService.js';
+import { getAllSteps, getStepById, getStepsByLessonId } from '../services/stepService.js';
 
 // GET /api/steps
 export const getSteps = async (req, res) => {
@@ -27,3 +27,17 @@ export const getStep = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch step' });
   }
 };
+
+// GET /api/steps/lesson/:lessonId
+export const getStepsByLesson = async (req, res) => {
+  try {
+    const lessonId = Number(req.params.lessonId);
+    const steps = await getStepsByLessonId(lessonId);
+    res.json(steps);
+  } catch (error) {
+    console.error('Error fetching steps by lesson:', error);
+    res.status(500).json({ error: 'Failed to fetch steps for lesson' });
+  }
+};
+
+

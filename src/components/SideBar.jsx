@@ -6,8 +6,10 @@ import { useStep } from '../api/useStep.js';
 import { dispatchDesktopEvent } from '../utils/eventBus.js';
 function SideBar() {
 
-    const { response: lesson, loading, error } = useLesson(1,1);
-    const {response: steps, loading: stepsLoading, error: stepsError} = useStep(1,1);
+    const currentLesson = 2; // Change this to 1 to test the first lesson, or 2 to test the second lesson
+
+    const { response: lesson, loading, error } = useLesson(currentLesson);
+    const {response: steps, loading: stepsLoading, error: stepsError} = useStep(currentLesson);
     const [currentStep, setCurrentStep] = useState("Start Lesson");
     function handleNext() {
         dispatchDesktopEvent("Next");}
@@ -16,7 +18,7 @@ function SideBar() {
         console.log("Starting lesson...");
         if (!lesson) return;
         console.log(lesson);
-        await runLesson(steps, 1, setCurrentStep);
+        await runLesson(steps, currentLesson, setCurrentStep); 
     }
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error loading lesson data</div>;
@@ -40,7 +42,7 @@ function SideBar() {
                 {/* Lesson number and progress */}
                 <div className='lesson-num'>
                     <button onClick={handleStartLesson} className='start-button'>Start Lesson</button>
-                    <p>Lesson #1</p>
+                    <p>Lesson #{currentLesson}</p>
                     <div className="lesson-progress"></div>
                 </div>
                 <p>{currentStep}</p>

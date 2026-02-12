@@ -47,6 +47,18 @@
     {
         "eventId": 12,
         "eventName": "Finish"
+    },
+    {
+        "eventId": 13,
+        "eventName": "NotepadCopy"
+    },
+    {
+        "eventId": 14,
+        "eventName": "NotepadCut"
+    },
+    {
+        "eventId": 15,
+        "eventName": "NotepadPaste"
     }
   ]
 }
