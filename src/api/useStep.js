@@ -4,7 +4,7 @@ export function useStep() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     useEffect(() => {
-        fetch('/api/step')
+        fetch('/api/steps')
             .then(res => res.json())
             .then(data => {
                 console.log('Fetched step:', data);

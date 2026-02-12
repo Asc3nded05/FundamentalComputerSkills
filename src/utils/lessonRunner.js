@@ -2,7 +2,13 @@ import eventBus from eventBus.js;
 
 export async function runLesson(userId, lessonId) {
     // TODO: call backend API to retrieve steps by lessonId
-    let steps = [];
+    const { response, loading, error } = useStep(); 
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error loading step data</div>;
+    let steps = response;
+    if (!steps) {
+        return <div>No steps available for this lesson</div>;
+    }
 
     // Ensures that steps are in the correct order
     const sortedSteps = [...steps].sort((a, b) => a.orderNumber - b.orderNumber);
