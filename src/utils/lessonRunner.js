@@ -40,7 +40,7 @@ export async function runLesson(steps, lessonId, updateInstructions) {
 
     async function onWrongEvent(eventType) {
         // TODO: indicate to the user that they have performed the wrong action
-        console.warn(`User triggered ${wrongEvent} instead of ${step.eventName}`);
+        console.warn(`User triggered ${eventType} instead of ${step.eventName}`);
         return;
     }
 
