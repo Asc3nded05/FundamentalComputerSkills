@@ -4,61 +4,71 @@
       "stepId": 1,
       "lessonId": 1,
       "text": "An app is any program on your comptuer that you can run to perform a specific function. This includes File Explorer, a browser like Microsoft Edge or Google Chrome, text editors like Microsoft Word or Notepad, and more. There three main ways to open an app that we will explore in this lesson.",
-      "orderNumber": 1
+      "orderNumber": 1,
+      "eventName": "Next"
     },
     {
       "stepId": 2,
       "lessonId": 1,
       "text": "The first way you can open an app is through your taskbar, the row of app icons at the bottom of your screen. Open the File Explorer app by clicking on the folder icon in the taskbar. This will open a window that allows you to navigate through your files and folders.",
-      "orderNumber": 2
+      "orderNumber": 2,
+      "eventName": "FileExplorerTaskbarOpen"
     },
     {
       "stepId": 3,
       "lessonId": 1,
       "text": "Great job! Now click the 'X' in the top right corner of the File Explorer window to close it.",
-      "orderNumber": 3
+      "orderNumber": 3,
+      "eventName": "FileExplorerClose"
     },
     {
       "stepId": 4,
       "lessonId": 1,
       "text": "The next way you can open an app is by clicking on app icons on your desktop. If you have a shortcut to an app on your desktop, you can double click the icon to open it. Try opening File Explorer again by double clicking the folder icon on your desktop.",
-      "orderNumber": 4
+      "orderNumber": 4,
+      "eventName": "FileExplorerDesktopOpen"
     },
     {
       "stepId": 5,
       "lessonId": 1,
       "text": "Perfect! Now close the File Explorer window again by clicking the 'X' in the top right corner.",
-      "orderNumber": 5
+      "orderNumber": 5,
+      "eventName": "FileExplorerClose"
     },
     {
       "stepId": 6,
       "lessonId": 1,
       "text": "The third way you can open an app is through the start menu. Click on the windows button in the taskbar at the bottom of your screen to open the start menu.",
-      "orderNumber": 6
+      "orderNumber": 6,
+      "eventName": "StartMenuOpen"
     },
     {
       "stepId": 7,
       "lessonId": 1,
       "text": "The start menu contains a list of all the apps on your computer. You can scroll through the list to find the app you want to open, or you can use the search bar at the top of the start menu to quickly find an app by typing its name.",
-      "orderNumber": 7
+      "orderNumber": 7,
+      "eventName": "FileExplorerStartOpen"
     },
     {
       "stepId": 8,
       "lessonId": 1,
       "text": "Try opening the File Explorer again by clicking on the folder icon in the start menu.",
-      "orderNumber": 8
+      "orderNumber": 8,
+      "eventName": "FileExplorerStartOpen"
     },
     {
       "stepId": 9,
       "lessonId": 1,
       "text": "Awesome! Now close the File Explorer window one last time by clicking the 'X' in the top right corner.",
-      "orderNumber": 9
+      "orderNumber": 9,
+      "eventName": "FileExplorerClose"
     },
     {
       "stepId": 10,
       "lessonId": 1,
       "text": "Congratulations! You've learned how to open apps on your computer through the taskbar, desktop icons, and the start menu.",
-      "orderNumber": 10
+      "orderNumber": 10,
+      "eventName": "Next"
     }
   ]
 }

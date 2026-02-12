@@ -1,8 +1,25 @@
 import Checklist from './Checklist';
 import { useLesson } from '../api/useLesson.js';
-
+import { runLesson } from '../utils/lessonRunner.js';
+import { useState } from 'react';
+import { useStep } from '../api/useStep.js';
+import { dispatchDesktopEvent } from '../utils/eventBus.js';
 function SideBar() {
-    
+
+    const { response: lesson, loading, error } = useLesson(1,1);
+    const {response: steps, loading: stepsLoading, error: stepsError} = useStep(1,1);
+    const [currentStep, setCurrentStep] = useState("Start Lesson");
+    function handleNext() {
+        dispatchDesktopEvent("Next");}
+
+    async function handleStartLesson() {
+        console.log("Starting lesson...");
+        if (!lesson) return;
+        console.log(lesson);
+        await runLesson(steps, 1, setCurrentStep);
+    }
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error loading lesson data</div>;
 
     return (
         <>
@@ -22,12 +39,14 @@ function SideBar() {
 
                 {/* Lesson number and progress */}
                 <div className='lesson-num'>
-                    <button onClick={useLesson(1,1)} className='start-button'>Start Lesson</button>
+                    <button onClick={handleStartLesson} className='start-button'>Start Lesson</button>
                     <p>Lesson #1</p>
                     <div className="lesson-progress"></div>
                 </div>
+                <p>{currentStep}</p>
+                {/* <Checklist lesson={lesson} /> */}
 
-                <Checklist />
+                <button className='next-button' onClick={handleNext}>Next</button>
 
                 {/* Help buttons */}
                 <div className="help-buttons">
