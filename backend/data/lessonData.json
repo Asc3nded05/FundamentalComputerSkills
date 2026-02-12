@@ -5,6 +5,12 @@
       "name": "Opening Apps",
       "categoryId": 1,
       "orderNumber": 1
+    },
+    {
+      "lessonId": 2,
+      "name": "Copy/Cut/Paste",
+      "categoryId": 1,
+      "orderNumber": 2
     }
   ]
 }

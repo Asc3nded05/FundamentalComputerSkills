@@ -9,8 +9,7 @@ export const getAllLessons = async () => {
 
 //GET LESSON BY ID
 export const getLessonById = async (lessonId) => {
-    const lessonsData = await readJsonFile('lessonData.json');
-    return lessonsData.find(lesson => lesson.id === lessonId);
+    const data = await readJsonFile('lessonData.json');
+    const lessons = data.lessons;
+    return lessons.find(lesson => lesson.lessonId === lessonId);
 }
-
-
