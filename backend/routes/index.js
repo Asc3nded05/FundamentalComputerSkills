@@ -1,9 +1,11 @@
-var express = require('express');
-var router = express.Router();
+import express from 'express';
+import lessonRoutes from './lessons.js';
+import stepRoutes from './steps.js';
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+const router = express.Router();
 
-module.exports = router;
+router.use('/lessons', lessonRoutes);
+router.use('/steps', stepRoutes);
+
+export default router;
+

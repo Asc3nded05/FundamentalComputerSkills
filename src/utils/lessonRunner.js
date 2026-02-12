@@ -1,8 +1,12 @@
 import { eventBus } from "./eventBus";
 
-export async function runLesson(userId, lessonId, setInstructions) {
-    // TODO: call backend API to retrieve steps by lessonId
-    let steps = [];
+export async function runLesson(steps, lessonId, updateInstructions) {
+    // call backend API to retrieve steps by lessonId
+    
+      if (!steps || steps.length === 0) {
+        console.error("No steps found for lesson", lessonId);
+        return;
+    }
 
     // Ensures that steps are in the correct order
     const sortedSteps = [...steps].sort((a, b) => a.orderNumber - b.orderNumber);
@@ -14,6 +18,7 @@ export async function runLesson(userId, lessonId, setInstructions) {
         return new Promise(resolve => {
             const handler = (event) => {
                 const triggeredEventName = event.detail.type;
+                console.log(`User triggered event: ${triggeredEventName}, waiting for event: ${correctEventName}`);
                 if (triggeredEventName === correctEventName) {
                     eventBus.removeEventListener("*", handler);
                     resolve(event);
@@ -29,8 +34,7 @@ export async function runLesson(userId, lessonId, setInstructions) {
     // Runs the specified step
     async function runStep(step) {
         let instructions = step.text;
-        setInstructions(instructions); // Update the instructions in the sidebar
-        
+        updateInstructions(instructions);
         await waitForEvent(step.eventName);
     }
 
