@@ -7,7 +7,6 @@ const PORT = 3000;
 //middleware
 app.use(express.json()); 
 
-
 app.get('/', (req, res) => {
   res.send('Api is running');
 });
@@ -15,10 +14,6 @@ app.get('/', (req, res) => {
 //Api Routes
 app.use('/api', routes)
 
-
 app.listen(PORT, () => {
   console.log(`Express server listening on port ${PORT}`);
 });
-
-
-
