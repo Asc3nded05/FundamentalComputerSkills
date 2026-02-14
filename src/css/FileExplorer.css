@@ -138,3 +138,11 @@
     right: 0;
     bottom: 0;
   }
+
+
+
+
+  .file-index-subfolders {
+    list-style-type: none;
+    padding-left: 10px;
+  }

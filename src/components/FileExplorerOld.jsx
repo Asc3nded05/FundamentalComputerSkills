@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import FileIndex from './FileIndex';
 
 function FileExplorer() {
 
@@ -80,7 +79,50 @@ function FileExplorer() {
 
             <div className="file-explorer-body">
                 <div className="file-explorer-side-nav">
-                    <FileIndex />
+                    <details>
+                        <summary>Quick Access</summary>
+                        <p><button onClick={() => setActiveView('desktop-view')}>Desktop</button></p>
+                        <p><button onClick={() => setActiveView('downloads-view')}>Downloads</button></p>
+                        <p><button onClick={() => setActiveView('documents-view')}>Documents</button></p>
+                    </details>
+
+                    <details>
+                        <summary><button onClick={() => setActiveView('pc-view')}>This PC</button></summary>
+                        <details>
+                            <summary><button onClick={() => setActiveView('desktop-view')}>Desktop</button></summary>
+                            <p>Desktop item</p>
+                            <p>Desktop item</p>
+                        </details>
+                        <details>
+                            <summary><button onClick={() => setActiveView('downloads-view')}>Downloads</button></summary>
+                            <p>Downloaded item</p>
+                            <p>Downloaded item</p>
+                            <p>Downloaded image</p>
+                        </details>
+                        <details>
+                            <summary><button onClick={() => setActiveView('documents-view')}>Documents</button></summary>
+                            <p>Boring Document</p>
+                            <details>
+                                <summary>Folder</summary>
+                                <p>Super Secret Document</p>
+                            </details>
+                        </details>
+                        <details>
+                            <summary><button onClick={() => setActiveView('pictures-view')}>Pictures</button></summary>
+                            <p>Cat pic</p>
+                        </details>
+                        <details>
+                            <summary><button onClick={() => setActiveView('music-view')}>Music</button></summary>
+                        </details>
+                        <details>
+                            <summary><button onClick={() => setActiveView('videos-view')}>Videos</button></summary>
+                        </details>
+                    </details>
+
+                    <details>
+                        <summary><button onClick={() => setActiveView('networks-view')}>Network</button></summary>
+                        <p>Network Stuff</p>
+                    </details>
                 </div>
                 
                 <div className='file-explorer-page-content'>
