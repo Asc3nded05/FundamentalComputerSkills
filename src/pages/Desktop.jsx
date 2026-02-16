@@ -17,8 +17,8 @@ import FrameApp from "../components/FrameApp.jsx";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-function Desktop() {
-
+function Desktop(lessonId) {
+    console.log('Rendering Desktop with lessonId:', lessonId);
     const initialLayout = [
         { i: "app1", x: 0, y: 0, w: 1, h: 1, static: false },
         { i: "app2", x: 0, y: 1, w: 1, h: 1, static: false },

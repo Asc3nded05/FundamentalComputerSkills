@@ -1,4 +1,4 @@
-/* Lessons Page Styles
+Lessons Page Styles
 .lessons-page {
   display: flex;
   flex-direction: column;
@@ -28,10 +28,12 @@
 }
 
 .lesson-content {
-  padding: 0 18px;
+  padding: 50px 50px 50px 50px;
   margin-top: 10px;
   display: block;
   overflow: hidden;
   background-color: #ffffff;
   margin-bottom: 10px;
-} */
+  width: 100%;
+}
+
