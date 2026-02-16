@@ -1,148 +1,156 @@
 .file-explorer-bottom-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    border-bottom: 1px solid #ddddddab;
-    background: #e6f0f4;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  border-bottom: 1px solid #ddddddab;
+  background: #e6f0f4;
+}
 
 .file-explorer-dropdown {
-  position: relative;
-  display: inline-block;
+position: relative;
+display: inline-block;
 }
 
 .file-explorer-add-dropdown-button {
-  border: 1px solid rgba(0, 0, 0, 0.488);
-  border-radius: 5px;
-  padding: 3px;
-  background-color: white;
-  cursor: pointer;
-  font-size: 14px;
-  position: relative;
+border: 1px solid rgba(0, 0, 0, 0.488);
+border-radius: 5px;
+padding: 3px;
+background-color: white;
+cursor: pointer;
+font-size: 14px;
+position: relative;
 }
 
 .file-explorer-add-dropdown-content {
-  display: block;
-  position: absolute;
-  flex-direction: column;
-  background-color: white;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1; 
-  top: 100%;
+display: block;
+position: absolute;
+flex-direction: column;
+background-color: white;
+min-width: 160px;
+box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+z-index: 1; 
+top: 100%;
 }
 
 .file-explorer-add-dropdown-content button {
-  display: block;
+display: block;
+border: none;
+background-color: transparent;
+cursor: pointer;
+font-size: 14px;
+padding: 10px;
+width: 100%;
+}
+
+.file-explorer-top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px;
+}
+
+.arrows {
+  border: none;
+  background-color: #ffffff;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 3px;
+}
+
+.file-explorer-side-nav details details {
+  padding-left: 16px;
+  list-style-type:none;
+}
+
+.file-explorer-side-nav details p{
+  padding-left: 16px;
+  list-style-type:none;
+}
+
+.file-explorer-side-nav {
+  border-right: 1px solid #dddddd8a;
+  padding-right: 10px;
+  width: 30%;
+  max-width: 500px;
+  line-height: 25px;
+  font-size: 14px;
+}
+
+.file-explorer-side-nav button {
   border: none;
   background-color: transparent;
   cursor: pointer;
   font-size: 14px;
+  padding: 0;
+}
+
+.quick-access p {
+  padding-left: 10px;
+}
+
+.file-index {
   padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  min-width: 400px;
+  min-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  font-size: 14px;
+}
+
+.file-explorer-page-content {
+  padding: 1rem;
+  margin-top: 1rem;
+  padding-left: 20px;
   width: 100%;
 }
 
-.file-explorer-body {
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    min-width: 400px;
-    min-height: 200px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    font-size: 14px;
-  }
-  
-  .file-explorer-top-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px;
-  }
+.file-explorer-page-content button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+}
 
-  .arrows {
-    border: none;
-    background-color: #ffffff;
-    cursor: pointer;
-    font-size: 14px;
-    border-radius: 3px;
-  }
-  
-  .file-explorer-side-nav details details {
-    padding-left: 16px;
-    list-style-type:none;
-  }
+.grid-view {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
 
-.file-explorer-side-nav details p{
-    padding-left: 16px;
-    list-style-type:none;
-  }
-  
-  .file-explorer-side-nav {
-    border-right: 1px solid #dddddd32;
-    padding-right: 10px;
-    width: 30%;
-    max-width: 125px;
-    line-height: 25px;
-    font-size: 14px;
-  }
+.grid-view p {
+  border: 1px solid #ddd;
+  margin: 10px;
+}
 
-  .file-explorer-side-nav button {
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    font-size: 14px;
-    padding: 0;
-  }
+.list-view summary, .list-view p {
+  border-bottom: 1px solid #ddddddab;
+}
 
-  .file-explorer-page-content {
-    padding: 1rem;
-    border: 1px solid #ccc;
-    margin-top: 1rem;
-    padding-left: 20px;
-    width: 100%;
-  }
+.list-view details p {
+  margin-left: 20px;
+}
 
-  .file-explorer-page-content button {
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    font-size: 14px;
-    padding: 0;
-  }
-
-  .grid-view {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-
-  .grid-view p {
-    border: 1px solid #ddd;
-    margin: 10px;
-  }
-
-  .list-view summary, .list-view p {
-    border-bottom: 1px solid #ddddddab;
-  }
-
-  .list-view details p {
-    margin-left: 20px;
-  }
-
-  .file-explorer-bottom-footer {
-    display: flex;
-    padding: 10px;
-    position: fixed;
-    right: 0;
-    bottom: 0;
-  }
+.file-explorer-bottom-footer {
+  display: flex;
+  padding: 10px;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+}
 
 
 
 
-  .file-index-subfolders {
-    list-style-type: none;
-    padding-left: 10px;
-  }
+.file-index-subfolders {
+  list-style-type: none;
+  padding-left: 10px;
+}
+
+.dropdown-arrow {
+  margin-left: 5px;
+  font-size: 3px;
+}
