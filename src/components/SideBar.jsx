@@ -6,8 +6,7 @@ import { useStep } from '../api/useStep.js';
 import { dispatchDesktopEvent } from '../utils/eventBus.js';
 
 function SideBar() {
-
-    const currentLesson = 2; // Change this to 1 to test the first lesson, or 2 to test the second lesson
+    const currentLesson =  1; // Change this to 1 to test the first lesson, or 2 to test the second lesson
 
     const { response: lesson, loading, error } = useLesson(currentLesson);
     const {response: steps, loading: stepsLoading, error: stepsError} = useStep(currentLesson);

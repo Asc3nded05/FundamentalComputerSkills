@@ -31,9 +31,9 @@ function App() {
           <Route path="/login" element={<Login />} />
         </Routes>
 
-        <div className="sidebar-container">
-          <div className="sidebar-links">
-            <div className="link">
+        {/* <div className="sidebar-container"> */}
+          {/* <div className="sidebar-links"> */}
+            {/* <div className="link">
               <Link to="/">Desktop</Link>
             </div>
             <div className="link">
@@ -41,10 +41,9 @@ function App() {
             </div>
             <div className="link">
               <Link to="/login">Login</Link>
-            </div>
-          </div>
-          <SideBar />
-        </div>
+            </div> */}
+          {/* </div> */}
+        {/* </div> */}
       </div>
     </BrowserRouter>
   )
