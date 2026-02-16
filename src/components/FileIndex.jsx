@@ -54,7 +54,6 @@ function FileIndex() {
 
    const [activeView, setActiveView] = useState('pc-view');
 
-
    const renderView = () => {
        switch (activeView) {
            case 'pc-view': return <div className='grid-view'>
@@ -135,16 +134,16 @@ function Folder({folder}) {
                    </button>
                )}
                {folder.folders ? (
-                   <FaFolder style={{paddingRight: '4px', paddingLeft: '5px'}}/>
+                   <FaFolder style={{fontSize: '25px', paddingRight: '4px', paddingLeft: '5px'}}/>
                ) : (
-                   <FaFile style={{paddingRight: '4px', paddingLeft: '15px'}}/>
+                   <FaFile style={{fontSize: '30px', paddingRight: '4px', paddingLeft: '15px'}}/>
                )}
                {folder.folders &&
-                   <button onClick={() => alert(folder.folders)} className="folder-name-button">
+                   <button onClick={() => alert(folder.name)} className="folder-name-button">
                        {folder.name}
                    </button>
                }
-               {folder.content &&
+               {!folder.folders &&
                    <button onClick={() => alert(folder.content)} className="file-name-button">
                        {folder.name}
                    </button>

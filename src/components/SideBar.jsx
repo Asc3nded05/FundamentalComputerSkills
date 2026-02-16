@@ -41,7 +41,7 @@ function SideBar() {
 
                 {/* Lesson number and progress */}
                 <div className='lesson-num'>
-                    <button onClick={handleStartLesson} className='start-button'>Start Lesson</button>
+                    <button onClick={handleStartLesson} className='lesson-start-button'>Start Lesson</button>
                     <p>Lesson #{currentLesson}</p>
                     <div className="lesson-progress"></div>
                 </div>
