@@ -7,7 +7,7 @@ import SideBar from '../components/SideBar.jsx'
 import AppWindow from '../components/AppWindow.jsx';
 import StartButton from "../components/StartButton.jsx";
 import StartMenu from "../components/StartMenu.jsx";
-
+import { Link } from 'react-router-dom';
 import { APP_REGISTRY } from '../utils/apps.js';
 
 import FileExplorer from "../components/FileExplorer.jsx";
@@ -292,6 +292,20 @@ function Desktop() {
                         content={<FrameApp />}
                     />
                 }
+            </div>
+            <div className="sidebar-container">
+                <div className="sidebar-links">
+                    <div className="link">
+                        <Link to="/">Desktop</Link>
+                    </div>
+                    <div className="link">
+                        <Link to="/lessons">Lessons</Link>
+                    </div>
+                    <div className="link">
+                        <Link to="/login">Login</Link>
+                    </div>
+                </div>
+                <SideBar />
             </div>
         </div>
     </>

@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
-export function useLesson(lessonId) {
+export function useLessons() {
     const [response, setResponse] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     useEffect(() => {
-        console.log('Fetching lesson data for lessonId:', lessonId);
-        fetch(`/api/lessons/${lessonId}`)
+        fetch(`/api/lessons`)
             .then(res => res.json())
             .then(data => {
                 console.log('Fetched lessons:', data);
@@ -16,6 +15,6 @@ export function useLesson(lessonId) {
                 setError(error);
                 setLoading(false);
             });
-    }, [lessonId]);
+    }, []);
     return { response, loading, error };
 }
