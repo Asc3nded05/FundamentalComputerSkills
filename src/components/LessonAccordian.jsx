@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 function LessonAccordian(lesson) {
   const navigate = useNavigate();
   const startLesson = (lesson) => {
-        console.log('Lesson ID:', lesson.lessonId);
       const data = {
         lessonId: lesson.lessonId,
       };
@@ -13,12 +12,14 @@ function LessonAccordian(lesson) {
 
   }
   return (
-    <Accordion>
-      <Accordion.Item eventKey="0">
-        <Accordion.Header>Lesson 1</Accordion.Header>
+    <Accordion defaultActiveKey="0">
+      <Accordion.Item eventKey="0" >
+        <Accordion.Header>Computer Basics</Accordion.Header>
         <Accordion.Body>
           {lesson?.lessons?.map((lesson, index) => (
-              <button key={index} onClick={() => startLesson(lesson)}>{lesson.name}</button>
+            <div key={index}>
+              <button className="lesson-button" onClick={() => startLesson(lesson)}>{lesson.name}</button>
+            </div>
           ))}
         </Accordion.Body>
       </Accordion.Item>

@@ -298,9 +298,6 @@ function Desktop() {
             <div className="sidebar-container">
                 <div className="sidebar-links">
                     <div className="link">
-                        <Link to="/">Desktop</Link>
-                    </div>
-                    <div className="link">
                         <Link to="/lessons">Lessons</Link>
                     </div>
                     <div className="link">
