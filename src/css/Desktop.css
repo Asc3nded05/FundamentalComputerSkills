@@ -6,10 +6,7 @@
   align-items: center;
   flex: 0 0 auto;
   overflow: hidden;
-  padding-top: 0.4rem;
-  padding-bottom: 0.4rem;
-  padding-left: 0.05rem;
-  padding-right: 0.05rem;
+  padding: 0.4rem;
 }
 
 .desktop-container {
@@ -17,12 +14,13 @@
   height: 100%;
   max-width: calc(100vh * 16 / 9);
   background-image: url('../assets/background-image.jpg');
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   position: relative;
   border: 5px solid black;
   border-radius: 5px;
+  border-image: 5px solid blue;
 }
 
 .react-grid-placeholder {
