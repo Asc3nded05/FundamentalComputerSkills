@@ -106,11 +106,16 @@ width: 100%;
 
 .file-explorer-side-nav ul {
   list-style: none;
-  padding-left: none;
+  padding-left: 0px;
+}
+
+.file-explorer-side-nav ul ul {
+  list-style: none;
+  padding-left: 10px;
 }
 
 .quick-access p {
-  padding-left: 10px;
+  padding-left: 15px;
 }
 
 .file-index {

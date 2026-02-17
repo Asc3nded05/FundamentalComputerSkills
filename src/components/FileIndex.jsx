@@ -101,9 +101,9 @@ function FileIndex() {
    return <div className="file-index">
        <div className="file-explorer-side-nav">
            <div className='quick-access'> Quick Access
-               <p><button onClick={() => setActiveView('desktop-view')}>Desktop</button></p>
-               <p><button onClick={() => setActiveView('downloads-view')}>Downloads</button></p>
-               <p><button onClick={() => setActiveView('documents-view')}>Documents</button></p>
+               <p><button onClick={() => setActiveView('desktop-view')}><FaFolder style={{fontSize: '20px', paddingRight: '4px', paddingLeft: '0px'}}/>Desktop</button></p>
+               <p><button onClick={() => setActiveView('downloads-view')}><FaFolder style={{fontSize: '20px', paddingRight: '4px', paddingLeft: '0px'}}/>Downloads</button></p>
+               <p><button onClick={() => setActiveView('documents-view')}><FaFolder style={{fontSize: '20px', paddingRight: '4px', paddingLeft: '0px'}}/>Documents</button></p>
            </div>
            <ul>
                {folders.map((folder) => (

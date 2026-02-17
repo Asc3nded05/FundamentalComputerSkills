@@ -17,7 +17,7 @@ function SideBar(props) {
     }   
     const { response: lesson, loading, error } = useLesson(currentLesson);
     const {response: steps, loading: stepsLoading, error: stepsError} = useStep(currentLesson);
-    const [currentStep, setCurrentStep] = useState("Start Lesson");
+    const [currentStep, setCurrentStep] = useState("Press Start Lesson to Begin");
     function handleNext() {
         dispatchDesktopEvent("Next");}
 
