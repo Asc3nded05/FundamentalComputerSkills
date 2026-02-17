@@ -1,11 +1,16 @@
 import Accordion from 'react-bootstrap/Accordion';
 import Desktop from '../pages/Desktop';
+import { useNavigate } from 'react-router-dom';
 
 function LessonAccordian(lesson) {
+  const navigate = useNavigate();
   const startLesson = (lesson) => {
-    console.log('Starting lesson:', lesson);
-    console.log('Lesson ID:', lesson.lessonId);
-    <Desktop lessonId={lesson.lessonId} />
+        console.log('Lesson ID:', lesson.lessonId);
+      const data = {
+        lessonId: lesson.lessonId,
+      };
+      navigate('/', { state: data });
+
   }
   return (
     <Accordion>

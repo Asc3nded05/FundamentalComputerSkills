@@ -5,9 +5,16 @@ import { useState } from 'react';
 import { useStep } from '../api/useStep.js';
 import { dispatchDesktopEvent } from '../utils/eventBus.js';
 
-function SideBar() {
-    const currentLesson =  1; // Change this to 1 to test the first lesson, or 2 to test the second lesson
-
+function SideBar(props) {
+    const lessonId = props.lessonId;
+    console.log('SideBar received lessonId prop:', lessonId);
+    const currentLesson = lessonId || 1; // Default to lesson 1 if no lessonId is provided
+    if (!lessonId) {
+        console.log('No lessonId provided, defaulting to:', currentLesson);
+    } else {
+        const currentLesson = lessonId;
+        console.log('Received lessonId prop:', lessonId);
+    }   
     const { response: lesson, loading, error } = useLesson(currentLesson);
     const {response: steps, loading: stepsLoading, error: stepsError} = useStep(currentLesson);
     const [currentStep, setCurrentStep] = useState("Start Lesson");

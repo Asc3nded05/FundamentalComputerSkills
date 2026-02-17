@@ -1,5 +1,5 @@
 import { Responsive, WidthProvider } from "react-grid-layout";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 
 import AppIcon from '../components/AppIcon.jsx'
 import Clock from '../components/Clock.jsx'
@@ -13,12 +13,14 @@ import { APP_REGISTRY } from '../utils/apps.js';
 import FileExplorer from "../components/FileExplorer.jsx";
 import Notepad from "../components/Notepad.jsx";
 import FrameApp from "../components/FrameApp.jsx";
-// import { eventBus } from '../utils/eventBus.js';
-
+import { useLocation } from 'react-router-dom';
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-function Desktop(lessonId) {
-    console.log('Rendering Desktop with lessonId:', lessonId);
+function Desktop() {
+    const location = useLocation();
+    const {state} = location;
+    const lessonId = state?.lessonId;
+    console.log('Desktop received lessonId from navigation state:', lessonId);
     const initialLayout = [
         { i: "app1", x: 0, y: 0, w: 1, h: 1, static: false },
         { i: "app2", x: 0, y: 1, w: 1, h: 1, static: false },
@@ -305,7 +307,7 @@ function Desktop(lessonId) {
                         <Link to="/login">Login</Link>
                     </div>
                 </div>
-                <SideBar />
+                <SideBar lessonId={lessonId} />
             </div>
         </div>
     </>
