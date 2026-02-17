@@ -1,3 +1,9 @@
+.file-explorer-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
 .file-explorer-bottom-header {
   display: flex;
   justify-content: space-between;
@@ -69,6 +75,7 @@ width: 100%;
   list-style-type:none;
 }
 
+/* The area with Downloads/Documents/Pictures shortcuts */
 .file-explorer-side-nav {
   border-right: 1px solid #dddddd8a;
   padding-right: 10px;
@@ -76,6 +83,8 @@ width: 100%;
   max-width: 500px;
   line-height: 25px;
   font-size: 14px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .file-explorer-side-nav button {
@@ -106,11 +115,8 @@ width: 100%;
   padding: 10px;
   display: flex;
   justify-content: space-between;
-  min-width: 400px;
-  min-height: 200px;
-  overflow-y: auto;
-  overflow-x: hidden;
   font-size: 14px;
+  width: 100%;
 }
 
 .file-explorer-page-content {
@@ -118,6 +124,7 @@ width: 100%;
   margin-top: 1rem;
   padding-left: 20px; 
   width: 100%;
+  overflow: auto;
 }
 
 .file-explorer-page-content button {
@@ -153,9 +160,6 @@ width: 100%;
   right: 0;
   bottom: 0;
 }
-
-
-
 
 .file-index-subfolders {
   list-style-type: none;
