@@ -59,6 +59,30 @@
     {
         "eventId": 15,
         "eventName": "NotepadPaste"
+    },
+    {
+        "eventId": 16,
+        "eventName": "FileExplorerDesktopClicked"
+    },
+    {
+        "eventId": 17,
+        "eventName": "FileExplorerDownloadsClicked"
+    },
+    {
+        "eventId": 18,
+        "eventName": "FileExplorerPicturesClicked"
+    },
+    {
+        "eventId": 19,
+        "eventName": "FileExplorerDocumentsClicked"
+    },
+    {
+        "eventId": 20,
+        "eventName": "FileExplorerMusicClicked"
+    },
+    {
+        "eventId": 21,
+        "eventName": "FileExplorerVideosClicked"
     }
   ]
 }

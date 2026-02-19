@@ -132,6 +132,125 @@
       "text": "Good job! You've learned how to select text and use the copy, cut, and paste functions in Notepad. These functions work in many other apps as well, so you can use them to easily move or copy text around on your computer.",
       "orderNumber": 9,
       "eventName": "Next"
+    },
+    {
+      "stepId": 20,
+      "lessonId": 3,
+      "text": "The file explorer allows you to see every file that you have on your computer. This includes applications, downloaded files, documents, and even system files. Start by opening the file explorer.",
+      "orderNumber": 1,
+      "eventName": "FileExplorerDesktopOpen"
+    },
+    {
+      "stepId": 21,
+      "lessonId": 3,
+      "text": "When you first open the app, you see the Quick Access menu. As you can see, it shows shortcuts to commonly accessed folders like Documents or Pictures.",
+      "orderNumber": 2,
+      "eventName": "Next"
+    },
+    {
+      "stepId": 22,
+      "lessonId": 3,
+      "text": "Click on the Desktop folder on the left to go to the desktop folder.",
+      "orderNumber": 3,
+      "eventName": "FileExplorerDesktopClicked"
+    },
+    {
+      "stepId": 23,
+      "lessonId": 3,
+      "text": "In the desktop folder, you can see all the files that are on the desktop. Right now, it only has shortcuts to 3 apps, but you can place any files on the desktop and their icons will be easily accessible.",
+      "orderNumber": 4,
+      "eventName": "Next"
+    },
+    {
+      "stepId": 24,
+      "lessonId": 3,
+      "text": "Now click on the Downloads folder on the left.",
+      "orderNumber": 5,
+      "eventName": "FileExplorerDownloadsClicked"
+    },
+    {
+      "stepId": 25,
+      "lessonId": 3,
+      "text": "In the downloads folder, you can see all the files that you have downloaded to your computer. By default, most web browsers will save downloaded files to this folder, so it's a good place to check when you download something from the internet.",
+      "orderNumber": 6,
+      "eventName": "Next"
+    },
+    {
+      "stepId": 26,
+      "lessonId": 3,
+      "text": "Now click on the Documents folder on the left.",
+      "orderNumber": 7,
+      "eventName": "FileExplorerDocumentsClicked"
+    },
+    {
+      "stepId": 27,
+      "lessonId": 3,
+      "text": "In the documents folder, you can see all the files that you have created or saved in your Documents folder. This is a good place to keep your personal files like word documents, spreadsheets, and presentations.",
+      "orderNumber": 8,
+      "eventName": "Next"
+    },
+    {
+      "stepId": 28,
+      "lessonId": 3,
+      "text": "Now click on the Pictures folder on the left.",
+      "orderNumber": 9,
+      "eventName": "FileExplorerPicturesClicked"
+    },
+    {
+      "stepId": 29,
+      "lessonId": 3,
+      "text": "In the pictures folder, you can see all the images that you have saved to your computer. This is the default location for screenshots, pictures uploaded from the phone, and pictures applications might save.",
+      "orderNumber": 10,
+      "eventName": "Next"
+    },
+    {
+      "stepId": 30,
+      "lessonId": 3,
+      "text": "Now click on the Music folder on the left.",
+      "orderNumber": 11,
+      "eventName": "FileExplorerMusicClicked"
+    },
+    {
+      "stepId": 31,
+      "lessonId": 3,
+      "text": "The music folder is where music is saved to your computer. If you download music or import it from a device, this is where it will be saved.",
+      "orderNumber": 12,
+      "eventName": "Next"
+    },
+    {
+      "stepId": 32,
+      "lessonId": 3,
+      "text": "Now click on the Videos folder on the left.",
+      "orderNumber": 13,
+      "eventName": "FileExplorerVideosClicked"
+    },
+    {
+      "stepId": 33,
+      "lessonId": 3,
+      "text": "The videos folder is where videos are saved to your computer. If you record something on your screen, this is where the default location for videos will be.",
+      "orderNumber": 14,
+      "eventName": "Next"
+    },
+    {
+      "stepId": 32,
+      "lessonId": 3,
+      "text": "Now go back to the documents folder so we can try to create our own folder.",
+      "orderNumber": 13,
+      "eventName": "FileExplorerDocumentsClicked"
+    },
+    {
+      "stepId": 33,
+      "lessonId": 3,
+      "text": "Click \"New\" in the top left, and then click \"Folder\" to create a new folder.",
+      "orderNumber": 14,
+      "eventName": "FileExplorerNewFolderCreated"
+    },
+    {
+      "stepId": 34,
+      "lessonId": 3,
+      "text": "And that is the end of this lesson! You've learned how to navigate through the file explorer and find important folders on your computer. You also learned how to create a new folder to organize your files. Great job!",
+      "orderNumber": 15,
+      "eventName": "Next"
     }
   ]
 }

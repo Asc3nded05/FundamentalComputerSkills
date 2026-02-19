@@ -11,6 +11,12 @@
       "name": "Copy/Cut/Paste",
       "categoryId": 1,
       "orderNumber": 2
+    },
+    {
+      "lessonId": 3,
+      "name": "File Explorer Intro",
+      "categoryId": 1,
+      "orderNumber": 3
     }
   ]
 }
