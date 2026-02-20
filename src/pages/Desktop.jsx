@@ -303,9 +303,11 @@ function Desktop() {
                     <div className="link">
                         <Link to="/login">Login</Link>
                     </div>
+                    {/*
                     <div className="link">
-                        <Link to="/files">File Manager</Link>
+                        <Link to="/files">Files</Link>
                     </div>
+                    */}
                 </div>
                 <SideBar lessonId={lessonId} />
             </div>
