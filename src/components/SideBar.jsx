@@ -7,7 +7,6 @@ import { dispatchDesktopEvent } from '../utils/eventBus.js';
 
 function SideBar(props) {
     const lessonId = props.lessonId;
-    console.log('SideBar received lessonId prop:', lessonId);
     const currentLesson = lessonId || 1; // Default to lesson 1 if no lessonId is provided
     if (!lessonId) {
         console.log('No lessonId provided, defaulting to:', currentLesson);
@@ -33,19 +32,6 @@ function SideBar(props) {
     return (
         <>
             <div id='sidebar' className='sidebar'>
-                {/* dropdown menu 
-                <div class="dropdown">
-                    <button class="dropdown-button">Menu</button>
-                    <div class="dropdown-content">
-                        <a href="#">Name</a>
-                        <a href="/lessons">Lessons</a> 
-                        <a href="/">Desktop</a>
-                        <a href="#">Setting</a> 
-                        <a href="/login">Log Out</a> 
-                    </div>
-                </div>
-                */}
-
                 {/* Lesson number and progress */}
                 <div className='lesson-num'>
                     <button onClick={handleStartLesson} className='lesson-start-button'>Start Lesson</button>
@@ -54,7 +40,6 @@ function SideBar(props) {
                 </div>
 
                 <p>{currentStep}</p>
-                {/* <Checklist lesson={lesson} /> */}
 
                 <button className='next-button' onClick={handleNext}>Next</button>
 

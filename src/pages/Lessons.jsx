@@ -9,7 +9,7 @@ function Lessons() {
 
     return (
         <div className='lesson-content'>
-            <LessonAccordian lessons={response?.lessons} />
+            <LessonAccordian lessons={response} />
         </div>
 
   );

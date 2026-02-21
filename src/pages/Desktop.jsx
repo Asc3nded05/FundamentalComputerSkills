@@ -20,7 +20,7 @@ function Desktop() {
     const location = useLocation();
     const {state} = location;
     const lessonId = state?.lessonId;
-    console.log('Desktop received lessonId from navigation state:', lessonId);
+    // console.log('Desktop received lessonId from navigation state:', lessonId);
     const initialLayout = [
         { i: "app1", x: 0, y: 0, w: 1, h: 1, static: false },
         { i: "app2", x: 0, y: 1, w: 1, h: 1, static: false },
