@@ -2,6 +2,8 @@ import { eventBus } from "./eventBus";
 
 export async function runLesson(steps, lessonId, updateInstructions) {
     // call backend API to retrieve steps by lessonId
+    console.log("Running lesson with ID:", lessonId);
+    console.log("Steps:", steps);
     
       if (!steps || steps.length === 0) {
         console.error("No steps found for lesson", lessonId);
@@ -35,12 +37,13 @@ export async function runLesson(steps, lessonId, updateInstructions) {
     async function runStep(step) {
         let instructions = step.text;
         updateInstructions(instructions);
-        await waitForEvent(step.eventName);
+        console.log(`steps.events.eventName: ${step.events[0].eventName}`);
+        await waitForEvent(step.events[0].eventName)
     }
 
     async function onWrongEvent(eventType) {
         // TODO: indicate to the user that they have performed the wrong action
-        console.warn(`User triggered ${eventType} instead of ${step.eventName}`);
+        console.warn(`User triggered ${eventType} instead of ${step.events[0].eventName}`);
         return;
     }
 
@@ -48,6 +51,7 @@ export async function runLesson(steps, lessonId, updateInstructions) {
     while (currentStepNumber <= sortedSteps.length) {
         // Select and run the current step
         const step = sortedSteps.find(step => step.orderNumber === currentStepNumber);
+        console.log('step.events:', step.events); 
 
         if (!step) {
             console.error(`No step found with orderNumber ${currentStepNumber}`);
