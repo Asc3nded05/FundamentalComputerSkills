@@ -10,15 +10,18 @@ import '../css/SideBar.css';
 function SideBar(props) {
     const lessonId = props.lessonId;
     const currentLesson = lessonId || 1; // Default to lesson 1 if no lessonId is provided
-    if (!lessonId) {
-        console.log('No lessonId provided, defaulting to:', currentLesson);
-    } else {
-        const currentLesson = lessonId;
-        console.log('Received lessonId prop:', lessonId);
-    }   
+
+    // if (!lessonId) {
+    //     console.log('No lessonId provided, defaulting to:', currentLesson);
+    // } else {
+    //     const currentLesson = lessonId;
+    //     console.log('Received lessonId prop:', lessonId);
+    // }   
+    
     const { response: lesson, loading, error } = useLesson(currentLesson);
     const {response: steps, loading: stepsLoading, error: stepsError} = useStep(currentLesson);
-    console.log('Steps from useStep hook:', steps);
+    console.log('Fetched lesson data:', lesson);
+    console.log('Fetched steps data:', steps);
     const [currentStep, setCurrentStep] = useState("Press Start Lesson to Begin");
     const [wrongEvent, setWrongEvent] = useState(null);
    

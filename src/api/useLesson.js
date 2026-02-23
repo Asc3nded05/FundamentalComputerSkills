@@ -4,7 +4,6 @@ export function useLesson(lessonId) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     useEffect(() => {
-        console.log('Fetching lesson data for lessonId:', lessonId);
         fetch(`/api/lessons/${lessonId}`)
             .then(res => res.json())
             .then(data => {
