@@ -80,3 +80,9 @@
   background-color: lightgray;
   cursor: pointer;
 }
+
+.wrong-event {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+}
