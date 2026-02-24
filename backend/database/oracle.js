@@ -12,6 +12,7 @@ async function initOracle() {
     // Initialize the Oracle client ONCE
     if (!clientInitialized) {
       oracledb.initOracleClient({
+        libDir: process.env.DB_LIB_DIR || undefined,
         configDir: process.env.DB_WALLET_PATH
       });
       clientInitialized = true;
