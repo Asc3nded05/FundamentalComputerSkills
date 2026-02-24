@@ -1,13 +1,15 @@
 import { dispatchDesktopEvent } from '../utils/eventBus.js';
-import { runLesson } from '../utils/lessonRunner.js';
 import { useNavigate } from 'react-router-dom';
 function NextButton(props) {
-    const { steps, currentLesson, setCurrentStep, setWrongEvent, handleStartLesson, handleNext, lessonState, eventName} = props;
+    const { handleStartLesson, handleNext, lessonState, eventName} = props;
     const navigate = useNavigate();
+
+    // Dispatch Finish event and navigate back to lessons page when Finish button is clicked
     function handleFinish() {
         dispatchDesktopEvent("Finish");
         navigate(`/lessons`);
     }
+    // Conditional rendering of Start, Next, and Finish buttons based on lesson state and current event
     if (lessonState === "NotStarted") {
     return (
         <button onClick={handleStartLesson} className='lesson-start-button'>Start Lesson</button>    );
@@ -22,9 +24,6 @@ function NextButton(props) {
     } else {
         return null;
     }
-     // return (
-    //     <button className='next-button' onClick={handleNext}>Next</button>
-    // );
 }   ;  
    
 

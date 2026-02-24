@@ -3,11 +3,15 @@ import { useLessons } from '../api/useLessons.js';
 import LessonAccordian from '../components/lessonAccordian.jsx';
 import '../css/Lessons.css';
 function Lessons() {
+    //Fetches lesson data
     const { response, loading, error} = useLessons();
+
+    // Handles loading and error states
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error loading lessons</div>;
 
     return (
+        // Lesson Accordian component to display list of lessons and their steps
         <div className='lesson-content'>
             <LessonAccordian lessons={response} />
         </div>
