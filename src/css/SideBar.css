@@ -9,6 +9,7 @@
 }
 
 .lesson-num {
+  margin-top: 4vh;
   width: 100%;
   text-align: center;
   align-items: center;
@@ -35,6 +36,7 @@
 .help-buttons button {
   border: 2px solid black;
   border-radius: 10px;
+  width: 6rem;
   padding: 5px;
   margin: 5px;
   margin-top: 10px;
@@ -42,11 +44,12 @@
 }
 
 .help-buttons {
-  align-self: center;
-  margin-top: auto;
-  margin-bottom: 2rem;
   display: flex;
-  gap: 0.5rem;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+  margin-top: auto;
+  margin-bottom: 1rem;
 }
 
 .lesson-start-button {
@@ -84,5 +87,9 @@
 .wrong-event {
   color: red;
   font-weight: bold;
+  text-align: center;
+}
+
+.current-step {
   text-align: center;
 }

@@ -30,7 +30,7 @@ html, body, #root {
   grid-row: 1;
   display: flex;
   height: 100%;
-  max-height: calc(80vw * 9 / 16);
+  /* max-height: calc(80vw * 9 / 16); */
   min-width: 200px;
   flex: 1;
   flex-direction: column;
@@ -46,6 +46,8 @@ html, body, #root {
 .sidebar-links {
   display: flex;
   flex-direction: row;
+  width: 100%;
+  justify-content: space-evenly;
 }
 
 button {
@@ -60,6 +62,8 @@ button {
 
 .link {
   border: 2px solid black;
+  width: 6rem;
+  text-align: center;
   border-radius: 10px;
   padding: 0.5rem;
   margin: 0.25rem;

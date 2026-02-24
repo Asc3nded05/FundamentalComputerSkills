@@ -48,10 +48,14 @@ function SideBar(props) {
                 <div className='lesson-num'>
                     {/* <button onClick={handleStartLesson} className='lesson-start-button'>Start Lesson</button> */}
                     <p>Lesson #{currentLesson}</p>
-                    <div className="lesson-progress"></div>
+                    <div className="lesson-progress">
+                        <div className={"lesson-progress-bar"}
+                            // style={{width: `${(currentStepId / steps.length * 100)}%`}}
+                        ></div>
+                    </div>
                 </div>
                 <p className="wrong-event">{wrongEvent}</p>
-                <p>{currentStep}</p>
+                <p className="current-step">{currentStep}</p>
 
                 <NextButton 
                 steps={steps} 
