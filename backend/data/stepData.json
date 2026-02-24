@@ -68,7 +68,7 @@
       "lessonId": 1,
       "text": "Congratulations! You've learned how to open apps on your computer through the taskbar, desktop icons, and the start menu.",
       "orderNumber": 10,
-      "eventName": "Next"
+      "eventName": "Finish"
     },
     {
       "stepId": 11,
@@ -131,7 +131,7 @@
       "lessonId": 2,
       "text": "Good job! You've learned how to select text and use the copy, cut, and paste functions in Notepad. These functions work in many other apps as well, so you can use them to easily move or copy text around on your computer.",
       "orderNumber": 9,
-      "eventName": "Next"
+      "eventName": "Finish"
     },
     {
       "stepId": 20,
@@ -250,7 +250,7 @@
       "lessonId": 3,
       "text": "And that is the end of this lesson! You've learned how to navigate through the file explorer and find important folders on your computer. You also learned how to create a new folder to organize your files. Great job!",
       "orderNumber": 15,
-      "eventName": "Next"
+      "eventName": "Finish"
     }
   ]
 }
