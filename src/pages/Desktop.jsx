@@ -1,5 +1,5 @@
 import { Responsive, WidthProvider } from "react-grid-layout";
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect, use, useRef } from 'react';
 
 import AppIcon from '../components/AppIcon.jsx'
 import Clock from '../components/Clock.jsx'
@@ -32,6 +32,9 @@ function Desktop() {
     const [isApp1Open, setIsApp1Open] = useState(false);
     const [isApp2Open, setIsApp2Open] = useState(false);
     const [isApp3Open, setIsApp3Open] = useState(false);
+
+    // Ref for desktop area, used to center new app windows
+    const desktopRef = useRef(null);
 
     // Temporary debug log for eventBus events (wildcard "*")
     // const [eventsLog, setEventsLog] = useState([]);
@@ -150,7 +153,7 @@ function Desktop() {
 
     return <>
         <div className="desktop-page">
-            <div className="desktop-container">
+            <div className="desktop-container" ref={desktopRef}>
                 <ResponsiveGridLayout
                     className="layout"
                     layouts={{ lg: initialLayout }}
@@ -268,6 +271,9 @@ function Desktop() {
                         zIndex={windows.app1.zIndex}
                         bringToFront={() => bringToFront("app1")}
                         content={<FileExplorer />}
+                        sizeX={800}
+                        sizeY={500}
+                        desktopRef={desktopRef}
                     />
                 }
 
@@ -280,6 +286,7 @@ function Desktop() {
                         zIndex={windows.app2.zIndex}
                         bringToFront={() => bringToFront("app2")}
                         content={<Notepad />}
+                        desktopRef={desktopRef}
                     />
                 }
 
@@ -292,6 +299,9 @@ function Desktop() {
                         zIndex={windows.app3.zIndex}
                         bringToFront={() => bringToFront("app3")}
                         content={<FrameApp />}
+                        sizeX={200}
+                        sizeY={200}
+                        desktopRef={desktopRef}
                     />
                 }
             </div>
