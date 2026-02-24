@@ -8,6 +8,7 @@ import { MdArrowBack } from 'react-icons/md';
 import { MdPerson } from 'react-icons/md';
 import NextButton from './NextButton.jsx';
 import '../css/SideBar.css';
+import Loading from './Loading.jsx';
 
 function SideBar(props) {
     // Sets Current LessonID or Default to lesson 1 if no lessonId is provided
@@ -44,7 +45,7 @@ function SideBar(props) {
     const [wrongEvent, setWrongEvent] = useState(null);
    
     // Handles loading and error states
-    if (loading) return <Mosaic color="#32cd32" size="medium" text="" textColor="" />;
+    if (loading) return <Loading />;
     if (error) return <div>Error loading lesson data</div>;
 
     return (
