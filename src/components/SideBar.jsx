@@ -66,10 +66,14 @@ function SideBar(props) {
                 {/* Lesson number and progress */}
                 <div className='lesson-num'>
                     <p>Lesson #{currentLesson}</p>
-                    <div className="lesson-progress"></div>
+                    <div className="lesson-progress">
+                        <div className={"lesson-progress-bar"}
+                            // style={{width: `${(currentStepId / steps.length * 100)}%`}}
+                        ></div>
+                    </div>
                 </div>
                 <p className="wrong-event">{wrongEvent}</p>
-                <p>{currentStep}</p>
+                <p className="current-step">{currentStep}</p>
                 {/* Next button Component for Conditional Rendering */}
                 <NextButton 
                 steps={steps} 
