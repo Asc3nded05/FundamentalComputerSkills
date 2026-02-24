@@ -71,13 +71,13 @@
 
 /* Desktop Icons ------------------------------------------------------------------------------------------------------------*/
 .app-icon.desktop {
-  width: 7.5vw;
-  padding: 1vw;
+  text-align: center;
 }
 
 .app-icon.desktop .app-icon-image {
-  width: 10vh;
-  height: 10vh;
+  /* Based on the size of the desktop icon container */
+  width: 80%;
+  height: 80%;
   /* Turn the black icon white */
   filter: invert(100%);
 }
@@ -94,8 +94,8 @@
 }
 
 .app-icon.taskbar .app-icon-image {
-  width: 4vh;
-  height: 4vh;
+  width: auto;
+  height: calc(min(80vw, calc(100vh * 16 / 9)) * 0.025); /* Based on 2.5% of desktop size */
   /* Turn the black icon white */
   filter: invert(100%);
 }
