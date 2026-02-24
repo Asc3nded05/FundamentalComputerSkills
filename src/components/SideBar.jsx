@@ -2,7 +2,10 @@ import { useLesson } from '../api/useLesson.js';
 import { runLesson } from '../utils/lessonRunner.js';
 import { useState } from 'react';
 import { useStep } from '../api/useStep.js';
+import { Link } from 'react-router-dom';
 import { dispatchDesktopEvent } from '../utils/eventBus.js';
+import { MdArrowBack } from 'react-icons/md';
+import { MdPerson } from 'react-icons/md';
 import NextButton from './NextButton.jsx';
 import '../css/SideBar.css';
 
@@ -41,11 +44,24 @@ function SideBar(props) {
     const [wrongEvent, setWrongEvent] = useState(null);
    
     // Handles loading and error states
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <Mosaic color="#32cd32" size="medium" text="" textColor="" />;
     if (error) return <div>Error loading lesson data</div>;
 
     return (
-        <>
+         <div className="sidebar-container">
+                <div className="sidebar-links">
+                    <div className="lesson-link link">
+                        <Link to="/lessons">
+                        <MdArrowBack size={30} />
+                        Lessons</Link>
+                    </div>
+                    <div className="login-link link">
+                        <Link to="/login">
+                        <MdPerson style={{ fontSize: '2rem', color: 'Blue' }} />
+                        </Link>
+                    </div>
+                   
+                </div>
             <div id='sidebar' className='sidebar'>
                 {/* Lesson number and progress */}
                 <div className='lesson-num'>
@@ -80,7 +96,7 @@ function SideBar(props) {
                 </div>
                 
             </div>
-        </>
+        </div>
     );
 }
 

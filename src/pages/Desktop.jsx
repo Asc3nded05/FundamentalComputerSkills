@@ -305,22 +305,9 @@ function Desktop() {
                     />
                 }
             </div>
-            <div className="sidebar-container">
-                <div className="sidebar-links">
-                    <div className="link">
-                        <Link to="/lessons">Lessons</Link>
-                    </div>
-                    <div className="link">
-                        <Link to="/login">Login</Link>
-                    </div>
-                    {/*
-                    <div className="link">
-                        <Link to="/files">Files</Link>
-                    </div>
-                    */}
-                </div>
+           
                 <SideBar lessonId={lessonId} />
-            </div>
+            
         </div>
     </>
 }
