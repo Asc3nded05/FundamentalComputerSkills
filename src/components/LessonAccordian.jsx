@@ -1,18 +1,17 @@
 import Accordion from 'react-bootstrap/Accordion';
-import Desktop from '../pages/Desktop';
 import { useNavigate } from 'react-router-dom';
 
 function LessonAccordian({ lessons }) {
   const navigate = useNavigate();
-  console.log("LessonAccordian received lesson prop:", lessons);
+  // Function to handle starting a lesson, navigates to the Desktop page with the selected lesson's ID
   const startLesson = (lesson) => {
       const data = {
         lessonId: lesson.lessonId,
       };
-      console.log("Starting lesson with data:", data);
       navigate('/', { state: data });
 
   }
+  // Renders an accordion with a list of lessons. Each lesson is a button that starts the lesson when clicked.
   return (
     <Accordion defaultActiveKey="0">
       <Accordion.Item eventKey="0" >
