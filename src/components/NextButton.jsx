@@ -13,11 +13,11 @@ function NextButton(props) {
     if (lessonState === "NotStarted") {
     return (
         <button onClick={handleStartLesson} className='lesson-start-button'>Start Lesson</button>    );
-    } else if (lessonState === "InProgress" && eventName === "Next") {
+    } else if (lessonState === "InProgress" && eventName?.includes("Next")) {
         return (
             <button className='next-button' onClick={handleNext}>Next</button>
         );
-    } else if (eventName === "Finish") {
+    } else if (eventName?.includes("Finish")) {
         return (
             <button className='next-button' onClick={handleFinish}>Finish</button>
         );
