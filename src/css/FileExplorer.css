@@ -1,3 +1,8 @@
 .file-explorer {
     overflow: auto;
 }
+
+/* Right-click menu */
+.wx-menu.wx-XMmAGqVx {
+    z-index: 1000 !important;
+}
