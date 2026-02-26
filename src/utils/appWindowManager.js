@@ -1,8 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { APP_REGISTRY } from '../utils/apps';
 
-// note: used AI to move code from desktop into its own component
-
 export function useAppWindowManager(initialApps = APP_REGISTRY) {
 
     // The initial apps from the registry, for display on desktop and start menu
@@ -38,55 +36,6 @@ export function useAppWindowManager(initialApps = APP_REGISTRY) {
     }, [highestZIndex]);
 
     // Function to open app
-    // const openApp = useCallback((appId, options = {}) => {
-    //     const { createNewInstance = false, position, size, initialContent } = options;
-        
-    //     setApps(prev => {
-    //         const appIndex = prev.findIndex(a => a.id === appId);
-    //         if (appIndex === -1) return prev;
-
-    //         const app = prev[appIndex];
-            
-    //         if (createNewInstance && app.canHaveMultipleInstances) {
-    //             // Create a new instance of the app with a unique instanceId if the app allows multiple instances
-    //             const newInstance = {
-    //                 ...app,
-    //                 instanceId: `${app.id}-${Date.now()}`,
-    //                 isOpen: true,
-    //                 zIndex: highestZIndex + 1,
-    //                 position: position || calculateCenteredPosition(),
-    //                 size: size || app.defaultSize,
-    //                 initialContent: initialContent !== undefined ? initialContent : (app.initialContent || '')
-    //             };
-                
-    //             setHighestZIndex(prev => prev + 1);
-                
-    //             console.log("Current apps:", apps);
-    //             return [
-    //                 ...prev.slice(0, appIndex + 1),
-    //                 newInstance,
-    //                 ...prev.slice(appIndex + 1)
-    //             ];
-    //         } else {
-    //             const newInstance = {
-    //             ...app,
-    //             instanceId: `${app.id}-${Date.now()}-${Math.random()}`,
-    //             isOpen: true,
-    //             zIndex: highestZIndex + 1,
-    //             position: position || calculateCenteredPosition(),
-    //             size: size || app.defaultSize,
-    //             initialContent: initialContent !== undefined ? initialContent : (app.initialContent || ''),
-    //             };
-                
-    //             setHighestZIndex(prev => prev + 1);
-
-                
-    //             console.log("Current apps:", apps);
-    //             return newInstance;
-    //         }
-    //     });
-    // }, [highestZIndex]);
-
     const openApp = useCallback((appId, options = {}) => {
         const { createNewInstance = false, position, size, initialContent } = options;
         
