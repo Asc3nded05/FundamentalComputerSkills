@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { dispatchDesktopEvent } from "../utils/eventBus";
 import AppIcon from './AppIcon.jsx';
@@ -50,6 +50,11 @@ function StartMenu({ closeStartMenu, isOpen, apps = [] }) {
         }
     }, [isOpen]);
 
+    const [query, setQuery] = useState('');
+  
+    // Update state on input change
+    const handleSearch = (e) => setQuery(e.target.value);
+
     return (
         <>
             {isOpen && (
@@ -77,7 +82,13 @@ function StartMenu({ closeStartMenu, isOpen, apps = [] }) {
                                     isDraggable={false}
                                     isResizable={false}
                                 >
-                                    {apps.map((app, idx) => (
+                                    {apps.filter(app => {
+                                        if (query === '') {
+                                            return app;
+                                        } else if (app.name.toLowerCase().includes(query.toLowerCase())) {
+                                            return app;
+                                        }
+                                    }).map((app, idx) => (
                                         <div key={`app-${idx}`} className="start-menu-grid-item">
                                             <AppIcon
                                                 name={app.name}
@@ -95,7 +106,7 @@ function StartMenu({ closeStartMenu, isOpen, apps = [] }) {
 
                             <div className="start-menu-bottom">
                                 <div className="user-profile-button">User Profile</div>
-
+                                <input type="text" placeholder="Search..." value={query} onChange={handleSearch}/>
                                 <div className="power-button">Power Button</div>
                             </div>
                         </div>
