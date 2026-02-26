@@ -1,52 +1,61 @@
 import { Filemanager } from "@svar-ui/react-filemanager";
 import "@svar-ui/react-filemanager/all.css";
 import { Willow } from "@svar-ui/react-filemanager";
+import { dispatchDesktopEvent } from "../utils/eventBus";
 
 
 const rawdata = [
   {
+    name: "Desktop",
     id: "/Desktop",
     size: 4096,
     date: new Date(2023, 11, 2, 17, 25),
     type: "folder",
   },
   {
+    name: "Documents",
     id: "/Documents",
     size: 4096,
     date: new Date(2023, 11, 1, 14, 45),
     type: "folder",
   },
     {
+      name: "Folder",
       id: "/Documents/Folder",
       size: 4096,
       date: new Date(2025, 11, 1, 14, 45),
       type: "folder",
     },
   {
+    name: "Downloads",
     id: "/Downloads",
     size: 4096,
     date: new Date(2025, 11, 1, 14, 45),
     type: "folder",
   },
   {
+    name: "Music",
     id: "/Music",
     size: 4096,
     date: new Date(2023, 11, 2, 17, 25),
     type: "folder",
   },
   {
+    name: "Pictures",
     id: "/Pictures",
     size: 4096,
     date: new Date(2023, 11, 1, 14, 45),
     type: "folder",
   },
     {
+      name: "Cat Photos",
       id: "/Pictures/Cat Photos",
       size: 4096,
       date: new Date(2025, 11, 1, 14, 45),
       type: "folder",
     },
   {
+    name: "Videos",
     id: "/Videos",
     size: 4096,
     date: new Date(2025, 11, 1, 14, 45),
@@ -54,54 +63,63 @@ const rawdata = [
   },
 
   {
+    name: "Boring Document",
     id: "/Documents/Boring Document",
     size: 510885,
     date: new Date(2023, 11, 1, 14, 45),
     type: "file",
   },
   {
+    name: "Example Text File",
     id: "/Documents/Example Text File",
     size: 510885,
     date: new Date(2023, 11, 1, 14, 45),
     type: "file",
   },
   {
+    name: "Secret Document",
     id: "/Documents/Folder/Secret Document",
     size: 510885,
     date: new Date(2023, 11, 1, 14, 45),
     type: "file",
   },
   {
+    name: "Photo.png",
     id: "/Downloads/Photo.png",
     size: 510885,
     date: new Date(2023, 11, 1, 14, 45),
     type: "file",
   },
   {
+    name: "Document.txt",
     id: "/Downloads/Document.txt",
     size: 510885,
     date: new Date(2023, 11, 1, 14, 45),
     type: "file",
   },
   {
+    name: "BirdsChirping.mp3",
     id: "/Music/BirdsChirping.mp3",
     size: 510885,
     date: new Date(2023, 11, 1, 14, 45),
     type: "file",
   },
   {
+    name: "CatPic.png",
     id: "/Pictures/Cat Photos/CatPic.png",
     size: 510885,
     date: new Date(2023, 11, 1, 14, 45),
     type: "file",
   },
   {
+    name: "Photo.png",
     id: "/Pictures/Photo.png",
     size: 510885,
     date: new Date(2023, 11, 1, 14, 45),
     type: "file",
   },
   {
+    name: "RickRoll.mp4",
     id: "/Videos/RickRoll.mp4",
     size: 1595,
     date: new Date(2023, 11, 7, 15, 23),
@@ -114,7 +132,20 @@ const rawdata = [
 function Files() {
   return <>
     <Willow>
-      <Filemanager data={rawdata} />
+      <Filemanager
+        data={rawdata}
+        init={(api) => {
+          console.log("Filemanager API ready", api);
+          api.on("set-path", ({ id, panel }) => {
+          if (!id) return;
+          const dispatchName = "FileExplorer" + id.replace(/\W/g, "") + "Clicked";
+          dispatchDesktopEvent(dispatchName, { id, panel });
+          api.intercept("create-file", ({ file, parent }) => {
+          dispatchDesktopEvent("FileExplorerNewFolderCreated");
+});
+});                  
+        }}
+      />
     </Willow>
   </>;
 }
