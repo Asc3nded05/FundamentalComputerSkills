@@ -1,12 +1,24 @@
 import { Rnd } from 'react-rnd';
+import { useState, useEffect } from 'react';
 import { dispatchDesktopEvent } from "../utils/eventBus";
 
-function AppWindow({ name, isOpen, onClose, closeEventName, zIndex, bringToFront, content, sizeX=600, sizeY=400, desktopRef }) {
+function AppWindow({ 
+    name, 
+    isOpen, 
+    isMinimized = false,
+    isMaximized = false,
+    onClose, 
+    closeEventName, 
+    zIndex, 
+    bringToFront, 
+    content, 
+    initialSize = {width: 600, height: 400},
+    desktopRef }) {
 
     const desktop = desktopRef.current.getBoundingClientRect(); // Get desktop dimensions to set bounds for dragging and to center new app
 
-    const initialXPosition = (desktop.width - sizeX) / 2;
-    const initialYPosition = (desktop.height - sizeY) / 2;
+    const initialXPosition = (desktop.width - initialSize.width) / 2;
+    const initialYPosition = (desktop.height - initialSize.height) / 2;
 
     const handleClose = (e) => {
         e.preventDefault();
@@ -30,8 +42,8 @@ function AppWindow({ name, isOpen, onClose, closeEventName, zIndex, bringToFront
             default={{
                 x: initialXPosition,
                 y: initialYPosition,
-                width: sizeX,
-                height: sizeY,
+                width: initialSize.width,
+                height: initialSize.height,
             }}
             minWidth={300}
             minHeight={100}

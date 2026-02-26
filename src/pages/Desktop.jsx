@@ -1,5 +1,5 @@
 import { Responsive, WidthProvider } from "react-grid-layout";
-import { useState, useEffect, use, useRef } from 'react';
+import { useState, useEffect, use, useRef, useMemo } from 'react';
 
 import AppIcon from '../components/AppIcon.jsx'
 import Clock from '../components/Clock.jsx'
@@ -14,27 +14,55 @@ import FileExplorer from "../components/FileExplorer.jsx";
 import Notepad from "../components/Notepad.jsx";
 import FrameApp from "../components/FrameApp.jsx";
 import { useLocation } from 'react-router-dom';
+import { useAppWindowManager } from "../utils/appWindowManager.js";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 function Desktop() {
     const location = useLocation();
-    const {state} = location;
+    const { state } = location;
     const lessonId = state?.lessonId;
     // console.log('Desktop received lessonId from navigation state:', lessonId);
-    const initialLayout = [
-        { i: "app1", x: 0, y: 0, w: 1, h: 1, static: false },
-        { i: "app2", x: 0, y: 1, w: 1, h: 1, static: false },
-        { i: "app3", x: 0, y: 2, w: 1, h: 1, static: false },
-    ]
 
-    const [isStartOpen, setIsStartOpen] = useState(false);
+    // const initialLayout = [
+    //     { i: "app1", x: 0, y: 0, w: 1, h: 1, static: false },
+    //     { i: "app2", x: 0, y: 1, w: 1, h: 1, static: false },
+    //     { i: "app3", x: 0, y: 2, w: 1, h: 1, static: false },
+    // ]
 
-    const [isApp1Open, setIsApp1Open] = useState(false);
-    const [isApp2Open, setIsApp2Open] = useState(false);
-    const [isApp3Open, setIsApp3Open] = useState(false);
+    // const [isApp1Open, setIsApp1Open] = useState(false);
+    // const [isApp2Open, setIsApp2Open] = useState(false);
+    // const [isApp3Open, setIsApp3Open] = useState(false);
 
     // Ref for desktop area, used to center new app windows
     const desktopRef = useRef(null);
+
+    // Custom hook to manage app windows
+    const {
+        apps,
+        sortedWindows,
+        bringToFront,
+        openApp,
+        closeApp,
+        minimizeApp,
+        maximizeApp,
+    } = useAppWindowManager();
+
+    const baseApps = useMemo(() => apps.filter(app => !app.instanceId), [apps]);
+
+    const [isStartOpen, setIsStartOpen] = useState(false);
+
+    const desktopLayout = useMemo(() => {
+        const baseApps = apps.filter(app => !app.instanceId);
+
+        return baseApps.map((app, index) => ({
+            i: app.id,
+            x: 0,
+            y: index,
+            w: 1,
+            h: 1,
+            static: false
+        }));
+    }, [apps]); // Recalculate when apps change
 
     // Temporary debug log for eventBus events (wildcard "*")
     // const [eventsLog, setEventsLog] = useState([]);
@@ -48,107 +76,134 @@ function Desktop() {
     //     return () => eventBus.removeEventListener('*', handler);
     // }, []);
 
-    // Apps list for StartMenu
-    const apps = [
-        {
-            name: APP_REGISTRY[0].name,
-            icon: APP_REGISTRY[0].icon,
-            eventName: 'FileExplorerStartOpen',
-            openWindow: () => setIsApp1Open(true),
-            isAppOpen: isApp1Open,
-            variant: 'start-menu'
-        },
-        {
-            name: APP_REGISTRY[1].name,
-            icon: APP_REGISTRY[1].icon,
-            eventName: 'NotepadStartOpen',
-            openWindow: () => setIsApp2Open(true),
-            isAppOpen: isApp2Open,
-            variant: 'start-menu'
-        },
-        {
-            name: APP_REGISTRY[2].name,
-            icon: APP_REGISTRY[2].icon,
-            eventName: 'App3StartOpen',
-            openWindow: () => setIsApp3Open(true),
-            isAppOpen: isApp3Open,
-            variant: 'start-menu'
-        },
-        {
-            name: APP_REGISTRY[0].name,
-            icon: APP_REGISTRY[0].icon,
-            eventName: 'FileExplorerStartOpen',
-            openWindow: () => setIsApp1Open(true),
-            isAppOpen: isApp1Open,
-            variant: 'start-menu'
-        },
-        {
-            name: APP_REGISTRY[1].name,
-            icon: APP_REGISTRY[1].icon,
-            eventName: 'NotepadStartOpen',
-            openWindow: () => setIsApp2Open(true),
-            isAppOpen: isApp2Open,
-            variant: 'start-menu'
-        },
-        {
-            name: APP_REGISTRY[2].name,
-            icon: APP_REGISTRY[2].icon,
-            eventName: 'App3StartOpen',
-            openWindow: () => setIsApp3Open(true),
-            isAppOpen: isApp3Open,
-            variant: 'start-menu'
-        },
-        {
-            name: APP_REGISTRY[0].name,
-            icon: APP_REGISTRY[0].icon,
-            eventName: 'FileExplorerStartOpen',
-            openWindow: () => setIsApp1Open(true),
-            isAppOpen: isApp1Open,
-            variant: 'start-menu'
-        },
-        {
-            name: APP_REGISTRY[1].name,
-            icon: APP_REGISTRY[1].icon,
-            eventName: 'NotepadStartOpen',
-            openWindow: () => setIsApp2Open(true),
-            isAppOpen: isApp2Open,
-            variant: 'start-menu'
-        },
-        {
-            name: APP_REGISTRY[2].name,
-            icon: APP_REGISTRY[2].icon,
-            eventName: 'App3StartOpen',
-            openWindow: () => setIsApp3Open(true),
-            isAppOpen: isApp3Open,
-            variant: 'start-menu'
+    // // Apps list for StartMenu
+    // const startMenuApps = [
+    //     {
+    //         name: APP_REGISTRY[0].name,
+    //         icon: APP_REGISTRY[0].icon,
+    //         eventName: 'FileExplorerStartOpen',
+    //         openWindow: () => setIsApp1Open(true),
+    //         isAppOpen: isApp1Open,
+    //         variant: 'start-menu'
+    //     },
+    //     {
+    //         name: APP_REGISTRY[1].name,
+    //         icon: APP_REGISTRY[1].icon,
+    //         eventName: 'NotepadStartOpen',
+    //         openWindow: () => setIsApp2Open(true),
+    //         isAppOpen: isApp2Open,
+    //         variant: 'start-menu'
+    //     },
+    //     {
+    //         name: APP_REGISTRY[2].name,
+    //         icon: APP_REGISTRY[2].icon,
+    //         eventName: 'App3StartOpen',
+    //         openWindow: () => setIsApp3Open(true),
+    //         isAppOpen: isApp3Open,
+    //         variant: 'start-menu'
+    //     },
+    //     {
+    //         name: APP_REGISTRY[0].name,
+    //         icon: APP_REGISTRY[0].icon,
+    //         eventName: 'FileExplorerStartOpen',
+    //         openWindow: () => setIsApp1Open(true),
+    //         isAppOpen: isApp1Open,
+    //         variant: 'start-menu'
+    //     },
+    //     {
+    //         name: APP_REGISTRY[1].name,
+    //         icon: APP_REGISTRY[1].icon,
+    //         eventName: 'NotepadStartOpen',
+    //         openWindow: () => setIsApp2Open(true),
+    //         isAppOpen: isApp2Open,
+    //         variant: 'start-menu'
+    //     },
+    //     {
+    //         name: APP_REGISTRY[2].name,
+    //         icon: APP_REGISTRY[2].icon,
+    //         eventName: 'App3StartOpen',
+    //         openWindow: () => setIsApp3Open(true),
+    //         isAppOpen: isApp3Open,
+    //         variant: 'start-menu'
+    //     },
+    //     {
+    //         name: APP_REGISTRY[0].name,
+    //         icon: APP_REGISTRY[0].icon,
+    //         eventName: 'FileExplorerStartOpen',
+    //         openWindow: () => setIsApp1Open(true),
+    //         isAppOpen: isApp1Open,
+    //         variant: 'start-menu'
+    //     },
+    //     {
+    //         name: APP_REGISTRY[1].name,
+    //         icon: APP_REGISTRY[1].icon,
+    //         eventName: 'NotepadStartOpen',
+    //         openWindow: () => setIsApp2Open(true),
+    //         isAppOpen: isApp2Open,
+    //         variant: 'start-menu'
+    //     },
+    //     {
+    //         name: APP_REGISTRY[2].name,
+    //         icon: APP_REGISTRY[2].icon,
+    //         eventName: 'App3StartOpen',
+    //         openWindow: () => setIsApp3Open(true),
+    //         isAppOpen: isApp3Open,
+    //         variant: 'start-menu'
+    //     }
+    // ];
+
+    // Puts all apps from the apps list into the start menu
+    const startMenuApps = useMemo(() =>
+        baseApps.map(app => ({
+            name: app.name,
+            icon: app.icon,
+            eventName: `${app.id}StartOpen`,
+            openWindow: () => openApp(app.id, { createNewInstance: true }),
+            isAppOpen: app.isOpen,
+            variant: 'start-menu',
+            appId: app.id
+        }))
+        , [baseApps, openApp]);
+
+    // // Handle which App is in front
+    // const [windows, setWindows] = useState({
+    //     app1: { isOpen: false, zIndex: 0 },
+    //     app2: { isOpen: false, zIndex: 0 },
+    //     app3: { isOpen: false, zIndex: 0 },
+    // });
+    // const [highestAppZIndex, setHighestAppZIndex] = useState(500);
+
+    // const bringToFront = (appName) => {
+    //     const newAppZIndex = highestAppZIndex + 1;
+    //     setWindows(prev => ({
+    //         ...prev,
+    //         [appName]: {
+    //             ...prev[appName],
+    //             zIndex: newAppZIndex
+    //         }
+    //     }));
+    //     setHighestAppZIndex(newAppZIndex);
+    // };
+
+    // const openApp = (appName) => {
+    //     bringToFront(appName);
+    //     if (appName === "app1") setIsApp1Open(prev => !prev);
+    //     if (appName === "app2") setIsApp2Open(prev => !prev);
+    //     if (appName === "app3") setIsApp3Open(prev => !prev);
+    // };
+
+    // Render appropriate app content
+    const renderAppContent = (app) => {
+        switch (app.component) {
+            case 'FileExplorer':
+                return <FileExplorer key={app.instanceId} />;
+            case 'Notepad':
+                return <Notepad key={app.instanceId} initialContent={app.initialContent} />;
+            case 'FrameApp':
+                return <FrameApp key={app.instanceId} />;
+            default:
+                return <div key={app.instanceId}>Unknown App: {app.name}</div>;
         }
-    ];
-
-    // Handle which App is in front
-    const [windows, setWindows] = useState({
-        app1: { isOpen: false, zIndex: 0 },
-        app2: { isOpen: false, zIndex: 0 },
-        app3: { isOpen: false, zIndex: 0 },
-    });
-    const [highestAppZIndex, setHighestAppZIndex] = useState(500);
-
-    const bringToFront = (appName) => {
-        const newAppZIndex = highestAppZIndex + 1;
-        setWindows(prev => ({
-            ...prev,
-            [appName]: {
-                ...prev[appName],
-                zIndex: newAppZIndex
-            }
-        }));
-        setHighestAppZIndex(newAppZIndex);
-    };
-
-    const openApp = (appName) => {
-        bringToFront(appName);
-        if (appName === "app1") setIsApp1Open(prev => !prev);
-        if (appName === "app2") setIsApp2Open(prev => !prev);
-        if (appName === "app3") setIsApp3Open(prev => !prev);
     };
 
     return <>
@@ -156,7 +211,7 @@ function Desktop() {
             <div className="desktop-container" ref={desktopRef}>
                 <ResponsiveGridLayout
                     className="layout"
-                    layouts={{ lg: initialLayout }}
+                    layouts={{ lg: desktopLayout }}
                     breakpoints={{ lg: 1200 }}
                     cols={{ lg: 12 }}
                     compactType={null}
@@ -168,7 +223,7 @@ function Desktop() {
                     dragStartDelay={0} // To prevent conflict with double-click to open app
                     clickDelay={200}
                 >
-                    <div key="app1">
+                    {/* <div key="app1">
                         <AppIcon
                             name={APP_REGISTRY[0].name}
                             icon={APP_REGISTRY[0].icon}
@@ -195,9 +250,22 @@ function Desktop() {
                             eventName="App3DesktopOpen"
                             openWindow={() => openApp("app3")}
                             variant="desktop"
-                        />
-                    </div>
+                        /> 
+                    </div> */}
 
+                    {baseApps.map((app) => (
+                        <div key={app.id}>
+                            <AppIcon
+                                name={app.name}
+                                icon={app.icon}
+                                eventName={`${app.id}DesktopOpen`}
+                                // openWindow={() => openApp(app.id)}
+                                openWindow={() => openApp(app.id, { createNewInstance: true })} // Open a new instance (if app allows)
+                                variant="desktop"
+                                isAppOpen={app.isOpen}
+                            />
+                        </div>
+                    ))}
                 </ResponsiveGridLayout>
 
                 {/* Small debug panel showing recent events from eventBus (temporary) */}
@@ -214,7 +282,7 @@ function Desktop() {
                         ))
                     )}
                 </div> */}
-                
+
                 {/* Taskbar */}
                 <div className="navbar">
                     <div className="navbar-left">
@@ -223,7 +291,8 @@ function Desktop() {
 
                     <div className="navbar-center">
                         <StartButton toggleStartMenu={() => setIsStartOpen(prev => !prev)} />
-                        <AppIcon
+
+                        {/* <AppIcon
                             name={APP_REGISTRY[0].name}
                             icon={APP_REGISTRY[0].icon}
                             eventName="FileExplorerTaskbarOpen"
@@ -246,7 +315,30 @@ function Desktop() {
                             openWindow={() => openApp("app3")}
                             variant="taskbar"
                             isAppOpen={isApp3Open}
-                        />
+                        /> */}
+
+                        {baseApps.map((app) => (
+                            <AppIcon
+                                key={app.id}
+                                name={app.name}
+                                icon={app.icon}
+                                eventName={`${app.id}TaskbarOpen`}
+                                openWindow={() => {
+                                    if (app.isMinimized) {
+                                        bringToFront(app.id);
+                                    } else {
+                                        openApp(app.id);
+                                    }
+                                }}
+                                variant="taskbar"
+                                isAppOpen={app.isOpen}
+                                isMinimized={app.isMinimized}
+                                onContextMenu={(e) => {
+                                    e.preventDefault();
+                                }}
+                            />
+                        ))}
+
                     </div>
 
                     <div className="navbar-right">
@@ -258,10 +350,10 @@ function Desktop() {
                 <StartMenu
                     closeStartMenu={() => setIsStartOpen(false)}
                     isOpen={isStartOpen}
-                    apps={apps}
+                    apps={startMenuApps}
                 />
 
-                {/* App Windows that conditionally render (to fix resetting position on close)*/}
+                {/* App Windows that conditionally render (to fix resetting position on close)
                 {isApp1Open &&
                     <AppWindow
                         name={APP_REGISTRY[0].name}
@@ -285,7 +377,7 @@ function Desktop() {
                         closeEventName="NotepadClose"
                         zIndex={windows.app2.zIndex}
                         bringToFront={() => bringToFront("app2")}
-                        content={<Notepad />}
+                        content={<Notepad startingText="Notepad App" />}
                         desktopRef={desktopRef}
                     />
                 }
@@ -303,11 +395,31 @@ function Desktop() {
                         sizeY={200}
                         desktopRef={desktopRef}
                     />
-                }
+                } */}
+
+                {/* Dynamic app windows */}
+                {sortedWindows.map((app) => (
+                    <AppWindow
+                        key={app.instanceId || app.id}
+                        name={app.name}
+                        isOpen={app.isOpen}
+                        isMinimized={app.isMinimized}
+                        isMaximized={app.isMaximized}
+                        onClose={() => closeApp(app.instanceId || app.id)}
+                        onMinimize={() => minimizeApp(app.id)}
+                        onMaximize={() => maximizeApp(app.id)}
+                        zIndex={app.zIndex}
+                        bringToFront={() => bringToFront(app.instanceId || app.id)}
+                        content={renderAppContent(app)}
+                        initialSize={app.size}
+                        desktopRef={desktopRef}
+                    />
+                ))}
+
             </div>
-           
-                <SideBar lessonId={lessonId} />
-            
+
+            <SideBar lessonId={lessonId} />
+
         </div>
     </>
 }
