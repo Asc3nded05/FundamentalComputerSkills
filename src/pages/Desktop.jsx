@@ -17,6 +17,7 @@ import Notepad from "../components/Notepad.jsx";
 import FrameApp from "../components/FrameApp.jsx";
 import { useLocation } from 'react-router-dom';
 import { useAppWindowManager } from "../utils/appWindowManager.js";
+import { eventBus } from "../utils/eventBus.js";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 function Desktop() {
@@ -73,7 +74,7 @@ function Desktop() {
             name: app.name,
             icon: app.icon,
             eventName: `${app.id}StartOpen`,
-            openWindow: () => openApp(app.id, { createNewInstance: true }),
+            openWindow: () => openApp(app.id, { createNewInstance: app.canHaveMultipleInstances }),
             isAppOpen: app.isOpen,
             variant: 'start-menu',
             appId: app.id
@@ -93,6 +94,20 @@ function Desktop() {
                 return <div key={app.instanceId}>Unknown App: {app.name}</div>;
         }
     };
+
+    // Open text files from File Explorer
+    useEffect(() => {
+    const handler = (e) => {
+        const { file } = e.detail;
+        openApp("Notepad", {
+        createNewInstance: true,
+        initialContent: file.content || '',
+        fileIdentifier: file.path || file.name || file.id
+        });
+    };
+    eventBus.addEventListener("OpenTextFile", handler);
+    return () => eventBus.removeEventListener("OpenTextFile", handler);
+    }, [openApp]);
 
     return <>
         <div className="desktop-page">
@@ -140,27 +155,46 @@ function Desktop() {
                     <div className="navbar-center">
                         <StartButton toggleStartMenu={toggleStartMenu} />
 
-                        {baseApps.map((app) => (
+                        {baseApps.map((app) => {
+                            // Get all instances of this app that are open or minimized
+                            const appInstances = apps.filter(a => a.id === app.id && (a.instanceId || !a.instanceId === !app.instanceId));
+                            const hasOpenInstance = appInstances.some(a => a.isOpen);
+                            const allMinimized = appInstances.every(a => a.isMinimized);
+                            
+                            return (
                             <AppIcon
                                 key={app.id}
                                 name={app.name}
                                 icon={app.icon}
                                 eventName={`${app.id}TaskbarOpen`}
                                 openWindow={() => {
-                                    if (app.isMinimized) {
-                                        bringToFront(app.id);
+                                    if (allMinimized && hasOpenInstance) {
+                                        // If all instances are minimized, restore them
+                                        appInstances.forEach(instance => bringToFront(instance.instanceId || instance.id));
+                                    } else if (hasOpenInstance && app.canHaveMultipleInstances) {
+                                        // If app can have multiple instances and one is already open, open a new one
+                                        openApp(app.id, { createNewInstance: true });
+                                    } else if (!hasOpenInstance) {
+                                        // If no instance is open, open one
+                                        openApp(app.id, { createNewInstance: app.canHaveMultipleInstances });
                                     } else {
-                                        openApp(app.id);
+                                        // Default: bring to front if minimized, or open if not
+                                        if (app.isMinimized) {
+                                            bringToFront(app.id);
+                                        } else {
+                                            openApp(app.id);
+                                        }
                                     }
                                 }}
                                 variant="taskbar"
-                                isAppOpen={app.isOpen}
-                                isMinimized={app.isMinimized}
+                                isAppOpen={hasOpenInstance}
+                                isMinimized={allMinimized}
                                 onContextMenu={(e) => {
                                     e.preventDefault();
                                 }}
                             />
-                        ))}
+                            );
+                        })}
 
                     </div>
 
@@ -196,13 +230,14 @@ function Desktop() {
                         isMinimized={app.isMinimized}
                         isMaximized={app.isMaximized}
                         onClose={() => closeApp(app.instanceId || app.id)}
-                        onMinimize={() => minimizeApp(app.id)}
-                        onMaximize={() => maximizeApp(app.id)}
+                        onMinimize={() => minimizeApp(app.instanceId || app.id)}
+                        onMaximize={() => maximizeApp(app.instanceId || app.id)}
                         zIndex={app.zIndex}
                         bringToFront={() => bringToFront(app.instanceId || app.id)}
                         content={renderAppContent(app)}
                         initialSize={app.size}
                         desktopRef={desktopRef}
+                        closeEventName={`${app.id}Close`}
                     />
                 ))}
 

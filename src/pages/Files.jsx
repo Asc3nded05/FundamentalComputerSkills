@@ -19,13 +19,13 @@ const rawdata = [
     date: new Date(2023, 11, 1, 14, 45),
     type: "folder",
   },
-    {
-      name: "Folder",
-      id: "/Documents/Folder",
-      size: 4096,
-      date: new Date(2025, 11, 1, 14, 45),
-      type: "folder",
-    },
+  {
+    name: "Folder",
+    id: "/Documents/Folder",
+    size: 4096,
+    date: new Date(2025, 11, 1, 14, 45),
+    type: "folder",
+  },
   {
     name: "Downloads",
     id: "/Downloads",
@@ -47,13 +47,13 @@ const rawdata = [
     date: new Date(2023, 11, 1, 14, 45),
     type: "folder",
   },
-    {
-      name: "Cat Photos",
-      id: "/Pictures/Cat Photos",
-      size: 4096,
-      date: new Date(2025, 11, 1, 14, 45),
-      type: "folder",
-    },
+  {
+    name: "Cat Photos",
+    id: "/Pictures/Cat Photos",
+    size: 4096,
+    date: new Date(2025, 11, 1, 14, 45),
+    type: "folder",
+  },
   {
     name: "Videos",
     id: "/Videos",
@@ -63,25 +63,28 @@ const rawdata = [
   },
 
   {
-    name: "Boring Document",
-    id: "/Documents/Boring Document",
+    name: "Boring Document.txt",
+    id: "/Documents/Boring Document.txt",
     size: 510885,
     date: new Date(2023, 11, 1, 14, 45),
     type: "file",
+    content: "This is a very boring document.",
   },
   {
-    name: "Example Text File",
-    id: "/Documents/Example Text File",
+    name: "Example Text File.txt",
+    id: "/Documents/Example Text File.txt",
     size: 510885,
     date: new Date(2023, 11, 1, 14, 45),
     type: "file",
+    content: "This is an example text file.",
   },
   {
-    name: "Secret Document",
-    id: "/Documents/Folder/Secret Document",
+    name: "Secret Document.txt",
+    id: "/Documents/Folder/Secret Document.txt",
     size: 510885,
     date: new Date(2023, 11, 1, 14, 45),
     type: "file",
+    content: "This is a secret document!",
   },
   {
     name: "Photo.png",
@@ -96,6 +99,7 @@ const rawdata = [
     size: 510885,
     date: new Date(2023, 11, 1, 14, 45),
     type: "file",
+    content: "This is a document in the Downloads folder.",
   },
   {
     name: "BirdsChirping.mp3",
@@ -137,13 +141,23 @@ function Files() {
         init={(api) => {
           console.log("Filemanager API ready", api);
           api.on("set-path", ({ id, panel }) => {
-          if (!id) return;
-          const dispatchName = "FileExplorer" + id.replace(/\W/g, "") + "Clicked";
-          dispatchDesktopEvent(dispatchName, { id, panel });
-          api.intercept("create-file", ({ file, parent }) => {
-          dispatchDesktopEvent("FileExplorerNewFolderCreated");
-});
-});                  
+            if (!id) return;
+            const dispatchName = "FileExplorer" + id.replace(/\W/g, "") + "Clicked";
+            dispatchDesktopEvent(dispatchName, { id, panel });
+            api.intercept("create-file", ({ file, parent }) => {
+              dispatchDesktopEvent("FileExplorerNewFolderCreated");
+            });
+          });
+
+          api.on("open-file", ({ id }) => {
+            if (!id) return;
+            const file = rawdata.find(f => f.id === id);
+            if (!file?.name) return;
+
+            if (file.name.endsWith(".txt") || id.endsWith(".txt")) {
+              dispatchDesktopEvent("OpenTextFile", { file });
+            }
+          });
         }}
       />
     </Willow>
