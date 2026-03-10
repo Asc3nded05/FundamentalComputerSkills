@@ -60,6 +60,8 @@ List of potential lessons:
 
 \-	Accessibility settings
 
+\-  Managing storage
+
 \-	Installing apps
 
 \-	Creating desktop shortcut
