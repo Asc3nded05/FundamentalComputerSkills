@@ -7,6 +7,8 @@ import SideBar from '../components/SideBar.jsx'
 import AppWindow from '../components/AppWindow.jsx';
 import StartButton from "../components/StartButton.jsx";
 import StartMenu from "../components/StartMenu.jsx";
+import QuickSettingsButton from "../components/QuickSettingsButton.jsx";
+import QuickSettings from "../components/QuickSettings.jsx";
 import { Link } from 'react-router-dom';
 import { APP_REGISTRY } from '../utils/apps.js';
 
@@ -21,7 +23,8 @@ function Desktop() {
     const location = useLocation();
     const { state } = location;
     const lessonId = state?.lessonId;
-    // console.log('Desktop received lessonId from navigation state:', lessonId);
+    const [brightness, setBrightness] = useState(100);
+    const [volume, setVolume] = useState(100);
 
     // Ref for desktop area, used to center new app windows
     const desktopRef = useRef(null);
@@ -40,6 +43,16 @@ function Desktop() {
     const baseApps = useMemo(() => apps.filter(app => !app.instanceId), [apps]);
 
     const [isStartOpen, setIsStartOpen] = useState(false);
+    const [isQuickSettingsOpen, setQuickSettingsOpen] = useState(false);
+
+    function toggleStartMenu() {
+        setIsStartOpen(prev => !prev);
+    }
+
+    function toggleQuickSettings() {
+        setQuickSettingsOpen(prev => !prev);
+    }
+
 
     const desktopLayout = useMemo(() => {
         const baseApps = apps.filter(app => !app.instanceId);
@@ -83,7 +96,11 @@ function Desktop() {
 
     return <>
         <div className="desktop-page">
-            <div className="desktop-container" ref={desktopRef}>
+            <div 
+                className="desktop-container" 
+                ref={desktopRef}
+                style={{ filter: `brightness(${brightness}%)` }}
+            >
                 <ResponsiveGridLayout
                     className="layout"
                     layouts={{ lg: desktopLayout }}
@@ -121,7 +138,7 @@ function Desktop() {
                     </div>
 
                     <div className="navbar-center">
-                        <StartButton toggleStartMenu={() => setIsStartOpen(prev => !prev)} />
+                        <StartButton toggleStartMenu={toggleStartMenu} />
 
                         {baseApps.map((app) => (
                             <AppIcon
@@ -149,6 +166,7 @@ function Desktop() {
 
                     <div className="navbar-right">
                         {/* Clock, wifi, etc */}
+                        <QuickSettingsButton toggleQuickSettings={toggleQuickSettings} />
                         <Clock />
                     </div>
                 </div>
@@ -158,6 +176,16 @@ function Desktop() {
                     isOpen={isStartOpen}
                     apps={startMenuApps}
                 />
+
+                <QuickSettings
+                    isOpen={isQuickSettingsOpen}
+                    closeQuickSettings={() => setQuickSettingsOpen(false)}
+                    brightness={brightness}
+                    setBrightness={setBrightness}
+                    volume={volume}
+                    setVolume={setVolume}
+                />
+
 
                 {/* Dynamic app windows */}
                 {sortedWindows.map((app) => (
