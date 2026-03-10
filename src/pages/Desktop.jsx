@@ -7,6 +7,8 @@ import SideBar from '../components/SideBar.jsx'
 import AppWindow from '../components/AppWindow.jsx';
 import StartButton from "../components/StartButton.jsx";
 import StartMenu from "../components/StartMenu.jsx";
+import QuickSettingsButton from "../components/QuickSettingsButton.jsx";
+import QuickSettings from "../components/QuickSettings.jsx";
 import { Link } from 'react-router-dom';
 import { APP_REGISTRY } from '../utils/apps.js';
 
@@ -15,13 +17,15 @@ import Notepad from "../components/Notepad.jsx";
 import FrameApp from "../components/FrameApp.jsx";
 import { useLocation } from 'react-router-dom';
 import { useAppWindowManager } from "../utils/appWindowManager.js";
+import { eventBus } from "../utils/eventBus.js";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 function Desktop() {
     const location = useLocation();
     const { state } = location;
     const lessonId = state?.lessonId;
-    // console.log('Desktop received lessonId from navigation state:', lessonId);
+    const [brightness, setBrightness] = useState(100);
+    const [volume, setVolume] = useState(100);
 
     // Ref for desktop area, used to center new app windows
     const desktopRef = useRef(null);
@@ -40,6 +44,16 @@ function Desktop() {
     const baseApps = useMemo(() => apps.filter(app => !app.instanceId), [apps]);
 
     const [isStartOpen, setIsStartOpen] = useState(false);
+    const [isQuickSettingsOpen, setQuickSettingsOpen] = useState(false);
+
+    function toggleStartMenu() {
+        setIsStartOpen(prev => !prev);
+    }
+
+    function toggleQuickSettings() {
+        setQuickSettingsOpen(prev => !prev);
+    }
+
 
     const desktopLayout = useMemo(() => {
         const baseApps = apps.filter(app => !app.instanceId);
@@ -60,7 +74,7 @@ function Desktop() {
             name: app.name,
             icon: app.icon,
             eventName: `${app.id}StartOpen`,
-            openWindow: () => openApp(app.id, { createNewInstance: true }),
+            openWindow: () => openApp(app.id, { createNewInstance: app.canHaveMultipleInstances }),
             isAppOpen: app.isOpen,
             variant: 'start-menu',
             appId: app.id
@@ -81,9 +95,27 @@ function Desktop() {
         }
     };
 
+    // Open text files from File Explorer
+    useEffect(() => {
+    const handler = (e) => {
+        const { file } = e.detail;
+        openApp("Notepad", {
+        createNewInstance: true,
+        initialContent: file.content || '',
+        fileIdentifier: file.path || file.name || file.id
+        });
+    };
+    eventBus.addEventListener("OpenTextFile", handler);
+    return () => eventBus.removeEventListener("OpenTextFile", handler);
+    }, [openApp]);
+
     return <>
         <div className="desktop-page">
-            <div className="desktop-container" ref={desktopRef}>
+            <div 
+                className="desktop-container" 
+                ref={desktopRef}
+                style={{ filter: `brightness(${brightness}%)` }}
+            >
                 <ResponsiveGridLayout
                     className="layout"
                     layouts={{ lg: desktopLayout }}
@@ -121,34 +153,54 @@ function Desktop() {
                     </div>
 
                     <div className="navbar-center">
-                        <StartButton toggleStartMenu={() => setIsStartOpen(prev => !prev)} />
+                        <StartButton toggleStartMenu={toggleStartMenu} />
 
-                        {baseApps.map((app) => (
+                        {baseApps.map((app) => {
+                            // Get all instances of this app that are open or minimized
+                            const appInstances = apps.filter(a => a.id === app.id && (a.instanceId || !a.instanceId === !app.instanceId));
+                            const hasOpenInstance = appInstances.some(a => a.isOpen);
+                            const allMinimized = appInstances.every(a => a.isMinimized);
+                            
+                            return (
                             <AppIcon
                                 key={app.id}
                                 name={app.name}
                                 icon={app.icon}
                                 eventName={`${app.id}TaskbarOpen`}
                                 openWindow={() => {
-                                    if (app.isMinimized) {
-                                        bringToFront(app.id);
+                                    if (allMinimized && hasOpenInstance) {
+                                        // If all instances are minimized, restore them
+                                        appInstances.forEach(instance => bringToFront(instance.instanceId || instance.id));
+                                    } else if (hasOpenInstance && app.canHaveMultipleInstances) {
+                                        // If app can have multiple instances and one is already open, open a new one
+                                        openApp(app.id, { createNewInstance: true });
+                                    } else if (!hasOpenInstance) {
+                                        // If no instance is open, open one
+                                        openApp(app.id, { createNewInstance: app.canHaveMultipleInstances });
                                     } else {
-                                        openApp(app.id);
+                                        // Default: bring to front if minimized, or open if not
+                                        if (app.isMinimized) {
+                                            bringToFront(app.id);
+                                        } else {
+                                            openApp(app.id);
+                                        }
                                     }
                                 }}
                                 variant="taskbar"
-                                isAppOpen={app.isOpen}
-                                isMinimized={app.isMinimized}
+                                isAppOpen={hasOpenInstance}
+                                isMinimized={allMinimized}
                                 onContextMenu={(e) => {
                                     e.preventDefault();
                                 }}
                             />
-                        ))}
+                            );
+                        })}
 
                     </div>
 
                     <div className="navbar-right">
                         {/* Clock, wifi, etc */}
+                        <QuickSettingsButton toggleQuickSettings={toggleQuickSettings} />
                         <Clock />
                     </div>
                 </div>
@@ -159,6 +211,16 @@ function Desktop() {
                     apps={startMenuApps}
                 />
 
+                <QuickSettings
+                    isOpen={isQuickSettingsOpen}
+                    closeQuickSettings={() => setQuickSettingsOpen(false)}
+                    brightness={brightness}
+                    setBrightness={setBrightness}
+                    volume={volume}
+                    setVolume={setVolume}
+                />
+
+
                 {/* Dynamic app windows */}
                 {sortedWindows.map((app) => (
                     <AppWindow
@@ -168,13 +230,14 @@ function Desktop() {
                         isMinimized={app.isMinimized}
                         isMaximized={app.isMaximized}
                         onClose={() => closeApp(app.instanceId || app.id)}
-                        onMinimize={() => minimizeApp(app.id)}
-                        onMaximize={() => maximizeApp(app.id)}
+                        onMinimize={() => minimizeApp(app.instanceId || app.id)}
+                        onMaximize={() => maximizeApp(app.instanceId || app.id)}
                         zIndex={app.zIndex}
                         bringToFront={() => bringToFront(app.instanceId || app.id)}
                         content={renderAppContent(app)}
                         initialSize={app.size}
                         desktopRef={desktopRef}
+                        closeEventName={`${app.id}Close`}
                     />
                 ))}
 

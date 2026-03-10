@@ -1,0 +1,63 @@
+.qs-overlay {
+    position: fixed;
+    inset: 0;
+    background: transparent;
+    z-index: 999;
+}
+
+.qs-panel {
+    position: absolute;
+	top: 37.5%;
+	left: 69.5%;
+	transform: translate(-69.5%, -37.5%);
+    width: 360px;
+    background: rgba(40, 40, 40, 0.85);
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
+    padding: 16px;
+    color: white;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.15s ease-out;
+}
+
+.qs-panel.open {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.qs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.qs-tile {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.15s;
+}
+
+.qs-tile:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.qs-slider {
+    margin-bottom: 16px;
+}
+
+.qs-slider input[type="range"] {
+    width: 100%;
+}
+
+.qs-battery {
+    text-align: right;
+    opacity: 0.8;
+    font-size: 14px;
+}

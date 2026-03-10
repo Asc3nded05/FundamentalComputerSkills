@@ -1,6 +1,7 @@
 .navbar {
   /* Style/Position */
-  background-color: #383838eb;
+  background: rgba(22, 22, 22, 0.85);
+  backdrop-filter: blur(20px);
   position: absolute;
   bottom: 0;
   width: 100%;

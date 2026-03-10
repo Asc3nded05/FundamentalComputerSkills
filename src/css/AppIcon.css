@@ -117,6 +117,7 @@
 /* Start Menu Icons ------------------------------------------------------------------------------------------------------------*/
 
 .app-icon.start-menu {
+  padding: 0.5rem;
   width: auto;
   height: auto;
   opacity: 1 !important;
@@ -126,10 +127,11 @@
 .app-icon.start-menu .app-icon-image {
   width: 4rem;
   height: 4rem;
+  filter: invert(100%);
 }
 
 .app-icon.start-menu .app-icon-name {
-  color: black;
+  color: white;
 }
 
 /* Hide tooltip in start menu to prevent covering icon on hover */
