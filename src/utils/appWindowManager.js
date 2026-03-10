@@ -37,7 +37,7 @@ export function useAppWindowManager(initialApps = APP_REGISTRY) {
 
     // Function to open app
     const openApp = useCallback((appId, options = {}) => {
-        const { createNewInstance = false, position, size, initialContent } = options;
+        const { createNewInstance = false, position, size, initialContent, fileIdentifier } = options;
         
         setApps(prev => {
             const appIndex = prev.findIndex(a => a.id === appId);
@@ -45,31 +45,71 @@ export function useAppWindowManager(initialApps = APP_REGISTRY) {
 
             const app = prev[appIndex];
             
-            // Always create a new instance (since base apps stay as templates)
-            const newInstance = {
-                ...app,
-                instanceId: `${app.id}-${Date.now()}-${Math.random()}`,
-                isOpen: true,
-                zIndex: highestZIndex + 1,
-                position: position || calculateCenteredPosition(),
-                size: size || app.defaultSize,
-                initialContent: initialContent !== undefined ? initialContent : (app.initialContent || '')
-            };
+            // Check if we should create a new instance
+            const shouldCreateNewInstance = createNewInstance && app.canHaveMultipleInstances;
             
-            setHighestZIndex(prev => prev + 1);
-            
-            // Insert the new instance after the base app
-            return [
-                ...prev.slice(0, appIndex + 1),
-                newInstance,
-                ...prev.slice(appIndex + 1)
-            ];
+            if (!shouldCreateNewInstance) {
+                // If app is already open, just bring it to front
+                if (app.isOpen) {
+                    return prev.map(a => 
+                        a.id === appId
+                            ? { ...a, isOpen: true, zIndex: highestZIndex + 1, isMinimized: false }
+                            : a
+                    );
+                } else {
+                    // Open the base app (not an instance)
+                    return prev.map(a =>
+                        a.id === appId
+                            ? { ...a, isOpen: true, zIndex: highestZIndex + 1, isMinimized: false, initialContent: initialContent !== undefined ? initialContent : a.initialContent }
+                            : a
+                    );
+                }
+            } else {
+                // Check if an instance with this file is already open
+                if (fileIdentifier) {
+                    const existingInstance = prev.find(a => a.fileIdentifier === fileIdentifier && a.id === appId);
+                    if (existingInstance) {
+                        // Bring existing instance to front instead of creating a new one
+                        return prev.map(a =>
+                            a.instanceId === existingInstance.instanceId
+                                ? { ...a, isOpen: true, zIndex: highestZIndex + 1, isMinimized: false }
+                                : a
+                        );
+                    }
+                }
+
+                // Create a new instance of the app
+                const newInstance = {
+                    ...app,
+                    instanceId: `${app.id}-${Date.now()}-${Math.random()}`,
+                    isOpen: true,
+                    zIndex: highestZIndex + 1,
+                    position: position || calculateCenteredPosition(),
+                    size: size || app.defaultSize,
+                    initialContent: initialContent !== undefined ? initialContent : (app.initialContent || ''),
+                    fileIdentifier: fileIdentifier || undefined
+                };
+
+                setHighestZIndex(prev => prev + 1);
+                
+                // Insert the new instance after the base app
+                return [
+                    ...prev.slice(0, appIndex + 1),
+                    newInstance,
+                    ...prev.slice(appIndex + 1)
+                ];
+            }
         });
     }, [highestZIndex]);
 
     // Close app
     const closeApp = useCallback((identifier) => {
-        setApps(prev => prev.filter(app => app.instanceId !== identifier));
+        setApps(prev => prev.filter(app => {
+            // If it's an instance, match by instanceId
+            if (app.instanceId) return app.instanceId !== identifier;
+            // If it's a base app with no instanceId, match by id
+            return app.id !== identifier;
+        }));
     }, []);
 
     // Minimize app

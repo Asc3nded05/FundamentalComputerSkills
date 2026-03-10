@@ -7,6 +7,8 @@ function AppWindow({
     isOpen, 
     isMinimized = false,
     isMaximized = false,
+    onMinimize,
+    onMaximize,
     onClose, 
     closeEventName, 
     zIndex, 
@@ -58,10 +60,10 @@ function AppWindow({
                     <div className="top-header">
                         <p>{name}</p>
 
-                        <a href="#" className="appWindowMinimize"> 
+                        <a href="#" className="appWindowMinimize" onClick={onMinimize}> 
                             ─
                         </a>
-                        <a href="#" className="appWindowMaximize"> 
+                        <a href="#" className="appWindowMaximize" onClick={onMaximize}> 
                             &#9744;
                         </a>
                         <a href="#" className="appWindowClose" onClick={handleClose}> 
