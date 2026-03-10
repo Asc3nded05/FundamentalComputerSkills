@@ -1,5 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import { APP_REGISTRY } from '../utils/apps';
+import { dispatchDesktopEvent } from "../utils/eventBus";
+
 
 export function useAppWindowManager(initialApps = APP_REGISTRY) {
 
@@ -104,13 +106,28 @@ export function useAppWindowManager(initialApps = APP_REGISTRY) {
 
     // Close app
     const closeApp = useCallback((identifier) => {
-        setApps(prev => prev.filter(app => {
-            // If it's an instance, match by instanceId
-            if (app.instanceId) return app.instanceId !== identifier;
-            // If it's a base app with no instanceId, match by id
-            return app.id !== identifier;
-        }));
-    }, []);
+    setApps(prev => {
+        const appToClose = prev.find(app => 
+            app.instanceId === identifier || app.id === identifier
+        );
+        
+        if (appToClose) {
+            dispatchDesktopEvent(`${appToClose.id}Close`);
+        }
+        
+        return prev.map(app => {
+            // If it's an instance, mark for removal
+            if (app.instanceId === identifier) {
+                return null;
+            }
+            // If it's a base app being closed, just set isOpen to false
+            if (app.id === identifier && !app.instanceId) {
+                return { ...app, isOpen: false };
+            }
+            return app;
+        }).filter(app => app !== null);
+    });
+}, []);
 
     // Minimize app
     const minimizeApp = useCallback((identifier) => {

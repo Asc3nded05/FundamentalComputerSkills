@@ -25,9 +25,6 @@ function AppWindow({
     const handleClose = (e) => {
         e.preventDefault();
         e.stopPropagation();
-
-        dispatchDesktopEvent(closeEventName);
-
         onClose();
     };
 
