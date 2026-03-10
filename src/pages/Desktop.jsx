@@ -209,6 +209,7 @@ function Desktop() {
                         content={renderAppContent(app)}
                         initialSize={app.size}
                         desktopRef={desktopRef}
+                        closeEventName={`${app.id}Close`}
                     />
                 ))}
 
