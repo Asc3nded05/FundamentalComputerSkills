@@ -18,6 +18,7 @@ import FrameApp from "../components/FrameApp.jsx";
 import { useLocation } from 'react-router-dom';
 import { useAppWindowManager } from "../utils/appWindowManager.js";
 import { eventBus } from "../utils/eventBus.js";
+import Settings from "../components/Settings.jsx";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 function Desktop() {
@@ -88,6 +89,8 @@ function Desktop() {
                 return <FileExplorer key={app.instanceId} />;
             case 'Notepad':
                 return <Notepad key={app.instanceId} initialContent={app.initialContent} />;
+            case 'Settings':
+                return <Settings key={app.instanceId} />;
             case 'FrameApp':
                 return <FrameApp key={app.instanceId} />;
             default:
@@ -237,7 +240,6 @@ function Desktop() {
                         content={renderAppContent(app)}
                         initialSize={app.size}
                         desktopRef={desktopRef}
-                        closeEventName={`${app.id}Close`}
                     />
                 ))}
 

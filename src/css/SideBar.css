@@ -96,3 +96,35 @@
 .current-step {
   text-align: center;
 }
+
+.help-buttons div {
+  flex-direction: column;
+  align-items: center;
+}
+
+.hint-content {
+  border: 2px solid black;
+  border-radius: 5px;
+  width: 20%;
+  padding: 10px;
+  min-height: 20%;
+  overflow: auto;
+  position: absolute;
+}
+
+[popovertarget='hint-content'] {
+  anchor-name: --hint-content;
+}
+
+#hint-content {
+  bottom: anchor(--hint-content top);
+  margin-left: 81%;
+  margin-top: 37%;
+  width: 15.5rem;
+}
+
+#demo-content {
+  margin-left: 81%;
+  margin-top: 26%;
+  width: 15.5rem;
+}

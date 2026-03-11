@@ -9,6 +9,8 @@ import { MdPerson } from 'react-icons/md';
 import NextButton from './NextButton.jsx';
 import '../css/SideBar.css';
 import Loading from './Loading.jsx';
+import React from 'react';
+import hintGif from '../assets/Test1.gif';
 
 function SideBar(props) {
     // Sets Current LessonID or Default to lesson 1 if no lessonId is provided
@@ -92,9 +94,18 @@ function SideBar(props) {
 
                 {/* Help buttons */}
                 <div className="help-buttons">
-                    <button className="hint-button">
+                    <button popovertarget="hint-content" className="hint-button">
                         Hints
                     </button>
+                    {/* Uses the Popover API */}
+                    {/* Hint content popover */}
+                    <div id="hint-content" popover="auto" className="hint-content">
+                        <p>This is the hint content.</p>
+                        <button popovertarget="demo-content" className="hint-demo">Demo</button>
+                    </div>
+                    {/* Demo gif popover */}
+                    <img id="demo-content" popover='auto' src={hintGif} alt="Hint animation" />
+
                     <button className="chat-button">
                         Questions
                     </button>

@@ -27,6 +27,14 @@ export const APP_REGISTRY = [
         initialContent: ''
     },
     {
+        id: 'Settings',
+        name: 'Settings',
+        icon: desktopIcon,
+        component: 'Settings',
+        defaultSize: { width: 600, height: 400 },
+        canHaveMultipleInstances: false
+    },
+    {
         id: 'FrameApp',
         name: 'Frame App',
         icon: desktopIcon,
