@@ -19,24 +19,26 @@
 }
 
 .start-menu {
-	position: absolute;
-	top: 65%;
-	left: 50%;
-	transform: translate(-50%, -65%);
+    position: absolute;
+    left: 50%;
+    bottom: 100px; 
+    transform: translateX(-50%);
 
-	display: flex;
-	flex-direction: column; 
-	justify-content: space-between;
-
-	width: 40rem;
-	height: 30rem;
+    width: 40rem;
+    height: 30rem;
 
     background: rgba(40, 40, 40, 0.85);
-	backdrop-filter: blur(20px);
-	border-radius: 12px;
-	opacity: 0;
-	pointer-events: none;
-	z-index: 999;
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    opacity: 0;
+    pointer-events: none;
+    z-index: 999;
+    overflow: hidden;
 }
 
 .start-menu.open {
@@ -51,29 +53,43 @@
 .start-app-grid {
 	width: 100%;
 	height: 100%;
-	padding: 1rem;
-	padding-top: 0rem;
+	padding: 1rem 2rem;
 	margin: 0;
 	box-sizing: border-box;
+} 
+
+/* Each row is a 6‑column grid */
+.start-row {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
 }
 
-.start-app-grid.hidden {
-	visibility: hidden;
+/* Each cell centers its tile */
+.start-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.start-app-grid.ready {
-	visibility: visible;
+.start-menu-tile {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.react-grid-item.no-transition {
-	transition: none !important;
-	transform: none !important;
+.start-menu-placeholder {
+    width: 80px;
+    height: 80px;
+    opacity: 0;
+    pointer-events: none;
 }
 
-/* Disable ALL RGL animations */
-.react-grid-item {
-	transition: none !important;
-}
+
+
 
 .start-empty {
 	padding: 16px;
@@ -95,6 +111,8 @@
 	justify-content: space-between;
 	align-items: center;
 	padding: .5rem;
+
+    flex-shrink: 0;
 }
 
 .user-profile-button {

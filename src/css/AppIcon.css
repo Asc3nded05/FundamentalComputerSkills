@@ -8,6 +8,10 @@
   color: white;
   pointer-events: auto;
   touch-action: manipulation;
+
+  position: static !important;
+    transform: none !important;
+
 }
 
 /* Visual feedback for clicks - but not for start menu icons */
