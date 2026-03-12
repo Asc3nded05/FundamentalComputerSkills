@@ -11,6 +11,7 @@ import '../css/SideBar.css';
 import Loading from './Loading.jsx';
 import React from 'react';
 import hintGif from '../assets/Test1.gif';
+import hintVideo from '../assets/TestVideo.mp4';
 
 function SideBar(props) {
     // Sets Current LessonID or Default to lesson 1 if no lessonId is provided
@@ -101,10 +102,14 @@ function SideBar(props) {
                     {/* Hint content popover */}
                     <div id="hint-content" popover="auto" className="hint-content">
                         <p>This is the hint content.</p>
-                        <button popovertarget="demo-content" className="hint-demo">Demo</button>
+                        <button popovertarget="big-demo" className="hint-demo">Demo</button>
                     </div>
                     {/* Demo gif popover */}
-                    <img id="demo-content" popover='auto' src={hintGif} alt="Hint animation" />
+                    <div id="big-demo" popover='auto'>
+                        <video autoPlay loop muted controls={false}>
+                            <source src={hintVideo} type="video/mp4" />
+                        </video>  
+                    </div>
 
                     <button className="chat-button">
                         Questions
