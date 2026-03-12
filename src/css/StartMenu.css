@@ -8,7 +8,7 @@
 
 .start-button-icon {
 	width: auto;
-	height: calc(min(80vw, calc(100vh * 16 / 9)) * 0.025); /* Based on 2.5% of desktop size */
+	height: 30px;
 }
 
 .start-menu-overlay {
@@ -21,7 +21,7 @@
 .start-menu {
     position: absolute;
     left: 50%;
-    bottom: 100px; 
+    bottom: 65px; 
     transform: translateX(-50%);
 
     width: 40rem;
