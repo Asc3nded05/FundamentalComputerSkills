@@ -329,11 +329,63 @@
     {
       "stepId": 37,
       "lessonId": 4,
-      "text": "Try pressing Ctrl and A on your keyboard at the same time to select all the text in the document. This is a common keyboard shortcut that works in many apps to select all the text or items in a document or folder.",
+      "text": "Select some text by highlighting it, then hit Ctrl and X on your keyboard at the same time to cut it.",
       "orderNumber": 3,
-      "eventName": "NotepadSelectAll",
-      "hintText": "Press the Ctrl key and the A key on your keyboard at the same time to select all the text in the notepad document.",
+      "eventName": "NotepadCut",
+      "hintText": "Make sure you highlight text first. Then press the Ctrl key and the X key on your keyboard at the same time.",
       "hintVideo": "TestVideo.mp4"
+    },
+    {
+      "stepId": 38,
+      "lessonId": 4,
+      "text": "Now move your cursor and click somewhere else in the Notepad app. Then try pressing Ctrl and P on your keyboard at the same time, to paste the text you cut back into the notepad app.",
+      "eventName": "NotepadPaste",
+      "hintText": "Press the Ctrl key and the P key on your keyboard at the same time.",
+      "hintVideo": "TestVideo.mp4"
+    },
+    {
+      "stepId": 39,
+      "lessonId": 4,
+      "text": "Now use a new keyboard shortcut, by pressing the Ctrl key and the Z key at the same time. This will undo the paste you just did, which means the text you just pasted will disapear. If you did anything else before pressing Ctrl and Z, that action will be undone instead.",
+      "orderNumber": 5,
+      "eventName": "NotepadUndo",
+      "hintText": "Press the Ctrl key and the Z key on your keyboard at the same time to undo your last action.",
+      "hintVideo": "TestVideo.mp4"
+    },
+    {
+      "stepId": 40,
+      "lessonId": 4,
+      "text": "Now try pressing Ctrl and Y on your keyboard at the same time. This will redo the action you just undid, which means the text you pasted will come back.",
+      "orderNumber": 6,
+      "eventName": "NotepadRedoY",
+      "hintText": "Press the Ctrl key and the Y key on your keyboard at the same time to redo the action you just undid.",
+      "hintVideo": "TestVideo.mp4"
+    },
+    {
+      "stepId": 41,
+      "lessonId": 4,
+      "text": "Now use the undo shortcut again by pressing Ctrl and Z to undo the paste again.",
+      "orderNumber": 7,
+      "eventName": "NotepadUndo",
+      "hintText": "Press the Ctrl key and the Z key on your keyboard at the same time to undo your last action.",
+      "hintVideo": "TestVideo.mp4"
+    },
+    {
+      "stepId": 42,
+      "lessonId": 4,
+      "text": "Now try pressing Ctrl and Shift and Z at the same time to redo the paste. This is another keyboard shortcut for redo that uses the Shift key instead of Y.",
+      "orderNumber": 8,
+      "eventName": "NotepadRedoZ",
+      "hintText": "Press the Ctrl key, the Shift key, and the Z key on your keyboard at the same time to redo your last undo.",
+      "hintVideo": "TestVideo.mp4"
+    },
+    {
+      "stepId": 43,
+      "lessonId": 4,
+      "text": "Great job! You've learned how to use the undo and redo functions in Notepad using keyboard shortcuts. The undo function is really useful for quickly fixing mistakes, and the redo function is great for reapplying an action you just undid. You can continue to practice using these shortcuts in Notepad or other apps that support them.",
+      "orderNumber": 9,
+      "eventName": "Finish",
+      "hintText": "Congratulations! You've completed the lesson on using keyboard shortcuts for undo and redo. You can continue to practice using these shortcuts in Notepad or other apps that support them. When you're done, click Finish to end the lesson."
     }
   ]
 }
