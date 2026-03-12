@@ -83,6 +83,18 @@
     {
         "eventId": 21,
         "eventName": "FileExplorerVideosClicked"
+    }, 
+    {
+        "eventId": 22,
+        "eventName": "NotepadUndo"
+    }, 
+    {
+        "eventId": 23,
+        "eventName": "NotepadRedoY"
+    }, 
+    {
+        "eventId": 24,
+        "eventName": "NotepadRedoZ"
     }
   ]
 }
