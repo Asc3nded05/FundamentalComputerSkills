@@ -15,6 +15,7 @@ function AppWindow({
     bringToFront, 
     content, 
     initialSize = {width: 600, height: 400},
+    scale,
     desktopRef }) {
 
     const desktop = desktopRef.current.getBoundingClientRect(); // Get desktop dimensions to set bounds for dragging and to center new app
@@ -51,6 +52,7 @@ function AppWindow({
             bounds={"parent"} // prevent dragging outside of desktop area
             className={`appWindow ${isOpen ? 'open' : ''}`}
             style={{ zIndex: zIndex }}
+            scale={scale}
         >
             <div className="window">
                 <div className="window-header">
