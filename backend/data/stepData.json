@@ -322,7 +322,7 @@
       "stepId": 36,
       "lessonId": 4,
       "text": "Like in the copy, cut, and paste lesson, we will be using keyboard shortcuts to perform different functions in the Notepad app. Keyboard shortcuts are combinations of keys that you can press to quickly perform a function without having to click through menus. For example, Ctrl and C is the keyboard shortcut for copy, and Ctrl and V is the keyboard shortcut for paste.",
-      "orderNumber": 1,
+      "orderNumber": 2,
       "eventName": "Next",
       "hintText": "When you're done reading, click Next to continue."
     },
@@ -330,7 +330,7 @@
       "stepId": 37,
       "lessonId": 4,
       "text": "Try pressing Ctrl and A on your keyboard at the same time to select all the text in the document. This is a common keyboard shortcut that works in many apps to select all the text or items in a document or folder.",
-      "orderNumber": 1,
+      "orderNumber": 3,
       "eventName": "NotepadSelectAll",
       "hintText": "Press the Ctrl key and the A key on your keyboard at the same time to select all the text in the notepad document.",
       "hintVideo": "TestVideo.mp4"
