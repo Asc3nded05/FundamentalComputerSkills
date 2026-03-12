@@ -10,7 +10,6 @@ import NextButton from './NextButton.jsx';
 import '../css/SideBar.css';
 import Loading from './Loading.jsx';
 import React from 'react';
-import hintGif from '../assets/Test1.gif';
 import hintVideo from '../assets/TestVideo.mp4';
 
 function SideBar(props) {
@@ -101,7 +100,7 @@ function SideBar(props) {
                     {/* Uses the Popover API */}
                     {/* Hint content popover */}
                     <div id="hint-content" popover="auto" className="hint-content">
-                        <p>This is the hint content.</p>
+                        <p>This is the hint text.</p>
                         <button popovertarget="big-demo" className="hint-demo">Demo</button>
                     </div>
                     {/* Demo gif popover */}
