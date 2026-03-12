@@ -2,7 +2,7 @@ import routes from './routes/index.js';
 import express from 'express';
 
 const app = express();
-const PORT = 3000;
+const PORT = 80;
 
 //middleware
 app.use(express.json()); 
