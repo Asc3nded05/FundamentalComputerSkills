@@ -2,7 +2,7 @@ import routes from './routes/index.js';
 import express from 'express';
 
 const app = express();
-const PORT = 80;
+const port = process.env.PORT || 3000; 
 
 //middleware
 app.use(express.json()); 
@@ -14,6 +14,6 @@ app.get('/', (req, res) => {
 //Api Routes
 app.use('/api', routes)
 
-app.listen(PORT, () => {
-  console.log(`Express server listening on port ${PORT}`);
+app.listen(port, () => {
+  console.log(`Express server listening on port ${port}`);
 });
