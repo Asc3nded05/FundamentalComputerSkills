@@ -1,5 +1,8 @@
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { useState, useEffect, use, useRef, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useAppWindowManager } from "../utils/appWindowManager.js";
+import { eventBus } from "../utils/eventBus.js";
 
 import AppIcon from '../components/AppIcon.jsx'
 import Clock from '../components/Clock.jsx'
@@ -9,15 +12,11 @@ import StartButton from "../components/StartButton.jsx";
 import StartMenu from "../components/StartMenu.jsx";
 import QuickSettingsButton from "../components/QuickSettingsButton.jsx";
 import QuickSettings from "../components/QuickSettings.jsx";
-import { Link } from 'react-router-dom';
-import { APP_REGISTRY } from '../utils/apps.js';
-
 import FileExplorer from "../components/FileExplorer.jsx";
 import Notepad from "../components/Notepad.jsx";
 import FrameApp from "../components/FrameApp.jsx";
-import { useLocation } from 'react-router-dom';
-import { useAppWindowManager } from "../utils/appWindowManager.js";
-import { eventBus } from "../utils/eventBus.js";
+import Settings from "../components/Settings.jsx";
+
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 function Desktop() {
@@ -88,6 +87,8 @@ function Desktop() {
                 return <FileExplorer key={app.instanceId} />;
             case 'Notepad':
                 return <Notepad key={app.instanceId} initialContent={app.initialContent} />;
+            case 'Settings':
+                return <Settings key={app.instanceId} />;
             case 'FrameApp':
                 return <FrameApp key={app.instanceId} />;
             default:
@@ -97,151 +98,187 @@ function Desktop() {
 
     // Open text files from File Explorer
     useEffect(() => {
-    const handler = (e) => {
-        const { file } = e.detail;
-        openApp("Notepad", {
-        createNewInstance: true,
-        initialContent: file.content || '',
-        fileIdentifier: file.path || file.name || file.id
-        });
-    };
-    eventBus.addEventListener("OpenTextFile", handler);
-    return () => eventBus.removeEventListener("OpenTextFile", handler);
+        const handler = (e) => {
+            const { file } = e.detail;
+            openApp("Notepad", {
+                createNewInstance: true,
+                initialContent: file.content || '',
+                fileIdentifier: file.path || file.name || file.id
+            });
+        };
+        eventBus.addEventListener("OpenTextFile", handler);
+        return () => eventBus.removeEventListener("OpenTextFile", handler);
     }, [openApp]);
+
+    // Functions to keep desktop '1920x1080' for internal content positioning but scale to fit screen
+    const desktopAreaRef = useRef(null);
+    const BASE_WIDTH = 1280;
+    const BASE_HEIGHT = 720;
+    const [scale, setScale] = useState(1);
+
+    useEffect(() => {
+        if (!desktopAreaRef.current) return;
+        function updateScale() {
+            const rect = desktopAreaRef.current.getBoundingClientRect();
+            if (rect.width > 0 && rect.height > 0) {
+                const newScale = Math.min(
+                    rect.width / BASE_WIDTH,
+                    rect.height / BASE_HEIGHT
+                );
+                setScale(newScale);
+            }
+        };
+
+        // Create a ResizeObserver to watch for size changes
+        const resizeObserver = new ResizeObserver(updateScale);
+        resizeObserver.observe(desktopAreaRef.current);
+
+        // Initial measurement
+        updateScale();
+
+        return () => resizeObserver.disconnect();
+    }, []);
+
 
     return <>
         <div className="desktop-page">
-            <div 
-                className="desktop-container" 
-                ref={desktopRef}
-                style={{ filter: `brightness(${brightness}%)` }}
-            >
-                <ResponsiveGridLayout
-                    className="layout"
-                    layouts={{ lg: desktopLayout }}
-                    breakpoints={{ lg: 1200 }}
-                    cols={{ lg: 12 }}
-                    compactType={null}
-                    preventCollision={true}
-                    rowHeight={80}          // Controls vertical snap
-                    width={1200}
-                    isResizable={false}     // Desktop icons don’t resize   
-                    draggableHandle=".app-icon" // Only drag by the icon
-                    dragStartDelay={0} // To prevent conflict with double-click to open app
-                    clickDelay={200}
+            <div className="desktop-area" ref={desktopAreaRef}>
+                <div
+                    className="desktop-container"
+                    ref={desktopRef}
+                    style={{
+                        transform: `translate(-50%, -50%) scale(${scale})`,
+                        filter: `brightness(${brightness}%)`
+                    }}
                 >
-                    {/*  */}
-                    {baseApps.map((app) => (
-                        <div key={app.id}>
-                            <AppIcon
-                                name={app.name}
-                                icon={app.icon}
-                                eventName={`${app.id}DesktopOpen`}
-                                // openWindow={() => openApp(app.id)}
-                                openWindow={() => openApp(app.id, { createNewInstance: true })} // Open a new instance (if app allows)
-                                variant="desktop"
-                                isAppOpen={app.isOpen}
-                            />
+                    <ResponsiveGridLayout
+                        className="layout"
+                        layouts={{ lg: desktopLayout }}
+                        breakpoints={{ lg: 1200 }}
+                        cols={{ lg: 12 }}
+                        compactType={null}
+                        preventCollision={true}
+                        rowHeight={80}          // Controls vertical snap
+                        // width={1200}
+                        isResizable={false}     // Desktop icons don’t resize   
+                        draggableHandle=".app-icon" // Only drag by the icon
+                        dragStartDelay={0} // To prevent conflict with double-click to open app
+                        clickDelay={200}
+                    >
+                        {/*  */}
+                        {baseApps.map((app) => (
+                            <div key={app.id}>
+                                <AppIcon
+                                    name={app.name}
+                                    icon={app.icon}
+                                    eventName={`${app.id}DesktopOpen`}
+                                    // openWindow={() => openApp(app.id)}
+                                    openWindow={() => openApp(app.id, { createNewInstance: true })} // Open a new instance (if app allows)
+                                    variant="desktop"
+                                    isAppOpen={app.isOpen}
+                                />
+                            </div>
+                        ))}
+                    </ResponsiveGridLayout>
+
+                    {/* Taskbar */}
+                    <div className="navbar">
+                        <div className="navbar-left">
+                            {/* Left-aligned widgets can go here */}
                         </div>
-                    ))}
-                </ResponsiveGridLayout>
 
-                {/* Taskbar */}
-                <div className="navbar">
-                    <div className="navbar-left">
-                        {/* Left-aligned widgets can go here */}
+                        <div className="navbar-center">
+                            <StartButton toggleStartMenu={toggleStartMenu} />
+
+                            {baseApps.map((app) => {
+                                // Get all instances of this app that are open or minimized
+                                const appInstances = apps.filter(a => a.id === app.id && (a.instanceId || !a.instanceId === !app.instanceId));
+                                const hasOpenInstance = appInstances.some(a => a.isOpen);
+                                const allMinimized = appInstances.every(a => a.isMinimized);
+
+                                return (
+                                    <AppIcon
+                                        key={app.id}
+                                        name={app.name}
+                                        icon={app.icon}
+                                        eventName={`${app.id}TaskbarOpen`}
+                                        openWindow={() => {
+                                            if (allMinimized && hasOpenInstance) {
+                                                // If all instances are minimized, restore them
+                                                appInstances.forEach(instance => bringToFront(instance.instanceId || instance.id));
+                                            } else if (hasOpenInstance && app.canHaveMultipleInstances) {
+                                                // If app can have multiple instances and one is already open, open a new one
+                                                openApp(app.id, { createNewInstance: true });
+                                            } else if (!hasOpenInstance) {
+                                                // If no instance is open, open one
+                                                openApp(app.id, { createNewInstance: app.canHaveMultipleInstances });
+                                            } else {
+                                                // Default: bring to front if minimized, or open if not
+                                                if (app.isMinimized) {
+                                                    bringToFront(app.id);
+                                                } else {
+                                                    openApp(app.id);
+                                                }
+                                            }
+                                        }}
+                                        variant="taskbar"
+                                        isAppOpen={hasOpenInstance}
+                                        isMinimized={allMinimized}
+                                        onContextMenu={(e) => {
+                                            e.preventDefault();
+                                        }}
+                                    />
+                                );
+                            })}
+
+                        </div>
+
+                        <div className="navbar-right">
+                            {/* Clock, wifi, etc */}
+                            <QuickSettingsButton toggleQuickSettings={toggleQuickSettings} />
+                            <Clock />
+                        </div>
                     </div>
 
-                    <div className="navbar-center">
-                        <StartButton toggleStartMenu={toggleStartMenu} />
-
-                        {baseApps.map((app) => {
-                            // Get all instances of this app that are open or minimized
-                            const appInstances = apps.filter(a => a.id === app.id && (a.instanceId || !a.instanceId === !app.instanceId));
-                            const hasOpenInstance = appInstances.some(a => a.isOpen);
-                            const allMinimized = appInstances.every(a => a.isMinimized);
-                            
-                            return (
-                            <AppIcon
-                                key={app.id}
-                                name={app.name}
-                                icon={app.icon}
-                                eventName={`${app.id}TaskbarOpen`}
-                                openWindow={() => {
-                                    if (allMinimized && hasOpenInstance) {
-                                        // If all instances are minimized, restore them
-                                        appInstances.forEach(instance => bringToFront(instance.instanceId || instance.id));
-                                    } else if (hasOpenInstance && app.canHaveMultipleInstances) {
-                                        // If app can have multiple instances and one is already open, open a new one
-                                        openApp(app.id, { createNewInstance: true });
-                                    } else if (!hasOpenInstance) {
-                                        // If no instance is open, open one
-                                        openApp(app.id, { createNewInstance: app.canHaveMultipleInstances });
-                                    } else {
-                                        // Default: bring to front if minimized, or open if not
-                                        if (app.isMinimized) {
-                                            bringToFront(app.id);
-                                        } else {
-                                            openApp(app.id);
-                                        }
-                                    }
-                                }}
-                                variant="taskbar"
-                                isAppOpen={hasOpenInstance}
-                                isMinimized={allMinimized}
-                                onContextMenu={(e) => {
-                                    e.preventDefault();
-                                }}
-                            />
-                            );
-                        })}
-
-                    </div>
-
-                    <div className="navbar-right">
-                        {/* Clock, wifi, etc */}
-                        <QuickSettingsButton toggleQuickSettings={toggleQuickSettings} />
-                        <Clock />
-                    </div>
-                </div>
-
-                <StartMenu
-                    closeStartMenu={() => setIsStartOpen(false)}
-                    isOpen={isStartOpen}
-                    apps={startMenuApps}
-                />
-
-                <QuickSettings
-                    isOpen={isQuickSettingsOpen}
-                    closeQuickSettings={() => setQuickSettingsOpen(false)}
-                    brightness={brightness}
-                    setBrightness={setBrightness}
-                    volume={volume}
-                    setVolume={setVolume}
-                />
-
-
-                {/* Dynamic app windows */}
-                {sortedWindows.map((app) => (
-                    <AppWindow
-                        key={app.instanceId || app.id}
-                        name={app.name}
-                        isOpen={app.isOpen}
-                        isMinimized={app.isMinimized}
-                        isMaximized={app.isMaximized}
-                        onClose={() => closeApp(app.instanceId || app.id)}
-                        onMinimize={() => minimizeApp(app.instanceId || app.id)}
-                        onMaximize={() => maximizeApp(app.instanceId || app.id)}
-                        zIndex={app.zIndex}
-                        bringToFront={() => bringToFront(app.instanceId || app.id)}
-                        content={renderAppContent(app)}
-                        initialSize={app.size}
-                        desktopRef={desktopRef}
-                        closeEventName={`${app.id}Close`}
+                    <StartMenu
+                        closeStartMenu={() => setIsStartOpen(false)}
+                        isOpen={isStartOpen}
+                        apps={startMenuApps}
                     />
-                ))}
 
+                    <QuickSettings
+                        isOpen={isQuickSettingsOpen}
+                        closeQuickSettings={() => setQuickSettingsOpen(false)}
+                        brightness={brightness}
+                        setBrightness={setBrightness}
+                        volume={volume}
+                        setVolume={setVolume}
+                    />
+
+
+                    {/* Dynamic app windows */}
+                    {sortedWindows.map((app) => (
+                        <AppWindow
+                            key={app.instanceId || app.id}
+                            name={app.name}
+                            isOpen={app.isOpen}
+                            isMinimized={app.isMinimized}
+                            isMaximized={app.isMaximized}
+                            onClose={() => closeApp(app.instanceId || app.id)}
+                            onMinimize={() => minimizeApp(app.instanceId || app.id)}
+                            onMaximize={() => maximizeApp(app.instanceId || app.id)}
+                            zIndex={app.zIndex}
+                            bringToFront={() => bringToFront(app.instanceId || app.id)}
+                            content={renderAppContent(app)}
+                            initialSize={app.size}
+                            scale={scale}
+                            desktopRef={desktopRef}
+                        />
+                    ))}
+
+                </div>
             </div>
+
 
             <SideBar lessonId={lessonId} />
 

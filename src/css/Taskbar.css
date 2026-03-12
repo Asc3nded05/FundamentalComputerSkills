@@ -5,7 +5,7 @@
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: calc(min(80vw, calc(100vh * 16 / 9)) * 0.05);
+  height: 8%;
 
   display: flex;
   align-items: center;
