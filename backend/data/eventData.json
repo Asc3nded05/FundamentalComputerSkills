@@ -90,11 +90,7 @@
     }, 
     {
         "eventId": 23,
-        "eventName": "NotepadRedoY"
-    }, 
-    {
-        "eventId": 24,
-        "eventName": "NotepadRedoZ"
+        "eventName": "NotepadRedo"
     }
   ]
 }

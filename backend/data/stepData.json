@@ -355,10 +355,10 @@
     {
       "stepId": 40,
       "lessonId": 4,
-      "text": "Now try pressing Ctrl and Y on your keyboard at the same time. This will redo the action you just undid, which means the text you pasted will come back.",
+      "text": "Now try pressing Ctrl and Shift and Z at the same time to redo the paste. This will redo the action you just undid, which means the text you pasted will come back. This is the most common keyboard shortcut to redo an undo.",
       "orderNumber": 6,
-      "eventName": "NotepadRedoY",
-      "hintText": "Press the Ctrl key and the Y key on your keyboard at the same time to redo the action you just undid.",
+      "eventName": "NotepadRedo",
+      "hintText": "Press the Ctrl key, the Shift key, and the Z key on your keyboard at the same time to redo the action you just undid.",
       "hintVideo": "TestVideo.mp4"
     },
     {
@@ -373,10 +373,10 @@
     {
       "stepId": 42,
       "lessonId": 4,
-      "text": "Now try pressing Ctrl and Shift and Z at the same time to redo the paste. This is another keyboard shortcut for redo that uses the Shift key instead of Y.",
+      "text": "Now try pressing Ctrl and Y on your keyboard at the same time. This is another keyboard shortcut for redo, and it will redo the paste again just like Ctrl Shift Z did.",
       "orderNumber": 8,
-      "eventName": "NotepadRedoZ",
-      "hintText": "Press the Ctrl key, the Shift key, and the Z key on your keyboard at the same time to redo your last undo.",
+      "eventName": "NotepadRedo",
+      "hintText": "Press the Ctrl key and the Y key on your keyboard at the same time to redo your last undo. (If this shortcut does not work, it is not supported on your device or web browser. Press the Command key, the Shift key, and Z key on your keyboard at the same time to redo your last undo.)",
       "hintVideo": "TestVideo.mp4"
     },
     {
