@@ -91,6 +91,14 @@
     {
         "eventId": 23,
         "eventName": "NotepadRedo"
+    }, 
+    {
+        "eventId": 24,
+        "eventName": "NotepadFind"
+    }, 
+    {
+        "eventId": 25,
+        "eventName": "NotepadSelectAll"
     }
   ]
 }

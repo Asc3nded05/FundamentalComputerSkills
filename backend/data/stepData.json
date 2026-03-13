@@ -386,6 +386,101 @@
       "orderNumber": 9,
       "eventName": "Finish",
       "hintText": "Congratulations! You've completed the lesson on using keyboard shortcuts for undo and redo. You can continue to practice using these shortcuts in Notepad or other apps that support them. When you're done, click Finish to end the lesson."
+    }, 
+    {
+      "stepId": 44,
+      "lessonId": 5,
+      "text": "For this lesson, we will be using the Notepad app. Open the Notepad app from the Desktop.",
+      "orderNumber": 1,
+      "eventName": "NotepadDesktopOpen",
+      "hintText": "Look for the icon on your desktop that has a notepad icon and says \"Notepad\" under it. Double click on that icon to open the Notepad app. Make sure to open the Notepad app through the Desktop.",
+      "hintVideo": "NotepadVideo.mp4"
+    }, 
+    {
+      "stepId": 45,
+      "lessonId": 5,
+      "text": "In this lesson, we will be learning the keyboard shortcut to find text in a text document. This is a really useful shortcut that allows you to quickly search for specific words or phrases in a document without having to scroll through it and look for it yourself.",
+      "orderNumber": 2,
+      "eventName": "Next",
+      "hintText": "When you're done reading, click Next to continue."
+    }, 
+    {
+      "stepId": 46,
+      "lessonId": 5,
+      "text": "Press the Ctrl key and the F key on your keyboard at the same time to open the find bar. This is a small search bar that will appear at the top of the Notepad app.",
+      "orderNumber": 3,
+      "eventName": "NotepadFind",
+      "hintText": "Press the Ctrl key and the F key on your keyboard at the same time to open the find bar.",
+      "hintVideo": "NotepadVideo.mp4"
+    }, 
+    {
+      "stepId": 47,
+      "lessonId": 5,
+      "text": "In the find bar, type in a word or phrase that you want to search for in the document. As you type, Notepad will automatically highlight any instances of that word or phrase in the document. Once you've typed in what you want to search for, click Next to continue.",
+      "orderNumber": 4,
+      "eventName": "Next",
+      "hintText": "Type any word or phrase you want in the find bar. When you're done, click Next to continue.", 
+      "hintVideo": "NotepadVideo.mp4"
+    }, 
+    {
+      "stepId": 48,
+      "lessonId": 5,
+      "text": "Now try clicking the \"Find Next\" button in the find bar. This will move your cursor to the next instance of the word or phrase you searched for in the document.",
+      "orderNumber": 5,
+      "eventName": "Next",
+      "hintText": "Click the \"Find Next\" button in the find bar. If the find bar has disappeared, press Ctrl and F again. Press Next to continue.",
+      "hintVideo": "NotepadVideo.mp4"
+    }, 
+    {
+      "stepId": 49,
+      "lessonId": 5,
+      "text": "Now try clicking the \"Find Previous\" button in the find bar. This will move your cursor to the previous instance of the word or phrase you searched for in the document.",
+      "orderNumber": 6,
+      "eventName": "Next",
+      "hintText": "Click the \"Find Previous\" button in the find bar. If the find bar has disappeared, press Ctrl and F again. Press Next to continue.",
+      "hintVideo": "NotepadVideo.mp4"
+    }, 
+    {
+      "stepId": 50,
+      "lessonId": 5,
+      "text": "Great job! You've learned how to use the find function in Notepad using the Ctrl and F keyboard shortcut. This is a really useful function that can save you a lot of time when you're looking for specific information in a long document. You can continue to practice using this shortcut in Notepad or other apps that support it.",
+      "orderNumber": 7,
+      "eventName": "Finish",
+      "hintText": "Congratulations! You've completed the lesson on using the find function with the Ctrl and F keyboard shortcut. You can continue to practice using this shortcut in Notepad or other apps that support it. When you're done, click Finish to end the lesson."
+    }, 
+    {
+      "stepId": 51,
+      "lessonId": 6,
+      "text": "For this lesson, we will be using the Notepad app. Open the Notepad app from the Desktop.",
+      "orderNumber": 1,
+      "eventName": "NotepadDesktopOpen",
+      "hintText": "Look for the icon on your desktop that has a notepad icon and says \"Notepad\" under it. Double click on that icon to open the Notepad app. Make sure to open the Notepad app through the Desktop.",
+      "hintVideo": "NotepadVideo.mp4"
+    }, 
+    {
+      "stepId": 52,
+      "lessonId": 6,
+      "text": "In this lesson, we will be learning the keyboard shortcut to select all the text in a text file. This is a useful shortcut that allows you to quickly select all the text in a document without having to click and drag your mouse across it.",
+      "orderNumber": 2,
+      "eventName": "Next",
+      "hintText": "When you're done reading, click Next to continue."
+    }, 
+    {
+      "stepId": 53,
+      "lessonId": 6,
+      "text": "Press the Ctrl key and the A key on your keyboard at the same time to select all the text in the document.",
+      "orderNumber": 3,
+      "eventName": "NotepadSelectAll",
+      "hintText": "Press the Ctrl key and the A key on your keyboard at the same time to select all the text in the document.",
+      "hintVideo": "NotepadVideo.mp4"
+    }, 
+    {
+      "stepId": 54,
+      "lessonId": 6,
+      "text": "Great job! You've learned how to use the select all function in Notepad using the Ctrl and A keyboard shortcut. This is a really useful function that can save you a lot of time when you want to select all the text in a document. You can continue to practice using this shortcut in Notepad or other apps that support it.",
+      "orderNumber": 4,
+      "eventName": "Finish",
+      "hintText": "Congratulations! You've completed the lesson on using the select all function with the Ctrl and A keyboard shortcut. You can continue to practice using this shortcut in Notepad or other apps that support it. When you're done, click Finish to end the lesson."
     }
   ]
 }

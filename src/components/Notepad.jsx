@@ -17,6 +17,8 @@ function Notepad({initialContent=""}) {
             onPaste={() => dispatchDesktopEvent("NotepadPaste")}
             onUndo={() => dispatchDesktopEvent("NotepadUndo")} //Broadcast undo/redo events
             onRedo={() => dispatchDesktopEvent("NotepadRedo")}
+            onFind={() => dispatchDesktopEvent("NotepadFind")} // Broadcast find and select all events
+            onSelectAll={() => dispatchDesktopEvent("NotepadSelectAll")}
             ></textarea>
         </div>
     </>
