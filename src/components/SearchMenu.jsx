@@ -1,14 +1,13 @@
-import { useEffect, useState, useRef } from "react";
-import { dispatchDesktopEvent } from "../utils/eventBus";
+import { useEffect, useRef } from "react";
+import { dispatchDesktopEvent } from "../utils/eventBus.js";
 import AppIcon from "./AppIcon.jsx";
 
-function StartMenu({ closeStartMenu, isOpen, apps = [] }) {
+function StartMenu({ closeStartMenu, isOpen, apps = [] , query, setQuery}) {
     const nodeRef = useRef(null);
-    const [query, setQuery] = useState("");
 
     const handleClose = () => {
         closeStartMenu();
-        dispatchDesktopEvent("StartMenuClose");
+        dispatchDesktopEvent("SearchClose");
     };
 
     // Escape to close
@@ -17,7 +16,7 @@ function StartMenu({ closeStartMenu, isOpen, apps = [] }) {
             if (!isOpen) return;
             if (e.key === "Escape") {
                 closeStartMenu?.();
-                dispatchDesktopEvent("StartMenuClosed");
+                dispatchDesktopEvent("SearchClosed");
             }
         }
         document.addEventListener("keydown", handleKey);
@@ -27,10 +26,8 @@ function StartMenu({ closeStartMenu, isOpen, apps = [] }) {
     // Focus trap
     useEffect(() => {
         if (isOpen && nodeRef.current) {
-            const firstFocusable = nodeRef.current.querySelector(
-                'button, [href], input, [tabindex]:not([tabindex="-1"])'
-            );
-            (firstFocusable || nodeRef.current).focus();
+            const firstFocusable = nodeRef.current.querySelector('input');
+            if (firstFocusable) firstFocusable.focus();
             dispatchDesktopEvent("StartMenuOpen");
         }
     }, [isOpen]);
@@ -64,21 +61,10 @@ function StartMenu({ closeStartMenu, isOpen, apps = [] }) {
                         tabIndex={-1}
                         onMouseDown={(e) => e.stopPropagation()}
                     >
-                        <div className="start-menu-top">
-                            <input
-                                className="start-menu-search"
-                                type="text"
-                                placeholder="Search for apps, settings and documents"
-                                value={query}
-                                onChange={(e) => setQuery(e.target.value)}
-                            />
-                        </div>
                         {/* App Grid */}
                         <div className="start-app-grid">
-                            {chunked.map((row, rowIndex) => (
-                                <div key={rowIndex} className="start-row">
-                                {row.map((app, colIndex) => (
-                                    <div key={colIndex} className="start-cell">
+                            {filteredApps.map((app, index) => (
+                                <div key={index} className="start-row">
                                     {!app.placeholder ? (
                                         <div className="start-menu-tile">
                                         <AppIcon
@@ -89,21 +75,14 @@ function StartMenu({ closeStartMenu, isOpen, apps = [] }) {
                                             variant={app.variant || "start-menu"}
                                             isAppOpen={app.isAppOpen}
                                             closeMenu={handleClose}
+                                            className="search-apps"
                                         />
                                         </div>
                                     ) : (
                                         <div className="start-menu-placeholder start-menu-tile" />
                                     )}
                                     </div>
-                                ))}
-                                </div>
                             ))}
-                        </div>
-
-                        {/* Bottom bar */}
-                        <div className="start-menu-bottom">
-                            <div className="user-profile-button">User Profile</div>
-                            <div className="power-button">Power Button</div>
                         </div>
                     </div>
                 </div>

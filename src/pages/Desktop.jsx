@@ -16,6 +16,8 @@ import FileExplorer from "../components/FileExplorer.jsx";
 import Notepad from "../components/Notepad.jsx";
 import FrameApp from "../components/FrameApp.jsx";
 import Settings from "../components/Settings.jsx";
+import SearchBar from "../components/SearchBar.jsx"
+import SearchMenu from "../components/SearchMenu.jsx"
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -25,6 +27,7 @@ function Desktop() {
     const lessonId = state?.lessonId;
     const [brightness, setBrightness] = useState(100);
     const [volume, setVolume] = useState(100);
+    const [query, setQuery] = useState("")
 
     // Ref for desktop area, used to center new app windows
     const desktopRef = useRef(null);
@@ -43,10 +46,16 @@ function Desktop() {
     const baseApps = useMemo(() => apps.filter(app => !app.instanceId), [apps]);
 
     const [isStartOpen, setIsStartOpen] = useState(false);
+    const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [isQuickSettingsOpen, setQuickSettingsOpen] = useState(false);
 
     function toggleStartMenu() {
         setIsStartOpen(prev => !prev);
+    }
+
+     function toggleSearch(){
+        console.log("toggleSearch")
+        setIsSearchOpen(prev => !prev);
     }
 
     function toggleQuickSettings() {
@@ -189,6 +198,10 @@ function Desktop() {
 
                         <div className="navbar-center">
                             <StartButton toggleStartMenu={toggleStartMenu} />
+                            <SearchBar toggleSearch={toggleSearch}
+                            query={query}
+                            setQuery={setQuery}/>
+                            
 
                             {baseApps.map((app) => {
                                 // Get all instances of this app that are open or minimized
@@ -244,6 +257,14 @@ function Desktop() {
                         closeStartMenu={() => setIsStartOpen(false)}
                         isOpen={isStartOpen}
                         apps={startMenuApps}
+                    />
+
+                    <SearchMenu
+                        closeStartMenu={() => setIsSearchOpen(false)}
+                        isOpen={isSearchOpen}
+                        apps={startMenuApps}
+                        query={query}
+                        setQuery={setQuery}
                     />
 
                     <QuickSettings

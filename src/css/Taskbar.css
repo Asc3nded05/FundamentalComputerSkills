@@ -16,6 +16,35 @@
   min-height: unset;
 }
 
+.taskbar-search {
+  background-color: #4d4c4c;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  height: 2rem;
+  width: 15rem;
+}
+
+.taskbar-search:hover{
+  background-color: #5d5c5c;
+}
+
+.taskbar-search::placeholder{
+  color: #c5c4c4;
+}
+
+.taskbar-search[type="text"]{
+	padding: 1rem;
+	color: #ffffff;
+}
+
+
+
+.taskbar-search:focus{
+	outline: none;
+}
+
+
 .navbar-left {
   flex: 1;
   display: flex;
