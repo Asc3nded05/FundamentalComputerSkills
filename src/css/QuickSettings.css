@@ -59,7 +59,7 @@
 }
 
 .qs-tile-on {
-    background: rgba(84, 150, 125, 0.8); 
+    background: rgba(0, 120, 215, 0.8); 
 }
 
 .qs-tile-left {
@@ -97,7 +97,7 @@
 
 .qs-slider {
     margin-bottom: 16px;
-    accent-color: rgba(84, 150, 125, 0.8);
+    accent-color: rgba(0, 120, 215, 0.8);
 }
 
 .qs-slider input[type="range"] {
@@ -105,9 +105,33 @@
 }
 
 .qs-battery {
-    text-align: right;
+    text-align: left;
     opacity: 0.8;
     font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.qs-battery-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.qs-settings-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background 0.15s;
+}
+
+
+.qs-settings-button:hover {
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .qs-detail-panel {
@@ -149,7 +173,7 @@
     overflow-y: auto;
     padding-right: 4px;
     padding-left: 4px;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .qs-detail-list {
@@ -158,16 +182,68 @@
 }
 
 .qs-detail-list-item {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
     cursor: pointer;
     transition: background 0.15s;
-    color: white;
-    display: flex;
-    justify-content: left;
-    padding: 8px;
+    text-align: left;
 }
 
 .qs-detail-list-item:hover {
     background: rgba(255, 255, 255, 0.1);
+}
+
+.qs-detail-toggle {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.15s;
+    text-align: left;
+}
+
+.qs-detail-toggle:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.qs-detail-toggle.on {
+    background: rgba(0, 120, 215, 0.8);
+}
+
+.qs-detail-toggle-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.qs-detail-toggle-label {
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.qs-detail-toggle-description {
+    font-size: 12px;
+    opacity: 0.8;
+    line-height: 1.2;
+}
+
+.qs-toggle-indicator {
+    font-weight: 500;
+    opacity: 0.9;
+    margin-left: 12px;
 }
 
 .qs-detail-footer {
@@ -178,4 +254,53 @@
 
 .qs-detail-footer-button {
     color: white;
+}
+
+.qs-connect-button {
+    width: 100%;
+    background: rgba(0, 120, 215, 0.8);
+    border: none;
+    color: white;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+.qs-connect-button:hover {
+    background: rgba(0, 120, 215, 1);
+}
+
+.qs-connect-button.disconnect {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.qs-connect-button.disconnect:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.qs-device-status {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.qs-network-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.qs-connected-indicator {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.qs-project-selected {
+    background: rgba(0, 120, 215, 0.8);
+}
+
+.qs-project-selected:hover {
+    background: rgba(0, 120, 215, 1);
 }

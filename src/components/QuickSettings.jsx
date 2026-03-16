@@ -6,10 +6,38 @@ import "../css/QuickSettings.css";
 function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, volume, setVolume }) {
     const panelRef = useRef(null);
 
-    const [wifiOn, setWifiOn] = useState(false);
+    // Quick Setting Toggles
+    const [wifiOn, setWifiOn] = useState(true);
     const [bluetoothOn, setBluetoothOn] = useState(false);
     const [airplaneOn, setAirplaneOn] = useState(false);
     const [energyOn, setEnergyOn] = useState(false);
+
+    // Accessibility options
+    const [accMagnifier, setAccMagnifier] = useState(false);
+    const [accNarrator, setAccNarrator] = useState(false);
+    const [accColorFilters, setAccColorFilters] = useState(false);
+    const [accLiveCaptions, setAccLiveCaptions] = useState(false);
+    const [accMonoAudio, setAccMonoAudio] = useState(false);
+    const [accVoiceAccess, setAccVoiceAccess] = useState(false);
+    const [accStickyKeys, setAccStickyKeys] = useState(false);
+
+    // WiFi and Bluetooth interactivity
+    const [selectedWifi, setSelectedWifi] = useState(null);
+    const [wifiStatuses, setWifiStatuses] = useState({
+        "Wifi Network 1": "connected",
+        "Wifi Network 2": "disconnected",
+        "Wifi Network 3": "disconnected",
+        "Wifi Network 4": "disconnected",
+        "Wifi Network 5": "disconnected"
+    });
+    const [bluetoothStatuses, setBluetoothStatuses] = useState({
+        "Headphone 1": "connected",
+        "Headphone 2": "disconnected",
+        "Headphone 3": "disconnected",
+        "Speaker": "disconnected",
+        "Phone Link": "disconnected"
+    });
+    const [selectedProject, setSelectedProject] = useState("PC screen only");
 
     // "wifi" | "bluetooth" | "accessibility" | "project" | null
     const [activeDetail, setActiveDetail] = useState(null);
@@ -73,11 +101,79 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
         });
     };
 
+    const selectWifiNetwork = (network) => {
+        setSelectedWifi(prev => (prev === network ? null : network));
+    };
+
+    const toggleWifiConnection = (network) => {
+        const currentConnected = Object.keys(wifiStatuses).find(n => wifiStatuses[n] === "connected");
+        
+        if (wifiStatuses[network] === "connected") {
+            // Disconnect this one
+            setWifiStatuses(prev => ({ ...prev, [network]: "disconnecting" }));
+            setTimeout(() => {
+                setWifiStatuses(prev => ({ ...prev, [network]: "disconnected" }));
+            }, 1000);
+        } else {
+            // Disconnect current if any, then connect new
+            if (currentConnected) {
+                setWifiStatuses(prev => ({ ...prev, [currentConnected]: "disconnecting" }));
+                setTimeout(() => {
+                    setWifiStatuses(prev => ({ ...prev, [currentConnected]: "disconnected", [network]: "connecting" }));
+                    setTimeout(() => {
+                        setWifiStatuses(prev => ({ ...prev, [network]: "connected" }));
+                    }, 1000);
+                }, 1000);
+            } else {
+                setWifiStatuses(prev => ({ ...prev, [network]: "connecting" }));
+                setTimeout(() => {
+                    setWifiStatuses(prev => ({ ...prev, [network]: "connected" }));
+                }, 1000);
+            }
+        }
+    };
+
+    const toggleBluetoothConnection = (device) => {
+        setBluetoothStatuses(prev => {
+            const current = prev[device];
+            if (current === "connected") {
+                return { ...prev, [device]: "disconnecting" };
+            } else if (current === "disconnected") {
+                return { ...prev, [device]: "connecting" };
+            }
+            return prev;
+        });
+        setTimeout(() => {
+            setBluetoothStatuses(prev => {
+                const current = prev[device];
+                if (current === "connecting") {
+                    return { ...prev, [device]: "connected" };
+                } else if (current === "disconnecting") {
+                    return { ...prev, [device]: "disconnected" };
+                }
+                return prev;
+            });
+        }, 1000); // 1 second delay
+    };
+
     const openDetail = (type) => {
         setActiveDetail(prev => (prev === type ? null : type));
         dispatchDesktopEvent("QuickSettingsDetailOpen", { type });
     };
 
+    const AccToggle = ({ label, description, value, setValue }) => (
+        <button
+            className={`qs-detail-toggle ${value ? "on" : ""}`}
+            onClick={() => setValue(v => !v)}
+        >
+            <div className="qs-detail-toggle-text">
+                <div className="qs-detail-toggle-label">{label}</div>
+                <div className="qs-detail-toggle-description">{description}</div>
+            </div>
+
+            <span className="qs-toggle-indicator">{value ? "On" : "Off"}</span>
+        </button>
+    );
 
     return (
         <>
@@ -196,9 +292,14 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                                     />
                                 </div>
 
-                                {/* Battery indicator */}
-                                <div className="qs-battery">
-                                    Battery: 87%
+                                <div className="qs-battery-row">
+                                    <div className="qs-battery">
+                                        <img className="qs-icon" src={placeholderImage} alt="Battery" />
+                                        87%
+                                    </div>
+                                    <button className="qs-settings-button">
+                                        <img className="qs-icon" src={placeholderImage} alt="Settings" />
+                                    </button>
                                 </div>
                             </div>
                         )}
@@ -220,32 +321,125 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                                 
 
                                 <div className="qs-detail-content">
-                                    {activeDetail === "wifi" && <div className="qs-detail-list">
-                                        <button className="qs-detail-list-item"> 
-                                            <img className="qs-icon" src={placeholderImage} alt="Wifi 1" /> Wifi Network 1
-                                        </button>
-                                        <button className="qs-detail-list-item"> 
-                                            <img className="qs-icon" src={placeholderImage} alt="Wifi 2" /> Wifi Network 2
-                                        </button>
-                                        <button className="qs-detail-list-item"> 
-                                            <img className="qs-icon" src={placeholderImage} alt="Wifi 3" /> Wifi Network 3
-                                        </button>
-                                        <button className="qs-detail-list-item"> 
-                                            <img className="qs-icon" src={placeholderImage} alt="Wifi 4" /> Wifi Network 4
-                                        </button>
-                                        <button className="qs-detail-list-item"> 
-                                            <img className="qs-icon" src={placeholderImage} alt="Wifi 5" /> Wifi Network 5
-                                        </button>
-                                    </div>}
-                                    {activeDetail === "bluetooth" && <div>
-                                        Bluetooth devices (placeholder)
-                                    </div>}
-                                    {activeDetail === "accessibility" && <div>
-                                        Accessibility options (placeholder)
-                                    </div>}
-                                    {activeDetail === "project" && <div>
-                                        Project / display options (placeholder)
-                                    </div>}
+                                    {activeDetail === "wifi" && (
+                                        <div className="qs-detail-list">
+                                            {Object.keys(wifiStatuses).map(network => (
+                                                <div key={network}>
+                                                    <button 
+                                                        className="qs-detail-list-item" 
+                                                        onClick={() => selectWifiNetwork(network)}
+                                                    >
+                                                        <div>
+                                                            <div className="qs-network-info">
+                                                                <img className="qs-icon" src={placeholderImage} alt={network} /> 
+                                                                    <span>{network}</span>
+                                                            </div>
+                                                            {wifiStatuses[network] !== "disconnected" && (
+                                                                <span className="qs-connected-indicator">{wifiStatuses[network]}</span>
+                                                            )}
+                                                        </div>
+
+                                                        {selectedWifi === network && (
+                                                            <button 
+                                                                className={`qs-connect-button ${wifiStatuses[network] === "connected" ? "disconnect" : ""}`}
+                                                                onClick={() => toggleWifiConnection(network)}
+                                                            >
+                                                                {wifiStatuses[network] === "connected" ? "Disconnect" : 
+                                                                wifiStatuses[network] === "connecting" ? "Connecting..." : 
+                                                                wifiStatuses[network] === "disconnecting" ? "Disconnecting..." : "Connect"}
+                                                            </button>
+                                                        )}
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                    {activeDetail === "bluetooth" && (
+                                        <div className="qs-detail-list">
+                                            {Object.keys(bluetoothStatuses).map(device => (
+                                                <button 
+                                                    key={device}
+                                                    className="qs-detail-list-item" 
+                                                    onClick={() => toggleBluetoothConnection(device)}
+                                                >
+                                                    <div className="qs-bluetooth-name">
+                                                        <img className="qs-icon" src={placeholderImage} alt={device} /> {device}
+                                                    </div>
+                                                    <span className="qs-device-status">
+                                                        {bluetoothStatuses[device] === "connected" ? "Connected" : 
+                                                         bluetoothStatuses[device] === "connecting" ? "Connecting..." : 
+                                                         bluetoothStatuses[device] === "disconnecting" ? "Disconnecting..." : "Not Connected"}
+                                                    </span>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
+                                    {activeDetail === "accessibility" && (
+                                        <div className="qs-detail-list">
+                                            <AccToggle 
+                                                label="Magnifier" 
+                                                description="See words and images better" 
+                                                value={accMagnifier} 
+                                                setValue={setAccMagnifier} 
+                                            />
+                                            <AccToggle 
+                                                label="Narrator" 
+                                                description="Your built-in screen reader"
+                                                value={accNarrator} 
+                                                setValue={setAccNarrator} 
+                                            />
+                                            <AccToggle 
+                                                label="Color Filters" 
+                                                description="Distinguish among colors easily"
+                                                value={accColorFilters} 
+                                                setValue={setAccColorFilters} 
+                                            />
+                                            <AccToggle 
+                                                label="Live Captions" 
+                                                description="Real time audio transcription"
+                                                value={accLiveCaptions} 
+                                                setValue={setAccLiveCaptions} 
+                                            />
+                                            <AccToggle 
+                                                label="Mono Audio" 
+                                                description="Combine left and right audio channels"
+                                                value={accMonoAudio} 
+                                                setValue={setAccMonoAudio} 
+                                            />
+                                            <AccToggle 
+                                                label="Voice Access" 
+                                                description="Interact with your PC using voice"
+                                                value={accVoiceAccess} 
+                                                setValue={setAccVoiceAccess} 
+                                            />
+                                            <AccToggle 
+                                                label="Sticky Keys" 
+                                                description="Use shortcuts one key at a time"
+                                                value={accStickyKeys} 
+                                                setValue={setAccStickyKeys} 
+                                            />
+                                        </div>
+                                    )}
+                                    {activeDetail === "project" && (
+                                        <div className="qs-detail-list">
+                                            {[
+                                                { label: "PC screen only", icon: "Display 1" },
+                                                { label: "Duplicate", icon: "Display 2" },
+                                                { label: "Extend", icon: "Display 3" },
+                                                { label: "Second screen only", icon: "Display 4" }
+                                            ].map(option => (
+                                                <button 
+                                                    key={option.label}
+                                                    className={`qs-detail-list-item ${selectedProject === option.label ? "qs-project-selected" : ""}`}
+                                                    onClick={() => setSelectedProject(option.label)}
+                                                >
+                                                    <div>
+                                                        <img className="qs-icon" src={placeholderImage} alt={option.icon} /> {option.label}
+                                                    </div>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="qs-detail-footer">
