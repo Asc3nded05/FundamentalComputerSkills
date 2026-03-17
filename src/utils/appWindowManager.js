@@ -39,7 +39,7 @@ export function useAppWindowManager(initialApps = APP_REGISTRY) {
 
     // Function to open app
     const openApp = useCallback((appId, options = {}) => {
-        const { createNewInstance = false, position, size, initialContent, fileIdentifier } = options;
+        const { createNewInstance = false, position, size, initialContent, fileIdentifier, startingPage } = options;
         
         setApps(prev => {
             const appIndex = prev.findIndex(a => a.id === appId);
@@ -55,14 +55,16 @@ export function useAppWindowManager(initialApps = APP_REGISTRY) {
                 if (app.isOpen) {
                     return prev.map(a => 
                         a.id === appId
-                            ? { ...a, isOpen: true, zIndex: highestZIndex + 1, isMinimized: false }
+                            ? { ...a, isOpen: true, zIndex: highestZIndex + 1, isMinimized: false, startingPage: startingPage || a.startingPage }
                             : a
                     );
                 } else {
                     // Open the base app (not an instance)
                     return prev.map(a =>
                         a.id === appId
-                            ? { ...a, isOpen: true, zIndex: highestZIndex + 1, isMinimized: false, initialContent: initialContent !== undefined ? initialContent : a.initialContent }
+                            ? { ...a, isOpen: true, zIndex: highestZIndex + 1, isMinimized: false, 
+                                initialContent: initialContent !== undefined ? initialContent : a.initialContent,
+                                startingPage: startingPage || a.startingPage }
                             : a
                     );
                 }
@@ -89,7 +91,8 @@ export function useAppWindowManager(initialApps = APP_REGISTRY) {
                     position: position || calculateCenteredPosition(),
                     size: size || app.defaultSize,
                     initialContent: initialContent !== undefined ? initialContent : (app.initialContent || ''),
-                    fileIdentifier: fileIdentifier || undefined
+                    fileIdentifier: fileIdentifier || undefined,
+                    startingPage: startingPage || app.startingPage
                 };
 
                 setHighestZIndex(prev => prev + 1);

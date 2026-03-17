@@ -36,7 +36,7 @@ function Desktop() {
     // Ref for desktop area, used to center new app windows
     const desktopRef = useRef(null);
 
-    // Load background image from localStorage
+    // Load background image from localStorage 
     useEffect(() => {
         const storedImage = localStorage.getItem('backgroundImage');
         if (storedImage) {
@@ -129,7 +129,7 @@ function Desktop() {
             case 'Settings':
                 return <Settings key={app.instanceId} />;
             case 'TaskManager':
-                return <TaskManager key={app.instanceId} />;
+                return <TaskManager key={app.instanceId} startingPage={app.startingPage}/>;
             case 'FrameApp':
                 return <FrameApp key={app.instanceId} />;
             default:
@@ -312,6 +312,7 @@ function Desktop() {
                         setBrightness={setBrightness}
                         volume={volume}
                         setVolume={setVolume}
+                        openApp={openApp}
                     />
 
 
