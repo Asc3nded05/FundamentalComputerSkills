@@ -51,23 +51,43 @@ function TaskManager() {
                         </div>
                         <div className="taskManager-processes-status">
                             <div className="taskmanager-title">Status</div>
+                            <div> </div>
+                            <div> </div>
+                            <div> </div>
+                            <div>Eco</div>
                             <div>Eco</div>
                         </div>
                         <div className="taskManager-processes-cpu">
                             <div className="taskmanager-title">CPU</div>
                             <div>0%</div>
+                            <div>0%</div>
+                            <div>0%</div>
+                            <div>0%</div>
+                            <div>0%</div>
                         </div>
                         <div className="taskManager-processes-memory">
                             <div className="taskmanager-title">Memory</div>
+                            <div>207mb</div>
+                            <div>97mb</div>
+                            <div>163mb</div>
+                            <div>88mb</div>
                             <div>100mb</div>
                         </div>
                         <div className="taskManager-processes-disk">
                             <div className="taskmanager-title">Disk</div>
                             <div>0.1mb/s</div>
+                            <div>0.1mb/s</div>
+                            <div>0.1mb/s</div>
+                            <div>0.1mb/s</div>
+                            <div>0.1mb/s</div>
                         </div>
                         <div className="taskManager-processes-network">
                             <div className="taskmanager-title">Network</div>
-                            <div>0.1mbps</div>
+                            <div>0mbps</div>
+                            <div>0mbps</div>
+                            <div>0mbps</div>
+                            <div>0mbps</div>
+                            <div>0mbps</div>
                         </div>
                     </div>
                 </div>
