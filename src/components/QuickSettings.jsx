@@ -3,7 +3,7 @@ import { dispatchDesktopEvent } from "../utils/eventBus";
 import placeholderImage from "../assets/WifiPlaceholder.png"
 import "../css/QuickSettings.css";
 
-function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, volume, setVolume }) {
+function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, volume, setVolume, openApp }) {
     const panelRef = useRef(null);
 
     // Quick Setting Toggles
@@ -298,7 +298,7 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                                         87%
                                     </div>
                                     <button className="qs-settings-button">
-                                        <img className="qs-icon" src={placeholderImage} alt="Settings" />
+                                        <img className="qs-icon" src={placeholderImage} alt="Settings" onClick={() => openApp('Settings', { startingPage: 'home' })} />
                                     </button>
                                 </div>
                             </div>
@@ -443,14 +443,29 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                                 </div>
 
                                 <div className="qs-detail-footer">
-                                    <button className="qs-detail-footer-button">
-                                        More 
-                                        {activeDetail === "wifi" && " Wi‑Fi "}
-                                        {activeDetail === "bluetooth" && " Bluetooth "}
-                                        {activeDetail === "accessibility" && " Accessibility "}
-                                        {activeDetail === "project" && " Project "}
-                                        Settings
-                                    </button>
+                                    {activeDetail === "wifi" && (
+                                        <button className="qs-detail-footer-button" onClick={() => openApp('Settings', { startingPage: 'network' })}>
+                                        More Wi‑Fi Settings
+                                        </button>
+                                    )}
+
+                                    {activeDetail === "bluetooth" && (
+                                        <button className="qs-detail-footer-button" onClick={() => openApp('Settings', { startingPage: 'bluetooth' })}>
+                                        More Bluetooth Settings
+                                        </button>
+                                    )}
+
+                                    {activeDetail === "accessibility" && (
+                                        <button className="qs-detail-footer-button" onClick={() => openApp('Settings', { startingPage: 'accessibility' })}>
+                                        More Accessibility Settings
+                                        </button>
+                                    )}
+
+                                    {activeDetail === "project" && (
+                                        <button className="qs-detail-footer-button" onClick={() => openApp('Settings', { startingPage: 'system' })}>
+                                        More Display Settings
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         )}

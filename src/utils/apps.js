@@ -32,7 +32,8 @@ export const APP_REGISTRY = [
         icon: desktopIcon,
         component: 'Settings',
         defaultSize: { width: 800, height: 600 },
-        canHaveMultipleInstances: false
+        canHaveMultipleInstances: false,
+        startingPage: 'home' // default page to open to (can be overridden when opening app)
     },
     {
         id: 'FrameApp',

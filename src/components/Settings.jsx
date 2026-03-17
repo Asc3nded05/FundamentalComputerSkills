@@ -1,14 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import '../css/Settings.css';
 import Personalization from "./settings/Personalization";
 import System from "./settings/System";
 import BluetoothDevices from "./settings/BluetoothDevices";
 
-function Settings() {
+function Settings({ startingPage = 'home' }) {
 
     const [query, setQuery] = useState('');
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [currentPage, setCurrentPage] = useState('home'); // default page
+    const [currentPage, setCurrentPage] = useState(startingPage); // default page (can be passed from different places to open to specific pages)
+
+    // Update internal state when the prop changes (e.g., when re‑opening the same window)
+    useEffect(() => {
+        setCurrentPage(startingPage);
+    }, [startingPage]);
 
     // Update state on input change
     const handleSearch = (e) => setQuery(e.target.value);
