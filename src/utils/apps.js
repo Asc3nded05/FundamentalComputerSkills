@@ -35,6 +35,14 @@ export const APP_REGISTRY = [
         canHaveMultipleInstances: false
     },
     {
+        id: 'TaskManager',
+        name: 'Task Manager',
+        icon: desktopIcon,
+        component: 'TaskManager',
+        defaultSize: { width: 800, height: 600 },
+        canHaveMultipleInstances: false
+    },
+    {
         id: 'FrameApp',
         name: 'Frame App',
         icon: desktopIcon,

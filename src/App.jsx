@@ -15,9 +15,9 @@ import './css/Notepad.css'
 import './css/SideBar.css'
 import './css/StartMenu.css'
 import './css/Taskbar.css'
+import './css/TaskManager.css'
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
-import SideBar from './components/SideBar.jsx'
 import { runLesson } from './utils/lessonRunner.js'
 import { useState } from 'react'
 

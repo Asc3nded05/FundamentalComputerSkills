@@ -19,6 +19,7 @@ import FrameApp from "../components/FrameApp.jsx";
 import Settings from "../components/Settings.jsx";
 import SearchBar from "../components/SearchBar.jsx"
 import SearchMenu from "../components/SearchMenu.jsx"
+import TaskManager from "../components/TaskManager.jsx";
 import ContextMenuDesktop from "../components/ContextMenuDesktop.jsx";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -127,6 +128,8 @@ function Desktop() {
                 return <Notepad key={app.instanceId} initialContent={app.initialContent} />;
             case 'Settings':
                 return <Settings key={app.instanceId} />;
+            case 'TaskManager':
+                return <TaskManager key={app.instanceId} />;
             case 'FrameApp':
                 return <FrameApp key={app.instanceId} />;
             default:
