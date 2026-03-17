@@ -127,9 +127,9 @@ function Desktop() {
             case 'Notepad':
                 return <Notepad key={app.instanceId} initialContent={app.initialContent} />;
             case 'Settings':
-                return <Settings key={app.instanceId} />;
+                return <Settings key={app.instanceId} startingPage={app.startingPage}/>;
             case 'TaskManager':
-                return <TaskManager key={app.instanceId} startingPage={app.startingPage}/>;
+                return <TaskManager key={app.instanceId} />;
             case 'FrameApp':
                 return <FrameApp key={app.instanceId} />;
             default:
