@@ -31,7 +31,7 @@ export const APP_REGISTRY = [
         name: 'Settings',
         icon: desktopIcon,
         component: 'Settings',
-        defaultSize: { width: 600, height: 400 },
+        defaultSize: { width: 800, height: 600 },
         canHaveMultipleInstances: false
     },
     {

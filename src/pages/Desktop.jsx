@@ -3,6 +3,7 @@ import { useState, useEffect, use, useRef, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAppWindowManager } from "../utils/appWindowManager.js";
 import { eventBus } from "../utils/eventBus.js";
+import backgroundImageDefault from '../assets/background-image.jpg';
 
 import AppIcon from '../components/AppIcon.jsx'
 import Clock from '../components/Clock.jsx'
@@ -18,6 +19,7 @@ import FrameApp from "../components/FrameApp.jsx";
 import Settings from "../components/Settings.jsx";
 import SearchBar from "../components/SearchBar.jsx"
 import SearchMenu from "../components/SearchMenu.jsx"
+import ContextMenuDesktop from "../components/ContextMenuDesktop.jsx";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -28,9 +30,36 @@ function Desktop() {
     const [brightness, setBrightness] = useState(100);
     const [volume, setVolume] = useState(100);
     const [query, setQuery] = useState("")
+    const [backgroundImage, setBackgroundImage] = useState('../assets/background-image.jpg');
 
     // Ref for desktop area, used to center new app windows
     const desktopRef = useRef(null);
+
+    // Load background image from localStorage
+    useEffect(() => {
+        const storedImage = localStorage.getItem('backgroundImage');
+        if (storedImage) {
+            setBackgroundImage(storedImage);
+        } else {
+            // Load default image and convert to data URL for storage
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                const dataUrl = canvas.toDataURL();
+                localStorage.setItem('backgroundImage', dataUrl);
+                setBackgroundImage(dataUrl);
+            };
+            img.onerror = () => {
+                console.error('Failed to load background image');
+                setBackgroundImage(backgroundImageDefault);
+            };
+            img.src = backgroundImageDefault;
+        }
+    }, []);
 
     // Custom hook to manage app windows
     const {
@@ -119,7 +148,7 @@ function Desktop() {
         return () => eventBus.removeEventListener("OpenTextFile", handler);
     }, [openApp]);
 
-    // Functions to keep desktop '1920x1080' for internal content positioning but scale to fit screen
+    // Functions to keep desktop '1280x720' for internal content positioning but scale to fit screen
     const desktopAreaRef = useRef(null);
     const BASE_WIDTH = 1280;
     const BASE_HEIGHT = 720;
@@ -150,14 +179,17 @@ function Desktop() {
 
 
     return <>
-        <div className="desktop-page">
+        <div className="desktop-page" style={{}}>
             <div className="desktop-area" ref={desktopAreaRef}>
                 <div
                     className="desktop-container"
                     ref={desktopRef}
                     style={{
                         transform: `translate(-50%, -50%) scale(${scale})`,
-                        filter: `brightness(${brightness}%)`
+                        filter: `brightness(${brightness}%)`,
+                        backgroundImage: `url('${backgroundImage}')`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center'
                     }}
                 >
                     <ResponsiveGridLayout
@@ -165,16 +197,19 @@ function Desktop() {
                         layouts={{ lg: desktopLayout }}
                         breakpoints={{ lg: 1200 }}
                         cols={{ lg: 12 }}
+                        rows={{ lg: 7 }}
                         compactType={null}
                         preventCollision={true}
+                        width={BASE_WIDTH}
                         rowHeight={80}          // Controls vertical snap
-                        // width={1200}
                         isResizable={false}     // Desktop icons don’t resize   
                         draggableHandle=".app-icon" // Only drag by the icon
                         dragStartDelay={0} // To prevent conflict with double-click to open app
                         clickDelay={200}
+                        transformScale={scale}
+                        isBounded={true}
+                        style= {{ height: '90%' }} // Keep icons inside the desktop area
                     >
-                        {/*  */}
                         {baseApps.map((app) => (
                             <div key={app.id}>
                                 <AppIcon
@@ -298,11 +333,12 @@ function Desktop() {
                     ))}
 
                 </div>
+
+                {/* Desktop Context Menu on right click */}
+                <ContextMenuDesktop triggerRef={desktopRef} scale={scale} />
             </div>
 
-
             <SideBar lessonId={lessonId} />
-
         </div>
     </>
 }
