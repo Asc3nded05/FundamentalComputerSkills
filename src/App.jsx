@@ -27,7 +27,7 @@ function App() {
     <BrowserRouter>
       <div className="app-layout">
         <Routes>
-          <Route path="/" element={<Desktop />} />
+          <Route path="/FundamentalComputerSkills" element={<Desktop />} />
           <Route path="/lessons" element={<Lessons />} />
           <Route path="/login" element={<Login />} />
           <Route path="/files" element={<Files />} />
