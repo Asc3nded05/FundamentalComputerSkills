@@ -24,10 +24,10 @@ import { useState } from 'react'
 function App() {
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/FundamentalComputerSkills/">
       <div className="app-layout">
         <Routes>
-          <Route path="/FundamentalComputerSkills" element={<Desktop />} />
+          <Route path="/" element={<Desktop />} />
           <Route path="/lessons" element={<Lessons />} />
           <Route path="/login" element={<Login />} />
           <Route path="/files" element={<Files />} />
