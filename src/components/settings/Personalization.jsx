@@ -1,9 +1,10 @@
 import { useState } from 'react';
 
+
 const Personalization = () => {
     const [subPage, setSubPage] = useState('main'); // 'main' or 'background'
     const [backgroundImage, setBackgroundImage] = useState(
-        localStorage.getItem('backgroundImage') || '../FundamentalComputerSkills/assets/background-image.jpg'
+        localStorage.getItem('backgroundImage') || '../assets/background-image.jpg'
     );
 
     const handleBackgroundChange = (newImage) => {
