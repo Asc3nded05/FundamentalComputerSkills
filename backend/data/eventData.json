@@ -86,18 +86,22 @@
     }, 
     {
         "eventId": 22,
+        "eventName": "FileExplorerNewFolder"
+    },
+    {
+        "eventId": 23,
         "eventName": "NotepadUndo"
     }, 
     {
-        "eventId": 23,
+        "eventId": 24,
         "eventName": "NotepadRedo"
     }, 
     {
-        "eventId": 24,
+        "eventId": 25,
         "eventName": "NotepadFind"
     }, 
     {
-        "eventId": 25,
+        "eventId": 26,
         "eventName": "NotepadSelectAll"
     }
   ]
