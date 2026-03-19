@@ -38,80 +38,80 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
 
     // Function to open app
     const openApp = useCallback((appId, options = {}) => {
-    const { createNewInstance = false, size, initialContent, fileIdentifier, startingPage } = options;
-    const CASCADE_STEP = 20;
+        const { createNewInstance = false, size, initialContent, fileIdentifier, startingPage } = options;
+        const CASCADE_STEP = 20;
 
-    setApps(prev => {
-        const openInstanceCount = prev.filter(a => a.id === appId && a.instanceId && a.isOpen).length;
+        setApps(prev => {
+            const openInstanceCount = prev.filter(a => a.id === appId && a.instanceId && a.isOpen).length;
 
-        const appIndex = prev.findIndex(a => a.id === appId);
-        if (appIndex === -1) return prev;
+            const appIndex = prev.findIndex(a => a.id === appId);
+            if (appIndex === -1) return prev;
 
-        const app = prev[appIndex];
+            const app = prev[appIndex];
 
-        // Check if we should create a new instance
-        const shouldCreateNewInstance = createNewInstance && app.canHaveMultipleInstances;
+            // Check if we should create a new instance
+            const shouldCreateNewInstance = createNewInstance && app.canHaveMultipleInstances;
 
-        if (!shouldCreateNewInstance) {
-            // If app is already open, just bring it to front
-            if (app.isOpen) {
-                return prev.map(a =>
-                    a.id === appId
-                        ? { ...a, isOpen: true, zIndex: highestZIndex + 1, isMinimized: false, startingPage: startingPage || a.startingPage }
-                        : a
-                );
-            } else {
-                // Open the base app (not an instance)
-                return prev.map(a =>
-                    a.id === appId
-                        ? {
-                            ...a, isOpen: true, zIndex: highestZIndex + 1, isMinimized: false,
-                            initialContent: initialContent !== undefined ? initialContent : a.initialContent,
-                            startingPage: startingPage || a.startingPage,
-                        }
-                        : a
-                );
-            }
-        } else {
-            // Check if an instance with this file is already open
-            if (fileIdentifier) {
-                const existingInstance = prev.find(a => a.fileIdentifier === fileIdentifier && a.id === appId);
-                if (existingInstance) {
-                    // Bring existing instance to front instead of creating a new one
+            if (!shouldCreateNewInstance) {
+                // If app is already open, just bring it to front
+                if (app.isOpen) {
                     return prev.map(a =>
-                        a.instanceId === existingInstance.instanceId
-                            ? { ...a, isOpen: true, zIndex: highestZIndex + 1, isMinimized: false }
+                        a.id === appId
+                            ? { ...a, isOpen: true, zIndex: highestZIndex + 1, isMinimized: false, startingPage: startingPage || a.startingPage }
+                            : a
+                    );
+                } else {
+                    // Open the base app (not an instance)
+                    return prev.map(a =>
+                        a.id === appId
+                            ? {
+                                ...a, isOpen: true, zIndex: highestZIndex + 1, isMinimized: false,
+                                initialContent: initialContent !== undefined ? initialContent : a.initialContent,
+                                startingPage: startingPage || a.startingPage,
+                            }
                             : a
                     );
                 }
+            } else {
+                // Check if an instance with this file is already open
+                if (fileIdentifier) {
+                    const existingInstance = prev.find(a => a.fileIdentifier === fileIdentifier && a.id === appId);
+                    if (existingInstance) {
+                        // Bring existing instance to front instead of creating a new one
+                        return prev.map(a =>
+                            a.instanceId === existingInstance.instanceId
+                                ? { ...a, isOpen: true, zIndex: highestZIndex + 1, isMinimized: false }
+                                : a
+                        );
+                    }
+                }
+
+                const offset = openInstanceCount * CASCADE_STEP;
+
+                // Create a new instance of the app
+                const newInstance = {
+                    ...app,
+                    instanceId: `${app.id}-${Date.now()}-${Math.random()}`,
+                    isOpen: true,
+                    zIndex: highestZIndex + 1,
+                    size: size || app.defaultSize,
+                    initialContent: initialContent !== undefined ? initialContent : (app.initialContent || ''),
+                    fileIdentifier: fileIdentifier || undefined,
+                    startingPage: startingPage || app.startingPage,
+                    offset
+                };
+
+                setHighestZIndex(prevZ => prevZ + 1);
+
+                // Insert the new instance after the base app
+                return [
+                    ...prev.slice(0, appIndex + 1),
+                    newInstance,
+                    ...prev.slice(appIndex + 1)
+                ];
             }
-
-            const offset = openInstanceCount * CASCADE_STEP;
-
-            // Create a new instance of the app
-            const newInstance = {
-                ...app,
-                instanceId: `${app.id}-${Date.now()}-${Math.random()}`,
-                isOpen: true,
-                zIndex: highestZIndex + 1,
-                size: size || app.defaultSize,
-                initialContent: initialContent !== undefined ? initialContent : (app.initialContent || ''),
-                fileIdentifier: fileIdentifier || undefined,
-                startingPage: startingPage || app.startingPage,
-                offset
-            };
-
-            setHighestZIndex(prevZ => prevZ + 1);
-
-            // Insert the new instance after the base app
-            return [
-                ...prev.slice(0, appIndex + 1),
-                newInstance,
-                ...prev.slice(appIndex + 1)
-            ];
-        }
-    });
-}, [highestZIndex]);
+        });
+    }, [highestZIndex]);
 
     // Close app
     const closeApp = useCallback((identifier) => {
@@ -165,7 +165,7 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
             })
         );
     }, []);
-    
+
     // Get open windows
     const openWindows = useMemo(() =>
         apps.filter(app => app.isOpen)
@@ -180,7 +180,7 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
     const sortedWindows = useMemo(() =>
         [...openWindows].sort((a, b) => a.zIndex - b.zIndex)
         , [openWindows]);
-
+        
     // Return the object
     return {
         apps,
@@ -196,15 +196,6 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
     };
 }
 
-
-// Helper function to center window
-function calculateCenteredPosition() {
-    return {
-        x: Math.max(0, (window.innerWidth - 400) / 2),
-        y: Math.max(0, (window.innerHeight - 300) / 2)
-    };
-}
-
 export function useOpenWindows(apps) {
-  return useMemo(() => apps.filter(app => app.isOpen), [apps]);
+    return useMemo(() => apps.filter(app => app.isOpen), [apps]);
 }
