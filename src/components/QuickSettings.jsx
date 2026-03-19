@@ -21,6 +21,37 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
     const [accVoiceAccess, setAccVoiceAccess] = useState(false);
     const [accStickyKeys, setAccStickyKeys] = useState(false);
 
+    const accessibilityEventMap = {
+        "Magnifier": {
+            on: "AccessibilityMagnifierOn",
+            off: "AccessibilityMagnifierOff"
+        },
+        "Narrator": {
+            on: "AccessibilityNarratorOn",
+            off: "AccessibilityNarratorOff"
+        },
+        "Color Filters": {
+            on: "AccessibilityColorFiltersOn",
+            off: "AccessibilityColorFiltersOff"
+        },
+        "Live Captions": {
+            on: "AccessibilityLiveCaptionsOn",
+            off: "AccessibilityLiveCaptionsOff"
+        },
+        "Mono Audio": {
+            on: "AccessibilityMonoAudioOn",
+            off: "AccessibilityMonoAudioOff"
+        },
+        "Voice Access": {
+            on: "AccessibilityVoiceAccessOn",
+            off: "AccessibilityVoiceAccessOff"
+        },
+        "Sticky Keys": {
+            on: "AccessibilityStickyKeysOn",
+            off: "AccessibilityStickyKeysOff"
+        }
+    };
+
     // WiFi and Bluetooth interactivity
     const [selectedWifi, setSelectedWifi] = useState(null);
     const [wifiStatuses, setWifiStatuses] = useState({
@@ -38,6 +69,13 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
         "Phone Link": "disconnected"
     });
     const [selectedProject, setSelectedProject] = useState("PC screen only");
+
+    const projectEventMap = {
+    "PC screen only": "ProjectModePCScreenOnly",
+    "Duplicate": "ProjectModeDuplicate",
+    "Extend": "ProjectModeExtend",
+    "Second screen only": "ProjectModeSecondScreenOnly"
+};
 
     // "wifi" | "bluetooth" | "accessibility" | "project" | null
     const [activeDetail, setActiveDetail] = useState(null);
@@ -84,7 +122,13 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                 });
             }
 
-            dispatchDesktopEvent("WiFiToggle", { on: next });
+            if (next) {
+                dispatchDesktopEvent("WiFiToggleOn");
+            }
+            else {
+                dispatchDesktopEvent("WifiToggleOff");
+            }
+
             return next;
         });
     };
@@ -104,7 +148,13 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                 });
             }
 
-            dispatchDesktopEvent("BluetoothToggle", { on: next });
+            if (next) {
+                dispatchDesktopEvent("BluetoothToggleOn");
+            }
+            else {
+                dispatchDesktopEvent("BluetoothToggleOff");
+            }
+
             return next;
         });
     };
@@ -112,7 +162,14 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
     const toggleAirplane = () => {
         setAirplaneOn(v => {
             const next = !v;
-            dispatchDesktopEvent("AirplaneModeToggle", { on: next });
+
+            if (next) {
+                dispatchDesktopEvent("AirplaneModeToggleOn");
+            }
+            else {
+                dispatchDesktopEvent("AirplaneModeToggleOff");
+            }
+
             return next;
         });
     };
@@ -120,13 +177,21 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
     const toggleEnergy = () => {
         setEnergyOn(v => {
             const next = !v;
-            dispatchDesktopEvent("BatterySaverToggle", { on: next });
+
+            if (next) {
+                dispatchDesktopEvent("BatterySaverToggleOn");
+            }
+            else {
+                dispatchDesktopEvent("BatterySaverToggleOff");
+            }
+
             return next;
         });
     };
 
     const selectWifiNetwork = (network) => {
         setSelectedWifi(prev => (prev === network ? null : network));
+        dispatchDesktopEvent("WiFiNetworkSelected", { networkName: network });
     };
 
     const toggleWifiConnection = (network) => {
@@ -138,6 +203,7 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
             setTimeout(() => {
                 setWifiStatuses(prev => ({ ...prev, [network]: "disconnected" }));
             }, 1000);
+            dispatchDesktopEvent("WiFiNetworkDisconnect", { networkName: network });
         } else {
             // Disconnect current if any, then connect new
             if (currentConnected) {
@@ -154,6 +220,7 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                     setWifiStatuses(prev => ({ ...prev, [network]: "connected" }));
                 }, 1000);
             }
+            dispatchDesktopEvent("WiFiNetworkConnect", { networkName: network });
         }
     };
 
@@ -161,8 +228,10 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
         setBluetoothStatuses(prev => {
             const current = prev[device];
             if (current === "connected") {
+                dispatchDesktopEvent("BluetoothDeviceDisconnect", { deviceName: device });
                 return { ...prev, [device]: "disconnecting" };
             } else if (current === "disconnected") {
+                dispatchDesktopEvent("BluetoothDeviceConnect", { deviceName: device });
                 return { ...prev, [device]: "connecting" };
             }
             return prev;
@@ -182,13 +251,28 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
 
     const openDetail = (type) => {
         setActiveDetail(prev => (prev === type ? null : type));
-        dispatchDesktopEvent("QuickSettingsDetailOpen", { type });
+        if (type === "wifi") dispatchDesktopEvent("WiFiDetailOpen");
+        if (type === "bluetooth") dispatchDesktopEvent("BluetoothDetailOpen");
+        if (type === "accessibility") dispatchDesktopEvent("AccessibilityDetailOpen");
+        if (type === "project") dispatchDesktopEvent("ProjectDetailOpen");
     };
 
     const AccToggle = ({ label, description, value, setValue }) => (
         <button
             className={`qs-detail-toggle ${value ? "on" : ""}`}
-            onClick={() => setValue(v => !v)}
+            onClick={() => {
+                setValue(v => {
+                    const next = !v;
+
+                    const events = accessibilityEventMap[label];
+                    if (events) {
+                        const eventName = next ? events.on : events.off;
+                        dispatchDesktopEvent(eventName);
+                    }
+
+                    return next;
+                });
+            }}
         >
             <div className="qs-detail-toggle-text">
                 <div className="qs-detail-toggle-label">{label}</div>
@@ -322,7 +406,11 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                                         87%
                                     </div>
                                     <button className="qs-settings-button">
-                                        <img className="qs-icon" src={placeholderImage} alt="Settings" onClick={() => openApp('Settings', { startingPage: 'home' })} />
+                                        <img className="qs-icon" src={placeholderImage} alt="Settings" 
+                                            onClick={() => {
+                                                openApp('Settings', { startingPage: 'home' });
+                                                dispatchDesktopEvent("OpenSettingsFromQS")
+                                            }} />
                                     </button>
                                 </div>
                             </div>
@@ -502,7 +590,14 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                                                 <button 
                                                     key={option.label}
                                                     className={`qs-detail-list-item ${selectedProject === option.label ? "qs-project-selected" : ""}`}
-                                                    onClick={() => setSelectedProject(option.label)}
+                                                    onClick={() => {
+                                                        setSelectedProject(option.label);
+
+                                                        const eventName = projectEventMap[option.label];
+                                                        if (eventName) {
+                                                            dispatchDesktopEvent(eventName);
+                                                        }
+                                                    }}
                                                 >
                                                     <div>
                                                         <img className="qs-icon" src={placeholderImage} alt={option.icon} /> {option.label}
@@ -515,25 +610,41 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
 
                                 <div className="qs-detail-footer">
                                     {activeDetail === "wifi" && (
-                                        <button className="qs-detail-footer-button" onClick={() => openApp('Settings', { startingPage: 'network' })}>
-                                        More Wi‑Fi Settings
+                                        <button className="qs-detail-footer-button" 
+                                            onClick={() => {
+                                                openApp('Settings', { startingPage: 'network' });
+                                                dispatchDesktopEvent("OpenWiFiSettingsFromQS");; 
+                                            }}>
+                                            More Wi‑Fi Settings
                                         </button>
                                     )}
 
                                     {activeDetail === "bluetooth" && (
-                                        <button className="qs-detail-footer-button" onClick={() => openApp('Settings', { startingPage: 'bluetooth' })}>
-                                        More Bluetooth Settings
+                                        <button className="qs-detail-footer-button" 
+                                            onClick={() => {
+                                                openApp('Settings', { startingPage: 'bluetooth' });
+                                                dispatchDesktopEvent("OpenBluetoothSettingsFromQS");
+                                            }}>
+                                            More Bluetooth Settings
                                         </button>
                                     )}
 
                                     {activeDetail === "accessibility" && (
-                                        <button className="qs-detail-footer-button" onClick={() => openApp('Settings', { startingPage: 'accessibility' })}>
-                                        More Accessibility Settings
+                                        <button className="qs-detail-footer-button" 
+                                            onClick={() => {
+                                                openApp('Settings', { startingPage: 'accessibility' });
+                                                dispatchDesktopEvent("OpenAccessibilitySettingsFromQS");
+                                            }}>
+                                            More Accessibility Settings
                                         </button>
                                     )}
 
                                     {activeDetail === "project" && (
-                                        <button className="qs-detail-footer-button" onClick={() => openApp('Settings', { startingPage: 'system' })}>
+                                        <button className="qs-detail-footer-button" 
+                                            onClick={() => {
+                                                openApp('Settings', { startingPage: 'system' });
+                                                dispatchDesktopEvent("OpenProjectSettingsFromQS")
+                                            }}>
                                         More Display Settings
                                         </button>
                                     )}
