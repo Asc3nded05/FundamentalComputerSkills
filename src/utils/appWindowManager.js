@@ -3,16 +3,15 @@ import { APP_REGISTRY } from '../utils/apps';
 import { dispatchDesktopEvent } from "../utils/eventBus";
 
 
-export function useAppWindowManager(initialApps = APP_REGISTRY) {
+export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseHeight) {
 
     // The initial apps from the registry, for display on desktop and start menu
-    const [apps, setApps] = useState(() => 
+    const [apps, setApps] = useState(() =>
         initialApps.map((app, index) => ({
             ...app,
             id: app.id || `app-${index}`,
             isOpen: false,
             zIndex: 0,
-            position: { x: 0, y: index },
             size: app.defaultSize || { width: 400, height: 300 },
             isMinimized: false,
             isMaximized: false
@@ -28,8 +27,8 @@ export function useAppWindowManager(initialApps = APP_REGISTRY) {
         setApps(prev => {
             const newZIndex = highestZIndex + 1;
             setHighestZIndex(newZIndex);
-            
-            return prev.map(app => 
+
+            return prev.map(app =>
                 (app.id === identifier || app.instanceId === identifier)
                     ? { ...app, zIndex: newZIndex, isMinimized: false }
                     : app
@@ -39,21 +38,24 @@ export function useAppWindowManager(initialApps = APP_REGISTRY) {
 
     // Function to open app
     const openApp = useCallback((appId, options = {}) => {
-        const { createNewInstance = false, position, size, initialContent, fileIdentifier, startingPage } = options;
-        
+        const { createNewInstance = false, size, initialContent, fileIdentifier, startingPage } = options;
+        const CASCADE_STEP = 20;
+
         setApps(prev => {
+            const openInstanceCount = prev.filter(a => a.id === appId && a.instanceId && a.isOpen).length;
+
             const appIndex = prev.findIndex(a => a.id === appId);
             if (appIndex === -1) return prev;
 
             const app = prev[appIndex];
-            
+
             // Check if we should create a new instance
             const shouldCreateNewInstance = createNewInstance && app.canHaveMultipleInstances;
-            
+
             if (!shouldCreateNewInstance) {
                 // If app is already open, just bring it to front
                 if (app.isOpen) {
-                    return prev.map(a => 
+                    return prev.map(a =>
                         a.id === appId
                             ? { ...a, isOpen: true, zIndex: highestZIndex + 1, isMinimized: false, startingPage: startingPage || a.startingPage }
                             : a
@@ -62,9 +64,11 @@ export function useAppWindowManager(initialApps = APP_REGISTRY) {
                     // Open the base app (not an instance)
                     return prev.map(a =>
                         a.id === appId
-                            ? { ...a, isOpen: true, zIndex: highestZIndex + 1, isMinimized: false, 
+                            ? {
+                                ...a, isOpen: true, zIndex: highestZIndex + 1, isMinimized: false,
                                 initialContent: initialContent !== undefined ? initialContent : a.initialContent,
-                                startingPage: startingPage || a.startingPage }
+                                startingPage: startingPage || a.startingPage,
+                            }
                             : a
                     );
                 }
@@ -82,21 +86,23 @@ export function useAppWindowManager(initialApps = APP_REGISTRY) {
                     }
                 }
 
+                const offset = openInstanceCount * CASCADE_STEP;
+
                 // Create a new instance of the app
                 const newInstance = {
                     ...app,
                     instanceId: `${app.id}-${Date.now()}-${Math.random()}`,
                     isOpen: true,
                     zIndex: highestZIndex + 1,
-                    position: position || calculateCenteredPosition(),
                     size: size || app.defaultSize,
                     initialContent: initialContent !== undefined ? initialContent : (app.initialContent || ''),
                     fileIdentifier: fileIdentifier || undefined,
-                    startingPage: startingPage || app.startingPage
+                    startingPage: startingPage || app.startingPage,
+                    offset
                 };
 
-                setHighestZIndex(prev => prev + 1);
-                
+                setHighestZIndex(prevZ => prevZ + 1);
+
                 // Insert the new instance after the base app
                 return [
                     ...prev.slice(0, appIndex + 1),
@@ -109,28 +115,28 @@ export function useAppWindowManager(initialApps = APP_REGISTRY) {
 
     // Close app
     const closeApp = useCallback((identifier) => {
-    setApps(prev => {
-        const appToClose = prev.find(app => 
-            app.instanceId === identifier || app.id === identifier
-        );
-        
-        if (appToClose) {
-            dispatchDesktopEvent(`${appToClose.id}Close`);
-        }
-        
-        return prev.map(app => {
-            // If it's an instance, mark for removal
-            if (app.instanceId === identifier) {
-                return null;
+        setApps(prev => {
+            const appToClose = prev.find(app =>
+                app.instanceId === identifier || app.id === identifier
+            );
+
+            if (appToClose) {
+                dispatchDesktopEvent(`${appToClose.id}Close`);
             }
-            // If it's a base app being closed, just set isOpen to false
-            if (app.id === identifier && !app.instanceId) {
-                return { ...app, isOpen: false };
-            }
-            return app;
-        }).filter(app => app !== null);
-    });
-}, []);
+
+            return prev.map(app => {
+                // If it's an instance, mark for removal
+                if (app.instanceId === identifier) {
+                    return null;
+                }
+                // If it's a base app being closed, just set isOpen to false
+                if (app.id === identifier && !app.instanceId) {
+                    return { ...app, isOpen: false };
+                }
+                return app;
+            }).filter(app => app !== null);
+        });
+    }, []);
 
     // Minimize app
     const minimizeApp = useCallback((identifier) => {
@@ -152,9 +158,7 @@ export function useAppWindowManager(initialApps = APP_REGISTRY) {
                         ...app,
                         isMaximized: !app.isMaximized,
                         previousSize: app.isMaximized ? app.previousSize : app.size,
-                        previousPosition: app.isMaximized ? app.previousPosition : app.position,
                         size: app.isMaximized ? app.previousSize || app.size : { width: window.innerWidth - 40, height: window.innerHeight - 100 },
-                        position: app.isMaximized ? app.previousPosition || app.position : { x: 20, y: 20 }
                     };
                 }
                 return app;
@@ -163,21 +167,22 @@ export function useAppWindowManager(initialApps = APP_REGISTRY) {
     }, []);
 
     // Get open windows
-    const openWindows = useMemo(() => 
+    const openWindows = useMemo(() =>
         apps.filter(app => app.isOpen)
-    , [apps]);
+        , [apps]);
 
     // Get windows by state
-    const minimizedWindows = useMemo(() => 
+    const minimizedWindows = useMemo(() =>
         apps.filter(app => app.isMinimized)
-    , [apps]);
+        , [apps]);
 
     // Sort windows by z-index for rendering
-    const sortedWindows = useMemo(() => 
+    const sortedWindows = useMemo(() =>
         [...openWindows].sort((a, b) => a.zIndex - b.zIndex)
-    , [openWindows]);
-
-return {
+        , [openWindows]);
+        
+    // Return the object
+    return {
         apps,
         openWindows,
         sortedWindows,
@@ -191,11 +196,6 @@ return {
     };
 }
 
-
-// Helper function to center window
-function calculateCenteredPosition() {
-    return {
-        x: Math.max(0, (window.innerWidth - 400) / 2),
-        y: Math.max(0, (window.innerHeight - 300) / 2)
-    };
+export function useOpenWindows(apps) {
+    return useMemo(() => apps.filter(app => app.isOpen), [apps]);
 }

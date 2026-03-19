@@ -49,7 +49,6 @@
   width: 100%;
   justify-content: space-around;
   margin-top: auto;
-  margin-bottom: 1rem;
 }
 
 .lesson-start-button {
@@ -102,25 +101,27 @@
   align-items: center;
 }
 
+.help-buttons {
+  anchor-name: --hint-button;
+  position: relative;
+}
+
 .hint-content {
+  position: absolute;
+  position-anchor: --hint-button; /* Link to anchor */
+  position-area: top; /* Places the popover's bottom at the button's top */
+  
+  /* Reset default popover centering styles */
+  margin: 0;
+  inset: auto;
+
   border: 2px solid black;
   border-radius: 5px;
-  width: 20%;
+  width: 18%;
   padding: 10px;
   min-height: 20%;
   overflow: auto;
-  position: absolute;
-}
-
-[popovertarget='hint-content'] {
-  anchor-name: --hint-content;
-}
-
-#hint-content {
-  bottom: anchor(--hint-content top);
-  margin-left: 81%;
-  margin-top: 37%;
-  width: 15.5rem;
+  
 }
 
 #demo-content {
@@ -131,11 +132,16 @@
 
 #big-demo {
   position: absolute;
-  position-anchor: --desktop-container; /* Link to anchor */
-  top: anchor(--desktop-container top); /* Align top of big-demo with top of desktop-container */
-  left: anchor(--desktop-container left); /* Align left of big-demo with left of desktop-container */
-
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   border: none;
   /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
-  
+}
+
+#big-demo video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Adjust to 'contain' if you prefer to show the entire video without cropping */
 }

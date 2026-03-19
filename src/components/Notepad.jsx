@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus";
 
 function Notepad({initialContent=""}) {
-    console.log("Notepad initial content:", initialContent);
 
     useEffect(() => {
         const handleKeyDown = (event) => {

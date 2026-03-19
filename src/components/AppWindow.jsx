@@ -16,12 +16,10 @@ function AppWindow({
     content, 
     initialSize = {width: 600, height: 400},
     scale,
-    desktopRef }) {
-
-    const desktop = desktopRef.current.getBoundingClientRect(); // Get desktop dimensions to set bounds for dragging and to center new app
-
-    const initialXPosition = (desktop.width - initialSize.width) / 2;
-    const initialYPosition = (desktop.height - initialSize.height) / 2;
+    baseHeight,
+    baseWidth,
+    offset = 0
+}) {
 
     const handleClose = (e) => {
         e.preventDefault();
@@ -40,8 +38,8 @@ function AppWindow({
     return (
         <Rnd 
             default={{
-                x: initialXPosition,
-                y: initialYPosition,
+                x: (baseWidth - initialSize.width) / 2 + offset, // Center new windows on desktop
+                y: (baseHeight - initialSize.height) / 2 + offset,
                 width: initialSize.width,
                 height: initialSize.height,
             }}
