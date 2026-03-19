@@ -15,10 +15,10 @@ function Notepad({initialContent=""}) {
             onCopy={() => dispatchDesktopEvent("NotepadCopy")} // Broadast events for copy/paste/cut
             onCut={() => dispatchDesktopEvent("NotepadCut")}
             onPaste={() => dispatchDesktopEvent("NotepadPaste")}
-            onUndo={() => dispatchDesktopEvent("NotepadUndo")} //Broadcast undo/redo events
-            onRedo={() => dispatchDesktopEvent("NotepadRedo")}
-            onFind={() => dispatchDesktopEvent("NotepadFind")} // Broadcast find and select all events
-            onSelectAll={() => dispatchDesktopEvent("NotepadSelectAll")}
+            // onUndo={() => dispatchDesktopEvent("NotepadUndo")} //Broadcast undo/redo events
+            // onRedo={() => dispatchDesktopEvent("NotepadRedo")}
+            // onFind={() => dispatchDesktopEvent("NotepadFind")} // Broadcast find and select all events
+            // onSelectAll={() => dispatchDesktopEvent("NotepadSelectAll")}
             ></textarea>
         </div>
     </>
