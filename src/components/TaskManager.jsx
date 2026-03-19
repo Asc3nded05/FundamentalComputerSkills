@@ -1,8 +1,11 @@
 import { useState } from "react";
 import '../css/TaskManager.css';
 import { MdOpacity } from "react-icons/md";
+import { useOpenWindows } from "../utils/appWindowManager.js";
+ 
 
-function TaskManager() {
+function TaskManager(sortedWindow) {
+
 
     const [query, setQuery] = useState('');
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -12,6 +15,8 @@ function TaskManager() {
 
     // Toggle sidebar visibility
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
+    console.log(sortedWindow);
 
     return <>
         <div className="taskManager">
@@ -43,11 +48,14 @@ function TaskManager() {
                     <div className="taskManager-main">
                         <div className="taskManager-processes-apps">
                             <div className="taskmanager-title">Name</div>
-                            <div>File Explorer</div>
+                            {sortedWindow.map(window, index)}{
+                                {window}
+                            }
+                            {/* <div>File Explorer</div>
                             <div>Task Manager</div>
                             <div>Settings</div>
                             <div>Notepad</div>
-                            <div>Frame App</div>
+                            <div>Frame App</div> */}
                         </div>
                         <div className="taskManager-processes-status">
                             <div className="taskmanager-title">Status</div>

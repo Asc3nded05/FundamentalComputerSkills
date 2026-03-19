@@ -24,7 +24,6 @@ function AppIcon({ name, icon, eventName, openWindow, variant = "desktop", isApp
 
         dispatchDesktopEvent(eventName);
     };
-
     return (
         <div 
             tabIndex={0} 
