@@ -10,6 +10,7 @@ import NextButton from './NextButton.jsx';
 import '../css/SideBar.css';
 import Loading from './Loading.jsx';
 import React from 'react';
+import { createPortal } from 'react-dom';
 import hintVideo from '../assets/TestVideo.mp4';
 
 function SideBar(props) {
@@ -35,6 +36,11 @@ function SideBar(props) {
      function handleNext() {
         dispatchDesktopEvent("Next");
     }
+
+    // Close the video demo
+    function handleCloseVideo() {
+        setShowVideo(false);
+    }
    
     // Fetches lesson data
     const { loading, error } = useLesson(currentLesson);
@@ -46,12 +52,17 @@ function SideBar(props) {
     const [currentStep, setCurrentStep] = useState("Press Start Lesson to Begin");
     const [wrongEvent, setWrongEvent] = useState(null);
    
+    // State for video demo
+    const [showVideo, setShowVideo] = useState(false);
+
     // Handles loading and error states
     if (loading) return <Loading />;
     if (error) return <div>Error loading lesson data</div>;
 
+
     return (
-         <div className="sidebar-container">
+        <>
+            <div className="sidebar-container">
                 <div className="sidebar-links">
                     <div className="lesson-link link">
                         <Link to="/lessons">
@@ -99,15 +110,15 @@ function SideBar(props) {
                     {/* Hint content popover */}
                     <div id="hint-content" popover="auto" className="hint-content">
                         <p>This is the hint text.</p>
-                        <button popoverTarget="big-demo" className="hint-demo">Demo</button>
+                        <button popoverTarget="big-demo" className="hint-demo" onClick={() => setShowVideo(true)}>Demo</button>
                     </div>
                     
                     {/* Demo gif popover */}
-                    <div id="big-demo" popover='auto'>
+                    {/* <div id="big-demo" popover='auto'>
                         <video autoPlay loop muted controls={false}>
-                            <source src={hintVideo} type="video/mp4" />
+                            <source src={hintVideo} type="video/mp4"/>
                         </video>  
-                    </div>
+                    </div> */}
 
                     <button className="chat-button">
                         Questions
@@ -116,6 +127,15 @@ function SideBar(props) {
                 
             </div>
         </div>
+        {showVideo && props.desktopRef?.current && createPortal(
+            <div id="big-demo" onClick={() => setShowVideo(false)} style={{ /* add positioning/styles as needed */ }}>
+                <video autoPlay loop muted controls={false}>
+                    <source src={hintVideo} type="video/mp4"/>
+                </video>
+            </div>,
+            props.desktopRef.current
+        )}
+        </>
     );
 }
 

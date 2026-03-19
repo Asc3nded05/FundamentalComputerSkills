@@ -132,10 +132,16 @@
 
 #big-demo {
   position: absolute;
-  position-anchor: --desktop-container; /* Link to anchor */
-  top: anchor(--desktop-container top); /* Align top of big-demo with top of desktop-container */
-  left: anchor(--desktop-container left); /* Align left of big-demo with left of desktop-container */
-
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   border: none;
   /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+}
+
+#big-demo video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Adjust to 'contain' if you prefer to show the entire video without cropping */
 }

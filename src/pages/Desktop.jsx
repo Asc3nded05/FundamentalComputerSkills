@@ -346,7 +346,7 @@ function Desktop() {
                 <ContextMenuDesktop triggerRef={desktopRef} scale={scale} />
             </div>
 
-            <SideBar lessonId={lessonId} />
+            <SideBar lessonId={lessonId} desktopRef={desktopRef}/>
         </div>
     </>
 }
