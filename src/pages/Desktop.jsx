@@ -194,7 +194,7 @@ function Desktop() {
                         backgroundSize: 'cover',
                         backgroundPosition: 'center'
                     }}
-                >
+                >                    
                     <ResponsiveGridLayout
                         className="layout"
                         layouts={{ lg: desktopLayout }}

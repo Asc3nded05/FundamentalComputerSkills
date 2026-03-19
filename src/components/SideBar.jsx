@@ -103,6 +103,7 @@ function SideBar(props) {
                         <p>This is the hint text.</p>
                         <button popovertarget="big-demo" className="hint-demo">Demo</button>
                     </div>
+                    
                     {/* Demo gif popover */}
                     <div id="big-demo" popover='auto'>
                         <video autoPlay loop muted controls={false}>
