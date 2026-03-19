@@ -90,18 +90,16 @@ function SideBar(props) {
                 setEventName={setEventName}
                 />
 
-
-
                 {/* Help buttons */}
                 <div className="help-buttons">
-                    <button popovertarget="hint-content" className="hint-button">
+                    <button popoverTarget="hint-content" className="hint-button">
                         Hints
                     </button>
                     {/* Uses the Popover API */}
                     {/* Hint content popover */}
                     <div id="hint-content" popover="auto" className="hint-content">
                         <p>This is the hint text.</p>
-                        <button popovertarget="big-demo" className="hint-demo">Demo</button>
+                        <button popoverTarget="big-demo" className="hint-demo">Demo</button>
                     </div>
                     
                     {/* Demo gif popover */}

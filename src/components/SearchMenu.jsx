@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus.js";
-import AppIcon from "./AppIcon.jsx";
+import AppSearchIcon from "./AppSearchIcon.jsx";
 
 function StartMenu({ closeStartMenu, isOpen, apps = [] , query, setQuery}) {
     const nodeRef = useRef(null);
@@ -67,7 +67,7 @@ function StartMenu({ closeStartMenu, isOpen, apps = [] , query, setQuery}) {
                                 <div key={index} className="start-row">
                                     {!app.placeholder ? (
                                         <div className="start-menu-tile">
-                                        <AppIcon
+                                        <AppSearchIcon
                                             name={app.name}
                                             icon={app.icon}
                                             eventName={app.eventName}

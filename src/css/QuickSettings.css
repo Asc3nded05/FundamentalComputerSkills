@@ -265,7 +265,7 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
-    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
 .qs-connect-button:hover {
@@ -303,4 +303,37 @@
 
 .qs-project-selected:hover {
     background: rgba(0, 120, 215, 1);
+}
+
+.qs-radio-off-message {
+    text-align: center;
+    padding: 40px 20px;
+    opacity: 0.9;
+}
+
+.qs-radio-off-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.qs-radio-off-body {
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+.qs-detail-toggle-switch {
+    margin-left: auto;
+    margin-bottom: 8px;
+    background: rgba(255,255,255,0.15);
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.qs-detail-toggle-switch:hover {
+    background: rgba(255,255,255,0.25);
 }
