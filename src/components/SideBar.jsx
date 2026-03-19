@@ -37,11 +37,14 @@ function SideBar(props) {
         dispatchDesktopEvent("Next");
     }
 
-    // Close the video demo
-    function handleCloseVideo() {
-        setShowVideo(false);
-    }
-   
+    
+    const videoShowButton = document.getElementById('hint-demo');
+    document.addEventListener("click", function(event) {
+        if (!videoShowButton.contains(event.target)) {
+            setShowVideo(false);
+        }
+    });
+    
     // Fetches lesson data
     const { loading, error } = useLesson(currentLesson);
 
@@ -110,7 +113,7 @@ function SideBar(props) {
                     {/* Hint content popover */}
                     <div id="hint-content" popover="auto" className="hint-content">
                         <p>This is the hint text.</p>
-                        <button popoverTarget="big-demo" className="hint-demo" onClick={() => setShowVideo(true)}>Demo</button>
+                        <button popoverTarget="big-demo" className="hint-demo" id="hint-demo" onClick={() => setShowVideo(true)}>Demo</button>
                     </div>
                     
                     {/* Demo gif popover */}
