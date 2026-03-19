@@ -24,7 +24,7 @@ import { useState } from 'react'
 function App() {
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/FundamentalComputerSkills/">
       <div className="app-layout">
         <Routes>
           <Route path="/" element={<Desktop />} />

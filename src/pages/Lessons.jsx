@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLessons } from '../api/useLessons.js';
-import LessonAccordian from '../components/lessonAccordian.jsx';
+import LessonAccordian from '../components/LessonAccordian.jsx';
 import Loading from '../components/Loading.jsx';
 import '../css/Lessons.css';
 function Lessons() {

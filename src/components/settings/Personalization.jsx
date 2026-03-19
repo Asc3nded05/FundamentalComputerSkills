@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+
 const Personalization = () => {
     const [subPage, setSubPage] = useState('main'); // 'main' or 'background'
     const [backgroundImage, setBackgroundImage] = useState(
