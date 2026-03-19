@@ -5,16 +5,16 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: '/FundamentalComputerSkills/',
   // base: './',
-  server: {
-    proxy: {
-      '/api': {
-        target: 'https://fundamentalcomputerskills.duckdns.org/',
-        changeOrigin: true,
-        secure: false,
-        ws: true,
-      },
-    },
-  },
+  // server: {
+  //   proxy: {
+  //     '/api': {
+  //       target: 'https://fundamentalcomputerskills.duckdns.org/',
+  //       changeOrigin: true,
+  //       secure: false,
+  //       ws: true,
+  //     },
+  //   },
+  // },
   plugins: [
     react({
       babel: {
