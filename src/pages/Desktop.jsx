@@ -21,6 +21,7 @@ import SearchBar from "../components/SearchBar.jsx"
 import SearchMenu from "../components/SearchMenu.jsx"
 import TaskManager from "../components/TaskManager.jsx";
 import ContextMenuDesktop from "../components/ContextMenuDesktop.jsx";
+import { APP_REGISTRY } from "../utils/apps.js";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -35,6 +36,12 @@ function Desktop() {
 
     // Ref for desktop area, used to center new app windows
     const desktopRef = useRef(null);
+
+    // Functions to keep desktop '1280x720' for internal content positioning but scale to fit screen
+    const desktopAreaRef = useRef(null);
+    const BASE_WIDTH = 1280;
+    const BASE_HEIGHT = 720;
+    const [scale, setScale] = useState(1);
 
     // Load background image from localStorage 
     useEffect(() => {
@@ -71,7 +78,7 @@ function Desktop() {
         closeApp,
         minimizeApp,
         maximizeApp,
-    } = useAppWindowManager();
+    } = useAppWindowManager(APP_REGISTRY, BASE_WIDTH, BASE_HEIGHT);
 
     const baseApps = useMemo(() => apps.filter(app => !app.instanceId), [apps]);
 
@@ -150,12 +157,6 @@ function Desktop() {
         eventBus.addEventListener("OpenTextFile", handler);
         return () => eventBus.removeEventListener("OpenTextFile", handler);
     }, [openApp]);
-
-    // Functions to keep desktop '1280x720' for internal content positioning but scale to fit screen
-    const desktopAreaRef = useRef(null);
-    const BASE_WIDTH = 1280;
-    const BASE_HEIGHT = 720;
-    const [scale, setScale] = useState(1);
 
     useEffect(() => {
         if (!desktopAreaRef.current) return;
@@ -331,8 +332,11 @@ function Desktop() {
                             bringToFront={() => bringToFront(app.instanceId || app.id)}
                             content={renderAppContent(app)}
                             initialSize={app.size}
+                            position={app.position} 
                             scale={scale}
-                            desktopRef={desktopRef}
+                            baseHeight={BASE_HEIGHT}
+                            baseWidth={BASE_WIDTH}
+                            offset={app.offset}
                         />
                     ))}
 

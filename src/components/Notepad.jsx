@@ -1,7 +1,6 @@
 import { dispatchDesktopEvent } from "../utils/eventBus";
 
 function Notepad({initialContent=""}) {
-    console.log("Notepad initial content:", initialContent);
     return ( <>
         <div className="notepad-bottom-nav"> 
             <button>File</button>
