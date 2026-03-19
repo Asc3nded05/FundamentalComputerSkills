@@ -4,7 +4,7 @@ export function useStep(lessonId) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     useEffect(() => {
-        fetch(`/api/steps/lesson/${lessonId}`)
+        fetch(`https://fundamentalcomputerskills.duckdns.org/api/steps/lesson/${lessonId}`)
             .then(res => res.json())
             .then(data => {
                 console.log('Fetched step:', data);
