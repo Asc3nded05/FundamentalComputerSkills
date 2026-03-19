@@ -1,6 +1,6 @@
 import routes from './routes/index.js'; 
 import express from 'express';
-const cors = require('cors');
+import cors from 'cors';
 const app = express();
 const port = process.env.PORT || 3000; 
 
