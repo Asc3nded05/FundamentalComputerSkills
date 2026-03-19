@@ -136,7 +136,7 @@ function Desktop() {
             case 'Settings':
                 return <Settings key={app.instanceId} startingPage={app.startingPage}/>;
             case 'TaskManager':
-                return <TaskManager key={app.instanceId} />;
+                return <TaskManager key={app.instanceId} sortedWindows={sortedWindows} />;
             case 'FrameApp':
                 return <FrameApp key={app.instanceId} />;
             default:
@@ -316,7 +316,7 @@ function Desktop() {
                         openApp={openApp}
                     />
 
-
+                    
                     {/* Dynamic app windows */}
                     {sortedWindows.map((app) => (
                         <AppWindow

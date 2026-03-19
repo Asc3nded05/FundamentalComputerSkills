@@ -195,3 +195,16 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
         highestZIndex
     };
 }
+
+
+// Helper function to center window
+function calculateCenteredPosition() {
+    return {
+        x: Math.max(0, (window.innerWidth - 400) / 2),
+        y: Math.max(0, (window.innerHeight - 300) / 2)
+    };
+}
+
+export function useOpenWindows(apps) {
+  return useMemo(() => apps.filter(app => app.isOpen), [apps]);
+}

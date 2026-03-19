@@ -72,6 +72,18 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
     const toggleWifi = () => {
         setWifiOn(v => {
             const next = !v;
+
+            if (!next) {
+                // Wi‑Fi turned OFF → disconnect all networks immediately
+                setWifiStatuses(prev => {
+                    const updated = {};
+                    for (const key in prev) {
+                        updated[key] = "disconnected";
+                    }
+                    return updated;
+                });
+            }
+
             dispatchDesktopEvent("WiFiToggle", { on: next });
             return next;
         });
@@ -80,6 +92,18 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
     const toggleBluetooth = () => {
         setBluetoothOn(v => {
             const next = !v;
+
+            if (!next) {
+                // Bluetooth turned OFF → disconnect all devices immediately
+                setBluetoothStatuses(prev => {
+                    const updated = {};
+                    for (const key in prev) {
+                        updated[key] = "disconnected";
+                    }
+                    return updated;
+                });
+            }
+
             dispatchDesktopEvent("BluetoothToggle", { on: next });
             return next;
         });
@@ -317,61 +341,108 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                                         {activeDetail === "accessibility" && "Accessibility"}
                                         {activeDetail === "project" && "Project"}
                                     </div>    
+
+                                    {/* Top-right toggle */}
+                                    {(activeDetail === "wifi" || activeDetail === "bluetooth") && (
+                                        <button
+                                            className="qs-detail-toggle-switch"
+                                            onClick={() =>
+                                                activeDetail === "wifi"
+                                                    ? toggleWifi()
+                                                    : toggleBluetooth()
+                                            }
+                                        >
+                                            {(activeDetail === "wifi" ? wifiOn : bluetoothOn) ? "On" : "Off"}
+                                        </button>
+                                    )}
                                 </div> 
                                 
 
                                 <div className="qs-detail-content">
                                     {activeDetail === "wifi" && (
-                                        <div className="qs-detail-list">
-                                            {Object.keys(wifiStatuses).map(network => (
-                                                <div key={network}>
-                                                    <button 
-                                                        className="qs-detail-list-item" 
-                                                        onClick={() => selectWifiNetwork(network)}
-                                                    >
-                                                        <div>
-                                                            <div className="qs-network-info">
-                                                                <img className="qs-icon" src={placeholderImage} alt={network} /> 
+                                        <div className="qs-detail-content">
+                                            {!wifiOn ? (
+                                                <div className="qs-radio-off-message">
+                                                    <div className="qs-radio-off-title">Wi‑Fi is off</div>
+                                                    <div className="qs-radio-off-body">
+                                                        Turn Wi‑Fi back on to see available networks.
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div className="qs-detail-list">
+                                                    {Object.keys(wifiStatuses).map(network => (
+                                                        <div key={network}>
+                                                            <button
+                                                                className="qs-detail-list-item"
+                                                                onClick={() => selectWifiNetwork(network)}
+                                                            >
+                                                                <div className="qs-network-info">
+                                                                    <img className="qs-icon" src={placeholderImage} alt={network} />
                                                                     <span>{network}</span>
-                                                            </div>
-                                                            {wifiStatuses[network] !== "disconnected" && (
-                                                                <span className="qs-connected-indicator">{wifiStatuses[network]}</span>
+                                                                </div>
+
+                                                                {wifiStatuses[network] !== "disconnected" && (
+                                                                    <span className="qs-connected-indicator">
+                                                                        {wifiStatuses[network]}
+                                                                    </span>
+                                                                )}
+                                                            </button>
+
+                                                            {selectedWifi === network && (
+                                                                <button
+                                                                    className={`qs-connect-button ${
+                                                                        wifiStatuses[network] === "connected" ? "disconnect" : ""
+                                                                    }`}
+                                                                    onClick={() => toggleWifiConnection(network)}
+                                                                >
+                                                                    {wifiStatuses[network] === "connected"
+                                                                        ? "Disconnect"
+                                                                        : wifiStatuses[network] === "connecting"
+                                                                        ? "Connecting..."
+                                                                        : wifiStatuses[network] === "disconnecting"
+                                                                        ? "Disconnecting..."
+                                                                        : "Connect"}
+                                                                </button>
                                                             )}
                                                         </div>
-
-                                                        {selectedWifi === network && (
-                                                            <button 
-                                                                className={`qs-connect-button ${wifiStatuses[network] === "connected" ? "disconnect" : ""}`}
-                                                                onClick={() => toggleWifiConnection(network)}
-                                                            >
-                                                                {wifiStatuses[network] === "connected" ? "Disconnect" : 
-                                                                wifiStatuses[network] === "connecting" ? "Connecting..." : 
-                                                                wifiStatuses[network] === "disconnecting" ? "Disconnecting..." : "Connect"}
-                                                            </button>
-                                                        )}
-                                                    </button>
+                                                    ))}
                                                 </div>
-                                            ))}
+                                            )}
                                         </div>
                                     )}
                                     {activeDetail === "bluetooth" && (
-                                        <div className="qs-detail-list">
-                                            {Object.keys(bluetoothStatuses).map(device => (
-                                                <button 
-                                                    key={device}
-                                                    className="qs-detail-list-item" 
-                                                    onClick={() => toggleBluetoothConnection(device)}
-                                                >
-                                                    <div className="qs-bluetooth-name">
-                                                        <img className="qs-icon" src={placeholderImage} alt={device} /> {device}
+                                        <div className="qs-detail-content">
+                                            {!bluetoothOn ? (
+                                                <div className="qs-radio-off-message">
+                                                    <div className="qs-radio-off-title">Bluetooth is off</div>
+                                                    <div className="qs-radio-off-body">
+                                                        Turn Bluetooth back on to see available devices.
                                                     </div>
-                                                    <span className="qs-device-status">
-                                                        {bluetoothStatuses[device] === "connected" ? "Connected" : 
-                                                         bluetoothStatuses[device] === "connecting" ? "Connecting..." : 
-                                                         bluetoothStatuses[device] === "disconnecting" ? "Disconnecting..." : "Not Connected"}
-                                                    </span>
-                                                </button>
-                                            ))}
+                                                </div>
+                                            ) : (
+                                                <div className="qs-detail-list">
+                                                    {Object.keys(bluetoothStatuses).map(device => (
+                                                        <button
+                                                            key={device}
+                                                            className="qs-detail-list-item"
+                                                            onClick={() => toggleBluetoothConnection(device)}
+                                                        >
+                                                            <div className="qs-bluetooth-name">
+                                                                <img className="qs-icon" src={placeholderImage} alt={device} /> {device}
+                                                            </div>
+                                                            <span className="qs-device-status">
+                                                                {bluetoothStatuses[device] === "connected"
+                                                                    ? "Connected"
+                                                                    : bluetoothStatuses[device] === "connecting"
+                                                                    ? "Connecting..."
+                                                                    : bluetoothStatuses[device] === "disconnecting"
+                                                                    ? "Disconnecting..."
+                                                                    : "Not Connected"}
+                                                            </span>
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            )}
                                         </div>
                                     )}
                                     {activeDetail === "accessibility" && (

@@ -338,7 +338,7 @@
     {
       "stepId": 38,
       "lessonId": 4,
-      "text": "Now move your cursor and click somewhere else in the Notepad app. Then try pressing Ctrl and P on your keyboard at the same time, to paste the text you cut back into the notepad app.",
+      "text": "Now move your cursor and click somewhere else in the Notepad app. Then try pressing Ctrl and V on your keyboard at the same time, to paste the text you cut back into the notepad app.",
       "eventName": "NotepadPaste",
       "hintText": "Press the Ctrl key and the P key on your keyboard at the same time.",
       "hintVideo": "TestVideo.mp4"
