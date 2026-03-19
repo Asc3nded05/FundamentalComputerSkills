@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://4.172.249.10:3000',
+        target: 'https://fundamentalcomputerskills.duckdns.org/',
         changeOrigin: true,
         secure: false,
         ws: true,
