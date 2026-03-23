@@ -40,7 +40,7 @@ function SideBar(props) {
     
     const videoShowButton = document.getElementById('hint-demo');
     document.addEventListener("click", function(event) {
-        if (!videoShowButton.contains(event.target)) {
+        if (videoShowButton && !videoShowButton.contains(event.target)) {
             setShowVideo(false);
         }
     });

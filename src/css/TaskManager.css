@@ -9,32 +9,41 @@
 .taskManager-body {
     display: flex;
     flex-direction: column;
-    height: 100%; /* Fill the parent container */
+    flex: 1;
+    overflow: hidden;
 }
 
 .taskManager-main {
-    flex: 1 1 auto; /* Allow the main content to expand and fill the remaining space */
-    overflow-y: auto; /* Add scrolling if content overflows */
-    display: flex; /* Make the child divs align horizontally */
+    padding: 0.5rem;
+    overflow-y: auto;
+    width: 100%;
+    border-collapse: collapse;
+    height: fit-content;
 }
 
-.taskManager-main > div {
-    display: flex; /* Make the inner divs align vertically */
-    flex-direction: column; /* Stack the inner divs vertically */
-    border: 1px solid #ccc; /* Optional: Add a border for visualization */
-    padding: 10px; /* Optional: Add padding for spacing */
+.taskManager-main thead th {
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+    padding: 6px 20px 6px 0;
+    white-space: nowrap;
 }
 
-.taskManager-main div div {
-    padding-right: 20px;
+.taskManager-main tbody td {
+    padding: 4px 20px 4px 0;
     min-height: 28px;
     white-space: nowrap;
 }
 
-.taskmanager-title {
-    display: flex;
-    border-bottom: #ccc 1px solid;
+.taskManager-main tbody tr:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
 }
+
+.taskmanager-title {
+    border-bottom: 1px solid #ccc;
+}
+
+
 
 .taskManagerSearch {
     margin-left: 10px;
@@ -45,7 +54,7 @@
     flex: 0 0 auto;
     flex-direction: row;
     justify-content: space-between;
-    align-items: left;
+    align-items: center;
     height: min-content;
     width: 100%;
     padding: 0.5rem;
@@ -70,7 +79,7 @@
     flex: 0 0 300px;
 }
 
-.taskManager-menu .inactive{
+.taskManager-menu .inactive {
     opacity: .5;
 }
 
@@ -104,12 +113,6 @@
 
 .taskManager-button:hover {
     background-color: #f0f0f0;
-}
-
-.taskManager-main {
-    flex: 1;
-    padding: 0.5rem;
-    overflow-y: auto;
 }
 
 .hamburger-menu {

@@ -136,7 +136,7 @@ function Desktop() {
             case 'Settings':
                 return <Settings key={app.instanceId} startingPage={app.startingPage}/>;
             case 'TaskManager':
-                return <TaskManager key={app.instanceId} sortedWindows={sortedWindows} />;
+                return <TaskManager key={app.instanceId} sortedWindows={sortedWindows} closeApp={closeApp} />;
             case 'FrameApp':
                 return <FrameApp key={app.instanceId} />;
             default:
