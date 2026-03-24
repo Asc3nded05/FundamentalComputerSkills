@@ -4,7 +4,7 @@ import Personalization from "./settings/Personalization";
 import System from "./settings/System";
 import BluetoothDevices from "./settings/BluetoothDevices";
 
-function Settings({ startingPage = 'home' }) {
+function Settings({ startingPage = 'home', backgroundImage, onBackgroundChange }) {
 
     const [query, setQuery] = useState('');
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -44,7 +44,10 @@ function Settings({ startingPage = 'home' }) {
             case 'bluetooth':
                 return <BluetoothDevices />;
             case 'personalization':
-                return <Personalization />;
+                return <Personalization 
+                    backgroundImage={backgroundImage}
+                    onBackgroundChange={onBackgroundChange}
+                />;
             default:
                 return (
                     <div className="settings-placeholder">

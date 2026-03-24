@@ -1,26 +1,14 @@
 import { useState } from 'react';
 
 
-const Personalization = () => {
+const Personalization = ({ backgroundImage, onBackgroundChange }) => {
     const [subPage, setSubPage] = useState('main'); // 'main' or 'background'
-    const [backgroundImage, setBackgroundImage] = useState(
-        localStorage.getItem('backgroundImage') || '../assets/background-image.jpg'
-    );
-
-    const handleBackgroundChange = (newImage) => {
-        setBackgroundImage(newImage);
-        localStorage.setItem('backgroundImage', newImage);
-        window.dispatchEvent(new StorageEvent('storage', {
-            key: 'backgroundImage',
-            newValue: newImage
-        }));
-    };
-
+    
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = (event) => handleBackgroundChange(event.target.result);
+            reader.onload = (event) => onBackgroundChange(event.target.result);
             reader.readAsDataURL(file);
         }
     };

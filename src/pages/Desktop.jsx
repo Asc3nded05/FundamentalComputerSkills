@@ -32,7 +32,9 @@ function Desktop() {
     const [brightness, setBrightness] = useState(100);
     const [volume, setVolume] = useState(100);
     const [query, setQuery] = useState("")
-    const [backgroundImage, setBackgroundImage] = useState('../assets/background-image.jpg');
+    const [backgroundImage, setBackgroundImage] = useState(
+        localStorage.getItem('backgroundImage') || '../assets/background-image.jpg'
+    );
 
     // Ref for desktop area, used to center new app windows
     const desktopRef = useRef(null);
@@ -42,6 +44,12 @@ function Desktop() {
     const BASE_WIDTH = 1280;
     const BASE_HEIGHT = 720;
     const [scale, setScale] = useState(1);
+
+    // Function to update background with image object
+    const handleBackgroundChange = (newImage) => {
+        setBackgroundImage(newImage);
+        localStorage.setItem('backgroundImage', newImage);
+    };
 
     // Load background image from localStorage 
     useEffect(() => {
@@ -134,7 +142,12 @@ function Desktop() {
             case 'Notepad':
                 return <Notepad key={app.instanceId} initialContent={app.initialContent} />;
             case 'Settings':
-                return <Settings key={app.instanceId} startingPage={app.startingPage}/>;
+                return <Settings 
+                key={app.instanceId} 
+                startingPage={app.startingPage}
+                backgroundImage={backgroundImage}
+                onBackgroundChange={handleBackgroundChange}
+                />;
             case 'TaskManager':
                 return <TaskManager key={app.instanceId} sortedWindows={sortedWindows} closeApp={closeApp} />;
             case 'FrameApp':
@@ -195,7 +208,7 @@ function Desktop() {
                         backgroundSize: 'cover',
                         backgroundPosition: 'center'
                     }}
-                >                    
+                >
                     <ResponsiveGridLayout
                         className="layout"
                         layouts={{ lg: desktopLayout }}
@@ -343,7 +356,7 @@ function Desktop() {
                 </div>
 
                 {/* Desktop Context Menu on right click */}
-                <ContextMenuDesktop triggerRef={desktopRef} scale={scale} />
+                <ContextMenuDesktop triggerRef={desktopRef} scale={scale} openApp={openApp}/>
             </div>
 
             <SideBar lessonId={lessonId} desktopRef={desktopRef}/>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../css/ContextMenuDesktop.css';
 
-function ContextMenuDesktop({ triggerRef, scale }) {
+function ContextMenuDesktop({ triggerRef, scale, openApp }) {
     const [visible, setVisible] = useState(false);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const menuRef = useRef(null);
@@ -48,7 +48,15 @@ function ContextMenuDesktop({ triggerRef, scale }) {
             document.removeEventListener('contextmenu', handleDocumentContextMenu);
             document.removeEventListener('click', handleDocumentClick);
         };
-    }, [triggerRef, visible]); // `visible` is needed because handlers reference it
+    }, [triggerRef, visible]);
+    
+    const handleMenuItemClick = (callback) => {
+        return (e) => {
+            e.stopPropagation(); // Prevent event bubbling
+            callback(); // Execute the passed function
+            setVisible(false); // Close the menu after click
+        };
+    };
 
     if (!visible) return null;
 
@@ -70,17 +78,17 @@ function ContextMenuDesktop({ triggerRef, scale }) {
             <div className="context-menu-item">
                 Sort By
             </div>
-            <div className="context-menu-item" onClick={() => handleItemClick('Refresh')}>
+            <div className="context-menu-item">
                 Refresh
             </div>
-            <div className="context-menu-item" onClick={() => handleItemClick('New')}>
+            <div className="context-menu-item">
                 New
             </div>
             <div className="context-menu-separator" />
-            <div className="context-menu-item" onClick={() => handleItemClick('Display Settings')}>
+            <div className="context-menu-item" onClick={handleMenuItemClick(() => openApp('Settings', {startingPage: 'system'}))}>
                 Display Settings
             </div>
-            <div className="context-menu-item">
+            <div className="context-menu-item" onClick={handleMenuItemClick(() => openApp('Settings', {startingPage: 'personalization'}))}>
                 Personalize
             </div>
         </div>
