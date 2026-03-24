@@ -1,4 +1,35 @@
-.notepad-bottom-nav {
+.notepad-bottom-top-nav {
+    display: flex;
+    justify-content: space-between;
+    background: #e6f0f4;
+    padding-top: 0;
+}
+
+.notepad-find-options {
+    display: flex;
+    justify-content: right;
+    gap: 10px;
+    padding: 10px;
+    background: #e6f0f4;
+    padding-top: 0;
+}
+
+.notepad-find-options input {
+    font-size: 14px;
+    padding: 5px;
+    margin: 5px;
+    width: 200px;
+}
+
+.notepad-find-options button {
+    border: none;
+    background-color: #e6f0f4;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 3px;
+}
+
+.notepad-options {
     display: flex;
     justify-content: left;
     gap: 10px;
@@ -7,7 +38,7 @@
     padding-top: 0;
 }
 
-.notepad-bottom-nav button {
+.notepad-options button {
     border: none;
     background-color: #e6f0f4;
     cursor: pointer;

@@ -1,22 +1,3 @@
-// import { readJsonFile } from './jsonService.js';
-
-// export const getAllSteps = async () => {
-//     const data = await readJsonFile('stepData.json');
-//     return data.steps;
-// }
-
-// export const getStepById = async (stepId) => {
-//     const data = await readJsonFile('stepData.json');
-//     return data.steps.find(step => step.stepId === stepId);
-// }
-
-// export const getStepsByLessonId = async (lessonId) => {
-//     const data = await readJsonFile('stepData.json');
-//     return data.steps.filter(step => step.lessonId === lessonId);
-// };
-
-
-
 import initOracle from "../database/oracle.js";
 
 export async function getAllSteps() {
@@ -80,6 +61,9 @@ export async function getStepsByLessonId(lessonId) {
         `SELECT 
             s.stepId,
             s.text,
+            s.nextStep,
+            s.hintText,
+            s.hintVideo,
             s.orderNumber,
             e.eventId,
             e.eventName
@@ -95,12 +79,15 @@ export async function getStepsByLessonId(lessonId) {
         const stepsMap = new Map();
 
         for (const row of result.rows) {
-        const [stepId, text, orderNumber, eventId, eventName] = row;
+        const [stepId, text, nextStep, hintText, hintVideo, orderNumber, eventId, eventName] = row;
 
         if (!stepsMap.has(stepId)) {
             stepsMap.set(stepId, {
             stepId,
             text,
+            nextStep,
+            hintText,
+            hintVideo,
             orderNumber,
             events: []
             });

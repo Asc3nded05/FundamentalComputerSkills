@@ -92,8 +92,13 @@
   text-align: left;
 }
 
-.current-step {
+.step-instructions {
+  text-align: justify;
+}
+
+.next-step {
   text-align: center;
+  font-weight: bold;
 }
 
 .help-buttons div {

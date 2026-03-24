@@ -4,6 +4,9 @@ export async function runLesson(
     steps,
     lessonId, 
     updateInstructions, 
+    updateNextStep,
+    updateHintText,
+    updateHintVideo,
     updateWrongEvent, 
     setEventName
 ) {
@@ -45,6 +48,9 @@ export async function runLesson(
     // Runs the specified step
     async function runStep(step) {
         updateInstructions(step.text);
+        updateNextStep(step.nextStep);
+        updateHintText(step.hintText);
+        updateHintVideo(step.hintVideo);
 
         const validEventNames = step.events.map(e => e.eventName);
         setEventName(validEventNames);
