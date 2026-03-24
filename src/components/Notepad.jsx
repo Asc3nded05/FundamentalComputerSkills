@@ -18,13 +18,13 @@ function Notepad({initialContent=""}) {
                         break;
                     case "z": // Ctrl+Z or Command+Z
                         if (event.shiftKey) { // Check if Shift is also pressed
-                            dispatchDesktopEvent("NotepadRedo"); // Ctrl+Shift+Z for Redo
+                            dispatchDesktopEvent("NotepadRedoZ"); // Ctrl+Shift+Z for Redo
                         } else {
                             dispatchDesktopEvent("NotepadUndo"); // Ctrl+Z for Undo
                         }
                         break;
                     case "y": // Ctrl+Y or Command+Y
-                        dispatchDesktopEvent("NotepadRedo");
+                        dispatchDesktopEvent("NotepadRedoY");
                         break;
                     case "f": // Ctrl+F or Command+F
                         dispatchDesktopEvent("NotepadFind");
