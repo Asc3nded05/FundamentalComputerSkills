@@ -4,6 +4,9 @@ import Personalization from "./settings/Personalization";
 import System from "./settings/System";
 import BluetoothDevices from "./settings/BluetoothDevices";
 import { dispatchDesktopEvent } from "../utils/eventBus";
+import Home from "./settings/Home";
+import Network from "./settings/Network";
+import Apps from "./settings/Apps";
 
 function Settings({ startingPage = 'home', backgroundImage, onBackgroundChange }) {
 
@@ -40,15 +43,21 @@ function Settings({ startingPage = 'home', backgroundImage, onBackgroundChange }
 
     const renderContent = () => {
         switch (currentPage) {
+            case 'home':
+                return <Home/>
             case 'system':
                 return <System/>
             case 'bluetooth':
                 return <BluetoothDevices />;
+            case 'network':
+                return <Network/>
             case 'personalization':
                 return <Personalization 
                     backgroundImage={backgroundImage}
                     onBackgroundChange={onBackgroundChange}
                 />;
+            case 'apps':
+                return <Apps/>
             default:
                 return (
                     <div className="settings-placeholder">
