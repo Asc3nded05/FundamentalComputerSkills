@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../css/ContextMenuDesktop.css';
+import { dispatchDesktopEvent } from '../utils/eventBus';
 
 function ContextMenuDesktop({ triggerRef, scale, openApp }) {
     const [visible, setVisible] = useState(false);
@@ -85,10 +86,16 @@ function ContextMenuDesktop({ triggerRef, scale, openApp }) {
                 New
             </div>
             <div className="context-menu-separator" />
-            <div className="context-menu-item" onClick={handleMenuItemClick(() => openApp('Settings', {startingPage: 'system'}))}>
+            <div className="context-menu-item" onClick={handleMenuItemClick(() => {
+                openApp('Settings', {startingPage: 'system'});
+                dispatchDesktopEvent('OpenDisplaySettingsFromContextMenu');
+                })}>
                 Display Settings
             </div>
-            <div className="context-menu-item" onClick={handleMenuItemClick(() => openApp('Settings', {startingPage: 'personalization'}))}>
+            <div className="context-menu-item" onClick={handleMenuItemClick(() => {
+                openApp('Settings', {startingPage: 'personalization'});
+                dispatchDesktopEvent('OpenPersonalizationSettingsFromContextMenu');
+                })}>
                 Personalize
             </div>
         </div>

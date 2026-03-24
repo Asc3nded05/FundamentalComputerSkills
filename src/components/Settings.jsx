@@ -3,6 +3,7 @@ import '../css/Settings.css';
 import Personalization from "./settings/Personalization";
 import System from "./settings/System";
 import BluetoothDevices from "./settings/BluetoothDevices";
+import { dispatchDesktopEvent } from "../utils/eventBus";
 
 function Settings({ startingPage = 'home', backgroundImage, onBackgroundChange }) {
 
@@ -23,18 +24,18 @@ function Settings({ startingPage = 'home', backgroundImage, onBackgroundChange }
 
     // NOTE: Later, we can add custom icons for each page instead of emojis
     const pages = {
-        home: { name: 'Home', icon: '🏠' },
-        system: { name: 'System', icon: '⚙️' },
-        bluetooth: { name: 'Bluetooth & Devices', icon: '🔌' },
-        network: { name: 'Network & Internet', icon: '🌐' },
-        personalization: { name: 'Personalization', icon: '🎨' },
-        apps: { name: 'Apps', icon: '📱' },
-        accounts: { name: 'Accounts', icon: '👤' },
-        time: { name: 'Time & Language', icon: '🕐' },
-        gaming: { name: 'Gaming', icon: '🎮' },
-        accessibility: { name: 'Accessibility', icon: '♿' },
-        privacy: { name: 'Privacy & Security', icon: '🔒' },
-        updates: { name: 'Windows Update', icon: '📦' },
+        home: { name: 'Home', icon: '🏠', event: 'SettingsHomePageClicked' },
+        system: { name: 'System', icon: '⚙️', event: 'SettingsSystemPageClicked' },
+        bluetooth: { name: 'Bluetooth & Devices', icon: '🔌', event: 'SettingsBluetoothPageClicked' },
+        network: { name: 'Network & Internet', icon: '🌐', event: 'SettingsNetworkPageClicked' },
+        personalization: { name: 'Personalization', icon: '🎨', event: 'SettingsPersonalizationPageClicked' },
+        apps: { name: 'Apps', icon: '📱', event: 'SettingsAppsPageClicked' },
+        accounts: { name: 'Accounts', icon: '👤', event: 'SettingsAccountsPageClicked' },
+        time: { name: 'Time & Language', icon: '🕐', event: 'SettingsTimeLanguagePageClicked' },
+        gaming: { name: 'Gaming', icon: '🎮', event: 'SettingsGamingPageClicked' },
+        accessibility: { name: 'Accessibility', icon: '♿', event: 'SettingsAccessibilityPageClicked' },
+        privacy: { name: 'Privacy & Security', icon: '🔒', event: 'SettingsPrivacySecurityPageClicked' },
+        updates: { name: 'Windows Update', icon: '📦', event: 'SettingsUpdatePageClicked' },
     };
 
     const renderContent = () => {
@@ -77,7 +78,8 @@ function Settings({ startingPage = 'home', backgroundImage, onBackgroundChange }
                             className={`settings-button ${currentPage === key ? 'active' : ''}`}
                             onClick={() => {
                                 setCurrentPage(key);
-                                setSidebarOpen(false); // Auto-close sidebar on mobile
+                                setSidebarOpen(false);
+                                dispatchDesktopEvent(pages[key].event);
                             }}
                         >
                             {icon} {name}
