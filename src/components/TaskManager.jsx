@@ -11,7 +11,14 @@ function TaskManager({sortedWindows, closeApp}) {
     const handleSearch = (e) => setQuery(e.target.value);
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
-    const handleRowClick = (itemId) => setSelectedItemId(itemId);
+    const handleRowClick = (itemId) => {
+        if (itemId === selectItemId){
+            setSelectedItemId("")
+        }
+        else {
+        setSelectedItemId(itemId)
+        }
+    };
     
     function endTask() {
 
