@@ -80,6 +80,9 @@ export async function getStepsByLessonId(lessonId) {
         `SELECT 
             s.stepId,
             s.text,
+            s.nextStep,
+            s.hintText,
+            s.hintVideo,
             s.orderNumber,
             e.eventId,
             e.eventName

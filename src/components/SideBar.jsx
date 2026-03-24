@@ -29,7 +29,7 @@ function SideBar(props) {
         setLessonState("InProgress");
 
         //Runs lesson and listens for events
-        await runLesson(steps, currentLesson, setCurrentStep, setWrongEvent, setEventName, eventName);
+        await runLesson(steps, currentLesson, setStepInstructions, setNextStep, setWrongEvent, setEventName, eventName);
     }
 
     //Dispatch Next event when Next button is clicked
@@ -52,8 +52,12 @@ function SideBar(props) {
     const {response: steps} = useStep(currentLesson);
 
     // State to track the current step's instructions and any wrong events
-    const [currentStep, setCurrentStep] = useState("Press Start Lesson to Begin");
+    const [stepInstructions, setStepInstructions] = useState("Press Start Lesson to Begin");
+    const [nextStep, setNextStep] = useState(null);
     const [wrongEvent, setWrongEvent] = useState(null);
+
+
+    console.log(nextStep);
    
     // State for video demo
     const [showVideo, setShowVideo] = useState(false);
@@ -90,18 +94,14 @@ function SideBar(props) {
                     </div>
                 </div>
                 <p className="wrong-event">{wrongEvent}</p>
-                <p className="current-step">{currentStep}</p>
+                <p className="step-instructions">{stepInstructions}</p>
+                <p className="next-step"></p>
                 {/* Next button Component for Conditional Rendering */}
                 <NextButton 
-                steps={steps} 
-                currentLesson={currentLesson} 
-                setCurrentStep={setCurrentStep} 
-                setWrongEvent={setWrongEvent} 
-                handleStartLesson={handleStartLesson} 
-                handleNext={handleNext}
-                lessonState={lessonState}
-                eventName={eventName}
-                setEventName={setEventName}
+                    handleStartLesson={handleStartLesson} 
+                    handleNext={handleNext}
+                    lessonState={lessonState}
+                    eventName={eventName}
                 />
 
                 {/* Help buttons */}
