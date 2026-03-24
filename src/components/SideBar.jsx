@@ -95,7 +95,7 @@ function SideBar(props) {
                 </div>
                 <p className="wrong-event">{wrongEvent}</p>
                 <p className="step-instructions">{stepInstructions}</p>
-                <p className="next-step"></p>
+                <p className="next-step">{nextStep}</p>
                 {/* Next button Component for Conditional Rendering */}
                 <NextButton 
                     handleStartLesson={handleStartLesson} 
