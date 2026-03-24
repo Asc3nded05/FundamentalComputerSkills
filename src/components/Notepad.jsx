@@ -1,7 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus";
 
-function Notepad({initialContent=""}) {
+function Notepad({initialContent="", query, setQuery}) {
+
+    const [text, setText] = useState(initialContent);
+
+    const handleChange = (event) => {
+        setText(event.target.value); // Get text as user types
+    };
 
     useEffect(() => {
         const handleKeyDown = (event) => {
@@ -47,15 +53,25 @@ function Notepad({initialContent=""}) {
     }, []);
 
     return ( <>
-        <div className="notepad-bottom-nav"> 
-            <button>File</button>
-            <button>Edit</button>
-            <button>View</button>
+        <div className="notepad-bottom-top-nav"> 
+            <div className="notepad-options">
+                <button>File</button>
+                <button>Edit</button>
+                <button>View</button>
+            </div>
+            <div className="notepad-find-options">
+                <input id="myInput" type="text" placeholder="Find..." className="notepad-find" value={query} onClick={searchText} />
+                <button className="notepad-find-next" onClick={() => dispatchDesktopEvent("NotepadFindNext")}>Next</button>
+                <button className="notepad-find-prev" onClick={() => dispatchDesktopEvent("NotepadFindPrev")}>Prev</button>
+            </div>
         </div>
         <div className="notepad-content">
             <textarea 
+            id="myTextArea"
             className="notepad-body" 
             defaultValue={initialContent}
+            value={text}
+            onChange={handleChange}
             // onCopy={() => dispatchDesktopEvent("NotepadCopy")} // Broadast events for copy/paste/cut
             // onCut={() => dispatchDesktopEvent("NotepadCut")}
             // onPaste={() => dispatchDesktopEvent("NotepadPaste")}
@@ -64,5 +80,19 @@ function Notepad({initialContent=""}) {
     </>
     );
 }
+
+function searchText() {
+    const searchTerm = document.getElementById("myInput").value;
+    const textArea = document.getElementById("myTextArea");
+    const text = textArea.value;
+    const index = text.indexOf(searchTerm);
+  
+    if (index !== -1) {
+      textArea.focus(); // Must focus for selection to be visible
+      textArea.setSelectionRange(index, index + searchTerm.length);
+    } else {
+      alert("Not found");
+    }
+  };
 
 export default Notepad;
