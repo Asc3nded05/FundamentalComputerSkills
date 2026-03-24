@@ -48,7 +48,20 @@ function Desktop() {
     // Function to update background with image object
     const handleBackgroundChange = (newImage) => {
         setBackgroundImage(newImage);
-        localStorage.setItem('backgroundImage', newImage);
+        try {
+            localStorage.setItem('backgroundImage', newImage);
+        } catch (e) {
+            if (e.message.includes('quota')) {
+                // 1. Remove metadata (data:image/png;base64,)
+                const base64String = newImage.split(',')[1];
+                // 2. Calculate bytes: base64 strings are ~33% larger than raw binary data
+                // Length * 0.75 is a standard approximation for size in bytes
+                const bytes = base64String.length * 0.75;
+                // 3. Convert bytes to KB
+                const sizeInKB = bytes / 1024;
+                console.warn('Image too large to store in localStorage! Size:', sizeInKB.toFixed(0), 'KB, Max 5000 KB');
+            }
+        }
     };
 
     // Load background image from localStorage 
@@ -98,7 +111,7 @@ function Desktop() {
         setIsStartOpen(prev => !prev);
     }
 
-     function toggleSearch(){
+    function toggleSearch() {
         console.log("toggleSearch")
         setIsSearchOpen(prev => !prev);
     }
@@ -142,11 +155,11 @@ function Desktop() {
             case 'Notepad':
                 return <Notepad key={app.instanceId} initialContent={app.initialContent} />;
             case 'Settings':
-                return <Settings 
-                key={app.instanceId} 
-                startingPage={app.startingPage}
-                backgroundImage={backgroundImage}
-                onBackgroundChange={handleBackgroundChange}
+                return <Settings
+                    key={app.instanceId}
+                    startingPage={app.startingPage}
+                    backgroundImage={backgroundImage}
+                    onBackgroundChange={handleBackgroundChange}
                 />;
             case 'TaskManager':
                 return <TaskManager key={app.instanceId} sortedWindows={sortedWindows} closeApp={closeApp} />;
@@ -225,7 +238,7 @@ function Desktop() {
                         clickDelay={200}
                         transformScale={scale}
                         isBounded={true}
-                        style= {{ height: '90%' }} // Keep icons inside the desktop area
+                        style={{ height: '90%' }} // Keep icons inside the desktop area
                     >
                         {baseApps.map((app) => (
                             <div key={app.id}>
@@ -251,9 +264,9 @@ function Desktop() {
                         <div className="navbar-center">
                             <StartButton toggleStartMenu={toggleStartMenu} />
                             <SearchBar toggleSearch={toggleSearch}
-                            query={query}
-                            setQuery={setQuery}/>
-                            
+                                query={query}
+                                setQuery={setQuery} />
+
 
                             {baseApps.map((app) => {
                                 // Get all instances of this app that are open or minimized
@@ -329,7 +342,7 @@ function Desktop() {
                         openApp={openApp}
                     />
 
-                    
+
                     {/* Dynamic app windows */}
                     {sortedWindows.map((app) => (
                         <AppWindow
@@ -345,7 +358,7 @@ function Desktop() {
                             bringToFront={() => bringToFront(app.instanceId || app.id)}
                             content={renderAppContent(app)}
                             initialSize={app.size}
-                            position={app.position} 
+                            position={app.position}
                             scale={scale}
                             baseHeight={BASE_HEIGHT}
                             baseWidth={BASE_WIDTH}
@@ -356,10 +369,10 @@ function Desktop() {
                 </div>
 
                 {/* Desktop Context Menu on right click */}
-                <ContextMenuDesktop triggerRef={desktopRef} scale={scale} openApp={openApp}/>
+                <ContextMenuDesktop triggerRef={desktopRef} scale={scale} openApp={openApp} />
             </div>
 
-            <SideBar lessonId={lessonId} desktopRef={desktopRef}/>
+            <SideBar lessonId={lessonId} desktopRef={desktopRef} />
         </div>
     </>
 }
