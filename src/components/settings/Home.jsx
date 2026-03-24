@@ -23,20 +23,20 @@ function Home() {
                         <div className="settings-list-item">
                             <span>Bluetooth</span>
                             <div className="settings-list-controls">
-                                <label className="toggle-switch-small">
+                                <label className="toggle toggle--small">
                                     <input type="checkbox" defaultChecked />
-                                    <span className="toggle-slider-small"></span>
+                                    <span className="toggle-slider"></span>
                                 </label>
-                                <span className="card-arrow">&gt;</span>
+                                <span className="card-arrow">&rsaquo;</span>
                             </div>
                         </div>
                         <div className="settings-list-item">
                             <span>Display Settings</span>
-                            <span className="card-arrow">&gt;</span>
+                            <span className="card-arrow">&rsaquo;</span>
                         </div>
                         <div className="settings-list-item">
                             <span>Personalization</span>
-                            <span className="card-arrow">&gt;</span>
+                            <span className="card-arrow">&rsaquo;</span>
                         </div>
                     </div>
                 </div>
@@ -48,39 +48,43 @@ function Home() {
                     <div className="storage-bar">
                         <div className="storage-bar-fill" style={{ width: '68%' }}></div>
                     </div>
-                    <h3 className="card-title">PC backup</h3>
-                    <span className="card-arrow">&gt;</span>
-                    <h3 className="card-title">Manage cloud Storage</h3>
-                    <span className="card-arrow">&gt;</span>
+                    <div className="settings-card">
+                        <h3 className="card-title">PC backup</h3>
+                        <span className="card-arrow">&rsaquo;</span>
+                    </div>
+                    <div className="settings-card">
+                        <h3 className="card-title">Manage cloud Storage</h3>
+                        <span className="card-arrow">&rsaquo;</span>
+                    </div>
                 </div>
-                
+
                 {/* Bluetooth Devices */}
                 <div className="settings-card">
                     <h3 className="card-title">Bluetooth Devices</h3>
                     <p className="card-description">Manage, add, and remove devices</p>
-                    
+
                     <div className="bluetooth-section">
                         <div className="bluetooth-row">
                             <span>Bluetooth</span>
-                            <label className="toggle-switch">
+                            <label className="toggle">
                                 <input type="checkbox" defaultChecked />
                                 <span className="toggle-slider"></span>
                             </label>
                         </div>
                         <p className="bluetooth-device-name">Discoverable as "LAPTOP-ABC123"</p>
-                        
+
                         <div className="bluetooth-actions">
-                            <button className="button-small">Add Device</button>
-                            <button className="button-icon">→</button>
+                            <button className="btn btn-small">Add Device</button>
+                            <span className="card-arrow">&rsaquo;</span>
                         </div>
-                        <button className="button-text">View all devices</button>
+                        <button className="btn btn-text">View all devices</button>
                     </div>
                 </div>
 
                 {/* Personalize Your Device */}
                 <div className="settings-card">
                     <h3 className="card-title">Personalize Your Device</h3>
-                    
+
                     <div className="theme-grid">
                         <div className="theme-item">theme 1</div>
                         <div className="theme-item">theme 2</div>
@@ -89,7 +93,7 @@ function Home() {
                         <div className="theme-item">theme 5</div>
                         <div className="theme-item">theme 6</div>
                     </div>
-                    
+
                     <div className="color-mode-selector">
                         <label>Color Mode</label>
                         <select className="settings-select-small">
@@ -97,8 +101,11 @@ function Home() {
                             <option>Dark</option>
                         </select>
                     </div>
-                    
-                    <button className="button-text">Browse more backgrounds, colors, and themes →</button>
+
+                    <button className="btn btn-text">
+                        Browse more backgrounds, colors, and themes
+                        <span className="card-arrow">&rsaquo;</span>
+                    </button>
                 </div>
             </div>
         </div>
