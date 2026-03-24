@@ -39,7 +39,7 @@ function AppWindow({
         <Rnd 
             default={{
                 x: (baseWidth - initialSize.width) / 2 + offset, // Center new windows on desktop
-                y: (baseHeight - initialSize.height) / 2 + offset,
+                y: (baseHeight - initialSize.height - 56) / 2 + offset,
                 width: initialSize.width,
                 height: initialSize.height,
             }}
