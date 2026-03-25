@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import '../css/ContextMenuDesktop.css';
+import { createPortal } from 'react-dom';
+import '../css/ContextMenuTaskManager.css';
 
-function ContextMenuTaskManager({ triggerRef, scale, endTaskContextMenu }) {
+function ContextMenuTaskManager({ triggerRef, scale, endTask, selectItemId }) {
     const [visible, setVisible] = useState(false);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const menuRef = useRef(null);
+    const positionRef = useRef({ x: 0, y: 0 });
 
     useEffect(() => {
         const handleDocumentContextMenu = (e) => {
@@ -30,7 +32,9 @@ function ContextMenuTaskManager({ triggerRef, scale, endTaskContextMenu }) {
 
             // Valid background click: show our custom menu
             e.preventDefault();
-            setPosition({ x: e.pageX, y: e.pageY });
+            // setPosition({ x: e.clientX, y: e.clientY });
+            positionRef.current = { x: e.clientX, y: e.clientY };
+            setPosition({ x: e.clientX, y: e.clientY });
             setVisible(true);
         };
 
@@ -60,23 +64,26 @@ function ContextMenuTaskManager({ triggerRef, scale, endTaskContextMenu }) {
 
     if (!visible) return null;
 
-    return (
+    return createPortal (
         <div
             ref={menuRef}
             className="context-menu-desktop"
             style={{
-                left: position.x,
-                top: position.y,
-                transform: `scale(${scale})`,
-                transformOrigin: 'top left',  // keeps the menu anchored at the cursor
+                position: 'fixed',
+                left: positionRef.current.x,
+                top: positionRef.current.y,
                 zIndex: 1200,
             }}
         >
-            <div className="context-menu-item"  onClick={handleMenuItemClick(endTaskContextMenu)}>
+            <div className="context-menu-item"  onClick={handleMenuItemClick(() => {
+                            endTask(selectItemId);
+                            // dispatchDesktopEvent('OpenDisplaySettingsFromContextMenu');
+                            })}>
                 End Task
             </div>
             {/* <div className="context-menu-separator" /> */}
-        </div>
+        </div>,
+        document.body 
     );
 }
 

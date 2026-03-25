@@ -7,33 +7,51 @@ function TaskManager({sortedWindows, closeApp}) {
     const [query, setQuery] = useState('');
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [selectItemId, setSelectedItemId] = useState('')
-        const [selectItemIdContextmenu, setSelectedItemIdContextMenu] = useState('')
+    const [selectItemIdContextmenu, setSelectedItemIdContextMenu] = useState('')
 
 
     const handleSearch = (e) => setQuery(e.target.value);
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
     const [scale, setScale] = useState(1);
-    const TaskbarRef = useRef(null);
+    const TaskManagerRef = useRef(null);
     
 
     const handleRowClick = (itemId) => setSelectedItemId(itemId);
     const handleRowRightClick = (itemId) => setSelectedItemIdContextMenu(itemId);
+
+   const [systemProcesses, setSystemProcesses] = useState([
+    { id: 'sys-1', name: 'System' },
+    { id: 'sys-2', name: 'Registry' },
+    { id: 'sys-3', name: 'Desktop Window Manager' },
+    { id: 'sys-4', name: 'Windows Logon Application' },
+    { id: 'sys-5', name: 'Local Security Authority Process' },
+    { id: 'sys-6', name: 'Service Host: Local System' },
+    { id: 'sys-7', name: 'Service Host: Network Service' },
+    { id: 'sys-8', name: 'Service Host: Local Service' },
+    { id: 'sys-9', name: 'Runtime Broker' },
+    { id: 'sys-10', name: 'CTF Loader' },
+    { id: 'sys-11', name: 'Shell Infrastructure Host' },
+    { id: 'sys-12', name: 'COM Surrogate' },
+    { id: 'sys-13', name: 'Windows Session Manager' },
+    { id: 'sys-14', name: 'Client Server Runtime Process' },
+]);
     
-    function endTask() {
-        if (selectItemId && closeApp) {
-            closeApp(selectItemId);
-            setSelectedItemId(''); 
-        }
+   function endTask(selectItemId) {
+    console.log(selectItemId);
+    if (!selectItemId) return;
+
+    if (selectItemId.includes('sys')) {
+        // system process
+        setSystemProcesses(prev => prev.filter(p => p.id !== selectItemId));
+        console.log(systemProcesses);
+    } else {
+        // real app window
+        if (closeApp) closeApp(selectItemId);
     }
 
-    function endTaskContextMenu() {
-        console.log(selectItemId);
-        if (selectItemId && closeApp) {
-            closeApp(selectItemIdContextmenu);
-            setSelectedItemIdContextMenu(''); 
-        }
-    }
+    setSelectedItemId('');
+}
 
     return <>
         <div className="taskManager">
@@ -59,7 +77,7 @@ function TaskManager({sortedWindows, closeApp}) {
                             <button className="taskManager-start-btn">Start New Task</button>
                             <button 
                             className="taskManager-end-btn"
-                            onClick={() => endTask()}
+                            onClick={() => endTask(selectItemId)}
                             >End Task</button>
                             <button className="taskManager-mode-btn">Efficiency Mode</button>
                         </div>
@@ -75,7 +93,7 @@ function TaskManager({sortedWindows, closeApp}) {
                                 <th className="taskmanager-title">Network</th>
                             </tr>
                         </thead>
-                        <tbody ref={TaskbarRef}>
+                        <tbody ref={TaskManagerRef}>
                             {sortedWindows?.map((window, index) => (
                                 <tr 
                                 className="taskManager-row"
@@ -97,10 +115,37 @@ function TaskManager({sortedWindows, closeApp}) {
                                     
 
                                 </tr>
+                                
+                                
                             ))}
+                            {systemProcesses.map((proc) => (
+                            <tr
+                                className="taskManager-row"
+                                key={proc.id}
+                                onClick={() => handleRowClick(proc.id)}
+                                onContextMenu={() => handleRowRightClick(proc.id)}
+                                style={{
+                                    background: selectItemId === proc.id ? '#00afec' : 'white',
+                                    color: selectItemId === proc.id ? 'white' : 'black',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                <td className="taskManager-processes-apps">{proc.name}</td>
+                                <td className="taskManager-processes-status"></td>
+                                <td className="taskManager-processes-cpu">0%</td>
+                                <td className="taskManager-processes-memory">0mb</td>
+                                <td className="taskManager-processes-disk">0.1mb/s</td>
+                                <td className="taskManager-processes-network">0mbps</td>
+                            </tr>
+                        ))}
+
                         </tbody>
                     </table>
-                    <ContextMenuTaskManager triggerRef={TaskbarRef} scale={scale} endTaskContextMenu={endTaskContextMenu}/> 
+                    <ContextMenuTaskManager
+                        triggerRef={TaskManagerRef}
+                        scale={scale}
+                        selectItemId={selectItemIdContextmenu}
+                        endTask={endTask}/> 
 
                 </div>
             </div>

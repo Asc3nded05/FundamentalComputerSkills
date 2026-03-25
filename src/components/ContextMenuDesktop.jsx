@@ -31,7 +31,7 @@ function ContextMenuDesktop({ triggerRef, scale, openApp }) {
 
             // Valid background click: show our custom menu
             e.preventDefault();
-            setPosition({ x: e.pageX, y: e.pageY });
+            setPosition({ x: e.clientX, y: e.clientY });
             setVisible(true);
         };
 
