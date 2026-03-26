@@ -3,7 +3,9 @@ import { useState } from 'react';
 
 const Personalization = ({ backgroundImage, onBackgroundChange }) => {
     const [subPage, setSubPage] = useState('main'); // 'main' or 'background'
-    
+    const [bgType, setBgType] = useState('picture');
+    const [solidColor, setSolidColor] = useState('#0078d4');
+
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -11,6 +13,23 @@ const Personalization = ({ backgroundImage, onBackgroundChange }) => {
             reader.onload = (event) => onBackgroundChange(event.target.result);
             reader.readAsDataURL(file);
         }
+    };
+
+    const generateSolidColorDataUrl = (color) => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1;
+        canvas.height = 1;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = color;
+        ctx.fillRect(0, 0, 1, 1);
+        return canvas.toDataURL();
+    };
+
+    const handleSolidColorChange = (e) => {
+        const newColor = e.target.value;
+        setSolidColor(newColor);
+        const dataUrl = generateSolidColorDataUrl(newColor);
+        onBackgroundChange(dataUrl);
     };
 
     // Main view: list of personalization categories
@@ -101,31 +120,45 @@ const Personalization = ({ backgroundImage, onBackgroundChange }) => {
 
                     <div className="settings-card">
                         <h3 className="card-title">Choose your background</h3>
-                        <select className="settings-select">
+                        <select
+                            className="settings-select"
+                            value={bgType}
+                            onChange={(e) => setBgType(e.target.value)}
+                        >
                             <option value="picture">Picture</option>
                             <option value="solid">Solid color</option>
-                            <option value="slideshow">Slideshow</option>
+                            {/* <option value="slideshow">Slideshow</option> */}
                         </select>
-
-                        <button
-                            className="btn btn-primary"
-                            onClick={() => document.getElementById('bg-upload').click()}
-                        >
-                            Choose a photo
-                        </button>
-                        <input
-                            type="file"
-                            id="bg-upload"
-                            accept="image/*"
-                            onChange={handleFileUpload}
-                            style={{ display: 'none' }}
-                        />
-
-                        {/* Color picker (shown when solid color is selected) */}
-                        <div className="color-picker-section">
-                            <label>Background color</label>
-                            <input type="color" defaultValue="#0078d4" />
-                        </div>
+                        {bgType === 'picture' && (
+                            <>
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={() => document.getElementById('bg-upload').click()}
+                                >
+                                    Choose a photo
+                                </button>
+                                <input
+                                    type="file"
+                                    id="bg-upload"
+                                    accept="image/*"
+                                    onChange={handleFileUpload}
+                                    style={{ display: 'none' }}
+                                />
+                            </>
+                        )}
+                        {bgType === 'solid' && (
+                            <>
+                                <div className="color-picker-section">
+                                    <label>Background color</label>
+                                    <input 
+                                        type="color" 
+                                        value={solidColor}   
+                                        onChange={handleSolidColorChange}
+                                    />
+                                </div>
+                            </>
+                        )
+                        }
                     </div>
 
                     <div className="settings-card">
