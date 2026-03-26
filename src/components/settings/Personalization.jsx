@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { dispatchDesktopEvent } from '../../utils/eventBus';
 
 
 const Personalization = ({ backgroundImage, onBackgroundChange }) => {
@@ -7,6 +8,7 @@ const Personalization = ({ backgroundImage, onBackgroundChange }) => {
     const [solidColor, setSolidColor] = useState('#0078d4');
 
     const handleFileUpload = (e) => {
+        dispatchDesktopEvent('SettingsPersonalizationBackgroundImageUploaded');
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
@@ -26,6 +28,7 @@ const Personalization = ({ backgroundImage, onBackgroundChange }) => {
     };
 
     const handleSolidColorChange = (e) => {
+        dispatchDesktopEvent('SettingsPersonalizationBackgroundColorSet');
         const newColor = e.target.value;
         setSolidColor(newColor);
         const dataUrl = generateSolidColorDataUrl(newColor);
@@ -38,7 +41,10 @@ const Personalization = ({ backgroundImage, onBackgroundChange }) => {
             <div className="settings-section">
                 <h1>Personalization</h1>
                 <div className="settings-grid">
-                    <div className="settings-card" onClick={() => setSubPage('background')}>
+                    <div className="settings-card" onClick={() => {
+                        setSubPage('background');
+                        dispatchDesktopEvent('SettingsPersonalizationBackgroundSubPageClicked');
+                    }}>
                         <h3 className="card-title">Background</h3>
                         <p className="card-description">Background image, color, slideshow</p>
                         <span className="card-arrow">&rsaquo;</span>
@@ -100,7 +106,7 @@ const Personalization = ({ backgroundImage, onBackgroundChange }) => {
     if (subPage === 'background') {
         return (
             <div className="settings-section">
-                <button className="back-button" onClick={() => setSubPage('main')}>
+                <button className="back-button" onClick={() => {setSubPage('main'); dispatchDesktopEvent('SettingsPersonalizationPageClicked')}}>
                     ← Back to Personalization
                 </button>
                 <h1>Background</h1>
@@ -164,6 +170,7 @@ const Personalization = ({ backgroundImage, onBackgroundChange }) => {
                     <div className="settings-card">
                         <h3 className="card-title">Contrast Themes</h3>
                         <p className="card-description">Color themes for low vision, light sensitivity</p>
+                        <span className="card-arrow">&rsaquo;</span>
                     </div>
                     <div className="settings-card">
                         <h3 className="card-title">Help with Background</h3>
