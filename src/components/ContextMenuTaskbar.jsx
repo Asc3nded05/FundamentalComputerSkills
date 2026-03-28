@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import '../css/ContextMenuDesktop.css';
-import { dispatchDesktopEvent } from '../utils/eventBus';
+import { createPortal } from 'react-dom';
+import '../css/ContextMenuTaskManager.css';
 
-function ContextMenuDesktop({ triggerRef, scale, openApp }) {
+function ContextMenuTaskManager({ triggerRef, scale, endTask, selectItemId }) {
     const [visible, setVisible] = useState(false);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const menuRef = useRef(null);
+    const positionRef = useRef({ x: 0, y: 0 });
 
     useEffect(() => {
         const handleDocumentContextMenu = (e) => {
@@ -21,16 +22,18 @@ function ContextMenuDesktop({ triggerRef, scale, openApp }) {
             if (!container.contains(e.target)) return;
 
             // Exclude icons, taskbar, and app windows
-            if (
-                e.target.closest('.app-icon') ||
-                e.target.closest('.navbar') ||
-                e.target.closest('.appWindow, .app-window')
-            ) {
-                return; // let the browser show its own context menu
-            }
+            // if (
+            //     e.target.closest('.app-icon') ||
+            //     e.target.closest('.navbar') ||
+            //     e.target.closest('.appWindow, .app-window')
+            // ) {
+            //     return; // let the browser show its own context menu
+            // }
 
             // Valid background click: show our custom menu
             e.preventDefault();
+            // setPosition({ x: e.clientX, y: e.clientY });
+            positionRef.current = { x: e.clientX, y: e.clientY };
             setPosition({ x: e.clientX, y: e.clientY });
             setVisible(true);
         };
@@ -61,45 +64,27 @@ function ContextMenuDesktop({ triggerRef, scale, openApp }) {
 
     if (!visible) return null;
 
-    return (
+    return createPortal (
         <div
             ref={menuRef}
             className="context-menu-desktop"
             style={{
-                left: position.x,
-                top: position.y,
-                transform: `scale(${scale})`,
-                transformOrigin: 'top left',  // keeps the menu anchored at the cursor
+                position: 'fixed',
+                left: positionRef.current.x,
+                top: positionRef.current.y,
                 zIndex: 1200,
             }}
         >
-            <div className="context-menu-item">
-                View
+            <div className="context-menu-item"  onClick={handleMenuItemClick(() => {
+                            endTask(selectItemId);
+                            // dispatchDesktopEvent('OpenDisplaySettingsFromContextMenu');
+                            })}>
+                End Task
             </div>
-            <div className="context-menu-item">
-                Sort By
-            </div>
-            <div className="context-menu-item">
-                Refresh
-            </div>
-            <div className="context-menu-item">
-                New
-            </div>
-            <div className="context-menu-separator" />
-            <div className="context-menu-item" onClick={handleMenuItemClick(() => {
-                openApp('Settings', {startingPage: 'system'});
-                dispatchDesktopEvent('OpenDisplaySettingsFromContextMenu');
-                })}>
-                Display Settings
-            </div>
-            <div className="context-menu-item" onClick={handleMenuItemClick(() => {
-                openApp('Settings', {startingPage: 'personalization'});
-                dispatchDesktopEvent('OpenPersonalizationSettingsFromContextMenu');
-                })}>
-                Personalize
-            </div>
-        </div>
+            {/* <div className="context-menu-separator" /> */}
+        </div>,
+        document.body 
     );
 }
 
-export default ContextMenuDesktop;
+export default ContextMenuTaskManager;

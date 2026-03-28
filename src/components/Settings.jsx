@@ -1,8 +1,20 @@
-import { useEffect, useState } from "react";
-import '../css/Settings.css';
-import Personalization from "./settings/Personalization";
+
+import Home from "./settings/Home";
 import System from "./settings/System";
 import BluetoothDevices from "./settings/BluetoothDevices";
+import Network from "./settings/Network";
+import Personalization from "./settings/Personalization";
+import Apps from "./settings/Apps";
+import Accounts from "./settings/Accounts";
+import TimeLanguage from "./settings/TimeLanguage";
+import Gaming from "./settings/Gaming";
+import Accessibility from "./settings/Accessibility";
+import PrivacySecurity from "./settings/PrivacySecurity";
+import WindowsUpdate from "./settings/WindowsUpdate";
+
+import '../css/Settings.css';
+
+import { useEffect, useState } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus";
 
 function Settings({ startingPage = 'home', backgroundImage, onBackgroundChange }) {
@@ -40,15 +52,33 @@ function Settings({ startingPage = 'home', backgroundImage, onBackgroundChange }
 
     const renderContent = () => {
         switch (currentPage) {
+            case 'home':
+                return <Home/>
             case 'system':
                 return <System/>
             case 'bluetooth':
                 return <BluetoothDevices />;
+            case 'network':
+                return <Network/>
             case 'personalization':
                 return <Personalization 
                     backgroundImage={backgroundImage}
                     onBackgroundChange={onBackgroundChange}
                 />;
+            case 'apps':
+                return <Apps/>
+            case 'accounts':
+                return <Accounts/>
+            case 'time':
+                return <TimeLanguage/>
+            case 'gaming':
+                return <Gaming/>
+            case 'accessibility':
+                return <Accessibility/>
+            case 'privacy':
+                return <PrivacySecurity/>
+            case 'updates':
+                return <WindowsUpdate/>
             default:
                 return (
                     <div className="settings-placeholder">

@@ -1,3 +1,5 @@
+/* ---- Base Settings ------- */
+
 .settings {
     display: flex;
     flex-direction: column;
@@ -16,7 +18,7 @@
     border-bottom: 1px solid #e0e0e0;
 }
 
-.settings-header > :first-child {
+.settings-header> :first-child {
     flex: 0 0 auto;
 }
 
@@ -118,7 +120,8 @@
     }
 }
 
-/* Personalization Page */
+/* ---------- Layout ------------------- */
+
 .settings-section {
     padding: 20px;
     max-width: 1200px;
@@ -146,6 +149,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     cursor: pointer;
     transition: background 0.2s;
+    position: relative;
 }
 
 .settings-card:hover {
@@ -165,26 +169,594 @@
     margin: 0;
 }
 
-.back-button {
+.card-arrow {
+    font-size: 28px;
+    color: #888;
+}
+
+.settings-card>.card-arrow {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.info-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stats-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Subsections */
+.subsection-title {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 24px 0 12px 0;
+    color: #1e1e1e;
+}
+
+/* -------- Buttons ------------------ */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+    border: none;
+    background: none;
+}
+
+.btn-primary {
+    background: #0078d4;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #005a9e;
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid #e0e0e0;
+    color: #1e1e1e;
+}
+
+.btn-secondary:hover {
+    background: #f0f0f0;
+}
+
+.btn-small {
+    padding: 4px 12px;
+    font-size: 12px;
+}
+
+.btn-icon {
+    padding: 4px 12px;
+    font-size: 14px;
+}
+
+.btn-text {
     background: none;
     border: none;
     color: #0078d4;
-    font-size: 14px;
-    cursor: pointer;
-    padding: 0;
-    margin-bottom: 16px;
-    display: inline-block;
+    padding: 8px 0;
 }
 
-.back-button:hover {
+.btn-text:hover {
     text-decoration: underline;
 }
 
-.section-description {
-    color: #666;
-    font-size: 14px;
+
+/* ----- Toggles ---------------- */
+
+.toggle {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 24px;
+    transition: 0.2s;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.2s;
+}
+
+input:checked+.toggle-slider {
+    background-color: #0078d4;
+}
+
+input:checked+.toggle-slider:before {
+    transform: translateX(20px);
+}
+
+/* Small variant */
+.toggle--small {
+    width: 36px;
+    height: 20px;
+}
+
+.toggle--small .toggle-slider:before {
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+}
+
+.toggle--small input:checked+.toggle-slider:before {
+    transform: translateX(16px);
+}
+
+.toggle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 15px;
+}
+
+.settings-card.control-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-right: 32px; /* space for absolute arrow */
+    position: relative;
+}
+
+.card-content {
+    flex: 1;
+}
+
+.card-control {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+.settings-card.control-card > .card-arrow {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Bluetooth & Devices Page */
+
+.add-device-card {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80px;
+}
+
+.add-device-card:hover {
+    background: #f0f0f0;
+}
+
+.add-device-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.plus-icon {
+    font-size: 24px;
+    font-weight: 300;
+    color: #0078d4;
+}
+
+
+/* Home Page */
+
+.quick-info {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
     margin-bottom: 24px;
 }
+
+.quick-info .card-description {
+    margin: 4px 0;
+}
+
+.quick-info .card-title {
+    margin-bottom: 4px;
+}
+
+/* Settings list items */
+.settings-list {
+    margin-top: 12px;
+}
+
+.settings-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+}
+
+.settings-list-item:last-child {
+    border-bottom: none;
+}
+
+.settings-list-item:hover {
+    background: #f9f9f9;
+}
+
+.settings-list-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Storage bar */
+.storage-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 12px;
+}
+
+.storage-bar-fill {
+    height: 100%;
+    background-color: #0078d4;
+    border-radius: 4px;
+}
+
+/* Bluetooth section */
+.bluetooth-section {
+    margin-top: 12px;
+}
+
+.bluetooth-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.bluetooth-device-name {
+    font-size: 12px;
+    color: #666;
+    margin: 8px 0;
+}
+
+.bluetooth-actions {
+    display: flex;
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.button-icon {
+    background: transparent;
+    border: 1px solid #e0e0e0;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.button-text {
+    background: none;
+    border: none;
+    color: #0078d4;
+    cursor: pointer;
+    padding: 8px 0;
+    font-size: 14px;
+}
+
+.button-text:hover {
+    text-decoration: underline;
+}
+
+/* Theme grid */
+.theme-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.theme-item {
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 12px;
+    text-align: center;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.theme-item:hover {
+    background: #e8e8e8;
+}
+
+/* Color mode selector */
+.color-mode-selector {
+    margin: 12px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.color-mode-selector label {
+    font-size: 14px;
+    color: #1e1e1e;
+}
+
+.settings-select-small {
+    padding: 6px 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background: white;
+    font-size: 13px;
+}
+
+
+/* Network page */
+.network-info-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.network-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.wifi-icon {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+
+.network-details {
+    flex: 1;
+}
+
+.network-property {
+    font-size: 13px;
+    color: #666;
+    margin-top: 4px;
+}
+
+.data-usage {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 12px;
+    margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+    .network-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .wifi-icon {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* Accounts page specific styles */
+.account-stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stats-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.cloud-storage-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.cloud-storage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.cloud-storage-usage {
+    font-size: 14px;
+    color: #666;
+    font-weight: normal;
+}
+
+.down-arrow {
+    position: static;
+    transform: none;
+    font-size: 18px;
+    margin-left: 8px;
+}
+
+/* Time & language page */
+
+.time-date-block p {
+    margin: 4px 0;
+}
+
+.time-date-block p:first-child {
+    font-size: 28px;
+    font-weight: 500;
+}
+
+
+/* Windows Update page */
+.windows-update-status {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.status-icon {
+    flex-shrink: 0;
+    position: relative;
+}
+
+.status-text {
+    flex: 1;
+}
+
+.status-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0 0 4px 0;
+    color: #1e1e1e;
+}
+
+.status-detail {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+.update-available {
+    margin: 8px 0 0 0;
+    font-size: 14px;
+    color: #0078d4;
+    background: #f0f7ff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+.info-icon {
+    margin-right: 8px;
+    font-size: 14px;
+}
+
+.support-card {
+    cursor: default;
+}
+
+.support-card:hover {
+    background: #ffffff;
+}
+
+.support-list {
+    margin: 12px 0 0 0;
+    padding-left: 20px;
+    color: #666;
+    font-size: 14px;
+}
+
+.support-list li {
+    margin: 8px 0;
+}
+
+.update-footer {
+    margin-top: 24px;
+    padding: 16px;
+    text-align: center;
+    border-top: 1px solid #e0e0e0;
+    font-size: 13px;
+    color: #666;
+}
+
+.update-footer p {
+    margin: 0 0 12px 0;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .windows-update-status {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .status-icon {
+        margin-bottom: 8px;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
 
 /* Background sub‑page */
 .background-preview {
@@ -255,122 +827,5 @@
 
     .settings-grid {
         grid-template-columns: 1fr;
-    }
-}
-
-/* Bluetooth & Devices Page */
-
-
-.add-device-card {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 80px;
-}
-
-.add-device-card:hover {
-    background: #f0f0f0;
-}
-
-.add-device-content {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.plus-icon {
-    font-size: 24px;
-    font-weight: 300;
-    color: #0078d4;
-}
-
-/* Button styles */
-.button-secondary {
-    background: transparent;
-    border: 1px solid #e0e0e0;
-    padding: 8px 16px;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-    color: #1e1e1e;
-    transition: background 0.2s;
-}
-
-.button-secondary:hover {
-    background: #f0f0f0;
-}
-
-.button-small {
-    background: transparent;
-    border: 1px solid #e0e0e0;
-    padding: 4px 12px;
-    border-radius: 4px;
-    font-size: 12px;
-    cursor: pointer;
-    color: #1e1e1e;
-}
-
-.button-small:hover {
-    background: #f0f0f0;
-}
-
-/* Toggle Switch */
-.toggle-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-}
-
-.toggle-switch {
-    position: relative;
-    display: inline-block;
-    width: 44px;
-    height: 24px;
-}
-
-.toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.toggle-slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    border-radius: 24px;
-    transition: 0.2s;
-}
-
-.toggle-slider:before {
-    position: absolute;
-    content: "";
-    height: 20px;
-    width: 20px;
-    left: 2px;
-    bottom: 2px;
-    background-color: white;
-    border-radius: 50%;
-    transition: 0.2s;
-}
-
-input:checked + .toggle-slider {
-    background-color: #0078d4;
-}
-
-input:checked + .toggle-slider:before {
-    transform: translateX(20px);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .add-device-card {
-        min-height: 60px;
     }
 }

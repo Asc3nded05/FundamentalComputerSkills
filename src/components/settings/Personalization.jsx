@@ -1,10 +1,14 @@
 import { useState } from 'react';
+import { dispatchDesktopEvent } from '../../utils/eventBus';
 
 
 const Personalization = ({ backgroundImage, onBackgroundChange }) => {
     const [subPage, setSubPage] = useState('main'); // 'main' or 'background'
-    
+    const [bgType, setBgType] = useState('picture');
+    const [solidColor, setSolidColor] = useState('#0078d4');
+
     const handleFileUpload = (e) => {
+        dispatchDesktopEvent('SettingsPersonalizationBackgroundImageUploaded');
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
@@ -13,54 +17,85 @@ const Personalization = ({ backgroundImage, onBackgroundChange }) => {
         }
     };
 
+    const generateSolidColorDataUrl = (color) => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1;
+        canvas.height = 1;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = color;
+        ctx.fillRect(0, 0, 1, 1);
+        return canvas.toDataURL();
+    };
+
+    const handleSolidColorChange = (e) => {
+        dispatchDesktopEvent('SettingsPersonalizationBackgroundColorSet');
+        const newColor = e.target.value;
+        setSolidColor(newColor);
+        const dataUrl = generateSolidColorDataUrl(newColor);
+        onBackgroundChange(dataUrl);
+    };
+
     // Main view: list of personalization categories
     if (subPage === 'main') {
         return (
             <div className="settings-section">
                 <h1>Personalization</h1>
                 <div className="settings-grid">
-                    <div className="settings-card" onClick={() => setSubPage('background')}>
+                    <div className="settings-card" onClick={() => {
+                        setSubPage('background');
+                        dispatchDesktopEvent('SettingsPersonalizationBackgroundSubPageClicked');
+                    }}>
                         <h3 className="card-title">Background</h3>
                         <p className="card-description">Background image, color, slideshow</p>
+                        <span className="card-arrow">&rsaquo;</span>
                     </div>
 
                     <div className="settings-card">
                         <h3 className="card-title">Colors</h3>
                         <p className="card-description">Accent color, transparency effects, color theme</p>
+                        <span className="card-arrow">&rsaquo;</span>
                     </div>
 
                     <div className="settings-card">
                         <h3 className="card-title">Themes</h3>
                         <p className="card-description">Install, create, manage</p>
+                        <span className="card-arrow">&rsaquo;</span>
                     </div>
 
                     <div className="settings-card">
                         <h3 className="card-title">Dynamic Lighting</h3>
                         <p className="card-description">Connected devices, effects, app settings</p>
+                        <span className="card-arrow">&rsaquo;</span>
                     </div>
                     <div className="settings-card">
                         <h3 className="card-title">Lock screen</h3>
                         <p className="card-description">Lock screen images, apps, animations</p>
+                        <span className="card-arrow">&rsaquo;</span>
                     </div>
                     <div className="settings-card">
                         <h3 className="card-title">Text input</h3>
                         <p className="card-description">Touch keyboard, voice typing, emoji and more, input method editor</p>
+                        <span className="card-arrow">&rsaquo;</span>
                     </div>
                     <div className="settings-card">
                         <h3 className="card-title">Start</h3>
                         <p className="card-description">Recent apps and items, folders</p>
+                        <span className="card-arrow">&rsaquo;</span>
                     </div>
                     <div className="settings-card">
                         <h3 className="card-title">Taskbar</h3>
                         <p className="card-description">Taskbar behaviors, system pins</p>
+                        <span className="card-arrow">&rsaquo;</span>
                     </div>
                     <div className="settings-card">
                         <h3 className="card-title">Fonts</h3>
                         <p className="card-description">Install, manage</p>
+                        <span className="card-arrow">&rsaquo;</span>
                     </div>
                     <div className="settings-card">
                         <h3 className="card-title">Device usage</h3>
                         <p className="card-description">Select all the ways you plan to use your devices to get personalized tips, ads, and recommendations within Microsoft experiences.</p>
+                        <span className="card-arrow">&rsaquo;</span>
                     </div>
                 </div>
             </div>
@@ -71,7 +106,7 @@ const Personalization = ({ backgroundImage, onBackgroundChange }) => {
     if (subPage === 'background') {
         return (
             <div className="settings-section">
-                <button className="back-button" onClick={() => setSubPage('main')}>
+                <button className="back-button" onClick={() => {setSubPage('main'); dispatchDesktopEvent('SettingsPersonalizationPageClicked')}}>
                     ← Back to Personalization
                 </button>
                 <h1>Background</h1>
@@ -91,36 +126,51 @@ const Personalization = ({ backgroundImage, onBackgroundChange }) => {
 
                     <div className="settings-card">
                         <h3 className="card-title">Choose your background</h3>
-                        <select className="settings-select">
+                        <select
+                            className="settings-select"
+                            value={bgType}
+                            onChange={(e) => setBgType(e.target.value)}
+                        >
                             <option value="picture">Picture</option>
                             <option value="solid">Solid color</option>
-                            <option value="slideshow">Slideshow</option>
+                            {/* <option value="slideshow">Slideshow</option> */}
                         </select>
-
-                        <button
-                            className="button-primary"
-                            onClick={() => document.getElementById('bg-upload').click()}
-                        >
-                            Choose a photo
-                        </button>
-                        <input
-                            type="file"
-                            id="bg-upload"
-                            accept="image/*"
-                            onChange={handleFileUpload}
-                            style={{ display: 'none' }}
-                        />
-
-                        {/* Color picker (shown when solid color is selected) */}
-                        <div className="color-picker-section">
-                            <label>Background color</label>
-                            <input type="color" defaultValue="#0078d4" />
-                        </div>
+                        {bgType === 'picture' && (
+                            <>
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={() => document.getElementById('bg-upload').click()}
+                                >
+                                    Choose a photo
+                                </button>
+                                <input
+                                    type="file"
+                                    id="bg-upload"
+                                    accept="image/*"
+                                    onChange={handleFileUpload}
+                                    style={{ display: 'none' }}
+                                />
+                            </>
+                        )}
+                        {bgType === 'solid' && (
+                            <>
+                                <div className="color-picker-section">
+                                    <label>Background color</label>
+                                    <input 
+                                        type="color" 
+                                        value={solidColor}   
+                                        onChange={handleSolidColorChange}
+                                    />
+                                </div>
+                            </>
+                        )
+                        }
                     </div>
 
                     <div className="settings-card">
                         <h3 className="card-title">Contrast Themes</h3>
                         <p className="card-description">Color themes for low vision, light sensitivity</p>
+                        <span className="card-arrow">&rsaquo;</span>
                     </div>
                     <div className="settings-card">
                         <h3 className="card-title">Help with Background</h3>

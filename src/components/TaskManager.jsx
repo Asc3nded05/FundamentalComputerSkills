@@ -1,32 +1,57 @@
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import '../css/TaskManager.css';
-import { MdOpacity } from "react-icons/md";
-import { useOpenWindows } from "../utils/appWindowManager.js";
+import ContextMenuTaskManager from "./ContextMenuTaskbar.jsx";
+
 
 function TaskManager({sortedWindows, closeApp}) {
     const [query, setQuery] = useState('');
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [selectItemId, setSelectedItemId] = useState('')
+    const [selectItemIdContextmenu, setSelectedItemIdContextMenu] = useState('')
+
 
     const handleSearch = (e) => setQuery(e.target.value);
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
-    const handleRowClick = (itemId) => {
-        if (itemId === selectItemId){
-            setSelectedItemId("")
-        }
-        else {
-        setSelectedItemId(itemId)
-        }
-    };
+    const [scale, setScale] = useState(1);
+    const TaskManagerRef = useRef(null);
     
-    function endTask() {
 
-        if (selectItemId && closeApp) {
-            closeApp(selectItemId);
-            setSelectedItemId(''); 
-        }
+    const handleRowClick = (itemId) => setSelectedItemId(itemId);
+    const handleRowRightClick = (itemId) => setSelectedItemIdContextMenu(itemId);
+
+   const [systemProcesses, setSystemProcesses] = useState([
+    { id: 'sys-1', name: 'System' },
+    { id: 'sys-2', name: 'Registry' },
+    { id: 'sys-3', name: 'Desktop Window Manager' },
+    { id: 'sys-4', name: 'Windows Logon Application' },
+    { id: 'sys-5', name: 'Local Security Authority Process' },
+    { id: 'sys-6', name: 'Service Host: Local System' },
+    { id: 'sys-7', name: 'Service Host: Network Service' },
+    { id: 'sys-8', name: 'Service Host: Local Service' },
+    { id: 'sys-9', name: 'Runtime Broker' },
+    { id: 'sys-10', name: 'CTF Loader' },
+    { id: 'sys-11', name: 'Shell Infrastructure Host' },
+    { id: 'sys-12', name: 'COM Surrogate' },
+    { id: 'sys-13', name: 'Windows Session Manager' },
+    { id: 'sys-14', name: 'Client Server Runtime Process' },
+]);
+    
+   function endTask(selectItemId) {
+    console.log(selectItemId);
+    if (!selectItemId) return;
+
+    if (selectItemId.includes('sys')) {
+        // system process
+        setSystemProcesses(prev => prev.filter(p => p.id !== selectItemId));
+        console.log(systemProcesses);
+    } else {
+        // real app window
+        if (closeApp) closeApp(selectItemId);
     }
+
+    setSelectedItemId('');
+}
 
     return <>
         <div className="taskManager">
@@ -52,7 +77,7 @@ function TaskManager({sortedWindows, closeApp}) {
                             <button className="taskManager-start-btn">Start New Task</button>
                             <button 
                             className="taskManager-end-btn"
-                            onClick={() => endTask()}
+                            onClick={() => endTask(selectItemId)}
                             >End Task</button>
                             <button className="taskManager-mode-btn">Efficiency Mode</button>
                         </div>
@@ -68,13 +93,13 @@ function TaskManager({sortedWindows, closeApp}) {
                                 <th className="taskmanager-title">Network</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody ref={TaskManagerRef}>
                             {sortedWindows?.map((window, index) => (
                                 <tr 
                                 className="taskManager-row"
                                 key={index}
                                 onClick={() => handleRowClick(window.instanceId ||window.id)}
-
+                                onContextMenu={() => handleRowRightClick(window.instanceId || window.id)} 
                                 style={{
                                 background: selectItemId === (window.instanceId ||window.id) ? '#00afec' : 'white',
                                 color: selectItemId === (window.instanceId || window.id)? 'white' : 'black',
@@ -87,59 +112,40 @@ function TaskManager({sortedWindows, closeApp}) {
                                     <td className="taskManager-processes-memory">0mb</td>
                                     <td className="taskManager-processes-disk">0.1mb/s</td>
                                     <td className="taskManager-processes-network">0mbps</td>
+                                    
+
                                 </tr>
+                                
+                                
                             ))}
+                            {systemProcesses.map((proc) => (
+                            <tr
+                                className="taskManager-row"
+                                key={proc.id}
+                                onClick={() => handleRowClick(proc.id)}
+                                onContextMenu={() => handleRowRightClick(proc.id)}
+                                style={{
+                                    background: selectItemId === proc.id ? '#00afec' : 'white',
+                                    color: selectItemId === proc.id ? 'white' : 'black',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                <td className="taskManager-processes-apps">{proc.name}</td>
+                                <td className="taskManager-processes-status"></td>
+                                <td className="taskManager-processes-cpu">0%</td>
+                                <td className="taskManager-processes-memory">0mb</td>
+                                <td className="taskManager-processes-disk">0.1mb/s</td>
+                                <td className="taskManager-processes-network">0mbps</td>
+                            </tr>
+                        ))}
+
                         </tbody>
                     </table>
-
-                    {/* <div className="taskManager-processes-apps">
-                        <div className="taskmanager-title">Name</div>
-                        <div>File Explorer</div>
-                        <div>Task Manager</div>
-                        <div>Settings</div>
-                        <div>Notepad</div>
-                        <div>Frame App</div>
-                    </div>
-                    <div className="taskManager-processes-status">
-                        <div className="taskmanager-title">Status</div>
-                        <div> </div>
-                        <div> </div>
-                        <div> </div>
-                        <div>Eco</div>
-                        <div>Eco</div>
-                    </div>
-                    <div className="taskManager-processes-cpu">
-                        <div className="taskmanager-title">CPU</div>
-                        <div>0%</div>
-                        <div>0%</div>
-                        <div>0%</div>
-                        <div>0%</div>
-                        <div>0%</div>
-                    </div>
-                    <div className="taskManager-processes-memory">
-                        <div className="taskmanager-title">Memory</div>
-                        <div>207mb</div>
-                        <div>97mb</div>
-                        <div>163mb</div>
-                        <div>88mb</div>
-                        <div>100mb</div>
-                    </div>
-                    <div className="taskManager-processes-disk">
-                        <div className="taskmanager-title">Disk</div>
-                        <div>0.1mb/s</div>
-                        <div>0.1mb/s</div>
-                        <div>0.1mb/s</div>
-                        <div>0.1mb/s</div>
-                        <div>0.1mb/s</div>
-                    </div>
-                    <div className="taskManager-processes-network">
-                        <div className="taskmanager-title">Network</div>
-                        <div>0mbps</div>
-                        <div>0mbps</div>
-                        <div>0mbps</div>
-                        <div>0mbps</div>
-                        <div>0mbps</div>
-                    </div> */}
+                    <ContextMenuTaskManager
+                        triggerRef={TaskManagerRef}
+                        scale={scale}
+                        selectItemId={selectItemIdContextmenu}
+                        endTask={endTask}/> 
 
                 </div>
             </div>
