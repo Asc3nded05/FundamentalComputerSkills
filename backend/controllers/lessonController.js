@@ -1,4 +1,4 @@
-import { getAllLessons, getLessonById } from "../services/lessonService.js";
+import { getAllLessons, getLessonById, getAppsByLessonId } from "../services/lessonService.js";
 
 // GET /api/lessons
 export const getLessons = async (req, res) => {
@@ -25,5 +25,17 @@ export const getLesson = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to fetch lesson' });
+  }
+};
+
+// GET /api/lessons/:id/apps
+export const getLessonApps = async (req, res) => {
+  try {
+    const lessonId = Number(req.params.id);
+    const apps = await getAppsByLessonId(lessonId);
+    res.json(apps);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to fetch lesson apps' });
   }
 };

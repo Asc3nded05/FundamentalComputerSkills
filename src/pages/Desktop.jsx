@@ -1,7 +1,8 @@
 import { Responsive, WidthProvider } from "react-grid-layout";
-import { useState, useEffect, use, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAppWindowManager } from "../utils/appWindowManager.js";
+import { useLessonApps } from "../api/useLessonApps.js";
 import { eventBus } from "../utils/eventBus.js";
 import backgroundImageDefault from '../assets/background-image.jpg';
 
@@ -28,7 +29,7 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 function Desktop() {
     const location = useLocation();
     const { state } = location;
-    const lessonId = state?.lessonId;
+    const lessonId = state?.lessonId || 1;
     const [brightness, setBrightness] = useState(100);
     const [volume, setVolume] = useState(100);
     const [query, setQuery] = useState("")
@@ -90,6 +91,22 @@ function Desktop() {
         }
     }, []);
 
+    const { response: lessonApps, loading: lessonAppsLoading, error: lessonAppsError } = useLessonApps(lessonId);
+
+    const lessonAppRegistry = useMemo(() => {
+        if (lessonAppsLoading) return [];
+        if (lessonAppsError || !lessonApps) return APP_REGISTRY;
+
+        const allowedIds = new Set(lessonApps.map(app => app.registryId));
+        const iconByRegistryId = new Map(lessonApps.map(app => [app.registryId, app.appIcon]));
+
+        return APP_REGISTRY.filter(app => allowedIds.has(app.id))
+            .map(app => ({
+                ...app,
+                icon: iconByRegistryId.get(app.id) || app.icon
+            }));
+    }, [lessonApps, lessonAppsLoading, lessonAppsError]);
+
     // Custom hook to manage app windows
     const {
         apps,
@@ -99,7 +116,7 @@ function Desktop() {
         closeApp,
         minimizeApp,
         maximizeApp,
-    } = useAppWindowManager(APP_REGISTRY, BASE_WIDTH, BASE_HEIGHT);
+    } = useAppWindowManager(lessonAppRegistry, BASE_WIDTH, BASE_HEIGHT);
 
     const baseApps = useMemo(() => apps.filter(app => !app.instanceId), [apps]);
 

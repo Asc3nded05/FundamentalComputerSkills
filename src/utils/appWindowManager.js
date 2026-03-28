@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { APP_REGISTRY } from '../utils/apps';
 import { dispatchDesktopEvent } from "../utils/eventBus";
 
@@ -21,6 +21,17 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
     // Keeps track of the highest z-index to manage window stacking order
     const [highestZIndex, setHighestZIndex] = useState(500);
 
+    useEffect(() => {
+        setApps(initialApps.map((app, index) => ({
+            ...app,
+            id: app.id || `app-${index}`,
+            isOpen: false,
+            zIndex: 0,
+            size: app.defaultSize || { width: 400, height: 300 },
+            isMinimized: false,
+            isMaximized: false
+        })));
+    }, [initialApps]);
 
     // Function to manage Z-index:
     const bringToFront = useCallback((identifier) => {

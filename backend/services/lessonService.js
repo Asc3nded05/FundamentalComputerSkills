@@ -1,20 +1,3 @@
-// import { readJsonFile } from './jsonService.js';
-// const LessonFile = 'lessons.json';
-
-// // GET ALL
-// export const getAllLessons = async () => {
-//     return await readJsonFile('lessonData.json');
-// }
-
-// //GET LESSON BY ID
-// export const getLessonById = async (lessonId) => {
-//     const data = await readJsonFile('lessonData.json');
-//     const lessons = data.lessons;
-//     return lessons.find(lesson => lesson.lessonId === lessonId);
-// }
-
-
-
 import initOracle from "../database/oracle.js";
 
 export async function getAllLessons() {
@@ -65,6 +48,31 @@ export async function getLessonById(id) {
         categoryId: row[2],
         orderNumber: row[3]
         };
+    } finally {
+        if (connection) await connection.close();
+    }
+}
+
+export async function getAppsByLessonId(lessonId) {
+    let connection;
+
+    try {
+        connection = await initOracle();
+
+        const result = await connection.execute(
+            `SELECT a.appId, a.registryId, a.appIcon
+            FROM ADMIN.App a
+            INNER JOIN ADMIN.LessonApp la ON a.appId = la.appId
+            WHERE la.lessonId = :lessonId
+            ORDER BY a.registryId`,
+            { lessonId }
+        );
+
+        return result.rows.map(row => ({
+            appId: row[0],
+            registryId: row[1],
+            appIcon: row[2]
+        }));
     } finally {
         if (connection) await connection.close();
     }
