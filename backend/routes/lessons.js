@@ -1,5 +1,5 @@
 import express from 'express';
-import {getLesson, getLessons} from '../controllers/lessonController.js';
+import {getLesson, getLessons, getLessonApps} from '../controllers/lessonController.js';
 
 const router = express.Router();
 
