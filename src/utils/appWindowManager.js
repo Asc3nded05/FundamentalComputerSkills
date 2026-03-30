@@ -125,15 +125,18 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
     }, [highestZIndex]);
 
     // Close app
-    const closeApp = useCallback((identifier) => {
+    const closeApp = useCallback((identifier, eventType) => {
+        console.log('Type of close action:', eventType);
+
         setApps(prev => {
             const appToClose = prev.find(app =>
                 app.instanceId === identifier || app.id === identifier
             );
-
+            // console.log('App to close:', appToClose);
             if (appToClose) {
-                dispatchDesktopEvent(`${appToClose.id}Close`);
-            }
+                const eventName = `${appToClose.id}${eventType}`;
+                dispatchDesktopEvent(eventName);
+            } 
 
             return prev.map(app => {
                 // If it's an instance, mark for removal
@@ -147,7 +150,7 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
                 return app;
             }).filter(app => app !== null);
         });
-    }, []);
+    }, [dispatchDesktopEvent]);
 
     // Minimize app
     const minimizeApp = useCallback((identifier) => {

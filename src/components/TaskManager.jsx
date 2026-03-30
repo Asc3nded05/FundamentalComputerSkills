@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import '../css/TaskManager.css';
 import ContextMenuTaskManager from "./ContextMenuTaskbar.jsx";
+import { dispatchDesktopEvent } from "../utils/eventBus";
 
 
 function TaskManager({sortedWindows, closeApp}) {
@@ -17,8 +18,12 @@ function TaskManager({sortedWindows, closeApp}) {
     const TaskManagerRef = useRef(null);
     
 
-    const handleRowClick = (itemId) => setSelectedItemId(itemId);
+    const handleRowClick = (itemId) => {
+        setSelectedItemId(itemId)
+    };
     const handleRowRightClick = (itemId) => setSelectedItemIdContextMenu(itemId);
+
+    
 
    const [systemProcesses, setSystemProcesses] = useState([
     { id: 'sys-1', name: 'System' },
@@ -37,17 +42,20 @@ function TaskManager({sortedWindows, closeApp}) {
     { id: 'sys-14', name: 'Client Server Runtime Process' },
 ]);
     
-   function endTask(selectItemId) {
-    console.log(selectItemId);
+   function endTask(selectItemId, type, closeApp) {
+    // console.log("Ending task with ID:", selectItemId);
     if (!selectItemId) return;
 
     if (selectItemId.includes('sys')) {
         // system process
         setSystemProcesses(prev => prev.filter(p => p.id !== selectItemId));
-        console.log(systemProcesses);
+        const systemAppName = systemProcesses.find(p => p.id === selectItemId)?.name;
+        const systemAppEventName = `${systemAppName}${type}`;
+        const systemAppNameDispatchName = systemAppEventName.replace(/\s/g, '');
+        dispatchDesktopEvent(systemAppNameDispatchName);
     } else {
         // real app window
-        if (closeApp) closeApp(selectItemId);
+        if (closeApp) closeApp(selectItemId, type);
     }
 
     setSelectedItemId('');
@@ -77,7 +85,9 @@ function TaskManager({sortedWindows, closeApp}) {
                             <button className="taskManager-start-btn">Start New Task</button>
                             <button 
                             className="taskManager-end-btn"
-                            onClick={() => endTask(selectItemId)}
+                            onClick={() => {
+                                endTask(selectItemId, 'CloseEndTaskButton', closeApp);
+                            }}
                             >End Task</button>
                             <button className="taskManager-mode-btn">Efficiency Mode</button>
                         </div>
@@ -144,8 +154,11 @@ function TaskManager({sortedWindows, closeApp}) {
                     <ContextMenuTaskManager
                         triggerRef={TaskManagerRef}
                         scale={scale}
-                        selectItemId={selectItemIdContextmenu}
-                        endTask={endTask}/> 
+                        selectItemIdContextmenu={selectItemIdContextmenu}
+                        endTask={endTask}
+                        closeApp={closeApp}
+                        /> 
+                        
 
                 </div>
             </div>
