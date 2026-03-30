@@ -21,7 +21,7 @@
   width: 1280px;
   height: 720px;
 
-  position: absolute;
+  position: relative;
   top: 50%;
   left: 50%;
   transform-origin: center;
@@ -38,12 +38,12 @@
 
 /* Prevent grid from stealing pointer events */
 .desktop-container .layout .react-grid-item {
-    pointer-events: none !important;
+  pointer-events: none !important;
 }
 
 /* But allow pointer events on the app icon itself */
-.desktop-container .layout .react-grid-item > * {
-    pointer-events: auto !important;
+.desktop-container .layout .react-grid-item>* {
+  pointer-events: auto !important;
 }
 
 
@@ -105,4 +105,12 @@ button {
   margin: 0;
   padding: 0;
   border: none;
+}
+
+.selection-box {
+  position: fixed;
+  border: 1.5px dotted #0078d4;
+  background-color: rgba(0, 120, 212, 0.1);
+  pointer-events: none;
+  z-index: 1000;
 }

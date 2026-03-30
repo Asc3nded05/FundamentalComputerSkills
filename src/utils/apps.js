@@ -1,4 +1,3 @@
-import { compact } from 'react-grid-layout/build/utils';
 import desktopIcon from '../assets/DesktopIconPlaceholder.png';
 
 /**
@@ -51,13 +50,4 @@ export const APP_REGISTRY = [
         defaultSize: { width: 200, height: 200 },
         canHaveMultipleInstances: false
     },
-    // {
-    //     id: 'MY_FILE',
-    //     name: 'MY_FILE.txt',
-    //     icon: desktopIcon,
-    //     component: 'Notepad',
-    //     defaultSize: { width: 500, height: 400 },
-    //     canHaveMultipleInstances: true,
-    //     initialContent: 'THIS IS A TXT FILE'
-    // },
 ];

@@ -22,6 +22,7 @@ import SearchBar from "../components/SearchBar.jsx"
 import SearchMenu from "../components/SearchMenu.jsx"
 import TaskManager from "../components/TaskManager.jsx";
 import ContextMenuDesktop from "../components/ContextMenuDesktop.jsx";
+import DesktopSelectionBox from "../components/DesktopSelectionBox.jsx";
 import { APP_REGISTRY } from "../utils/apps.js";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -90,6 +91,18 @@ function Desktop() {
             img.src = backgroundImageDefault;
         }
     }, []);
+    
+    // Function to drag to select only on desktop (not app icons or taskbar)
+    const shouldStartSelecting = (event, target) => {
+    if (
+        target.closest('.app-icon') ||
+        target.closest('.navbar') ||
+        target.closest('.react-grid-item')
+    ) {
+        return false;
+    }
+    return true;
+    };
 
     const { response: lessonApps, loading: lessonAppsLoading, error: lessonAppsError } = useLessonApps(lessonId);
 
@@ -387,6 +400,15 @@ function Desktop() {
 
                 {/* Desktop Context Menu on right click */}
                 <ContextMenuDesktop triggerRef={desktopRef} scale={scale} openApp={openApp} />
+
+                {/* Drag-to-select on Desktop */}
+                <DesktopSelectionBox
+                    containerRef={desktopRef}
+                    scale={scale}
+                    baseWidth={BASE_WIDTH}
+                    baseHeight={BASE_HEIGHT}
+                    shouldStartSelecting={shouldStartSelecting}
+                />
             </div>
 
             <SideBar lessonId={lessonId} desktopRef={desktopRef} />

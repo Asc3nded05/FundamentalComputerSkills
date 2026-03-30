@@ -47,26 +47,26 @@ function WindowsUpdate() {
                     <p className="card-description">
                         Be among the first to get the latest non-security updates, fixes, and improvements as they roll out.
                     </p>
-                    <span className="card-arrow">&rsaquo;</span>
+                    {/* <span className="card-arrow">&rsaquo;</span> */}
                 </div>
                 <div className="settings-card">
                     <h3 className="card-title">Pause updates</h3>
                     <p className="card-description">Pause for 1 week</p>
-                    <span className="card-arrow">&rsaquo;</span>
+                    {/* <span className="card-arrow">&rsaquo;</span> */}
                 </div>
                 <div className="settings-card">
                     <h3 className="card-title">Update history</h3>
-                    <span className="card-arrow">&rsaquo;</span>
+                    {/* <span className="card-arrow">&rsaquo;</span> */}
                 </div>
                 <div className="settings-card">
                     <h3 className="card-title">Advanced options</h3>
                     <p className="card-description">Delivery optimization, optional updates, active hours, other update settings</p>
-                    <span className="card-arrow">&rsaquo;</span>
+                    {/* <span className="card-arrow">&rsaquo;</span> */}
                 </div>
                 <div className="settings-card">
                     <h3 className="card-title">Windows Insider Program</h3>
                     <p className="card-description">Get preview builds of Windows to share feedback on new features and updates</p>
-                    <span className="card-arrow">&rsaquo;</span>
+                    {/* <span className="card-arrow">&rsaquo;</span> */}
                 </div>
             </div>
 

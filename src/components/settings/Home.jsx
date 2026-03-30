@@ -27,16 +27,16 @@ function Home() {
                                     <input type="checkbox" defaultChecked />
                                     <span className="toggle-slider"></span>
                                 </label>
-                                <span className="card-arrow">&rsaquo;</span>
+                                {/* <span className="card-arrow">&rsaquo;</span> */}
                             </div>
                         </div>
                         <div className="settings-list-item">
                             <span>Display Settings</span>
-                            <span className="card-arrow">&rsaquo;</span>
+                            {/* <span className="card-arrow">&rsaquo;</span> */}
                         </div>
                         <div className="settings-list-item">
                             <span>Personalization</span>
-                            <span className="card-arrow">&rsaquo;</span>
+                            {/* <span className="card-arrow">&rsaquo;</span> */}
                         </div>
                     </div>
                 </div>
@@ -50,11 +50,11 @@ function Home() {
                     </div>
                     <div className="settings-card">
                         <h3 className="card-title">PC backup</h3>
-                        <span className="card-arrow">&rsaquo;</span>
+                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
                     <div className="settings-card">
                         <h3 className="card-title">Manage cloud Storage</h3>
-                        <span className="card-arrow">&rsaquo;</span>
+                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
                 </div>
 
@@ -75,7 +75,7 @@ function Home() {
 
                         <div className="bluetooth-actions">
                             <button className="btn btn-small">Add Device</button>
-                            <span className="card-arrow">&rsaquo;</span>
+                            {/* <span className="card-arrow">&rsaquo;</span> */}
                         </div>
                         <button className="btn btn-text">View all devices</button>
                     </div>
@@ -104,7 +104,7 @@ function Home() {
 
                     <button className="btn btn-text">
                         Browse more backgrounds, colors, and themes
-                        <span className="card-arrow">&rsaquo;</span>
+                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </button>
                 </div>
             </div>

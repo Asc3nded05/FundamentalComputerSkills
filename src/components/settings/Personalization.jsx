@@ -53,49 +53,49 @@ const Personalization = ({ backgroundImage, onBackgroundChange }) => {
                     <div className="settings-card">
                         <h3 className="card-title">Colors</h3>
                         <p className="card-description">Accent color, transparency effects, color theme</p>
-                        <span className="card-arrow">&rsaquo;</span>
+                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
 
                     <div className="settings-card">
                         <h3 className="card-title">Themes</h3>
                         <p className="card-description">Install, create, manage</p>
-                        <span className="card-arrow">&rsaquo;</span>
+                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
 
                     <div className="settings-card">
                         <h3 className="card-title">Dynamic Lighting</h3>
                         <p className="card-description">Connected devices, effects, app settings</p>
-                        <span className="card-arrow">&rsaquo;</span>
+                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
                     <div className="settings-card">
                         <h3 className="card-title">Lock screen</h3>
                         <p className="card-description">Lock screen images, apps, animations</p>
-                        <span className="card-arrow">&rsaquo;</span>
+                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
                     <div className="settings-card">
                         <h3 className="card-title">Text input</h3>
                         <p className="card-description">Touch keyboard, voice typing, emoji and more, input method editor</p>
-                        <span className="card-arrow">&rsaquo;</span>
+                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
                     <div className="settings-card">
                         <h3 className="card-title">Start</h3>
                         <p className="card-description">Recent apps and items, folders</p>
-                        <span className="card-arrow">&rsaquo;</span>
+                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
                     <div className="settings-card">
                         <h3 className="card-title">Taskbar</h3>
                         <p className="card-description">Taskbar behaviors, system pins</p>
-                        <span className="card-arrow">&rsaquo;</span>
+                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
                     <div className="settings-card">
                         <h3 className="card-title">Fonts</h3>
                         <p className="card-description">Install, manage</p>
-                        <span className="card-arrow">&rsaquo;</span>
+                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
                     <div className="settings-card">
                         <h3 className="card-title">Device usage</h3>
                         <p className="card-description">Select all the ways you plan to use your devices to get personalized tips, ads, and recommendations within Microsoft experiences.</p>
-                        <span className="card-arrow">&rsaquo;</span>
+                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
                 </div>
             </div>
