@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, use } from "react";
 import '../css/TaskManager.css';
 import ContextMenuTaskManager from "./ContextMenuTaskbar.jsx";
 import { dispatchDesktopEvent } from "../utils/eventBus";
@@ -9,7 +9,6 @@ function TaskManager({sortedWindows, closeApp}) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [selectItemId, setSelectedItemId] = useState('')
     const [selectItemIdContextmenu, setSelectedItemIdContextMenu] = useState('')
-
 
     const handleSearch = (e) => setQuery(e.target.value);
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
@@ -25,25 +24,162 @@ function TaskManager({sortedWindows, closeApp}) {
 
     
 
-   const [systemProcesses, setSystemProcesses] = useState([
-    { id: 'sys-1', name: 'System' },
-    { id: 'sys-2', name: 'Registry' },
-    { id: 'sys-3', name: 'Desktop Window Manager' },
-    { id: 'sys-4', name: 'Windows Logon Application' },
-    { id: 'sys-5', name: 'Local Security Authority Process' },
-    { id: 'sys-6', name: 'Service Host: Local System' },
-    { id: 'sys-7', name: 'Service Host: Network Service' },
-    { id: 'sys-8', name: 'Service Host: Local Service' },
-    { id: 'sys-9', name: 'Runtime Broker' },
-    { id: 'sys-10', name: 'CTF Loader' },
-    { id: 'sys-11', name: 'Shell Infrastructure Host' },
-    { id: 'sys-12', name: 'COM Surrogate' },
-    { id: 'sys-13', name: 'Windows Session Manager' },
-    { id: 'sys-14', name: 'Client Server Runtime Process' },
-]);
-    
+    const [systemProcesses, setSystemProcesses] = useState([
+        {
+            id: 'sys-1',
+            name: 'System',
+            CpuMin: 0.0, CpuMax: 0.3,
+            MemMin: 50, MemMax: 150,
+            DiskMin: 0.0, DiskMax: 0.3,
+            NetMin: 0.0, NetMax: 0.1,
+        },
+        {
+            id: 'sys-2',
+            name: 'Registry',
+            CpuMin: 0.0, CpuMax: 0.1,
+            MemMin: 20, MemMax: 60,
+            DiskMin: 0.0, DiskMax: 0.1,
+            NetMin: 0.0, NetMax: 0.01,
+        },
+        {
+            id: 'sys-3',
+            name: 'Desktop Window Manager',
+            CpuMin: 0.1, CpuMax: 0.7,
+            MemMin: 80, MemMax: 200,
+            DiskMin: 0.0, DiskMax: 0.2,
+            NetMin: 0.0, NetMax: 0.05,
+        },
+        {
+            id: 'sys-4',
+            name: 'Windows Logon Application',
+            CpuMin: 0.0, CpuMax: 0.02,
+            MemMin: 5, MemMax: 15,
+            DiskMin: 0.0, DiskMax: 0.01,
+            NetMin: 0.0, NetMax: 0.0,
+        },
+        {
+            id: 'sys-5',
+            name: 'Local Security Authority Process',
+            CpuMin: 0.0, CpuMax: 0.1,
+            MemMin: 10, MemMax: 40,
+            DiskMin: 0.0, DiskMax: 0.1,
+            NetMin: 0.0, NetMax: 0.02,
+        },
+        {
+            id: 'sys-6',
+            name: 'Service Host: Local System',
+            CpuMin: 0.0, CpuMax: 0.3,
+            MemMin: 50, MemMax: 150,
+            DiskMin: 0.0, DiskMax: 0.5,
+            NetMin: 0.0, NetMax: 0.3,
+        },
+        {
+            id: 'sys-7',
+            name: 'Service Host: Network Service',
+            CpuMin: 0.0, CpuMax: 0.2,
+            MemMin: 20, MemMax: 80,
+            DiskMin: 0.0, DiskMax: 0.2,
+            NetMin: 0.0, NetMax: 0.5,
+        },
+        {
+            id: 'sys-8',
+            name: 'Service Host: Local Service',
+            CpuMin: 0.0, CpuMax: 0.1,
+            MemMin: 20, MemMax: 60,
+            DiskMin: 0.0, DiskMax: 0.1,
+            NetMin: 0.0, NetMax: 0.05,
+        },
+        {
+            id: 'sys-9',
+            name: 'Runtime Broker',
+            CpuMin: 0.0, CpuMax: 0.2,
+            MemMin: 10, MemMax: 50,
+            DiskMin: 0.0, DiskMax: 0.2,
+            NetMin: 0.0, NetMax: 0.2,
+        },
+        {
+            id: 'sys-10',
+            name: 'CTF Loader',
+            CpuMin: 0.0, CpuMax: 0.1,
+            MemMin: 5, MemMax: 25,
+            DiskMin: 0.0, DiskMax: 0.1,
+            NetMin: 0.0, NetMax: 0.02,
+        },
+        {
+            id: 'sys-11',
+            name: 'Shell Infrastructure Host',
+            CpuMin: 0.0, CpuMax: 0.2,
+            MemMin: 30, MemMax: 100,
+            DiskMin: 0.0, DiskMax: 0.2,
+            NetMin: 0.0, NetMax: 0.05,
+        },
+        {
+            id: 'sys-12',
+            name: 'COM Surrogate',
+            CpuMin: 0.0, CpuMax: 0.1,
+            MemMin: 5, MemMax: 40,
+            DiskMin: 0.0, DiskMax: 0.3,
+            NetMin: 0.0, NetMax: 0.1,
+        },
+        {
+            id: 'sys-13',
+            name: 'Windows Session Manager',
+            CpuMin: 0.0, CpuMax: 0.05,
+            MemMin: 5, MemMax: 20,
+            DiskMin: 0.0, DiskMax: 0.05,
+            NetMin: 0.0, NetMax: 0.0,
+        },
+        {
+            id: 'sys-14',
+            name: 'Client Server Runtime Process',
+            CpuMin: 0.0, CpuMax: 0.1,
+            MemMin: 10, MemMax: 40,
+            DiskMin: 0.0, DiskMax: 0.1,
+            NetMin: 0.0, NetMax: 0.05,
+        }
+        ]);
+    const [cpuUsage, setCpuUsage] = useState([]);
+    const [memoryUsage, setMemoryUsage] = useState([]);
+    const [diskUsage, setDiskUsage] = useState([]);
+    const [networkUsage, setNetworkUsage] = useState([]);
+    const getRandomNumber = (min, max, decimalPlaces) => {
+        return (Math.random() * (max - min) + min).toFixed(decimalPlaces);
+    }
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCpuUsage(prevCpuUsage => {
+
+                return systemProcesses.map(proc => {
+                    const nextVal = Number(getRandomNumber(proc.CpuMin, proc.CpuMax, 1));
+                    return nextVal;
+                });
+            })
+            setMemoryUsage(prevMemoryUsage => {
+                return systemProcesses.map(proc => {
+                    const nextVal = Number(getRandomNumber(proc.MemMin, proc.MemMax, 0));
+                    return nextVal;
+                });
+            })
+            setDiskUsage(prevDiskUsage => {
+                return systemProcesses.map(proc => {
+                    const nextVal = Number(getRandomNumber(proc.DiskMin, proc.DiskMax, 1));
+                    return nextVal;
+                });
+            })
+            setNetworkUsage(prevNetworkUsage => {
+                return systemProcesses.map(proc => {
+                    const nextVal = Number(getRandomNumber(proc.NetMin, proc.NetMax, 2));
+                    return nextVal;
+                });
+            });
+    }, 2000);
+
+        return () => clearInterval(interval);
+    }, [systemProcesses]);    
+
+
    function endTask(selectItemId, type, closeApp) {
-    // console.log("Ending task with ID:", selectItemId);
     if (!selectItemId) return;
 
     if (selectItemId.includes('sys')) {
@@ -128,7 +264,7 @@ function TaskManager({sortedWindows, closeApp}) {
                                 
                                 
                             ))}
-                            {systemProcesses.map((proc) => (
+                            {systemProcesses.map((proc, index) => (
                             <tr
                                 className="taskManager-row"
                                 key={proc.id}
@@ -142,10 +278,10 @@ function TaskManager({sortedWindows, closeApp}) {
                             >
                                 <td className="taskManager-processes-apps">{proc.name}</td>
                                 <td className="taskManager-processes-status"></td>
-                                <td className="taskManager-processes-cpu">0%</td>
-                                <td className="taskManager-processes-memory">0mb</td>
-                                <td className="taskManager-processes-disk">0.1mb/s</td>
-                                <td className="taskManager-processes-network">0mbps</td>
+                                <td className="taskManager-processes-cpu">{cpuUsage[index]}%</td>
+                                <td className="taskManager-processes-memory">{memoryUsage[index]}mb</td>
+                                <td className="taskManager-processes-disk">{diskUsage[index]}mb/s</td>
+                                <td className="taskManager-processes-network">{networkUsage[index]}mbps</td>
                             </tr>
                         ))}
 
@@ -164,6 +300,6 @@ function TaskManager({sortedWindows, closeApp}) {
             </div>
         </div>
     </>;
-}
+    }
 
 export default TaskManager;
