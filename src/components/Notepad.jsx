@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus";
 import Mark from "mark.js";
 
-function Notepad({initialContent="", query, setQuery}) {
+function Notepad({initialContent=""}) {
 
     const [searchTerm, setSearchterm] = useState("");
     const markInstance = new Mark(document.querySelector("#search-node"));
@@ -85,7 +85,6 @@ function Notepad({initialContent="", query, setQuery}) {
             id="myTextArea"
             className="notepad-body" 
             contentEditable={true}
-            initialContent={initialContent}
             // onCopy={() => dispatchDesktopEvent("NotepadCopy")} // Broadast events for copy/paste/cut
             // onCut={() => dispatchDesktopEvent("NotepadCut")}
             // onPaste={() => dispatchDesktopEvent("NotepadPaste")}
