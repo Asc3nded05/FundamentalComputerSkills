@@ -123,7 +123,8 @@ function Desktop() {
             target.closest('.navbar') ||
             target.closest('.react-grid-item') ||
             target.closest('.appWindow') ||
-            target.closest('.context-menu-desktop')
+            target.closest('.context-menu-desktop') ||
+            target.closest('.qs-panel')
         ) {
             return false;
         }

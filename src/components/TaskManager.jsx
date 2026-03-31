@@ -67,13 +67,13 @@ function TaskManager({sortedWindows, closeApp}) {
                 <div className={`taskManager-sidebar ${!sidebarOpen ? 'd-none' : ''}`}>
                     <div className="taskManager-menu">
                         <div className="hamburger">☰</div>
-                        <div className="active">Processes</div>
-                        <div className="inactive">Performance</div>
-                        <div className="inactive">App History</div>
-                        <div className="inactive">Startup Apps</div>
-                        <div className="inactive">Users</div>
-                        <div className="inactive">Details</div>
-                        <div className="inactive">Services</div>
+                        <div className="active"><button>Processes</button></div>
+                        <div className="inactive"><button>Performance</button></div>
+                        <div className="inactive"><button>App History</button></div>
+                        <div className="inactive"><button>Startup Apps</button></div>
+                        <div className="inactive"><button>Users</button></div>
+                        <div className="inactive"><button>Details</button></div>
+                        <div className="inactive"><button>Services</button></div>
                     </div>
                 </div>
                 <div className="taskManager-body">
