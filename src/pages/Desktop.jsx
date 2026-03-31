@@ -37,6 +37,7 @@ function Desktop() {
     const [backgroundImage, setBackgroundImage] = useState(
         localStorage.getItem('backgroundImage') || '../assets/background-image.jpg'
     );
+    const [defaultBackgroundDataUrl, setDefaultBackgroundDataUrl] = useState(null); // To save time reading the default image by storing it as a data URL
 
     // Ref for desktop area, used to center new app windows
     const desktopRef = useRef(null);
@@ -83,25 +84,50 @@ function Desktop() {
                 const dataUrl = canvas.toDataURL();
                 localStorage.setItem('backgroundImage', dataUrl);
                 setBackgroundImage(dataUrl);
+                setDefaultBackgroundDataUrl(dataUrl); // Store it
             };
             img.onerror = () => {
                 console.error('Failed to load background image');
                 setBackgroundImage(backgroundImageDefault);
+                // Optionally handle error
             };
             img.src = backgroundImageDefault;
         }
     }, []);
-    
+
+    // Reset to default background if user selects the default option
+    const resetToDefaultBackground = () => {
+        if (defaultBackgroundDataUrl) {
+            handleBackgroundChange(defaultBackgroundDataUrl);
+        } else {
+            // Fallback: load default image again
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                const dataUrl = canvas.toDataURL();
+                handleBackgroundChange(dataUrl);
+                setDefaultBackgroundDataUrl(dataUrl);
+            };
+            img.src = backgroundImageDefault;
+        }
+    };
+
     // Function to drag to select only on desktop (not app icons or taskbar)
     const shouldStartSelecting = (event, target) => {
-    if (
-        target.closest('.app-icon') ||
-        target.closest('.navbar') ||
-        target.closest('.react-grid-item')
-    ) {
-        return false;
-    }
-    return true;
+        if (
+            target.closest('.app-icon') ||
+            target.closest('.navbar') ||
+            target.closest('.react-grid-item') ||
+            target.closest('.appWindow') ||
+            target.closest('.context-menu-desktop')
+        ) {
+            return false;
+        }
+        return true;
     };
 
     const { response: lessonApps, loading: lessonAppsLoading, error: lessonAppsError } = useLessonApps(lessonId);
@@ -190,6 +216,7 @@ function Desktop() {
                     startingPage={app.startingPage}
                     backgroundImage={backgroundImage}
                     onBackgroundChange={handleBackgroundChange}
+                    onResetDefault={resetToDefaultBackground}
                 />;
             case 'TaskManager':
                 return <TaskManager key={app.instanceId} sortedWindows={sortedWindows} closeApp={closeApp} />;

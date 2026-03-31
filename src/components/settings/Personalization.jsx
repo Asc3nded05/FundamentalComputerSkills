@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { dispatchDesktopEvent } from '../../utils/eventBus';
 
 
-const Personalization = ({ backgroundImage, onBackgroundChange }) => {
+const Personalization = ({ backgroundImage, onBackgroundChange, onResetDefault }) => {
     const [subPage, setSubPage] = useState('main'); // 'main' or 'background'
     const [bgType, setBgType] = useState('picture');
     const [solidColor, setSolidColor] = useState('#0078d4');
@@ -150,6 +150,12 @@ const Personalization = ({ backgroundImage, onBackgroundChange }) => {
                                     onChange={handleFileUpload}
                                     style={{ display: 'none' }}
                                 />
+                                <button
+                                    className="btn btn-secondary"
+                                    onClick={onResetDefault}
+                                >
+                                    Reset to default
+                                </button>
                             </>
                         )}
                         {bgType === 'solid' && (

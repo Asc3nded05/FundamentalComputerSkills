@@ -17,7 +17,7 @@ import '../css/Settings.css';
 import { useEffect, useState } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus";
 
-function Settings({ startingPage = 'home', backgroundImage, onBackgroundChange }) {
+function Settings({ startingPage = 'home', backgroundImage, onBackgroundChange, onResetDefault  }) {
 
     const [query, setQuery] = useState('');
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -64,6 +64,7 @@ function Settings({ startingPage = 'home', backgroundImage, onBackgroundChange }
                 return <Personalization 
                     backgroundImage={backgroundImage}
                     onBackgroundChange={onBackgroundChange}
+                    onResetDefault={onResetDefault}
                 />;
             case 'apps':
                 return <Apps/>
