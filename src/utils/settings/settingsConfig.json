@@ -1,0 +1,132 @@
+{
+    "toggles": {
+        "wifi": {
+            "defaultOn": true,
+            "eventOn": "WiFiToggleOn",
+            "eventOff": "WifiToggleOff",
+            "detailType": "wifi",
+            "networks": {
+                "Wifi Network 1": {
+                    "defaultStatus": "connected"
+                },
+                "Wifi Network 2": {
+                    "defaultStatus": "disconnected"
+                },
+                "Wifi Network 3": {
+                    "defaultStatus": "disconnected"
+                },
+                "Wifi Network 4": {
+                    "defaultStatus": "disconnected"
+                },
+                "Wifi Network 5": {
+                    "defaultStatus": "disconnected"
+                }
+            }
+        },
+        "bluetooth": {
+            "defaultOn": false,
+            "eventOn": "BluetoothToggleOn",
+            "eventOff": "BluetoothToggleOff",
+            "detailType": "bluetooth",
+            "devices": {
+                "Headphone 1": {
+                    "defaultStatus": "connected"
+                },
+                "Headphone 2": {
+                    "defaultStatus": "disconnected"
+                },
+                "Headphone 3": {
+                    "defaultStatus": "disconnected"
+                },
+                "Speaker": {
+                    "defaultStatus": "disconnected"
+                },
+                "Phone Link": {
+                    "defaultStatus": "disconnected"
+                }
+            }
+        },
+        "airplane": {
+            "defaultOn": false,
+            "eventOn": "AirplaneModeToggleOn",
+            "eventOff": "AirplaneModeToggleOff"
+        },
+        "energy": {
+            "defaultOn": false,
+            "eventOn": "BatterySaverToggleOn",
+            "eventOff": "BatterySaverToggleOff"
+        }
+    },
+    "accessibility": {
+        "Magnifier": {
+            "eventOn": "AccessibilityMagnifierOn",
+            "eventOff": "AccessibilityMagnifierOff",
+            "description": "See words and images better"
+        },
+        "Narrator": {
+            "eventOn": "AccessibilityNarratorOn",
+            "eventOff": "AccessibilityNarratorOff",
+            "description": "Your built-in screen reader"
+        },
+        "Color Filters": {
+            "eventOn": "AccessibilityColorFiltersOn",
+            "eventOff": "AccessibilityColorFiltersOff",
+            "description": "Distinguish among colors easily"
+        },
+        "Live Captions": {
+            "eventOn": "AccessibilityLiveCaptionsOn",
+            "eventOff": "AccessibilityLiveCaptionsOff",
+            "description": "Real time audio transcription"
+        },
+        "Mono Audio": {
+            "eventOn": "AccessibilityMonoAudioOn",
+            "eventOff": "AccessibilityMonoAudioOff",
+            "description": "Combine left and right audio channels"
+        },
+        "Voice Access": {
+            "eventOn": "AccessibilityVoiceAccessOn",
+            "eventOff": "AccessibilityVoiceAccessOff",
+            "description": "Interact with your PC using voice"
+        },
+        "Sticky Keys": {
+            "eventOn": "AccessibilityStickyKeysOn",
+            "eventOff": "AccessibilityStickyKeysOff",
+            "description": "Use shortcuts one key at a time"
+        }
+    },
+    "project": {
+        "options": [
+            {
+                "label": "PC screen only",
+                "event": "ProjectModePCScreenOnly"
+            },
+            {
+                "label": "Duplicate",
+                "event": "ProjectModeDuplicate"
+            },
+            {
+                "label": "Extend",
+                "event": "ProjectModeExtend"
+            },
+            {
+                "label": "Second screen only",
+                "event": "ProjectModeSecondScreenOnly"
+            }
+        ],
+        "default": "PC screen only"
+    },
+    "sliders": {
+        "brightness": {
+            "min": 20,
+            "max": 120,
+            "default": 100,
+            "event": "BrightnessChange"
+        },
+        "volume": {
+            "min": 0,
+            "max": 100,
+            "default": 50,
+            "event": "VolumeChange"
+        }
+    }
+}
