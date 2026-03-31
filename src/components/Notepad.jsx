@@ -1,7 +1,21 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus";
+import Mark from "mark.js";
 
 function Notepad({initialContent="", query, setQuery}) {
+
+    const [searchTerm, setSearchterm] = useState("");
+    const markInstance = new Mark(document.querySelector("#search-node"));
+
+    const handleSearch = (event) => {
+        setSearchterm(event.target.value);
+        markInstance.unmark({
+            done: () => {
+                markInstance.mark(event.target.value);
+            }
+        });
+    };
 
     const [text, setText] = useState(initialContent);
 
@@ -34,6 +48,7 @@ function Notepad({initialContent="", query, setQuery}) {
                         break;
                     case "f": // Ctrl+F or Command+F
                         dispatchDesktopEvent("NotepadFind");
+                        alert("Find functionality is not implemented yet.");
                         event.preventDefault();
                         break;
                     case "a": // Ctrl+A or Command+A
@@ -60,22 +75,21 @@ function Notepad({initialContent="", query, setQuery}) {
                 <button>View</button>
             </div>
             <div className="notepad-find-options">
-                <input id="myInput" type="text" placeholder="Find..." className="notepad-find" value={query} onClick={searchText} />
+                <input id="myInput" type="text" placeholder="Find..." className="notepad-find" value={searchTerm} onChange={handleSearch}/>
                 <button className="notepad-find-next" onClick={() => dispatchDesktopEvent("NotepadFindNext")}>Next</button>
-                <button className="notepad-find-prev" onClick={() => dispatchDesktopEvent("NotepadFindPrev")}>Prev</button>
+                <button className="notepad-find-prev" onClick={() => dispatchDesktopEvent("NotepadFindPrevious")}>Prev</button>
             </div>
         </div>
-        <div className="notepad-content">
-            <textarea 
+        <div id="search-node" className="notepad-content">
+            <p 
             id="myTextArea"
             className="notepad-body" 
-            defaultValue={initialContent}
-            value={text}
-            onChange={handleChange}
+            contentEditable={true}
+            initialContent={initialContent}
             // onCopy={() => dispatchDesktopEvent("NotepadCopy")} // Broadast events for copy/paste/cut
             // onCut={() => dispatchDesktopEvent("NotepadCut")}
             // onPaste={() => dispatchDesktopEvent("NotepadPaste")}
-            ></textarea>
+            ></p>
         </div>
     </>
     );
@@ -85,13 +99,13 @@ function searchText() {
     const searchTerm = document.getElementById("myInput").value;
     const textArea = document.getElementById("myTextArea");
     const text = textArea.value;
-    const index = text.indexOf(searchTerm);
+    const index = text.indexOf(searchTerm); 
   
     if (index !== -1) {
       textArea.focus(); // Must focus for selection to be visible
       textArea.setSelectionRange(index, index + searchTerm.length);
     } else {
-      alert("Not found");
+      
     }
   };
 
