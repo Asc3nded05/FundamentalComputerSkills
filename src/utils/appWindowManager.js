@@ -125,7 +125,7 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
     }, [highestZIndex]);
 
     // Close app
-    const closeApp = useCallback((identifier, eventType) => {
+    const closeApp = useCallback((identifier, eventType="CloseApp") => {
         console.log('Type of close action:', eventType);
 
         setApps(prev => {
