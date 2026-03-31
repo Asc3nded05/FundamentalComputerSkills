@@ -81,7 +81,32 @@ function ContextMenuTaskManager({ triggerRef, scale, endTask, selectItemIdContex
                     })}>
                 End Task
             </div>
-            {/* <div className="context-menu-separator" /> */}
+            <div className="context-menu-item">
+                Reseoure Value
+            </div>
+             <div className="context-menu-item">
+                Provide Feedback
+            </div>
+            <div className="context-menu-separator" />
+             <div className="context-menu-item">
+                Efficiency Mode
+            </div>
+             <div className="context-menu-item">
+                Create memory dump file
+            </div>
+            <div className="context-menu-separator" />
+             <div className="context-menu-item">
+                Go to details
+            </div>
+             <div className="context-menu-item">
+                Open file location
+            </div>
+             <div className="context-menu-item">
+                Search online
+            </div>
+             <div className="context-menu-item">
+                Properties
+            </div>
         </div>,
         document.body 
     );
