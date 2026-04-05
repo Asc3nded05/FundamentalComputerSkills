@@ -1,4 +1,4 @@
-function Home() {
+function Home({ setCurrentPage }) {
     return (
         <div className="settings-section">
             <h1>Home</h1>
@@ -20,23 +20,29 @@ function Home() {
                     <h3 className="card-title">Recommended Settings</h3>
                     <p className="card-description">Recent and commonly used settings</p>
                     <div className="settings-list">
-                        <div className="settings-list-item">
+                        <div className="settings-list-item" onClick={() => setCurrentPage('bluetooth')}>
                             <span>Bluetooth</span>
-                            <div className="settings-list-controls">
+                            <div className="settings-list-controls" onClick={(e) => e.stopPropagation()}>
                                 <label className="toggle toggle--small">
                                     <input type="checkbox" defaultChecked />
                                     <span className="toggle-slider"></span>
                                 </label>
-                                {/* <span className="card-arrow">&rsaquo;</span> */}
+                                <span className="card-arrow">&rsaquo;</span>
                             </div>
                         </div>
-                        <div className="settings-list-item">
-                            <span>Display Settings</span>
-                            {/* <span className="card-arrow">&rsaquo;</span> */}
+                        <div className="settings-list-item" onClick={() => setCurrentPage('network')}>
+                            <span>Network & Internet</span>
+                            <div className="settings-list-controls" onClick={(e) => e.stopPropagation()}>
+                                <label className="toggle toggle--small">
+                                    <input type="checkbox" defaultChecked />
+                                    <span className="toggle-slider"></span>
+                                </label>
+                                <span className="card-arrow">&rsaquo;</span>
+                            </div>
                         </div>
-                        <div className="settings-list-item">
+                        <div className="settings-list-item" onClick={() => setCurrentPage('personalization')}>
                             <span>Personalization</span>
-                            {/* <span className="card-arrow">&rsaquo;</span> */}
+                            <span className="card-arrow">&rsaquo;</span>
                         </div>
                     </div>
                 </div>
