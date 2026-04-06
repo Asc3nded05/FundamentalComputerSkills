@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef, use } from "react";
 import '../css/TaskManager.css';
-import ContextMenuTaskManager from "./ContextMenuTaskbar.jsx";
-import { dispatchDesktopEvent } from "../utils/eventBus";
+import ContextMenuTaskManager from "./ContextMenuTaskManager.jsx";
+import { dispatchDesktopEvent } from "../../utils/eventBus.js";
+import {systemProcesses} from "../../data/systemProcesses.js";
 
 
 function TaskManager({sortedWindows, closeApp}) {
@@ -17,127 +18,8 @@ function TaskManager({sortedWindows, closeApp}) {
     const TaskManagerRef = useRef(null);
     
 
-    const handleRowClick = (itemId) => {
-        setSelectedItemId(itemId)
-    };
+    const handleRowClick = (itemId) => setSelectedItemId(itemId);
     const handleRowRightClick = (itemId) => setSelectedItemIdContextMenu(itemId);
-
-    
-
-    const [systemProcesses, setSystemProcesses] = useState([
-        {
-            id: 'sys-1',
-            name: 'System',
-            CpuMin: 0.0, CpuMax: 0.3,
-            MemMin: 50, MemMax: 150,
-            DiskMin: 0.0, DiskMax: 0.3,
-            NetMin: 0.0, NetMax: 0.1,
-        },
-        {
-            id: 'sys-2',
-            name: 'Registry',
-            CpuMin: 0.0, CpuMax: 0.1,
-            MemMin: 20, MemMax: 60,
-            DiskMin: 0.0, DiskMax: 0.1,
-            NetMin: 0.0, NetMax: 0.01,
-        },
-        {
-            id: 'sys-3',
-            name: 'Desktop Window Manager',
-            CpuMin: 0.1, CpuMax: 0.7,
-            MemMin: 80, MemMax: 200,
-            DiskMin: 0.0, DiskMax: 0.2,
-            NetMin: 0.0, NetMax: 0.05,
-        },
-        {
-            id: 'sys-4',
-            name: 'Windows Logon Application',
-            CpuMin: 0.0, CpuMax: 0.02,
-            MemMin: 5, MemMax: 15,
-            DiskMin: 0.0, DiskMax: 0.01,
-            NetMin: 0.0, NetMax: 0.0,
-        },
-        {
-            id: 'sys-5',
-            name: 'Local Security Authority Process',
-            CpuMin: 0.0, CpuMax: 0.1,
-            MemMin: 10, MemMax: 40,
-            DiskMin: 0.0, DiskMax: 0.1,
-            NetMin: 0.0, NetMax: 0.02,
-        },
-        {
-            id: 'sys-6',
-            name: 'Service Host: Local System',
-            CpuMin: 0.0, CpuMax: 0.3,
-            MemMin: 50, MemMax: 150,
-            DiskMin: 0.0, DiskMax: 0.5,
-            NetMin: 0.0, NetMax: 0.3,
-        },
-        {
-            id: 'sys-7',
-            name: 'Service Host: Network Service',
-            CpuMin: 0.0, CpuMax: 0.2,
-            MemMin: 20, MemMax: 80,
-            DiskMin: 0.0, DiskMax: 0.2,
-            NetMin: 0.0, NetMax: 0.5,
-        },
-        {
-            id: 'sys-8',
-            name: 'Service Host: Local Service',
-            CpuMin: 0.0, CpuMax: 0.1,
-            MemMin: 20, MemMax: 60,
-            DiskMin: 0.0, DiskMax: 0.1,
-            NetMin: 0.0, NetMax: 0.05,
-        },
-        {
-            id: 'sys-9',
-            name: 'Runtime Broker',
-            CpuMin: 0.0, CpuMax: 0.2,
-            MemMin: 10, MemMax: 50,
-            DiskMin: 0.0, DiskMax: 0.2,
-            NetMin: 0.0, NetMax: 0.2,
-        },
-        {
-            id: 'sys-10',
-            name: 'CTF Loader',
-            CpuMin: 0.0, CpuMax: 0.1,
-            MemMin: 5, MemMax: 25,
-            DiskMin: 0.0, DiskMax: 0.1,
-            NetMin: 0.0, NetMax: 0.02,
-        },
-        {
-            id: 'sys-11',
-            name: 'Shell Infrastructure Host',
-            CpuMin: 0.0, CpuMax: 0.2,
-            MemMin: 30, MemMax: 100,
-            DiskMin: 0.0, DiskMax: 0.2,
-            NetMin: 0.0, NetMax: 0.05,
-        },
-        {
-            id: 'sys-12',
-            name: 'COM Surrogate',
-            CpuMin: 0.0, CpuMax: 0.1,
-            MemMin: 5, MemMax: 40,
-            DiskMin: 0.0, DiskMax: 0.3,
-            NetMin: 0.0, NetMax: 0.1,
-        },
-        {
-            id: 'sys-13',
-            name: 'Windows Session Manager',
-            CpuMin: 0.0, CpuMax: 0.05,
-            MemMin: 5, MemMax: 20,
-            DiskMin: 0.0, DiskMax: 0.05,
-            NetMin: 0.0, NetMax: 0.0,
-        },
-        {
-            id: 'sys-14',
-            name: 'Client Server Runtime Process',
-            CpuMin: 0.0, CpuMax: 0.1,
-            MemMin: 10, MemMax: 40,
-            DiskMin: 0.0, DiskMax: 0.1,
-            NetMin: 0.0, NetMax: 0.05,
-        }
-        ]);
     const [cpuUsage, setCpuUsage] = useState([]);
     const [CpuUsageTotal, setCpuUsageTotal] = useState(0);
     const [memoryUsage, setMemoryUsage] = useState([]);
@@ -145,7 +27,6 @@ function TaskManager({sortedWindows, closeApp}) {
     const [diskUsage, setDiskUsage] = useState([]);
     const [diskUsageTotal, setDiskUsageTotal] = useState(0);
     const [networkUsage, setNetworkUsage] = useState([]);
-    const [networkUsageTotal, setNetworkUsageTotal] = useState(0);
     const getRandomNumber = (min, max, decimalPlaces) => {
         return (Math.random() * (max - min) + min).toFixed(decimalPlaces);
     }
@@ -179,10 +60,8 @@ function TaskManager({sortedWindows, closeApp}) {
                 });
             })
             setNetworkUsage(prevNetworkUsage => {
-                setNetworkUsageTotal(0); // Reset total Network usage
                 return systemProcesses.map(proc => {
                     const nextVal = Number(getRandomNumber(proc.NetMin, proc.NetMax, 2));
-                    setNetworkUsageTotal(prev => prev + nextVal);
                     return nextVal;
                 });
             });
