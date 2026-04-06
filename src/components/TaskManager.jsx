@@ -139,9 +139,13 @@ function TaskManager({sortedWindows, closeApp}) {
         }
         ]);
     const [cpuUsage, setCpuUsage] = useState([]);
+    const [CpuUsageTotal, setCpuUsageTotal] = useState(0);
     const [memoryUsage, setMemoryUsage] = useState([]);
+    const [memoryUsageTotal, setMemoryUsageTotal] = useState(0);
     const [diskUsage, setDiskUsage] = useState([]);
+    const [diskUsageTotal, setDiskUsageTotal] = useState(0);
     const [networkUsage, setNetworkUsage] = useState([]);
+    const [networkUsageTotal, setNetworkUsageTotal] = useState(0);
     const getRandomNumber = (min, max, decimalPlaces) => {
         return (Math.random() * (max - min) + min).toFixed(decimalPlaces);
     }
@@ -149,27 +153,36 @@ function TaskManager({sortedWindows, closeApp}) {
     useEffect(() => {
         const interval = setInterval(() => {
             setCpuUsage(prevCpuUsage => {
+                setCpuUsageTotal(0); // Reset total CPU usage
 
                 return systemProcesses.map(proc => {
                     const nextVal = Number(getRandomNumber(proc.CpuMin, proc.CpuMax, 1));
+                    setCpuUsageTotal(prev => prev + nextVal);
+                    console.log('Next CPU Usage:', nextVal);
                     return nextVal;
                 });
             })
             setMemoryUsage(prevMemoryUsage => {
+                setMemoryUsageTotal(0); // Reset total Memory usage
                 return systemProcesses.map(proc => {
                     const nextVal = Number(getRandomNumber(proc.MemMin, proc.MemMax, 0));
+                    setMemoryUsageTotal(prev => prev + nextVal);
                     return nextVal;
                 });
             })
             setDiskUsage(prevDiskUsage => {
+                setDiskUsageTotal(0); // Reset total Disk usage
                 return systemProcesses.map(proc => {
                     const nextVal = Number(getRandomNumber(proc.DiskMin, proc.DiskMax, 1));
+                    setDiskUsageTotal(prev => prev + nextVal);
                     return nextVal;
                 });
             })
             setNetworkUsage(prevNetworkUsage => {
+                setNetworkUsageTotal(0); // Reset total Network usage
                 return systemProcesses.map(proc => {
                     const nextVal = Number(getRandomNumber(proc.NetMin, proc.NetMax, 2));
+                    setNetworkUsageTotal(prev => prev + nextVal);
                     return nextVal;
                 });
             });
@@ -216,7 +229,6 @@ function TaskManager({sortedWindows, closeApp}) {
                     <div className="taskManager-header">
                         <button className="hamburger-menu" onClick={toggleSidebar}>☰</button>
                         <p>Processes</p>
-                        {/* <input className="taskManagerSearch" type="text" placeholder="Find a task..." value={query} onChange={handleSearch} /> */}
                         <div className="taskManager-buttons">
                             <button className="taskManager-start-btn">Start New Task</button>
                             <button 
@@ -233,10 +245,10 @@ function TaskManager({sortedWindows, closeApp}) {
                             <tr>
                                 <th className="taskmanager-title">Name</th>
                                 <th className="taskmanager-title">Status</th>
-                                <th className="taskmanager-title">CPU</th>
-                                <th className="taskmanager-title">Memory</th>
-                                <th className="taskmanager-title">Disk</th>
-                                <th className="taskmanager-title">Network</th>
+                                <th className="taskmanager-title">{CpuUsageTotal.toFixed(0)}% <br></br> CPU</th>
+                                <th className="taskmanager-title">{(((memoryUsageTotal.toFixed(2)/1024)/8)*100).toFixed(0)}% <br></br> Memory</th>
+                                <th className="taskmanager-title">{diskUsageTotal.toFixed(0)}% <br></br> Disk</th>
+                                <th className="taskmanager-title">0% <br></br> Network</th>
                             </tr>
                         </thead>
                         <tbody ref={TaskManagerRef}>
@@ -271,8 +283,8 @@ function TaskManager({sortedWindows, closeApp}) {
                                 onClick={() => handleRowClick(proc.id)}
                                 onContextMenu={() => handleRowRightClick(proc.id)}
                                 style={{
-                                    background: selectItemId === proc.id ? '#00afec' : 'white',
-                                    color: selectItemId === proc.id ? 'white' : 'black',
+                                    background: selectItemId || selectItemIdContextmenu === proc.id ? '#00afec' : 'white',
+                                    color: selectItemId || selectItemIdContextmenu === proc.id ? 'white' : 'black',
                                     cursor: 'pointer'
                                 }}
                             >
@@ -280,7 +292,7 @@ function TaskManager({sortedWindows, closeApp}) {
                                 <td className="taskManager-processes-status"></td>
                                 <td className="taskManager-processes-cpu">{cpuUsage[index]}%</td>
                                 <td className="taskManager-processes-memory">{memoryUsage[index]}mb</td>
-                                <td className="taskManager-processes-disk">{diskUsage[index]}mb/s</td>
+                                <td className="taskManager-processes-disk">{diskUsage[index]}</td>
                                 <td className="taskManager-processes-network">{networkUsage[index]}mbps</td>
                             </tr>
                         ))}

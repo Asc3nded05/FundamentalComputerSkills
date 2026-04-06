@@ -21,14 +21,6 @@ function ContextMenuTaskManager({ triggerRef, scale, endTask, selectItemIdContex
             // Only consider clicks inside the desktop container
             if (!container.contains(e.target)) return;
 
-            // Exclude icons, taskbar, and app windows
-            // if (
-            //     e.target.closest('.app-icon') ||
-            //     e.target.closest('.navbar') ||
-            //     e.target.closest('.appWindow, .app-window')
-            // ) {
-            //     return; // let the browser show its own context menu
-            // }
 
             // Valid background click: show our custom menu
             e.preventDefault();
