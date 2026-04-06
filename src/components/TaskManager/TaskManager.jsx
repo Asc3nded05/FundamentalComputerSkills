@@ -1,8 +1,8 @@
-import { useEffect, useState, useRef, use } from "react";
-import '../css/TaskManager.css';
+import { useEffect, useState, useRef } from "react";
+import '../../css/TaskManager.css';
 import ContextMenuTaskManager from "./ContextMenuTaskManager.jsx";
 import { dispatchDesktopEvent } from "../../utils/eventBus.js";
-import {systemProcesses} from "../../data/systemProcesses.js";
+import systemProcessesData from "../../assets/systemProccesses.json";
 
 
 function TaskManager({sortedWindows, closeApp}) {
@@ -26,6 +26,7 @@ function TaskManager({sortedWindows, closeApp}) {
     const [diskTotal, setDiskTotal] = useState(0);
 
     const [networkUsage, setNetworkUsage] = useState([]);
+    const [systemProcesses, setSystemProcesses] = useState(systemProcessesData.systemProcesses || []);
 
     // REFS
     const taskManagerRef = useRef(null);
@@ -39,6 +40,10 @@ function TaskManager({sortedWindows, closeApp}) {
 
     const handleRowRightClick = (itemId) => setSelectedContextItemId(itemId);
 
+    const isRowSelected = (itemId) => {
+        return selectedItemId === itemId || selectedContextItemId === itemId;
+    };
+
     // UTILITIES
     const getRandomNumber = (min, max, decimalPlaces) => {
     return Number((Math.random() * (max - min) + min).toFixed(decimalPlaces));
@@ -47,28 +52,28 @@ function TaskManager({sortedWindows, closeApp}) {
     useEffect(() => {
         const interval = setInterval(() => {
             setCpuUsage(prevCpuUsage => {
-                setCpuUsageTotal(0); // Reset total CPU usage
+                setCpuTotal(0); // Reset total CPU usage
 
                 return systemProcesses.map(proc => {
                     const nextVal = Number(getRandomNumber(proc.CpuMin, proc.CpuMax, 1));
-                    setCpuUsageTotal(prev => prev + nextVal);
+                    setCpuTotal(prev => prev + nextVal);
                     console.log('Next CPU Usage:', nextVal);
                     return nextVal;
                 });
             })
             setMemoryUsage(prevMemoryUsage => {
-                setMemoryUsageTotal(0); // Reset total Memory usage
+                setMemoryTotal(0); // Reset total Memory usage
                 return systemProcesses.map(proc => {
                     const nextVal = Number(getRandomNumber(proc.MemMin, proc.MemMax, 0));
-                    setMemoryUsageTotal(prev => prev + nextVal);
+                    setMemoryTotal(prev => prev + nextVal);
                     return nextVal;
                 });
             })
             setDiskUsage(prevDiskUsage => {
-                setDiskUsageTotal(0); // Reset total Disk usage
+                setDiskTotal(0); // Reset total Disk usage
                 return systemProcesses.map(proc => {
                     const nextVal = Number(getRandomNumber(proc.DiskMin, proc.DiskMax, 1));
-                    setDiskUsageTotal(prev => prev + nextVal);
+                    setDiskTotal(prev => prev + nextVal);
                     return nextVal;
                 });
             })
@@ -126,7 +131,7 @@ function TaskManager({sortedWindows, closeApp}) {
                             <button 
                             className="taskManager-end-btn"
                             onClick={() => {
-                                endTask(selectItemId, 'CloseEndTaskButton', closeApp);
+                                endTask(selectedItemId, 'CloseEndTaskButton', closeApp);
                             }}
                             >End Task</button>
                             <button className="taskManager-mode-btn">Efficiency Mode</button>
@@ -137,25 +142,23 @@ function TaskManager({sortedWindows, closeApp}) {
                             <tr>
                                 <th className="taskmanager-title">Name</th>
                                 <th className="taskmanager-title">Status</th>
-                                <th className="taskmanager-title">{CpuUsageTotal.toFixed(0)}% <br></br> CPU</th>
-                                <th className="taskmanager-title">{(((memoryUsageTotal.toFixed(2)/1024)/8)*100).toFixed(0)}% <br></br> Memory</th>
-                                <th className="taskmanager-title">{diskUsageTotal.toFixed(0)}% <br></br> Disk</th>
+                                <th className="taskmanager-title">{cpuTotal.toFixed(0)}% <br></br> CPU</th>
+                                <th className="taskmanager-title">{(((memoryTotal.toFixed(2)/1024)/8)*100).toFixed(0)}% <br></br> Memory</th>
+                                <th className="taskmanager-title">{diskTotal.toFixed(0)}% <br></br> Disk</th>
                                 <th className="taskmanager-title">0% <br></br> Network</th>
                             </tr>
                         </thead>
-                        <tbody ref={TaskManagerRef}>
-                            {sortedWindows?.map((window, index) => (
-                                <tr 
-                                className="taskManager-row"
-                                key={index}
-                                onClick={() => handleRowClick(window.instanceId ||window.id)}
-                                onContextMenu={() => handleRowRightClick(window.instanceId || window.id)} 
-                                style={{
-                                background: selectItemId === (window.instanceId ||window.id) ? '#00afec' : 'white',
-                                color: selectItemId === (window.instanceId || window.id)? 'white' : 'black',
-                                cursor: 'pointer' 
-                                }}
-                                >
+                        <tbody ref={taskManagerRef}>
+                            {sortedWindows?.map((window, index) => {
+                                const rowId = window.instanceId || window.id;
+                                return (
+                                    <tr
+                                        className={`taskManager-row ${isRowSelected(rowId) ? 'selected' : ''}`}
+                                        key={index}
+                                        onClick={() => handleRowClick(rowId)}
+                                        onContextMenu={() => handleRowRightClick(rowId)}
+                                        style={{ cursor: 'pointer' }}
+                                    >
                                     <td className="taskManager-processes-apps">{window.name}</td>
                                     <td className="taskManager-processes-status"></td>
                                     <td className="taskManager-processes-cpu">0%</td>
@@ -167,18 +170,14 @@ function TaskManager({sortedWindows, closeApp}) {
                                 </tr>
                                 
                                 
-                            ))}
+                            )})}
                             {systemProcesses.map((proc, index) => (
                             <tr
-                                className="taskManager-row"
+                                className={`taskManager-row ${isRowSelected(proc.id) ? 'selected' : ''}`}
                                 key={proc.id}
                                 onClick={() => handleRowClick(proc.id)}
                                 onContextMenu={() => handleRowRightClick(proc.id)}
-                                style={{
-                                    background: selectItemId || selectItemIdContextmenu === proc.id ? '#00afec' : 'white',
-                                    color: selectItemId || selectItemIdContextmenu === proc.id ? 'white' : 'black',
-                                    cursor: 'pointer'
-                                }}
+                                style={{ cursor: 'pointer' }}
                             >
                                 <td className="taskManager-processes-apps">{proc.name}</td>
                                 <td className="taskManager-processes-status"></td>
@@ -192,9 +191,9 @@ function TaskManager({sortedWindows, closeApp}) {
                         </tbody>
                     </table>
                     <ContextMenuTaskManager
-                        triggerRef={TaskManagerRef}
+                        triggerRef={taskManagerRef}
                         scale={scale}
-                        selectItemIdContextmenu={selectItemIdContextmenu}
+                        selectItemIdContextmenu={selectedContextItemId}
                         endTask={endTask}
                         closeApp={closeApp}
                         /> 
@@ -204,6 +203,6 @@ function TaskManager({sortedWindows, closeApp}) {
             </div>
         </div>
     </>;
-    }
+}
 
 export default TaskManager;

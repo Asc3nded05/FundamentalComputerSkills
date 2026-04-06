@@ -20,7 +20,7 @@ import FrameApp from "../components/FrameApp.jsx";
 import Settings from "../components/Settings.jsx";
 import SearchBar from "../components/SearchBar.jsx"
 import SearchMenu from "../components/SearchMenu.jsx"
-import TaskManager from "../components/TaskManager.jsx";
+import TaskManager from "../components/TaskManager/TaskManager.jsx";
 import ContextMenuDesktop from "../components/ContextMenuDesktop.jsx";
 import DesktopSelectionBox from "../components/DesktopSelectionBox.jsx";
 import { APP_REGISTRY } from "../utils/apps.js";

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import '../css/ContextMenuTaskManager.css';
+import '../../css/ContextMenuTaskManager.css';
 
 function ContextMenuTaskManager({ triggerRef, scale, endTask, selectItemIdContextmenu, closeApp }) {
     const [visible, setVisible] = useState(false);
