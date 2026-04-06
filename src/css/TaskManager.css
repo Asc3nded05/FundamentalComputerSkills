@@ -40,9 +40,13 @@
 }
 
 .taskManager-row.selected {
-    background-color: #f5f5f5;
-    outline: 1px solid white;
+    background-color: #e5f1fb; 
+    outline: 1px solid #0078d4; 
     outline-offset: -1px;
+}
+
+.taskManager-row.selected:hover {
+    background-color: #d8eaf9; 
 }
 
 .taskmanager-title {

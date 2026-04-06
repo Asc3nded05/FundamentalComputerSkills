@@ -13,7 +13,7 @@ function TaskManager({sortedWindows, closeApp}) {
 
     // SELECTION STATE
     const [selectedItemId, setSelectedItemId] = useState('');
-    const [selectedContextItemId, setSelectedContextItemId] = useState('');
+    // const [selectedContextItemId, setSelectedContextItemId] = useState('');
 
     // SYSTEM METRICS STATE
     const [cpuUsage, setCpuUsage] = useState([]);
@@ -38,10 +38,10 @@ function TaskManager({sortedWindows, closeApp}) {
 
     const handleRowClick = (itemId) => setSelectedItemId(itemId);
 
-    const handleRowRightClick = (itemId) => setSelectedContextItemId(itemId);
+    const handleRowRightClick = (itemId) => setSelectedItemId(itemId);
 
     const isRowSelected = (itemId) => {
-        return selectedItemId === itemId || selectedContextItemId === itemId;
+        return selectedItemId === itemId;
     };
 
     // UTILITIES
@@ -193,7 +193,7 @@ function TaskManager({sortedWindows, closeApp}) {
                     <ContextMenuTaskManager
                         triggerRef={taskManagerRef}
                         scale={scale}
-                        selectItemIdContextmenu={selectedContextItemId}
+                        selectItemId={selectedItemId}
                         endTask={endTask}
                         closeApp={closeApp}
                         /> 
