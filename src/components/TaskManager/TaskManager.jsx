@@ -6,30 +6,43 @@ import {systemProcesses} from "../../data/systemProcesses.js";
 
 
 function TaskManager({sortedWindows, closeApp}) {
+    // UI STATE
     const [query, setQuery] = useState('');
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [selectItemId, setSelectedItemId] = useState('')
-    const [selectItemIdContextmenu, setSelectedItemIdContextMenu] = useState('')
-
-    const handleSearch = (e) => setQuery(e.target.value);
-    const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
-
     const [scale, setScale] = useState(1);
-    const TaskManagerRef = useRef(null);
-    
+
+    // SELECTION STATE
+    const [selectedItemId, setSelectedItemId] = useState('');
+    const [selectedContextItemId, setSelectedContextItemId] = useState('');
+
+    // SYSTEM METRICS STATE
+    const [cpuUsage, setCpuUsage] = useState([]);
+    const [cpuTotal, setCpuTotal] = useState(0);
+
+    const [memoryUsage, setMemoryUsage] = useState([]);
+    const [memoryTotal, setMemoryTotal] = useState(0);
+
+    const [diskUsage, setDiskUsage] = useState([]);
+    const [diskTotal, setDiskTotal] = useState(0);
+
+    const [networkUsage, setNetworkUsage] = useState([]);
+
+    // REFS
+    const taskManagerRef = useRef(null);
+
+    // HANDLERS
+    const handleSearch = (e) => setQuery(e.target.value);
+
+    const toggleSidebar = () => setSidebarOpen(prev => !prev);
 
     const handleRowClick = (itemId) => setSelectedItemId(itemId);
-    const handleRowRightClick = (itemId) => setSelectedItemIdContextMenu(itemId);
-    const [cpuUsage, setCpuUsage] = useState([]);
-    const [CpuUsageTotal, setCpuUsageTotal] = useState(0);
-    const [memoryUsage, setMemoryUsage] = useState([]);
-    const [memoryUsageTotal, setMemoryUsageTotal] = useState(0);
-    const [diskUsage, setDiskUsage] = useState([]);
-    const [diskUsageTotal, setDiskUsageTotal] = useState(0);
-    const [networkUsage, setNetworkUsage] = useState([]);
+
+    const handleRowRightClick = (itemId) => setSelectedContextItemId(itemId);
+
+    // UTILITIES
     const getRandomNumber = (min, max, decimalPlaces) => {
-        return (Math.random() * (max - min) + min).toFixed(decimalPlaces);
-    }
+    return Number((Math.random() * (max - min) + min).toFixed(decimalPlaces));
+    };
 
     useEffect(() => {
         const interval = setInterval(() => {
