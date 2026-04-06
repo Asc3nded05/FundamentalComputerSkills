@@ -22,7 +22,6 @@ function Settings({ startingPage = 'home', backgroundImage, onBackgroundChange, 
     const [query, setQuery] = useState('');
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(startingPage); // default page (can be passed from different places to open to specific pages)
-    const [navigation, setNavigation] = useState({ page: 'home', subpage: null }); // For swapping to specific page with a button click
 
     // Update internal state when the prop changes (e.g., when re‑opening the same window)
     useEffect(() => {

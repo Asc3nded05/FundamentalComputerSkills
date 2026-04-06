@@ -253,7 +253,7 @@ function BluetoothDevices() {
                                                 </button>
                                                 {/* Dropdown indicator (▼) */}
                                                 <span className="card-arrow" style={{ fontSize: "20px", lineHeight: 1 }}>
-                                                    ▼
+                                                    v
                                                 </span>
                                             </div>
                                         </div>
