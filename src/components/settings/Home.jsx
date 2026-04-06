@@ -1,4 +1,15 @@
+import { useSettingsContext } from "../../utils/settings/settingsContext";
+
 function Home({ setCurrentPage }) {
+
+    // Use synced settings from the react context
+    const {
+        bluetoothOn,
+        toggleBluetooth,
+        wifiOn,
+        toggleWifi,
+    } = useSettingsContext();
+
     return (
         <div className="settings-section">
             <h1>Home</h1>
@@ -24,7 +35,11 @@ function Home({ setCurrentPage }) {
                             <span>Bluetooth</span>
                             <div className="settings-list-controls" onClick={(e) => e.stopPropagation()}>
                                 <label className="toggle toggle--small">
-                                    <input type="checkbox" defaultChecked />
+                                    <input
+                                        type="checkbox"
+                                        checked={bluetoothOn}
+                                        onChange={toggleBluetooth}
+                                    />
                                     <span className="toggle-slider"></span>
                                 </label>
                                 <span className="card-arrow">&rsaquo;</span>
@@ -34,7 +49,11 @@ function Home({ setCurrentPage }) {
                             <span>Network & Internet</span>
                             <div className="settings-list-controls" onClick={(e) => e.stopPropagation()}>
                                 <label className="toggle toggle--small">
-                                    <input type="checkbox" defaultChecked />
+                                    <input
+                                        type="checkbox"
+                                        checked={wifiOn}
+                                        onChange={toggleWifi}
+                                    />
                                     <span className="toggle-slider"></span>
                                 </label>
                                 <span className="card-arrow">&rsaquo;</span>
@@ -73,17 +92,23 @@ function Home({ setCurrentPage }) {
                         <div className="bluetooth-row">
                             <span>Bluetooth</span>
                             <label className="toggle">
-                                <input type="checkbox" defaultChecked />
+                                <input
+                                    type="checkbox"
+                                    checked={bluetoothOn}
+                                    onChange={toggleBluetooth}
+                                />
                                 <span className="toggle-slider"></span>
                             </label>
                         </div>
                         <p className="bluetooth-device-name">Discoverable as "LAPTOP-ABC123"</p>
 
                         <div className="bluetooth-actions">
-                            <button className="btn btn-small">Add Device</button>
-                            {/* <span className="card-arrow">&rsaquo;</span> */}
+                            <button className="btn btn-small" onClick={() => setCurrentPage('bluetooth')}>Add Device</button>
+                            <span className="card-arrow">&rsaquo;</span>
                         </div>
-                        <button className="btn btn-text">View all devices</button>
+                        <button className="btn btn-text" onClick={() => setCurrentPage('bluetooth')}>
+                            View all devices &rarr;
+                        </button>
                     </div>
                 </div>
 
@@ -108,9 +133,8 @@ function Home({ setCurrentPage }) {
                         </select>
                     </div>
 
-                    <button className="btn btn-text">
-                        Browse more backgrounds, colors, and themes
-                        {/* <span className="card-arrow">&rsaquo;</span> */}
+                    <button className="btn btn-text" onClick={() => setCurrentPage('personalization')}>
+                        Browse more backgrounds, colors, and themes &rarr;
                     </button>
                 </div>
             </div>
