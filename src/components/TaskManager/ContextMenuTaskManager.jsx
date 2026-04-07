@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import '../../css/ContextMenuTaskManager.css';
 
-function ContextMenuTaskManager({ triggerRef, scale, endTask, selectItemIdContextmenu, closeApp }) {
+function ContextMenuTaskManager({ triggerRef, scale, endTask, selectItemId, closeApp }) {
     const [visible, setVisible] = useState(false);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const menuRef = useRef(null);
@@ -69,7 +69,7 @@ function ContextMenuTaskManager({ triggerRef, scale, endTask, selectItemIdContex
         >
             <div className="context-menu-item"  
                 onClick={handleMenuItemClick(() => {
-                    endTask(selectItemIdContextmenu, 'CloseEndTaskContextMenu', closeApp);
+                    endTask(selectItemId, 'CloseEndTaskContextMenu', closeApp);
                     })}>
                 End Task
             </div>
