@@ -49,6 +49,69 @@ function TaskManager({sortedWindows, closeApp}) {
     return Number((Math.random() * (max - min) + min).toFixed(decimalPlaces));
     };
 
+    // Get all available items (windows + system processes)
+    const getAllItems = () => {
+        const windows = sortedWindows?.map(w => ({ id: w.instanceId || w.id, type: 'window' })) || [];
+        const processes = systemProcesses.map(p => ({ id: p.id, type: 'process' }));
+        return [...windows, ...processes];
+    };
+
+    // Handle keyboard navigation
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
+
+            const allItems = getAllItems();
+            if (allItems.length === 0) return;
+
+            const currentIndex = allItems.findIndex(item => item.id === selectedItemId);
+            let nextIndex;
+
+            if (event.key === 'ArrowDown') {
+                if (currentIndex === -1) {
+                    nextIndex = 0;
+                } else if (currentIndex < allItems.length - 1) {
+                    nextIndex = currentIndex + 1;
+                } else {
+                    return;
+                }
+            } else if (event.key === 'ArrowUp') {
+                if (currentIndex === -1) {
+                    nextIndex = allItems.length - 1;
+                } else if (currentIndex > 0) {
+                    nextIndex = currentIndex - 1;
+                } else {
+                    return;
+                }
+            }
+
+            handleRowClick(allItems[nextIndex].id);
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [selectedItemId, sortedWindows, systemProcesses]);
+
+    // Scroll selected row into view
+    useEffect(() => {
+        if (!selectedItemId || !taskManagerRef.current) return;
+
+        const container = taskManagerRef.current;
+        const selectedRow = container.querySelector(`tr[data-item-id="${selectedItemId}"]`);
+
+        if (selectedRow) {
+            const containerRect = container.getBoundingClientRect();
+            const rowRect = selectedRow.getBoundingClientRect();
+
+            const rowBelow = rowRect.bottom > containerRect.bottom;
+
+            if (rowBelow) {
+                selectedRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } 
+        }
+    }, [selectedItemId]);
+
+
     useEffect(() => {
         const interval = setInterval(() => {
             setCpuUsage(prevCpuUsage => {
@@ -57,7 +120,7 @@ function TaskManager({sortedWindows, closeApp}) {
                 return systemProcesses.map(proc => {
                     const nextVal = Number(getRandomNumber(proc.CpuMin, proc.CpuMax, 1));
                     setCpuTotal(prev => prev + nextVal);
-                    console.log('Next CPU Usage:', nextVal);
+                    // console.log('Next CPU Usage:', nextVal);
                     return nextVal;
                 });
             })
@@ -137,24 +200,26 @@ function TaskManager({sortedWindows, closeApp}) {
                             <button className="taskManager-mode-btn">Efficiency Mode</button>
                         </div>
                     </div>
-                    <table className="taskManager-main">
-                        <thead>
-                            <tr>
-                                <th className="taskmanager-title">Name</th>
-                                <th className="taskmanager-title">Status</th>
-                                <th className="taskmanager-title">{cpuTotal.toFixed(0)}% <br></br> CPU</th>
-                                <th className="taskmanager-title">{(((memoryTotal.toFixed(2)/1024)/8)*100).toFixed(0)}% <br></br> Memory</th>
-                                <th className="taskmanager-title">{diskTotal.toFixed(0)}% <br></br> Disk</th>
-                                <th className="taskmanager-title">0% <br></br> Network</th>
-                            </tr>
-                        </thead>
-                        <tbody ref={taskManagerRef}>
-                            {sortedWindows?.map((window, index) => {
+                    <div className="taskManager-table-wrapper" ref={taskManagerRef}>
+                        <table className="taskManager-main">
+                            <thead>
+                                <tr>
+                                    <th className="taskmanager-title">Name</th>
+                                    <th className="taskmanager-title">Status</th>
+                                    <th className="taskmanager-title">{cpuTotal.toFixed(0)}% <br></br> CPU</th>
+                                    <th className="taskmanager-title">{(((memoryTotal.toFixed(2)/1024)/8)*100).toFixed(0)}% <br></br> Memory</th>
+                                    <th className="taskmanager-title">{diskTotal.toFixed(0)}% <br></br> Disk</th>
+                                    <th className="taskmanager-title">0% <br></br> Network</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {sortedWindows?.map((window, index) => {
                                 const rowId = window.instanceId || window.id;
                                 return (
                                     <tr
                                         className={`taskManager-row ${isRowSelected(rowId) ? 'selected' : ''}`}
                                         key={index}
+                                        data-item-id={rowId}
                                         onClick={() => handleRowClick(rowId)}
                                         onContextMenu={() => handleRowRightClick(rowId)}
                                         style={{ cursor: 'pointer' }}
@@ -175,6 +240,7 @@ function TaskManager({sortedWindows, closeApp}) {
                             <tr
                                 className={`taskManager-row ${isRowSelected(proc.id) ? 'selected' : ''}`}
                                 key={proc.id}
+                                data-item-id={proc.id}
                                 onClick={() => handleRowClick(proc.id)}
                                 onContextMenu={() => handleRowRightClick(proc.id)}
                                 style={{ cursor: 'pointer' }}
@@ -190,6 +256,7 @@ function TaskManager({sortedWindows, closeApp}) {
 
                         </tbody>
                     </table>
+                    </div>
                     <ContextMenuTaskManager
                         triggerRef={taskManagerRef}
                         scale={scale}
