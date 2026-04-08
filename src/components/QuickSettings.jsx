@@ -126,7 +126,7 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                 dispatchDesktopEvent("WiFiToggleOn");
             }
             else {
-                dispatchDesktopEvent("WifiToggleOff");
+                dispatchDesktopEvent("WiFiToggleOff");
             }
 
             return next;
@@ -420,7 +420,12 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                         {activeDetail && (
                             <div className="qs-detail-panel">
                                 <div className="qs-detail-header"> 
-                                    <button className="qs-back" onClick={() => setActiveDetail(null)}>
+                                    <button 
+                                        className="qs-back" 
+                                        onClick={() => {
+                                            setActiveDetail(null);
+                                            dispatchDesktopEvent("ReturnToMainQuickSettings");
+                                        }}>
                                         ‹- 
                                     </button>
                                     <div className="qs-detail-title">
