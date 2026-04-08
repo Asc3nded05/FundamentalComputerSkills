@@ -93,6 +93,7 @@ export const useSettings = () => {
   const toggleWifi = useCallback(() => {
     setWifiOn(prev => {
       const next = !prev;
+      if (next && airplaneOn) return prev; // Can't turn on WiFi if Airplane Mode is on
       if (!next) {
         // Disconnect all networks immediately
         Object.keys(wifiStatuses).forEach(network => {
@@ -102,11 +103,12 @@ export const useSettings = () => {
       dispatchDesktopEvent(next ? config.toggles.wifi.eventOn : config.toggles.wifi.eventOff);
       return next;
     });
-  }, [wifiStatuses, updateWifiStatus]);
+  }, [wifiStatuses, updateWifiStatus, airplaneOn]);
 
   const toggleBluetooth = useCallback(() => {
     setBluetoothOn(prev => {
       const next = !prev;
+      if (next && airplaneOn) return prev; // Can't turn on Bluetooth if Airplane Mode is on
       if (!next) {
         Object.keys(bluetoothStatuses).forEach(device => {
           updateBluetoothStatus(device, 'disconnected');
@@ -115,15 +117,30 @@ export const useSettings = () => {
       dispatchDesktopEvent(next ? config.toggles.bluetooth.eventOn : config.toggles.bluetooth.eventOff);
       return next;
     });
-  }, [bluetoothStatuses, updateBluetoothStatus]);
+  }, [bluetoothStatuses, updateBluetoothStatus, airplaneOn]);
 
   const toggleAirplane = useCallback(() => {
     setAirplaneOn(prev => {
       const next = !prev;
+      if (next) {
+        // Turning Airplane Mode ON: disable WiFi and Bluetooth
+        setWifiOn(false);
+        setBluetoothOn(false);
+        // Disconnect all WiFi networks
+        Object.keys(wifiStatuses).forEach(network => {
+          updateWifiStatus(network, 'disconnected');
+        });
+        // Disconnect all Bluetooth devices
+        Object.keys(bluetoothStatuses).forEach(device => {
+          updateBluetoothStatus(device, 'disconnected');
+        });
+        dispatchDesktopEvent(config.toggles.wifi.eventOff);
+        dispatchDesktopEvent(config.toggles.bluetooth.eventOff);
+      }
       dispatchDesktopEvent(next ? config.toggles.airplane.eventOn : config.toggles.airplane.eventOff);
       return next;
     });
-  }, []);
+  }, [wifiStatuses, bluetoothStatuses, updateWifiStatus, updateBluetoothStatus]);
 
   const toggleEnergy = useCallback(() => {
     setEnergyOn(prev => {
