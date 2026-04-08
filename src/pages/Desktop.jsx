@@ -20,10 +20,12 @@ import FrameApp from "../components/FrameApp.jsx";
 import Settings from "../components/Settings.jsx";
 import SearchBar from "../components/SearchBar.jsx"
 import SearchMenu from "../components/SearchMenu.jsx"
-import TaskManager from "../components/TaskManager.jsx";
+import TaskManager from "../components/TaskManager/TaskManager.jsx";
 import ContextMenuDesktop from "../components/ContextMenuDesktop.jsx";
 import DesktopSelectionBox from "../components/DesktopSelectionBox.jsx";
 import { APP_REGISTRY } from "../utils/apps.js";
+import { SettingsProvider } from "../utils/settings/settingsContext.jsx";
+import { useSettingsContext } from "../utils/settings/settingsContext.jsx";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -31,13 +33,12 @@ function Desktop() {
     const location = useLocation();
     const { state } = location;
     const lessonId = state?.lessonId || 1;
-    const [brightness, setBrightness] = useState(100);
-    const [volume, setVolume] = useState(100);
     const [query, setQuery] = useState("")
     const [backgroundImage, setBackgroundImage] = useState(
         localStorage.getItem('backgroundImage') || '../assets/background-image.jpg'
     );
     const [defaultBackgroundDataUrl, setDefaultBackgroundDataUrl] = useState(null); // To save time reading the default image by storing it as a data URL
+    const { brightness, volume } = useSettingsContext();
 
     // Ref for desktop area, used to center new app windows
     const desktopRef = useRef(null);
@@ -393,13 +394,8 @@ function Desktop() {
                     <QuickSettings
                         isOpen={isQuickSettingsOpen}
                         closeQuickSettings={() => setQuickSettingsOpen(false)}
-                        brightness={brightness}
-                        setBrightness={setBrightness}
-                        volume={volume}
-                        setVolume={setVolume}
                         openApp={openApp}
                     />
-
 
                     {/* Dynamic app windows */}
                     {sortedWindows.map((app) => (

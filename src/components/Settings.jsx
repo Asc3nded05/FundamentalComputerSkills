@@ -53,7 +53,7 @@ function Settings({ startingPage = 'home', backgroundImage, onBackgroundChange, 
     const renderContent = () => {
         switch (currentPage) {
             case 'home':
-                return <Home/>
+                return <Home setCurrentPage={setCurrentPage} />
             case 'system':
                 return <System/>
             case 'bluetooth':

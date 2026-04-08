@@ -243,10 +243,6 @@
     color: #1e1e1e;
 }
 
-.btn-secondary:hover {
-    background: #f0f0f0;
-}
-
 .btn-small {
     padding: 4px 12px;
     font-size: 12px;
@@ -828,4 +824,32 @@ input:checked+.toggle-slider:before {
     .settings-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* Devices */
+/* Windows 11 style dropdown panel below device card */
+.device-card-wrapper {
+  margin-bottom: 8px; /* space for the dropdown panel */
+}
+
+.dropdown-panel {
+  background-color: #f3f3f3;  /* slightly darker than white */
+  border-radius: 8px;
+  margin-top: 4px;
+  padding: 8px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  text-align: left;
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  color: #1e1e1e;
+  cursor: pointer;
+  transition: background 0.1s ease;
 }
