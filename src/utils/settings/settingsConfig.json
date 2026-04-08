@@ -3,7 +3,7 @@
         "wifi": {
             "defaultOn": true,
             "eventOn": "WiFiToggleOn",
-            "eventOff": "WifiToggleOff",
+            "eventOff": "WiFiToggleOff",
             "detailType": "wifi",
             "networks": {
                 "Wifi Network 1": {
