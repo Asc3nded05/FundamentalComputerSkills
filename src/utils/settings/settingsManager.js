@@ -77,11 +77,15 @@ export const useSettings = () => {
   const [selectedWifi, setSelectedWifi] = useState(null);
 
   const timeoutsRef = useRef({});
+  const brightnessTimeoutRef = useRef(null);
+  const volumeTimeoutRef = useRef(null);
 
   // Cleanup all connection timeouts on unmount
   useEffect(() => {
     return () => {
       Object.values(timeoutsRef.current).forEach(clearTimeout);
+      if (brightnessTimeoutRef.current) clearTimeout(brightnessTimeoutRef.current);
+      if (volumeTimeoutRef.current) clearTimeout(volumeTimeoutRef.current);
     };
   }, []);
 
@@ -150,12 +154,18 @@ export const useSettings = () => {
 
   const setBrightnessValue = useCallback((value) => {
     setBrightness(value);
-    dispatchDesktopEvent(config.sliders.brightness.event, { value });
+    if (brightnessTimeoutRef.current) clearTimeout(brightnessTimeoutRef.current);
+    brightnessTimeoutRef.current = setTimeout(() => {
+      dispatchDesktopEvent(config.sliders.brightness.event, { value });
+    }, 500);
   }, []);
 
   const setVolumeValue = useCallback((value) => {
     setVolume(value);
-    dispatchDesktopEvent(config.sliders.volume.event, { value });
+    if (volumeTimeoutRef.current) clearTimeout(volumeTimeoutRef.current);
+    volumeTimeoutRef.current = setTimeout(() => {
+      dispatchDesktopEvent(config.sliders.volume.event, { value });
+    }, 500);
   }, []);
 
   // Wi‑Fi connection logic
