@@ -71,7 +71,15 @@ export async function getAppsByLessonId(lessonId) {
         return result.rows.map(row => ({
             appId: row[0],
             registryId: row[1],
-            appIcon: row[2]
+            appIcon: row[2],
+            cpuMin: row[3],
+            cpuMax: row[4],
+            memMin: row[5],
+            memMax: row[6],
+            diskMin: row[7],
+            diskMax: row[8],
+            netMin: row[9],
+            netMax: row[10]
         }));
     } finally {
         if (connection) await connection.close();
