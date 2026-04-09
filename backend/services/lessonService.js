@@ -60,7 +60,7 @@ export async function getAppsByLessonId(lessonId) {
         connection = await initOracle();
 
         const result = await connection.execute(
-            `SELECT a.appId, a.registryId, a.appIcon
+            `SELECT a.appId, a.registryId, a.appIcon, a.cpuMin, a.cpuMax, a.memMin, a.memMax, a.diskMin, a.diskMax, a.netMin, a.netMax
             FROM ADMIN.App a
             INNER JOIN ADMIN.LessonApp la ON a.appId = la.appId
             WHERE la.lessonId = :lessonId
