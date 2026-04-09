@@ -91,6 +91,11 @@
 .lesson-link {
   text-align: left;
 }
+.read-aloud-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .step-instructions {
   text-align: justify;

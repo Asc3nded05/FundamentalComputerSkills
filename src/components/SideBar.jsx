@@ -1,16 +1,17 @@
 import { useLesson } from '../api/useLesson.js';
 import { runLesson } from '../utils/lessonRunner.js';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useStep } from '../api/useStep.js';
 import { Link } from 'react-router-dom';
 import { dispatchDesktopEvent } from '../utils/eventBus.js';
 import { MdArrowBack } from 'react-icons/md';
-import { MdPerson } from 'react-icons/md';
+import { MdVolumeUp, MdVolumeOff } from 'react-icons/md';
 import NextButton from './NextButton.jsx';
 import '../css/SideBar.css';
 import Loading from './Loading.jsx';
 import React from 'react';
 import { createPortal } from 'react-dom';
+import { useSettingsContext } from '../utils/settings/settingsContext.jsx';
 // import hintVideo from '../assets/TestVideo.mp4';
 
 function SideBar(props) {
@@ -19,6 +20,10 @@ function SideBar(props) {
 
      // "NotStarted", "InProgress", "Completed"
     const [lessonState, setLessonState] = useState("NotStarted");
+
+    const [readAloud, setReadAloud] = useState(true);
+    
+    const {volume} = useSettingsContext();
 
     //Event name to determine which button to show
     const [eventName, setEventName] = useState(null);
@@ -61,6 +66,23 @@ function SideBar(props) {
     // State for video demo
     const [showVideo, setShowVideo] = useState(false);
 
+    // Effect to read nextStep aloud when it changes
+    useEffect(() => {
+        if (stepInstructions && readAloud) {
+            const audio = new SpeechSynthesisUtterance(stepInstructions);
+            audio.pitch = 1; // Value of 1 to 2
+            audio.volume = volume / 100;
+            window.speechSynthesis.speak(audio);
+        }
+    }, [stepInstructions, readAloud]);
+
+    // Effect to stop audio when read-aloud is turned off
+    useEffect(() => {
+        if (!readAloud) {
+            window.speechSynthesis.cancel();
+        }
+    }, [readAloud]);
+
     // Handles loading and error states
     if (loading) return <Loading />;
     if (error) return <div>Error loading lesson data</div>;
@@ -75,11 +97,14 @@ function SideBar(props) {
                         <MdArrowBack size={30} />
                         Lessons</Link>
                     </div>
-                    <div className="login-link link">
-                        <Link to="/login">
-                        <MdPerson style={{ fontSize: '2rem', color: 'Blue' }} />
-                        </Link>
-                    </div>
+                    <button 
+                        className="read-aloud-link link" 
+                        onClick={() => setReadAloud(!readAloud)}
+                        title={readAloud ? 'Turn off read aloud' : 'Turn on read aloud'}
+                    >
+                        {readAloud ? <MdVolumeUp size={30} /> : <MdVolumeOff size={30} />}
+                        Read Aloud
+                    </button>
                    
                 </div>
             <div id='sidebar' className='sidebar'>
