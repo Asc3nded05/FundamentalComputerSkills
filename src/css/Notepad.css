@@ -58,6 +58,7 @@
     height: 100%;
     resize: none;
     box-sizing: border-box;
+    padding: 9px;
 }
 
 mark {
