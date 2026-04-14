@@ -3,13 +3,13 @@ import { useEffect, useState } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus";
 import Mark from "mark.js";
 
-function Notepad({initialContent=""}) {
+function Notepad({initialContent="Hello, this is text"}) {
 
     const [searchTerm, setSearchterm] = useState("");
-    const markInstance = new Mark(document.querySelector("#search-node"));
     const [currentMark, setCurrentMark] = useState(-1);
 
     const handleSearch = (event) => {
+        const markInstance = new Mark(document.querySelector("#search-node"));
         setSearchterm(event.target.value);
         markInstance.unmark({
             done: () => {
@@ -26,7 +26,17 @@ function Notepad({initialContent=""}) {
         marks.forEach((m, i) => {
             m.classList.toggle('active', i === currentMark); // Add 'active' class to current mark
         });
-    }, [currentMark])
+    }, [currentMark]);
+
+    const findNext = () => {
+        dispatchDesktopEvent("NotepadFindNext");
+        setCurrentMark(prev => (prev +1))
+    };
+
+    const findPrev = () => {
+        dispatchDesktopEvent("NotepadFindPrev");
+        setCurrentMark(prev => (prev -1))
+    };
 
     // Keyboard shortcut broadcasting
     useEffect(() => {
@@ -82,8 +92,8 @@ function Notepad({initialContent=""}) {
             </div>
             <div className="notepad-find-options">
                 <input id="myInput" type="text" placeholder="Find..." className="notepad-find" value={searchTerm} onChange={handleSearch}/>
-                <button className="notepad-find-next" onClick={() => setCurrentMark(prev => prev + 1)}>Next</button>
-                <button className="notepad-find-prev" onClick={() => setCurrentMark(prev => prev - 1)}>Prev</button>
+                <button className="notepad-find-next" onClick={findNext}>Next</button>
+                <button className="notepad-find-prev" onClick={findPrev}>Prev</button>
             </div>
         </div>
         <div id="search-node" className="notepad-content">
@@ -91,27 +101,16 @@ function Notepad({initialContent=""}) {
             id="myTextArea"
             className="notepad-body" 
             contentEditable={true}
+            onInput={handleSearch}
             // onCopy={() => dispatchDesktopEvent("NotepadCopy")} // Broadast events for copy/paste/cut
             // onCut={() => dispatchDesktopEvent("NotepadCut")}
             // onPaste={() => dispatchDesktopEvent("NotepadPaste")}
-            ></p>
+            >
+               Here is text 
+            </p>
         </div>
     </>
     );
 }
-
-function searchText() {
-    const searchTerm = document.getElementById("myInput").value;
-    const textArea = document.getElementById("myTextArea");
-    const text = textArea.value;
-    const index = text.indexOf(searchTerm); 
-  
-    if (index !== -1) {
-      textArea.focus(); // Must focus for selection to be visible
-      textArea.setSelectionRange(index, index + searchTerm.length);
-    } else {
-      
-    }
-  };
 
 export default Notepad;
