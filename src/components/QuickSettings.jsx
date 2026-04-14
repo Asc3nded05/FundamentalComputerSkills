@@ -1,84 +1,30 @@
 import { useEffect, useRef, useState } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus";
+import { useSettingsContext } from "../utils/settings/settingsContext";
 import placeholderImage from "../assets/WifiPlaceholder.png"
 import "../css/QuickSettings.css";
 
-function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, volume, setVolume, openApp }) {
+function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
     const panelRef = useRef(null);
-
-    // Quick Setting Toggles
-    const [wifiOn, setWifiOn] = useState(true);
-    const [bluetoothOn, setBluetoothOn] = useState(false);
-    const [airplaneOn, setAirplaneOn] = useState(false);
-    const [energyOn, setEnergyOn] = useState(false);
-
-    // Accessibility options
-    const [accMagnifier, setAccMagnifier] = useState(false);
-    const [accNarrator, setAccNarrator] = useState(false);
-    const [accColorFilters, setAccColorFilters] = useState(false);
-    const [accLiveCaptions, setAccLiveCaptions] = useState(false);
-    const [accMonoAudio, setAccMonoAudio] = useState(false);
-    const [accVoiceAccess, setAccVoiceAccess] = useState(false);
-    const [accStickyKeys, setAccStickyKeys] = useState(false);
-
-    const accessibilityEventMap = {
-        "Magnifier": {
-            on: "AccessibilityMagnifierOn",
-            off: "AccessibilityMagnifierOff"
-        },
-        "Narrator": {
-            on: "AccessibilityNarratorOn",
-            off: "AccessibilityNarratorOff"
-        },
-        "Color Filters": {
-            on: "AccessibilityColorFiltersOn",
-            off: "AccessibilityColorFiltersOff"
-        },
-        "Live Captions": {
-            on: "AccessibilityLiveCaptionsOn",
-            off: "AccessibilityLiveCaptionsOff"
-        },
-        "Mono Audio": {
-            on: "AccessibilityMonoAudioOn",
-            off: "AccessibilityMonoAudioOff"
-        },
-        "Voice Access": {
-            on: "AccessibilityVoiceAccessOn",
-            off: "AccessibilityVoiceAccessOff"
-        },
-        "Sticky Keys": {
-            on: "AccessibilityStickyKeysOn",
-            off: "AccessibilityStickyKeysOff"
-        }
-    };
-
-    // WiFi and Bluetooth interactivity
-    const [selectedWifi, setSelectedWifi] = useState(null);
-    const [wifiStatuses, setWifiStatuses] = useState({
-        "Wifi Network 1": "connected",
-        "Wifi Network 2": "disconnected",
-        "Wifi Network 3": "disconnected",
-        "Wifi Network 4": "disconnected",
-        "Wifi Network 5": "disconnected"
-    });
-    const [bluetoothStatuses, setBluetoothStatuses] = useState({
-        "Headphone 1": "connected",
-        "Headphone 2": "disconnected",
-        "Headphone 3": "disconnected",
-        "Speaker": "disconnected",
-        "Phone Link": "disconnected"
-    });
-    const [selectedProject, setSelectedProject] = useState("PC screen only");
-
-    const projectEventMap = {
-    "PC screen only": "ProjectModePCScreenOnly",
-    "Duplicate": "ProjectModeDuplicate",
-    "Extend": "ProjectModeExtend",
-    "Second screen only": "ProjectModeSecondScreenOnly"
-};
-
     // "wifi" | "bluetooth" | "accessibility" | "project" | null
     const [activeDetail, setActiveDetail] = useState(null);
+
+    // Functions from settings Manager
+    const {
+        wifiOn, bluetoothOn, airplaneOn, energyOn,
+        toggleWifi, toggleBluetooth, toggleAirplane, toggleEnergy,
+        accessibility, toggleAccessibility,
+        selectedProject, setProject, projectOptions,
+        brightness, volume, setBrightnessValue, setVolumeValue,
+        wifiStatuses, selectedWifi, setSelectedWifi, toggleWifiConnection,
+        bluetoothStatuses, toggleBluetoothConnection,
+    } = useSettingsContext();
+
+    // Helper to select a Wi‑Fi network (toggles selection + dispatches event)
+    const selectWifiNetwork = (network) => {
+        setSelectedWifi(prev => (prev === network ? null : network));
+        dispatchDesktopEvent("WiFiNetworkSelected", { networkName: network });
+    };
 
     const handleClose = () => {
         closeQuickSettings();
@@ -107,148 +53,6 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
         }
     }, [isOpen]);
 
-    const toggleWifi = () => {
-        setWifiOn(v => {
-            const next = !v;
-
-            if (!next) {
-                // Wi‑Fi turned OFF → disconnect all networks immediately
-                setWifiStatuses(prev => {
-                    const updated = {};
-                    for (const key in prev) {
-                        updated[key] = "disconnected";
-                    }
-                    return updated;
-                });
-            }
-
-            if (next) {
-                dispatchDesktopEvent("WiFiToggleOn");
-            }
-            else {
-                dispatchDesktopEvent("WifiToggleOff");
-            }
-
-            return next;
-        });
-    };
-
-    const toggleBluetooth = () => {
-        setBluetoothOn(v => {
-            const next = !v;
-
-            if (!next) {
-                // Bluetooth turned OFF → disconnect all devices immediately
-                setBluetoothStatuses(prev => {
-                    const updated = {};
-                    for (const key in prev) {
-                        updated[key] = "disconnected";
-                    }
-                    return updated;
-                });
-            }
-
-            if (next) {
-                dispatchDesktopEvent("BluetoothToggleOn");
-            }
-            else {
-                dispatchDesktopEvent("BluetoothToggleOff");
-            }
-
-            return next;
-        });
-    };
-
-    const toggleAirplane = () => {
-        setAirplaneOn(v => {
-            const next = !v;
-
-            if (next) {
-                dispatchDesktopEvent("AirplaneModeToggleOn");
-            }
-            else {
-                dispatchDesktopEvent("AirplaneModeToggleOff");
-            }
-
-            return next;
-        });
-    };
-
-    const toggleEnergy = () => {
-        setEnergyOn(v => {
-            const next = !v;
-
-            if (next) {
-                dispatchDesktopEvent("BatterySaverToggleOn");
-            }
-            else {
-                dispatchDesktopEvent("BatterySaverToggleOff");
-            }
-
-            return next;
-        });
-    };
-
-    const selectWifiNetwork = (network) => {
-        setSelectedWifi(prev => (prev === network ? null : network));
-        dispatchDesktopEvent("WiFiNetworkSelected", { networkName: network });
-    };
-
-    const toggleWifiConnection = (network) => {
-        const currentConnected = Object.keys(wifiStatuses).find(n => wifiStatuses[n] === "connected");
-        
-        if (wifiStatuses[network] === "connected") {
-            // Disconnect this one
-            setWifiStatuses(prev => ({ ...prev, [network]: "disconnecting" }));
-            setTimeout(() => {
-                setWifiStatuses(prev => ({ ...prev, [network]: "disconnected" }));
-            }, 1000);
-            dispatchDesktopEvent("WiFiNetworkDisconnect", { networkName: network });
-        } else {
-            // Disconnect current if any, then connect new
-            if (currentConnected) {
-                setWifiStatuses(prev => ({ ...prev, [currentConnected]: "disconnecting" }));
-                setTimeout(() => {
-                    setWifiStatuses(prev => ({ ...prev, [currentConnected]: "disconnected", [network]: "connecting" }));
-                    setTimeout(() => {
-                        setWifiStatuses(prev => ({ ...prev, [network]: "connected" }));
-                    }, 1000);
-                }, 1000);
-            } else {
-                setWifiStatuses(prev => ({ ...prev, [network]: "connecting" }));
-                setTimeout(() => {
-                    setWifiStatuses(prev => ({ ...prev, [network]: "connected" }));
-                }, 1000);
-            }
-            dispatchDesktopEvent("WiFiNetworkConnect", { networkName: network });
-        }
-    };
-
-    const toggleBluetoothConnection = (device) => {
-        setBluetoothStatuses(prev => {
-            const current = prev[device];
-            if (current === "connected") {
-                dispatchDesktopEvent("BluetoothDeviceDisconnect", { deviceName: device });
-                return { ...prev, [device]: "disconnecting" };
-            } else if (current === "disconnected") {
-                dispatchDesktopEvent("BluetoothDeviceConnect", { deviceName: device });
-                return { ...prev, [device]: "connecting" };
-            }
-            return prev;
-        });
-        setTimeout(() => {
-            setBluetoothStatuses(prev => {
-                const current = prev[device];
-                if (current === "connecting") {
-                    return { ...prev, [device]: "connected" };
-                } else if (current === "disconnecting") {
-                    return { ...prev, [device]: "disconnected" };
-                }
-                return prev;
-            });
-        }, 1000); // 1 second delay
-    };
-
     const openDetail = (type) => {
         setActiveDetail(prev => (prev === type ? null : type));
         if (type === "wifi") dispatchDesktopEvent("WiFiDetailOpen");
@@ -257,22 +61,10 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
         if (type === "project") dispatchDesktopEvent("ProjectDetailOpen");
     };
 
-    const AccToggle = ({ label, description, value, setValue }) => (
+    const AccToggle = ({ label, description, value, onToggle }) => (
         <button
             className={`qs-detail-toggle ${value ? "on" : ""}`}
-            onClick={() => {
-                setValue(v => {
-                    const next = !v;
-
-                    const events = accessibilityEventMap[label];
-                    if (events) {
-                        const eventName = next ? events.on : events.off;
-                        dispatchDesktopEvent(eventName);
-                    }
-
-                    return next;
-                });
-            }}
+            onClick={() => onToggle(label)}
         >
             <div className="qs-detail-toggle-text">
                 <div className="qs-detail-toggle-label">{label}</div>
@@ -376,11 +168,9 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                                         type="range"
                                         min="20"
                                         max="120"
-                                        defaultValue={brightness}
+                                        value={brightness}
                                         onChange={(e) => {
-                                            const value = Number(e.target.value);
-                                            setBrightness(value);
-                                            dispatchDesktopEvent("BrightnessChange", { value });
+                                            setBrightnessValue(Number(e.target.value));
                                         }}
                                     />
                                 </div>
@@ -391,11 +181,9 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                                         type="range"
                                         min="0"
                                         max="100"
-                                        defaultValue={volume}
+                                        value={volume}
                                         onChange={(e) => {
-                                            const value = Number(e.target.value);
-                                            setVolume(value);
-                                            dispatchDesktopEvent("VolumeChange", { value });
+                                            setVolumeValue(Number(e.target.value));
                                         }}
                                     />
                                 </div>
@@ -406,7 +194,7 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                                         87%
                                     </div>
                                     <button className="qs-settings-button">
-                                        <img className="qs-icon" src={placeholderImage} alt="Settings" 
+                                        <img className="qs-icon" src={placeholderImage} alt="Settings"
                                             onClick={() => {
                                                 openApp('Settings', { startingPage: 'home' });
                                                 dispatchDesktopEvent("OpenSettingsFromQS")
@@ -420,7 +208,12 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                         {activeDetail && (
                             <div className="qs-detail-panel">
                                 <div className="qs-detail-header"> 
-                                    <button className="qs-back" onClick={() => setActiveDetail(null)}>
+                                    <button 
+                                        className="qs-back" 
+                                        onClick={() => {
+                                            setActiveDetail(null);
+                                            dispatchDesktopEvent("ReturnToMainQuickSettings");
+                                        }}>
                                         ‹- 
                                     </button>
                                     <div className="qs-detail-title">
@@ -428,7 +221,7 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                                         {activeDetail === "bluetooth" && "Bluetooth"}
                                         {activeDetail === "accessibility" && "Accessibility"}
                                         {activeDetail === "project" && "Project"}
-                                    </div>    
+                                    </div>
 
                                     {/* Top-right toggle */}
                                     {(activeDetail === "wifi" || activeDetail === "bluetooth") && (
@@ -443,8 +236,8 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                                             {(activeDetail === "wifi" ? wifiOn : bluetoothOn) ? "On" : "Off"}
                                         </button>
                                     )}
-                                </div> 
-                                
+                                </div>
+
 
                                 <div className="qs-detail-content">
                                     {activeDetail === "wifi" && (
@@ -478,18 +271,17 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
 
                                                             {selectedWifi === network && (
                                                                 <button
-                                                                    className={`qs-connect-button ${
-                                                                        wifiStatuses[network] === "connected" ? "disconnect" : ""
-                                                                    }`}
+                                                                    className={`qs-connect-button ${wifiStatuses[network] === "connected" ? "disconnect" : ""
+                                                                        }`}
                                                                     onClick={() => toggleWifiConnection(network)}
                                                                 >
                                                                     {wifiStatuses[network] === "connected"
                                                                         ? "Disconnect"
                                                                         : wifiStatuses[network] === "connecting"
-                                                                        ? "Connecting..."
-                                                                        : wifiStatuses[network] === "disconnecting"
-                                                                        ? "Disconnecting..."
-                                                                        : "Connect"}
+                                                                            ? "Connecting..."
+                                                                            : wifiStatuses[network] === "disconnecting"
+                                                                                ? "Disconnecting..."
+                                                                                : "Connect"}
                                                                 </button>
                                                             )}
                                                         </div>
@@ -522,10 +314,10 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                                                                 {bluetoothStatuses[device] === "connected"
                                                                     ? "Connected"
                                                                     : bluetoothStatuses[device] === "connecting"
-                                                                    ? "Connecting..."
-                                                                    : bluetoothStatuses[device] === "disconnecting"
-                                                                    ? "Disconnecting..."
-                                                                    : "Not Connected"}
+                                                                        ? "Connecting..."
+                                                                        : bluetoothStatuses[device] === "disconnecting"
+                                                                            ? "Disconnecting..."
+                                                                            : "Not Connected"}
                                                             </span>
                                                         </button>
                                                     ))}
@@ -535,69 +327,31 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                                     )}
                                     {activeDetail === "accessibility" && (
                                         <div className="qs-detail-list">
-                                            <AccToggle 
-                                                label="Magnifier" 
-                                                description="See words and images better" 
-                                                value={accMagnifier} 
-                                                setValue={setAccMagnifier} 
-                                            />
-                                            <AccToggle 
-                                                label="Narrator" 
-                                                description="Your built-in screen reader"
-                                                value={accNarrator} 
-                                                setValue={setAccNarrator} 
-                                            />
-                                            <AccToggle 
-                                                label="Color Filters" 
-                                                description="Distinguish among colors easily"
-                                                value={accColorFilters} 
-                                                setValue={setAccColorFilters} 
-                                            />
-                                            <AccToggle 
-                                                label="Live Captions" 
-                                                description="Real time audio transcription"
-                                                value={accLiveCaptions} 
-                                                setValue={setAccLiveCaptions} 
-                                            />
-                                            <AccToggle 
-                                                label="Mono Audio" 
-                                                description="Combine left and right audio channels"
-                                                value={accMonoAudio} 
-                                                setValue={setAccMonoAudio} 
-                                            />
-                                            <AccToggle 
-                                                label="Voice Access" 
-                                                description="Interact with your PC using voice"
-                                                value={accVoiceAccess} 
-                                                setValue={setAccVoiceAccess} 
-                                            />
-                                            <AccToggle 
-                                                label="Sticky Keys" 
-                                                description="Use shortcuts one key at a time"
-                                                value={accStickyKeys} 
-                                                setValue={setAccStickyKeys} 
-                                            />
-                                        </div>
-                                    )}
-                                    {activeDetail === "project" && (
-                                        <div className="qs-detail-list">
                                             {[
-                                                { label: "PC screen only", icon: "Display 1" },
-                                                { label: "Duplicate", icon: "Display 2" },
-                                                { label: "Extend", icon: "Display 3" },
-                                                { label: "Second screen only", icon: "Display 4" }
-                                            ].map(option => (
-                                                <button 
+                                                { label: "Magnifier", description: "See words and images better" },
+                                                { label: "Narrator", description: "Your built-in screen reader" },
+                                                { label: "Color Filters", description: "Distinguish among colors easily" },
+                                                { label: "Live Captions", description: "Real time audio transcription" },
+                                                { label: "Mono Audio", description: "Combine left and right audio channels" },
+                                                { label: "Voice Access", description: "Interact with your PC using voice" },
+                                                { label: "Sticky Keys", description: "Use shortcuts one key at a time" },
+                                            ].map(({ label, description }) => (
+                                                <AccToggle
+                                                    key={label}
+                                                    label={label}
+                                                    description={description}
+                                                    value={accessibility[label] || false}
+                                                    onToggle={toggleAccessibility}
+                                                />
+                                            ))}
+                                        </div>
+                                    )}{activeDetail === "project" && (
+                                        <div className="qs-detail-list">
+                                            {projectOptions.map(option => (
+                                                <button
                                                     key={option.label}
                                                     className={`qs-detail-list-item ${selectedProject === option.label ? "qs-project-selected" : ""}`}
-                                                    onClick={() => {
-                                                        setSelectedProject(option.label);
-
-                                                        const eventName = projectEventMap[option.label];
-                                                        if (eventName) {
-                                                            dispatchDesktopEvent(eventName);
-                                                        }
-                                                    }}
+                                                    onClick={() => setProject(option.label)}
                                                 >
                                                     <div>
                                                         <img className="qs-icon" src={placeholderImage} alt={option.icon} /> {option.label}
@@ -610,17 +364,17 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
 
                                 <div className="qs-detail-footer">
                                     {activeDetail === "wifi" && (
-                                        <button className="qs-detail-footer-button" 
+                                        <button className="qs-detail-footer-button"
                                             onClick={() => {
                                                 openApp('Settings', { startingPage: 'network' });
-                                                dispatchDesktopEvent("OpenWiFiSettingsFromQS");; 
+                                                dispatchDesktopEvent("OpenWiFiSettingsFromQS");;
                                             }}>
                                             More Wi‑Fi Settings
                                         </button>
                                     )}
 
                                     {activeDetail === "bluetooth" && (
-                                        <button className="qs-detail-footer-button" 
+                                        <button className="qs-detail-footer-button"
                                             onClick={() => {
                                                 openApp('Settings', { startingPage: 'bluetooth' });
                                                 dispatchDesktopEvent("OpenBluetoothSettingsFromQS");
@@ -630,7 +384,7 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                                     )}
 
                                     {activeDetail === "accessibility" && (
-                                        <button className="qs-detail-footer-button" 
+                                        <button className="qs-detail-footer-button"
                                             onClick={() => {
                                                 openApp('Settings', { startingPage: 'accessibility' });
                                                 dispatchDesktopEvent("OpenAccessibilitySettingsFromQS");
@@ -640,12 +394,12 @@ function QuickSettings({ isOpen, closeQuickSettings, brightness, setBrightness, 
                                     )}
 
                                     {activeDetail === "project" && (
-                                        <button className="qs-detail-footer-button" 
+                                        <button className="qs-detail-footer-button"
                                             onClick={() => {
                                                 openApp('Settings', { startingPage: 'system' });
                                                 dispatchDesktopEvent("OpenProjectSettingsFromQS")
                                             }}>
-                                        More Display Settings
+                                            More Display Settings
                                         </button>
                                     )}
                                 </div>

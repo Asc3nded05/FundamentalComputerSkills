@@ -20,10 +20,12 @@ import FrameApp from "../components/FrameApp.jsx";
 import Settings from "../components/Settings.jsx";
 import SearchBar from "../components/SearchBar.jsx"
 import SearchMenu from "../components/SearchMenu.jsx"
-import TaskManager from "../components/TaskManager.jsx";
+import TaskManager from "../components/TaskManager/TaskManager.jsx";
 import ContextMenuDesktop from "../components/ContextMenuDesktop.jsx";
 import DesktopSelectionBox from "../components/DesktopSelectionBox.jsx";
 import { APP_REGISTRY } from "../utils/apps.js";
+import { SettingsProvider } from "../utils/settings/settingsContext.jsx";
+import { useSettingsContext } from "../utils/settings/settingsContext.jsx";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -31,13 +33,12 @@ function Desktop() {
     const location = useLocation();
     const { state } = location;
     const lessonId = state?.lessonId || 1;
-    const [brightness, setBrightness] = useState(100);
-    const [volume, setVolume] = useState(100);
     const [query, setQuery] = useState("")
     const [backgroundImage, setBackgroundImage] = useState(
         localStorage.getItem('backgroundImage') || '../assets/background-image.jpg'
     );
     const [defaultBackgroundDataUrl, setDefaultBackgroundDataUrl] = useState(null); // To save time reading the default image by storing it as a data URL
+    const { brightness, volume } = useSettingsContext();
 
     // Ref for desktop area, used to center new app windows
     const desktopRef = useRef(null);
@@ -132,18 +133,26 @@ function Desktop() {
     };
 
     const { response: lessonApps, loading: lessonAppsLoading, error: lessonAppsError } = useLessonApps(lessonId);
-
     const lessonAppRegistry = useMemo(() => {
         if (lessonAppsLoading) return [];
         if (lessonAppsError || !lessonApps) return APP_REGISTRY;
 
         const allowedIds = new Set(lessonApps.map(app => app.registryId));
         const iconByRegistryId = new Map(lessonApps.map(app => [app.registryId, app.appIcon]));
+        const appDetailsByRegistryId = new Map(lessonApps.map(app => [app.registryId, app]));
 
         return APP_REGISTRY.filter(app => allowedIds.has(app.id))
             .map(app => ({
                 ...app,
-                icon: iconByRegistryId.get(app.id) || app.icon
+                icon: iconByRegistryId.get(app.id) || app.icon,
+                cpuMin: appDetailsByRegistryId.get(app.id)?.cpuMin || 0,
+                cpuMax: appDetailsByRegistryId.get(app.id)?.cpuMax || 0,
+                memMin: appDetailsByRegistryId.get(app.id)?.memMin || 0,
+                memMax: appDetailsByRegistryId.get(app.id)?.memMax || 0,
+                diskMin: appDetailsByRegistryId.get(app.id)?.diskMin || 0,
+                diskMax: appDetailsByRegistryId.get(app.id)?.diskMax || 0,
+                netMin: appDetailsByRegistryId.get(app.id)?.netMin || 0,
+                netMax: appDetailsByRegistryId.get(app.id)?.netMax || 0
             }));
     }, [lessonApps, lessonAppsLoading, lessonAppsError]);
 
@@ -393,13 +402,8 @@ function Desktop() {
                     <QuickSettings
                         isOpen={isQuickSettingsOpen}
                         closeQuickSettings={() => setQuickSettingsOpen(false)}
-                        brightness={brightness}
-                        setBrightness={setBrightness}
-                        volume={volume}
-                        setVolume={setVolume}
                         openApp={openApp}
                     />
-
 
                     {/* Dynamic app windows */}
                     {sortedWindows.map((app) => (

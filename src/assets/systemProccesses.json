@@ -1,0 +1,172 @@
+{
+  "systemProcesses": [
+    {
+      "id": "sys-1",
+      "name": "System",
+      "cpuMin": 0.0,
+      "cpuMax": 0.3,
+      "memMin": 50,
+      "memMax": 150,
+      "diskMin": 0.0,
+      "diskMax": 0.3,
+      "netMin": 0.0,
+      "netMax": 0.1
+    },
+    {
+      "id": "sys-2",
+      "name": "Registry",
+      "cpuMin": 0.0,
+      "cpuMax": 0.1,
+      "memMin": 20,
+      "memMax": 60,
+      "diskMin": 0.0,
+      "diskMax": 0.1,
+      "netMin": 0.0,
+      "netMax": 0.01
+    },
+    {
+      "id": "sys-3",
+      "name": "Desktop Window Manager",
+      "cpuMin": 0.1,
+      "cpuMax": 0.7,
+      "memMin": 80,
+      "memMax": 200,
+      "diskMin": 0.0,
+      "diskMax": 0.2,
+      "netMin": 0.0,
+      "netMax": 0.05
+    },
+    {
+      "id": "sys-4",
+      "name": "Windows Logon Application",
+      "cpuMin": 0.0,
+      "cpuMax": 0.02,
+      "memMin": 5,
+      "memMax": 15,
+      "diskMin": 0.0,
+      "diskMax": 0.01,
+      "netMin": 0.0,
+      "netMax": 0.0
+    },
+    {
+      "id": "sys-5",
+      "name": "Local Security Authority Process",
+      "cpuMin": 0.0,
+      "cpuMax": 0.1,
+      "memMin": 10,
+      "memMax": 40,
+      "diskMin": 0.0,
+      "diskMax": 0.1,
+      "netMin": 0.0,
+      "netMax": 0.02
+    },
+    {
+      "id": "sys-6",
+      "name": "Service Host: Local System",
+      "cpuMin": 0.0,
+      "cpuMax": 0.3,
+      "memMin": 50,
+      "memMax": 150,
+      "diskMin": 0.0,
+      "diskMax": 0.5,
+      "netMin": 0.0,
+      "netMax": 0.3
+    },
+    {
+      "id": "sys-7",
+      "name": "Service Host: Network Service",
+      "cpuMin": 0.0,
+      "cpuMax": 0.2,
+      "memMin": 20,
+      "memMax": 80,
+      "diskMin": 0.0,
+      "diskMax": 0.2,
+      "netMin": 0.0,
+      "netMax": 0.5
+    },
+    {
+      "id": "sys-8",
+      "name": "Service Host: Local Service",
+      "cpuMin": 0.0,
+      "cpuMax": 0.1,
+      "memMin": 20,
+      "memMax": 60,
+      "diskMin": 0.0,
+      "diskMax": 0.1,
+      "netMin": 0.0,
+      "netMax": 0.05
+    },
+    {
+      "id": "sys-9",
+      "name": "Runtime Broker",
+      "cpuMin": 0.0,
+      "cpuMax": 0.2,
+      "memMin": 10,
+      "memMax": 50,
+      "diskMin": 0.0,
+      "diskMax": 0.2,
+      "netMin": 0.0,
+      "netMax": 0.2
+    },
+    {
+      "id": "sys-10",
+      "name": "CTF Loader",
+      "cpuMin": 0.0,
+      "cpuMax": 0.1,
+      "memMin": 5,
+      "memMax": 25,
+      "diskMin": 0.0,
+      "diskMax": 0.1,
+      "netMin": 0.0,
+      "netMax": 0.02
+    },
+    {
+      "id": "sys-11",
+      "name": "Shell Infrastructure Host",
+      "cpuMin": 0.0,
+      "cpuMax": 0.2,
+      "memMin": 30,
+      "memMax": 100,
+      "diskMin": 0.0,
+      "diskMax": 0.2,
+      "netMin": 0.0,
+      "netMax": 0.05
+    },
+    {
+      "id": "sys-12",
+      "name": "COM Surrogate",
+      "cpuMin": 0.0,
+      "cpuMax": 0.1,
+      "memMin": 5,
+      "memMax": 40,
+      "diskMin": 0.0,
+      "diskMax": 0.3,
+      "netMin": 0.0,
+      "netMax": 0.1
+    },
+    {
+      "id": "sys-13",
+      "name": "Windows Session Manager",
+      "cpuMin": 0.0,
+      "cpuMax": 0.05,
+      "memMin": 5,
+      "memMax": 20,
+      "diskMin": 0.0,
+      "diskMax": 0.05,
+      "netMin": 0.0,
+      "netMax": 0.0
+    },
+    {
+      "id": "sys-14",
+      "name": "Client Server Runtime Process",
+      "cpuMin": 0.0,
+      "cpuMax": 0.1,
+      "memMin": 10,
+      "memMax": 40,
+      "diskMin": 0.0,
+      "diskMax": 0.1,
+      "netMin": 0.0,
+      "netMax": 0.05
+    }
+  ]
+}

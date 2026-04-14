@@ -1,4 +1,15 @@
-function Home() {
+import { useSettingsContext } from "../../utils/settings/settingsContext";
+
+function Home({ setCurrentPage }) {
+
+    // Use synced settings from the react context
+    const {
+        bluetoothOn,
+        toggleBluetooth,
+        wifiOn,
+        toggleWifi,
+    } = useSettingsContext();
+
     return (
         <div className="settings-section">
             <h1>Home</h1>
@@ -20,23 +31,37 @@ function Home() {
                     <h3 className="card-title">Recommended Settings</h3>
                     <p className="card-description">Recent and commonly used settings</p>
                     <div className="settings-list">
-                        <div className="settings-list-item">
+                        <div className="settings-list-item" onClick={() => setCurrentPage('bluetooth')}>
                             <span>Bluetooth</span>
-                            <div className="settings-list-controls">
+                            <div className="settings-list-controls" onClick={(e) => e.stopPropagation()}>
                                 <label className="toggle toggle--small">
-                                    <input type="checkbox" defaultChecked />
+                                    <input
+                                        type="checkbox"
+                                        checked={bluetoothOn}
+                                        onChange={toggleBluetooth}
+                                    />
                                     <span className="toggle-slider"></span>
                                 </label>
-                                {/* <span className="card-arrow">&rsaquo;</span> */}
+                                <span className="card-arrow">&rsaquo;</span>
                             </div>
                         </div>
-                        <div className="settings-list-item">
-                            <span>Display Settings</span>
-                            {/* <span className="card-arrow">&rsaquo;</span> */}
+                        <div className="settings-list-item" onClick={() => setCurrentPage('network')}>
+                            <span>Network & Internet</span>
+                            <div className="settings-list-controls" onClick={(e) => e.stopPropagation()}>
+                                <label className="toggle toggle--small">
+                                    <input
+                                        type="checkbox"
+                                        checked={wifiOn}
+                                        onChange={toggleWifi}
+                                    />
+                                    <span className="toggle-slider"></span>
+                                </label>
+                                <span className="card-arrow">&rsaquo;</span>
+                            </div>
                         </div>
-                        <div className="settings-list-item">
+                        <div className="settings-list-item" onClick={() => setCurrentPage('personalization')}>
                             <span>Personalization</span>
-                            {/* <span className="card-arrow">&rsaquo;</span> */}
+                            <span className="card-arrow">&rsaquo;</span>
                         </div>
                     </div>
                 </div>
@@ -67,17 +92,23 @@ function Home() {
                         <div className="bluetooth-row">
                             <span>Bluetooth</span>
                             <label className="toggle">
-                                <input type="checkbox" defaultChecked />
+                                <input
+                                    type="checkbox"
+                                    checked={bluetoothOn}
+                                    onChange={toggleBluetooth}
+                                />
                                 <span className="toggle-slider"></span>
                             </label>
                         </div>
                         <p className="bluetooth-device-name">Discoverable as "LAPTOP-ABC123"</p>
 
                         <div className="bluetooth-actions">
-                            <button className="btn btn-small">Add Device</button>
-                            {/* <span className="card-arrow">&rsaquo;</span> */}
+                            <button className="btn btn-small" onClick={() => setCurrentPage('bluetooth')}>Add Device</button>
+                            <span className="card-arrow">&rsaquo;</span>
                         </div>
-                        <button className="btn btn-text">View all devices</button>
+                        <button className="btn btn-text" onClick={() => setCurrentPage('bluetooth')}>
+                            View all devices &rarr;
+                        </button>
                     </div>
                 </div>
 
@@ -102,9 +133,8 @@ function Home() {
                         </select>
                     </div>
 
-                    <button className="btn btn-text">
-                        Browse more backgrounds, colors, and themes
-                        {/* <span className="card-arrow">&rsaquo;</span> */}
+                    <button className="btn btn-text" onClick={() => setCurrentPage('personalization')}>
+                        Browse more backgrounds, colors, and themes &rarr;
                     </button>
                 </div>
             </div>
