@@ -7,22 +7,28 @@ function Notepad({initialContent=""}) {
 
     const [searchTerm, setSearchterm] = useState("");
     const markInstance = new Mark(document.querySelector("#search-node"));
+    const [currentMark, setCurrentMark] = useState(-1);
 
     const handleSearch = (event) => {
         setSearchterm(event.target.value);
         markInstance.unmark({
             done: () => {
-                markInstance.mark(event.target.value);
+                markInstance.mark(event.target.value, {
+                    done: (count) => setCurrentMark(count > 0 ? 0 : -1)
+                });
             }
         });
     };
 
-    const [text, setText] = useState(initialContent);
+    // Update active mark on currentMark change (Next/Prev buttons)
+    useEffect(() => {
+        const marks = document.querySelectorAll("#search-node mark");
+        marks.forEach((m, i) => {
+            m.classList.toggle('active', i === currentMark); // Add 'active' class to current mark
+        });
+    }, [currentMark])
 
-    const handleChange = (event) => {
-        setText(event.target.value); // Get text as user types
-    };
-
+    // Keyboard shortcut broadcasting
     useEffect(() => {
         const handleKeyDown = (event) => {
             if (event.ctrlKey || event.metaKey) { // Check for Ctrl (Windows) or Command (Mac)
@@ -76,8 +82,8 @@ function Notepad({initialContent=""}) {
             </div>
             <div className="notepad-find-options">
                 <input id="myInput" type="text" placeholder="Find..." className="notepad-find" value={searchTerm} onChange={handleSearch}/>
-                <button className="notepad-find-next" onClick={() => dispatchDesktopEvent("NotepadFindNext")}>Next</button>
-                <button className="notepad-find-prev" onClick={() => dispatchDesktopEvent("NotepadFindPrevious")}>Prev</button>
+                <button className="notepad-find-next" onClick={() => setCurrentMark(prev => prev + 1)}>Next</button>
+                <button className="notepad-find-prev" onClick={() => setCurrentMark(prev => prev - 1)}>Prev</button>
             </div>
         </div>
         <div id="search-node" className="notepad-content">

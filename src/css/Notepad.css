@@ -65,3 +65,7 @@ mark {
     padding: 0;
     margin: 0;
 }
+
+mark.active {
+    background-color: orange !important;
+}
