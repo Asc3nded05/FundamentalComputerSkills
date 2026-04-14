@@ -176,7 +176,7 @@ const Personalization = ({ backgroundImage, onBackgroundChange, onResetDefault }
                     <div className="settings-card">
                         <h3 className="card-title">Contrast Themes</h3>
                         <p className="card-description">Color themes for low vision, light sensitivity</p>
-                        <span className="card-arrow">&rsaquo;</span>
+                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
                     <div className="settings-card">
                         <h3 className="card-title">Help with Background</h3>

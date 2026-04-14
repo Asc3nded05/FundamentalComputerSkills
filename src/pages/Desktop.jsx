@@ -406,8 +406,8 @@ function Desktop() {
                             isMinimized={app.isMinimized}
                             isMaximized={app.isMaximized}
                             onClose={() => closeApp(app.instanceId || app.id)}
-                            onMinimize={() => minimizeApp(app.instanceId || app.id)}
-                            onMaximize={() => maximizeApp(app.instanceId || app.id)}
+                            // onMinimize={() => minimizeApp(app.instanceId || app.id)}
+                            // onMaximize={() => maximizeApp(app.instanceId || app.id)}
                             zIndex={app.zIndex}
                             bringToFront={() => bringToFront(app.instanceId || app.id)}
                             content={renderAppContent(app)}

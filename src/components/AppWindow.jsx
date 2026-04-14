@@ -2,19 +2,19 @@ import { Rnd } from 'react-rnd';
 import { useState, useEffect } from 'react';
 import { dispatchDesktopEvent } from "../utils/eventBus";
 
-function AppWindow({ 
-    name, 
-    isOpen, 
+function AppWindow({
+    name,
+    isOpen,
     isMinimized = false,
     isMaximized = false,
     onMinimize,
     onMaximize,
-    onClose, 
-    closeEventName, 
-    zIndex, 
-    bringToFront, 
-    content, 
-    initialSize = {width: 600, height: 400},
+    onClose,
+    closeEventName,
+    zIndex,
+    bringToFront,
+    content,
+    initialSize = { width: 600, height: 400 },
     scale,
     baseHeight,
     baseWidth,
@@ -36,7 +36,7 @@ function AppWindow({
     };
 
     return (
-        <Rnd 
+        <Rnd
             default={{
                 x: (baseWidth - initialSize.width) / 2 + offset, // Center new windows on desktop
                 y: (baseHeight - initialSize.height - 56) / 2 + offset,
@@ -57,13 +57,24 @@ function AppWindow({
                     <div className="top-header">
                         <p>{name}</p>
 
-                        <a href="#" className="appWindowMinimize" onClick={onMinimize}> 
+                        <a
+                            href="#"
+                            className="appWindowMinimize"
+                            // onClick={onMinimize}
+                        >
                             ─
                         </a>
-                        <a href="#" className="appWindowMaximize" onClick={onMaximize}> 
+                        <a
+                            href="#"
+                            className="appWindowMaximize"
+                            // onClick={onMaximize}
+                        >
                             &#9744;
                         </a>
-                        <a href="#" className="appWindowClose" onClick={handleClose}> 
+                        <a
+                            href="#"
+                            className="appWindowClose"
+                            onClick={handleClose}>
                             &times;
                         </a>
                     </div>

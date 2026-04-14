@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSettingsContext } from "../../utils/settings/settingsContext";
+import { dispatchDesktopEvent } from "../../utils/eventBus";
 
 function BluetoothDevices() {
     const [subPage, setSubPage] = useState('main'); // 'main', 'devices'
@@ -26,6 +27,10 @@ function BluetoothDevices() {
         setOpenDropdown(null);
     };
 
+    const addBluetoothDevice = () => {
+        alert("Add device clicked");
+    };
+
     // Helper to get button text based on status
     const getConnectButtonText = (status) => {
         if (status === "connected") return "Disconnect";
@@ -44,14 +49,20 @@ function BluetoothDevices() {
                     <div className="settings-card add-device-card">
                         <div className="add-device-content">
                             <span className="plus-icon">+</span>
-                            <h3 className="card-title">Add device</h3>
+                            <h3 className="card-title" onClick={() => {
+                                dispatchDesktopEvent("BluetoothAddDeviceClicked");
+                                addBluetoothDevice();
+                            }}>Add device</h3>
                         </div>
                     </div>
                 </div>
 
                 {/* View more devices button */}
                 <div style={{ marginBottom: '24px' }}>
-                    <button className="btn btn-secondary" onClick={() => setSubPage('devices')}>
+                    <button className="btn btn-secondary" onClick={() => {
+                        dispatchDesktopEvent("SettingsBluetoothDevicesSubPageClicked");
+                        setSubPage('devices')
+                    }}>
                         View more devices
                     </button>
                 </div>
@@ -77,10 +88,17 @@ function BluetoothDevices() {
                     </div>
 
                     {/* Devices */}
-                    <div className="settings-card">
+                    <div className="settings-card" onClick={() => {
+                        dispatchDesktopEvent("SettingsBluetoothDevicesSubPageClicked");
+                        setSubPage('devices');
+                    }}>
                         <h3 className="card-title">Devices</h3>
                         <p className="card-description">Mouse, keyboard, pen, audio, displays and docks, other devices</p>
-                        <button className="btn btn-primary" onClick={() => setSubPage('devices')}>Add device</button>
+                        <button className="btn btn-primary" onClick={(e) => {
+                            e.stopPropagation(); // prevent card click
+                            dispatchDesktopEvent("BluetoothAddDeviceClicked");
+                            addBluetoothDevice();
+                        }}>Add device</button>
                         <span className="card-arrow">&rsaquo;</span>
                     </div>
 
@@ -165,7 +183,7 @@ function BluetoothDevices() {
                     className="btn btn-text"
                     onClick={() => {
                         setSubPage("main");
-                        dispatchDesktopEvent("BluetoothDevicesBackToMain");
+                        dispatchDesktopEvent("SettingsBluetoothPageClicked");
                     }}
                 >
                     ← Back to Bluetooth & Devices
