@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useSettingsContext } from "../../utils/settings/settingsContext";
 import { dispatchDesktopEvent } from "../../utils/eventBus";
+import config from "../../utils/settings/settingsConfig.json";
 
 function BluetoothDevices() {
     const [subPage, setSubPage] = useState('main'); // 'main', 'devices'
     const [openDropdown, setOpenDropdown] = useState(null); // track which device dropdown is open
+    const [showAddDeviceModal, setShowAddDeviceModal] = useState(false);
 
     // Get Bluetooth state and devices from context
     const {
@@ -12,13 +14,20 @@ function BluetoothDevices() {
         toggleBluetooth,
         bluetoothStatuses,
         toggleBluetoothConnection,
+        addBluetoothDevice,
+        removeBluetoothDevice,
     } = useSettingsContext();
 
-    // List of device names from context (keys of bluetoothStatuses)
     const deviceNames = Object.keys(bluetoothStatuses);
 
+    // Get list of all possible devices from config, excluding already paired ones
+    const defaultDevices = Object.keys(config.toggles.bluetooth.devices);
+    const extraDevices = ["Speaker 2", "Wireless Mouse"]; 
+    const allPossibleDevices = [...defaultDevices, ...extraDevices];
+    const availableDevices = allPossibleDevices.filter(device => !bluetoothStatuses[device]);
+
     const handleRemoveDevice = (deviceName) => {
-        dispatchDesktopEvent("BluetoothDeviceRemove", { deviceName });
+        removeBluetoothDevice(deviceName);
         setOpenDropdown(null);
     };
 
@@ -27,8 +36,9 @@ function BluetoothDevices() {
         setOpenDropdown(null);
     };
 
-    const addBluetoothDevice = () => {
-        alert("Add device clicked");
+    const handleAddDevice = (deviceName) => {
+        addBluetoothDevice(deviceName);
+        setShowAddDeviceModal(false);
     };
 
     // Helper to get button text based on status
@@ -39,6 +49,28 @@ function BluetoothDevices() {
         return "Connect";
     };
 
+    const AddDeviceModal = () => (
+        <div className="modal-overlay" onClick={() => setShowAddDeviceModal(false)}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                <h3>Add a device</h3>
+                {availableDevices.length === 0 ? (
+                    <p>No new devices available.</p>
+                ) : (
+                    <ul className="device-list">
+                        {availableDevices.map(device => (
+                            <li key={device} onClick={() => handleAddDevice(device)}>
+                                {device}
+                            </li>
+                        ))}
+                    </ul>
+                )}
+                <button className="btn btn-secondary" onClick={() => setShowAddDeviceModal(false)}>
+                    Cancel
+                </button>
+            </div>
+        </div>
+    );
+    const renderContent = () => {
     if (subPage === 'main') {
         return (
             <div className="settings-section">
@@ -50,8 +82,7 @@ function BluetoothDevices() {
                         <div className="add-device-content">
                             <span className="plus-icon">+</span>
                             <h3 className="card-title" onClick={() => {
-                                dispatchDesktopEvent("BluetoothAddDeviceClicked");
-                                addBluetoothDevice();
+                                setShowAddDeviceModal(true);
                             }}>Add device</h3>
                         </div>
                     </div>
@@ -96,8 +127,7 @@ function BluetoothDevices() {
                         <p className="card-description">Mouse, keyboard, pen, audio, displays and docks, other devices</p>
                         <button className="btn btn-primary" onClick={(e) => {
                             e.stopPropagation(); // prevent card click
-                            dispatchDesktopEvent("BluetoothAddDeviceClicked");
-                            addBluetoothDevice();
+                            setShowAddDeviceModal(true);
                         }}>Add device</button>
                         <span className="card-arrow">&rsaquo;</span>
                     </div>
@@ -174,8 +204,7 @@ function BluetoothDevices() {
                 </div>
             </div>
         );
-    }
-    if (subPage === 'devices') {
+    } else if (subPage === 'devices') {
         return (
             <div className="settings-section">
                 {/* Back button */}
@@ -217,7 +246,7 @@ function BluetoothDevices() {
                         </div>
                         <button
                             className="btn btn-primary"
-                            onClick={() => dispatchDesktopEvent("BluetoothAddDeviceClicked")}
+                            onClick={() => setShowAddDeviceModal(true)}
                         >
                             Add Device
                         </button>
@@ -239,7 +268,10 @@ function BluetoothDevices() {
                                     {/* Main card - click anywhere toggles dropdown */}
                                     <div
                                         className="settings-card"
-                                        onClick={() => setOpenDropdown(isDropdownOpen ? null : device)}
+                                        onClick={() => {
+                                            dispatchDesktopEvent('BluetoothDeviceSelected', { deviceName: device });
+                                            setOpenDropdown(isDropdownOpen ? null : device)
+                                        }}
                                         style={{ cursor: "pointer" }}
                                     >
                                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -302,6 +334,13 @@ function BluetoothDevices() {
             </div>
         );
     }
+};
+    return (
+        <div>
+            {renderContent()}
+            {showAddDeviceModal && <AddDeviceModal />}
+        </div>
+    );
 }
 
 export default BluetoothDevices;

@@ -26,6 +26,23 @@ const useAsyncStatus = (initialStatuses, onUpdate) => {
     if (onUpdate) onUpdate(key, status);
   }, [onUpdate]);
 
+  const addStatusKey = useCallback((key, initialStatus = 'disconnected') => {
+    setStatuses(prev => {
+      if (prev[key]) return prev; // already exists
+      const updated = { ...prev, [key]: initialStatus };
+      if (onUpdate) onUpdate(key, initialStatus);
+      return updated;
+    });
+  }, [onUpdate]);
+
+  const removeStatusKey = useCallback((key) => {
+    setStatuses(prev => {
+      const { [key]: _, ...rest } = prev; // remove key
+      if (onUpdate) onUpdate(key, null); // notify removal
+      return rest;
+    });
+  }, [onUpdate]);
+
   // Cleanup timeouts on unmount
   useEffect(() => {
     return () => {
@@ -33,7 +50,7 @@ const useAsyncStatus = (initialStatuses, onUpdate) => {
     };
   }, []);
 
-  return { statuses, setStatusWithDelay, updateImmediate };
+  return { statuses, setStatusWithDelay, updateImmediate, addStatusKey, removeStatusKey };
 };
 
 export const useSettings = () => {
@@ -70,7 +87,7 @@ export const useSettings = () => {
   const initialBluetoothStatuses = Object.fromEntries(
     Object.entries(config.toggles.bluetooth.devices).map(([name, data]) => [name, data.defaultStatus])
   );
-  const { statuses: bluetoothStatuses, setStatusWithDelay: setBluetoothStatusWithDelay, updateImmediate: updateBluetoothStatus } =
+  const { statuses: bluetoothStatuses, setStatusWithDelay: setBluetoothStatusWithDelay, updateImmediate: updateBluetoothStatus, addStatusKey: addBluetoothStatusKey, removeStatusKey: removeBluetoothStatusKey } =
     useAsyncStatus(initialBluetoothStatuses);
 
   // Selected Wi‑Fi network (for showing connect button)
@@ -280,6 +297,16 @@ export const useSettings = () => {
     }
   }, [bluetoothOn, bluetoothStatuses, updateBluetoothStatus]);
 
+  const addBluetoothDevice = useCallback((deviceName) => {
+    addBluetoothStatusKey(deviceName, 'disconnected');
+    dispatchDesktopEvent('BluetoothDeviceAdd', { deviceName });
+  }, [addBluetoothStatusKey]);
+
+  const removeBluetoothDevice = useCallback((deviceName) => {
+    removeBluetoothStatusKey(deviceName);
+    dispatchDesktopEvent('BluetoothDeviceRemove', { deviceName });
+  }, [removeBluetoothStatusKey]);
+
   // Return all state and actions
   return {
     // Toggles
@@ -299,6 +326,6 @@ export const useSettings = () => {
     wifiStatuses, selectedWifi, setSelectedWifi, toggleWifiConnection,
 
     // Bluetooth
-    bluetoothStatuses, toggleBluetoothConnection,
+    bluetoothStatuses, toggleBluetoothConnection, addBluetoothDevice,removeBluetoothDevice,
   };
 };

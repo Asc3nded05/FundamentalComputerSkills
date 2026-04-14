@@ -32,18 +32,18 @@ function Network() {
                 <h1>Network & internet</h1>
 
                 {/* Network status card */}
-                {connectedNetwork && (
+                {wifiOn && (
                     <div className="info-card">
                         <div className="network-header">
                             <img src={wifi} alt="Wi-Fi" className="wifi-icon" />
                             <div className="network-details">
-                                <h3 className="card-title">Wi-Fi ({connectedNetwork})</h3>              
+                                <h3 className="card-title">Wi-Fi ({connectedNetwork ? `${connectedNetwork}` : 'Not Connected'})</h3>
                                 <p className="card-description">
                                     {connectedNetwork
-                                    ? 'Connected, secured'
-                                    : isConnecting
-                                    ? 'Connecting...'
-                                    : 'No internet connection'}
+                                        ? 'Connected, secured'
+                                        : isConnecting
+                                            ? 'Connecting...'
+                                            : 'No internet connection'}
                                 </p>
                                 <p className="network-property">Properties: Private network, 5 GHz</p>
                             </div>
@@ -57,7 +57,7 @@ function Network() {
                 {/* Settings grid */}
                 <div className="settings-grid">
                     <div className="settings-card control-card">
-                        <div className="card-content" onClick={() => {dispatchDesktopEvent('SettingsNetworkWifiSubPageClicked'); setSubPage('wifi')}}>
+                        <div className="card-content" onClick={() => { dispatchDesktopEvent('SettingsNetworkWifiSubPageClicked'); setSubPage('wifi') }}>
                             <h3 className="card-title">Wi-Fi</h3>
                             <p className="card-description">Connect, manage known networks, metered network</p>
                         </div>
@@ -176,9 +176,15 @@ function Network() {
                         <>
                             <div className="settings-card">
                                 <h3 className="card-title">{connectedNetwork ? `${connectedNetwork}` : 'WiFi'} Properties</h3>
-                                <p className="card-description">Connected, secured</p>
+                                <p className="card-description">
+                                    {connectedNetwork
+                                        ? 'Connected, secured'
+                                        : isConnecting
+                                            ? 'Connecting...'
+                                            : 'No internet connection'}
+                                </p>
                             </div>
-                            <h3 className="subsection-title">Manage known networks</h3>
+                            <h3 className="subsection-title">Available Networks:</h3>
                             {Object.keys(wifiStatuses).length === 0 ? (
                                 <p className="card-description">No networks found.</p>
                             ) : (
