@@ -133,18 +133,26 @@ function Desktop() {
     };
 
     const { response: lessonApps, loading: lessonAppsLoading, error: lessonAppsError } = useLessonApps(lessonId);
-
     const lessonAppRegistry = useMemo(() => {
         if (lessonAppsLoading) return [];
         if (lessonAppsError || !lessonApps) return APP_REGISTRY;
 
         const allowedIds = new Set(lessonApps.map(app => app.registryId));
         const iconByRegistryId = new Map(lessonApps.map(app => [app.registryId, app.appIcon]));
+        const appDetailsByRegistryId = new Map(lessonApps.map(app => [app.registryId, app]));
 
         return APP_REGISTRY.filter(app => allowedIds.has(app.id))
             .map(app => ({
                 ...app,
-                icon: iconByRegistryId.get(app.id) || app.icon
+                icon: iconByRegistryId.get(app.id) || app.icon,
+                cpuMin: appDetailsByRegistryId.get(app.id)?.cpuMin || 0,
+                cpuMax: appDetailsByRegistryId.get(app.id)?.cpuMax || 0,
+                memMin: appDetailsByRegistryId.get(app.id)?.memMin || 0,
+                memMax: appDetailsByRegistryId.get(app.id)?.memMax || 0,
+                diskMin: appDetailsByRegistryId.get(app.id)?.diskMin || 0,
+                diskMax: appDetailsByRegistryId.get(app.id)?.diskMax || 0,
+                netMin: appDetailsByRegistryId.get(app.id)?.netMin || 0,
+                netMax: appDetailsByRegistryId.get(app.id)?.netMax || 0
             }));
     }, [lessonApps, lessonAppsLoading, lessonAppsError]);
 

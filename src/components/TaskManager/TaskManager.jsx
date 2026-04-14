@@ -16,16 +16,15 @@ function TaskManager({sortedWindows, closeApp}) {
     // const [selectedContextItemId, setSelectedContextItemId] = useState('');
 
     // SYSTEM METRICS STATE
-    const [cpuUsage, setCpuUsage] = useState([]);
     const [cpuTotal, setCpuTotal] = useState(0);
 
-    const [memoryUsage, setMemoryUsage] = useState([]);
     const [memoryTotal, setMemoryTotal] = useState(0);
 
-    const [diskUsage, setDiskUsage] = useState([]);
     const [diskTotal, setDiskTotal] = useState(0);
 
-    const [networkUsage, setNetworkUsage] = useState([]);
+    const [networkTotal, setNetworkTotal] = useState(0);
+
+    const [processMetrics, setProcessMetrics] = useState({});
     const [systemProcesses, setSystemProcesses] = useState(systemProcessesData.systemProcesses || []);
 
     // REFS
@@ -53,6 +52,12 @@ function TaskManager({sortedWindows, closeApp}) {
     const getAllItems = () => {
         const windows = sortedWindows?.map(w => ({ id: w.instanceId || w.id, type: 'window' })) || [];
         const processes = systemProcesses.map(p => ({ id: p.id, type: 'process' }));
+        return [...windows, ...processes];
+    };
+
+    const getAllItemProcesses = () => {
+        const windows = sortedWindows?.map(w => ({ id: w.instanceId || w.id, cpuMin: w.cpuMin, cpuMax: w.cpuMax, memMin: w.memMin, memMax: w.memMax, diskMin: w.diskMin, diskMax: w.diskMax, netMin: w.netMin, netMax: w.netMax })) || [];
+        const processes = systemProcesses.map(p => ({ id: p.id, cpuMin: p.cpuMin, cpuMax: p.cpuMax, memMin: p.memMin, memMax: p.memMax, diskMin: p.diskMin, diskMax: p.diskMax, netMin: p.netMin, netMax: p.netMax }));
         return [...windows, ...processes];
     };
 
@@ -113,43 +118,35 @@ function TaskManager({sortedWindows, closeApp}) {
 
 
     useEffect(() => {
+        const allItemProcesses = getAllItemProcesses();
+        console.log("All item processes in Task Manager:", allItemProcesses);
         const interval = setInterval(() => {
-            setCpuUsage(prevCpuUsage => {
-                setCpuTotal(0); // Reset total CPU usage
-
-                return systemProcesses.map(proc => {
-                    const nextVal = Number(getRandomNumber(proc.CpuMin, proc.CpuMax, 1));
-                    setCpuTotal(prev => prev + nextVal);
-                    // console.log('Next CPU Usage:', nextVal);
-                    return nextVal;
-                });
-            })
-            setMemoryUsage(prevMemoryUsage => {
-                setMemoryTotal(0); // Reset total Memory usage
-                return systemProcesses.map(proc => {
-                    const nextVal = Number(getRandomNumber(proc.MemMin, proc.MemMax, 0));
-                    setMemoryTotal(prev => prev + nextVal);
-                    return nextVal;
-                });
-            })
-            setDiskUsage(prevDiskUsage => {
-                setDiskTotal(0); // Reset total Disk usage
-                return systemProcesses.map(proc => {
-                    const nextVal = Number(getRandomNumber(proc.DiskMin, proc.DiskMax, 1));
-                    setDiskTotal(prev => prev + nextVal);
-                    return nextVal;
-                });
-            })
-            setNetworkUsage(prevNetworkUsage => {
-                return systemProcesses.map(proc => {
-                    const nextVal = Number(getRandomNumber(proc.NetMin, proc.NetMax, 2));
-                    return nextVal;
-                });
-            });
+            setCpuTotal(0);
+            setCpuUsage(systemProcesses.map(proc => {
+                const nextVal = Number(getRandomNumber(proc.cpuMin, proc.cpuMax, 1));
+                setCpuTotal(prev => prev + nextVal);
+                return nextVal;
+            }));
+            setMemoryTotal(0);
+            setMemoryUsage(systemProcesses.map(proc => {
+                const nextVal = Number(getRandomNumber(proc.memMin, proc.memMax, 0));
+                setMemoryTotal(prev => prev + nextVal);
+                return nextVal;
+            }));
+            setDiskTotal(0);
+            setDiskUsage(systemProcesses.map(proc => {
+                const nextVal = Number(getRandomNumber(proc.diskMin, proc.diskMax, 1));
+                setDiskTotal(prev => prev + nextVal);
+                return nextVal;
+            }));
+            setNetworkUsage(systemProcesses.map(proc => {
+                const nextVal = Number(getRandomNumber(proc.netMin, proc.netMax, 2));
+                return nextVal;
+            }));
     }, 2000);
 
         return () => clearInterval(interval);
-    }, [systemProcesses]);    
+    }, [systemProcesses, sortedWindows]);    
 
 
    function endTask(selectItemId, type, closeApp) {
@@ -213,48 +210,30 @@ function TaskManager({sortedWindows, closeApp}) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {sortedWindows?.map((window, index) => {
-                                const rowId = window.instanceId || window.id;
-                                return (
-                                    <tr
-                                        className={`taskManager-row ${isRowSelected(rowId) ? 'selected' : ''}`}
-                                        key={index}
-                                        data-item-id={rowId}
-                                        onClick={() => handleRowClick(rowId)}
-                                        onContextMenu={() => handleRowRightClick(rowId)}
-                                        style={{ cursor: 'pointer' }}
-                                    >
-                                    <td className="taskManager-processes-apps">{window.name}</td>
-                                    <td className="taskManager-processes-status"></td>
-                                    <td className="taskManager-processes-cpu">0%</td>
-                                    <td className="taskManager-processes-memory">0mb</td>
-                                    <td className="taskManager-processes-disk">0.1mb/s</td>
-                                    <td className="taskManager-processes-network">0mbps</td>
-                                    
+                                {allItems.map((item) => {
+                                    const rowId = item.id;
+                                    const metrics = processMetrics[rowId] || { cpu: 0, memory: 0, disk: 0, network: 0 };
 
-                                </tr>
-                                
-                                
-                            )})}
-                            {systemProcesses.map((proc, index) => (
-                            <tr
-                                className={`taskManager-row ${isRowSelected(proc.id) ? 'selected' : ''}`}
-                                key={proc.id}
-                                data-item-id={proc.id}
-                                onClick={() => handleRowClick(proc.id)}
-                                onContextMenu={() => handleRowRightClick(proc.id)}
-                                style={{ cursor: 'pointer' }}
-                            >
-                                <td className="taskManager-processes-apps">{proc.name}</td>
-                                <td className="taskManager-processes-status"></td>
-                                <td className="taskManager-processes-cpu">{cpuUsage[index]}%</td>
-                                <td className="taskManager-processes-memory">{memoryUsage[index]}mb</td>
-                                <td className="taskManager-processes-disk">{diskUsage[index]}</td>
-                                <td className="taskManager-processes-network">{networkUsage[index]}mbps</td>
-                            </tr>
-                        ))}
+                                    return (
+                                        <tr
+                                            className={`taskManager-row ${isRowSelected(rowId) ? 'selected' : ''}`}
+                                            key={rowId}
+                                            data-item-id={rowId}
+                                            onClick={() => handleRowClick(rowId)}
+                                            onContextMenu={() => handleRowRightClick(rowId)}
+                                            style={{ cursor: 'pointer' }}
+                                        >
+                                            <td className="taskManager-processes-apps">{item.name}</td>
+                                            <td className="taskManager-processes-status"></td>
+                                            <td className="taskManager-processes-cpu">{metrics.cpu}%</td>
+                                            <td className="taskManager-processes-memory">{metrics.memory}mb</td>
+                                            <td className="taskManager-processes-disk">{metrics.disk}mb/s</td>
+                                            <td className="taskManager-processes-network">{metrics.network}mbps</td>
+                                        </tr>
+                                    );
+                                })}
 
-                        </tbody>
+                            </tbody>
                     </table>
                     </div>
                     <ContextMenuTaskManager
