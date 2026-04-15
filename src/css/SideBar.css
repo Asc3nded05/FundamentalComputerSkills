@@ -16,10 +16,27 @@
 }
 
 .lesson-progress {
+  background-color: #f1f1f1;
   border: 2px solid black;
   border-radius: 20px;
-  padding: 0.5rem;
+  padding: 0.25rem;
   margin: 1rem;
+  min-height: 1rem;
+  overflow: hidden;
+}
+
+.lesson-progress-bar {
+  width: 0;
+  height: 1rem;
+  background-color: #4caf50;
+  border-radius: 999px;
+  transition: width 250ms ease-in-out;
+}
+
+.lesson-progress-text {
+  margin-top: 0.25rem;
+  font-size: 0.9rem;
+  text-align: center;
 }
 
 .lesson-instructions {

@@ -31,10 +31,21 @@ function SideBar(props) {
     //Starts Lesson
       async function handleStartLesson() {
         console.log("Starting lesson...");
+        setCompletedSteps(0);
         setLessonState("InProgress");
 
         //Runs lesson and listens for events
-        await runLesson(steps, currentLesson, setStepInstructions, setNextStep, setHintText, setHintVideo, setWrongEvent, setEventName, eventName);
+        await runLesson(
+            steps,
+            currentLesson,
+            setStepInstructions,
+            setNextStep,
+            setHintText,
+            setHintVideo,
+            setWrongEvent,
+            setEventName,
+            setCompletedSteps
+        );
     }
 
     //Dispatch Next event when Next button is clicked
@@ -62,6 +73,7 @@ function SideBar(props) {
     const [hintText, setHintText] = useState(null);
     const [hintVideo, setHintVideo] = useState(null);
     const [wrongEvent, setWrongEvent] = useState(null);
+    const [completedSteps, setCompletedSteps] = useState(0);
    
     // State for video demo
     const [showVideo, setShowVideo] = useState(false);
@@ -82,6 +94,15 @@ function SideBar(props) {
             window.speechSynthesis.cancel();
         }
     }, [readAloud]);
+
+    const stepCount = steps?.length || 0;
+    const progressPercent = stepCount ? Math.round((completedSteps / stepCount) * 100) : 0;
+
+    useEffect(() => {
+        if (stepCount > 0 && completedSteps === stepCount) {
+            setLessonState("Completed");
+        }
+    }, [completedSteps, stepCount]);
 
     // Handles loading and error states
     if (loading) return <Loading />;
@@ -112,12 +133,11 @@ function SideBar(props) {
                 <div className='lesson-num'>
                     <p>Lesson #{currentLesson}</p>
                     <div className="lesson-progress">
-                        <div className={"lesson-progress-bar"}
-                            // style={{width: `${(currentStepId / steps.length * 100)}%`}}
-                        ></div>
+                        <div className={"lesson-progress-bar"} style={{ width: `${progressPercent}%` }}></div>
                     </div>
+                    <p className="lesson-progress-text">{completedSteps} of {stepCount} steps complete ({progressPercent}%)</p>
                 </div>
-                <p className="wrong-event">{wrongEvent}</p>
+                {/* <p className="wrong-event">{wrongEvent}</p> */}
                 <p className="step-instructions">{stepInstructions}</p>
                 <p className="next-step">{nextStep}</p>
                 {/* Next button Component for Conditional Rendering */}

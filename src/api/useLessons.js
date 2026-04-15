@@ -4,7 +4,8 @@ export function useLessons() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     useEffect(() => {
-        fetch(`https://fundamentalcomputerskills.duckdns.org/api/lessons`)
+        // fetch(`https://fundamentalcomputerskills.duckdns.org/api/lessons`)
+        fetch(`http://localhost:3000/api/lessons`)
             .then(res => res.json())
             .then(data => {
                 console.log('Fetched lessons:', data);

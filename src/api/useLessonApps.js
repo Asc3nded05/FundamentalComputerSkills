@@ -13,7 +13,8 @@ export function useLessonApps(lessonId) {
         }
 
         setLoading(true);
-        fetch(`https://fundamentalcomputerskills.duckdns.org/api/lessons/${lessonId}/apps`)
+        // fetch(`https://fundamentalcomputerskills.duckdns.org/api/lessons/${lessonId}/apps`)
+        fetch(`http://localhost:3000/api/lessons/${lessonId}/apps`)
             .then(res => res.json())
             .then(data => {
                 setResponse(data);
