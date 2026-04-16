@@ -38,6 +38,27 @@ function Notepad({initialContent="Hello, this is text"}) {
         setCurrentMark(prev => (prev -1))
     };
 
+    const showFindBar = () => {
+        const findBar = document.querySelector(".notepad-find-options");
+        if (findBar) {
+            findBar.style.display = "flex"; // Show the find bar
+            const input = document.querySelector(".notepad-find");
+            if (input) {
+                input.focus(); // Focus the input field
+            }
+        }
+    };
+    
+    const closeFindBar = () => {
+        const findBar = document.querySelector(".notepad-find-options");
+        if (findBar) {
+            findBar.style.display = "none"; // Hide the find bar
+            setSearchterm(""); // Clear search term state
+            const markInstance = new Mark(document.querySelector("#search-node"));
+            markInstance.unmark(); // Remove highlights when closing find bar
+        }
+    };
+
     // Keyboard shortcut broadcasting
     useEffect(() => {
         const handleKeyDown = (event) => {
@@ -63,9 +84,9 @@ function Notepad({initialContent="Hello, this is text"}) {
                         dispatchDesktopEvent("NotepadRedoY");
                         break;
                     case "f": // Ctrl+F or Command+F
-                        dispatchDesktopEvent("NotepadFind");
-                        alert("Find functionality is not implemented yet.");
                         event.preventDefault();
+                        dispatchDesktopEvent("NotepadFind");
+                        showFindBar();
                         break;
                     case "a": // Ctrl+A or Command+A
                         dispatchDesktopEvent("NotepadSelectAll");
@@ -90,23 +111,24 @@ function Notepad({initialContent="Hello, this is text"}) {
                 <button>Edit</button>
                 <button>View</button>
             </div>
-            <div className="notepad-find-options">
+            <div className="notepad-find-options" style={{display: "none"}}>
                 <input id="myInput" type="text" placeholder="Find..." className="notepad-find" value={searchTerm} onChange={handleSearch}/>
                 <button className="notepad-find-next" onClick={findNext}>Next</button>
                 <button className="notepad-find-prev" onClick={findPrev}>Prev</button>
+                <button className="notepad-find-close" onClick={closeFindBar}>x</button>
             </div>
         </div>
         <div id="search-node" className="notepad-content">
             <p 
             id="myTextArea"
             className="notepad-body" 
-            contentEditable={true}
+            contentEditable="true"
             onInput={handleSearch}
             // onCopy={() => dispatchDesktopEvent("NotepadCopy")} // Broadast events for copy/paste/cut
             // onCut={() => dispatchDesktopEvent("NotepadCut")}
             // onPaste={() => dispatchDesktopEvent("NotepadPaste")}
             >
-               Here is text 
+                This is text
             </p>
         </div>
     </>
