@@ -119,7 +119,7 @@ function BluetoothDevices() {
                     </div>
 
                     {/* Devices */}
-                    <div className="settings-card" onClick={() => {
+                    <div className="settings-card interactable" onClick={() => {
                         dispatchDesktopEvent("SettingsBluetoothDevicesSubPageClicked");
                         setSubPage('devices');
                     }}>
@@ -136,70 +136,60 @@ function BluetoothDevices() {
                     <div className="settings-card">
                         <h3 className="card-title">Printers & scanners</h3>
                         <p className="card-description">Preferences</p>
-                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
 
                     {/* Mobile devices */}
                     <div className="settings-card">
                         <h3 className="card-title">Mobile devices</h3>
                         <p className="card-description">Instantly access your mobile devices from your PC</p>
-                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
 
                     {/* Cameras */}
                     <div className="settings-card">
                         <h3 className="card-title">Cameras</h3>
                         <p className="card-description">Connected cameras, default image settings</p>
-                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
 
                     {/* Mouse */}
                     <div className="settings-card">
                         <h3 className="card-title">Mouse</h3>
                         <p className="card-description">Buttons, mouse pointer speed, scrolling</p>
-                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
 
                     {/* Keyboard */}
                     <div className="settings-card">
                         <h3 className="card-title">Keyboard</h3>
                         <p className="card-description">Character repeat, hotkeys</p>
-                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
 
                     {/* Touchpad */}
                     <div className="settings-card">
                         <h3 className="card-title">Touchpad</h3>
                         <p className="card-description">Taps, gestures, scrolling, zooming</p>
-                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
 
                     {/* Touch */}
                     <div className="settings-card">
                         <h3 className="card-title">Touch</h3>
                         <p className="card-description">Gestures, scroll, zoom, taps</p>
-                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
 
                     {/* Pen & Windows Ink */}
                     <div className="settings-card">
                         <h3 className="card-title">Pen & Windows Ink</h3>
                         <p className="card-description">Right-handed or left-handed, pen button shortcuts, handwriting</p>
-                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
 
                     {/* AutoPlay */}
                     <div className="settings-card">
                         <h3 className="card-title">AutoPlay</h3>
                         <p className="card-description">Defaults for removable drives and memory cards</p>
-                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
 
                     {/* USB */}
                     <div className="settings-card">
                         <h3 className="card-title">USB</h3>
                         <p className="card-description">Notifications, USB battery saver</p>
-                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
                 </div>
             </div>
@@ -267,7 +257,7 @@ function BluetoothDevices() {
                                 <div key={device} className="device-card-wrapper">
                                     {/* Main card - click anywhere toggles dropdown */}
                                     <div
-                                        className="settings-card"
+                                        className="settings-card interactable"
                                         onClick={() => {
                                             dispatchDesktopEvent('BluetoothDeviceSelected', { deviceName: device });
                                             setOpenDropdown(isDropdownOpen ? null : device)
@@ -315,7 +305,7 @@ function BluetoothDevices() {
                                             <button className="dropdown-item" onClick={() => handleProperties(device)}>
                                                 Properties
                                             </button>
-                                            <button className="dropdown-item dropdown-item-danger" onClick={() => handleRemoveDevice(device)}>
+                                            <button className="dropdown-item dropdown-item-danger interactable" onClick={() => handleRemoveDevice(device)}>
                                                 Remove
                                             </button>
                                         </div>

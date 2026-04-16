@@ -22,6 +22,7 @@ function SideBar(props) {
     const [lessonState, setLessonState] = useState("NotStarted");
 
     const [readAloud, setReadAloud] = useState(true);
+    const [voiceIndex, setVoiceIndex] = useState(12);
     
     const {volume} = useSettingsContext();
 
@@ -82,11 +83,33 @@ function SideBar(props) {
     useEffect(() => {
         if (stepInstructions && readAloud) {
             const audio = new SpeechSynthesisUtterance(stepInstructions);
+            const voices = window.speechSynthesis.getVoices();
+            console.log("Available voices:", voices);
+            if (voices.length > 0) {
+                audio.voice = voices[voiceIndex % voices.length];
+            }
             audio.pitch = 1; // Value of 1 to 2
+            audio.rate = 1; // Speed of the text read
             audio.volume = volume / 100;
             window.speechSynthesis.speak(audio);
         }
-    }, [stepInstructions, readAloud]);
+        return () => {
+            window.speechSynthesis.cancel();
+        };
+    }, [stepInstructions, readAloud, voiceIndex]);
+
+    // Change voice with "V"
+    useEffect(() => {
+        const handleVoiceKey = (e) => {
+            if (e.key.toLowerCase() === 'v') {
+                const voices = window.speechSynthesis.getVoices();
+                if (voices.length === 0) return;
+                setVoiceIndex((prev) => (prev + 1) % voices.length);
+            }
+        };
+        window.addEventListener('keydown', handleVoiceKey);
+        return () => window.removeEventListener('keydown', handleVoiceKey);
+    }, []);
 
     // Effect to stop audio when read-aloud is turned off
     useEffect(() => {

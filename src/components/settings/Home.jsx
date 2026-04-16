@@ -31,7 +31,7 @@ function Home({ setCurrentPage }) {
                     <h3 className="card-title">Recommended Settings</h3>
                     <p className="card-description">Recent and commonly used settings</p>
                     <div className="settings-list">
-                        <div className="settings-list-item" onClick={() => setCurrentPage('bluetooth')}>
+                        <div className="settings-list-item interactable" onClick={() => setCurrentPage('bluetooth')}>
                             <span>Bluetooth</span>
                             <div className="settings-list-controls" onClick={(e) => e.stopPropagation()}>
                                 <label className="toggle toggle--small">
@@ -45,7 +45,7 @@ function Home({ setCurrentPage }) {
                                 <span className="card-arrow">&rsaquo;</span>
                             </div>
                         </div>
-                        <div className="settings-list-item" onClick={() => setCurrentPage('network')}>
+                        <div className="settings-list-item interactable" onClick={() => setCurrentPage('network')}>
                             <span>Network & Internet</span>
                             <div className="settings-list-controls" onClick={(e) => e.stopPropagation()}>
                                 <label className="toggle toggle--small">
@@ -59,7 +59,7 @@ function Home({ setCurrentPage }) {
                                 <span className="card-arrow">&rsaquo;</span>
                             </div>
                         </div>
-                        <div className="settings-list-item" onClick={() => setCurrentPage('personalization')}>
+                        <div className="settings-list-item interactable" onClick={() => setCurrentPage('personalization')}>
                             <span>Personalization</span>
                             <span className="card-arrow">&rsaquo;</span>
                         </div>
@@ -103,7 +103,7 @@ function Home({ setCurrentPage }) {
                         <p className="bluetooth-device-name">Discoverable as "LAPTOP-ABC123"</p>
 
                         <div className="bluetooth-actions">
-                            <button className="btn btn-small" onClick={() => setCurrentPage('bluetooth')}>Add Device</button>
+                            <button className="btn btn-small interactable" onClick={() => setCurrentPage('bluetooth')}>Add Device</button>
                             <span className="card-arrow">&rsaquo;</span>
                         </div>
                         <button className="btn btn-text" onClick={() => setCurrentPage('bluetooth')}>
