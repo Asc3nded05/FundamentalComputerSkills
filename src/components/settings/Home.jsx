@@ -34,11 +34,11 @@ function Home({ setCurrentPage }) {
                         <div className="settings-list-item interactable" onClick={() => setCurrentPage('bluetooth')}>
                             <span>Bluetooth</span>
                             <div className="settings-list-controls" onClick={(e) => e.stopPropagation()}>
-                                <label className="toggle toggle--small">
+                                <label className="toggle toggle--small" onClick={(e) => e.stopPropagation()}>
                                     <input
                                         type="checkbox"
                                         checked={bluetoothOn}
-                                        onChange={toggleBluetooth('App')}
+                                        onChange={() => toggleBluetooth('App')}
                                     />
                                     <span className="toggle-slider"></span>
                                 </label>
@@ -48,11 +48,11 @@ function Home({ setCurrentPage }) {
                         <div className="settings-list-item interactable" onClick={() => setCurrentPage('network')}>
                             <span>Network & Internet</span>
                             <div className="settings-list-controls" onClick={(e) => e.stopPropagation()}>
-                                <label className="toggle toggle--small">
+                                <label className="toggle toggle--small" onClick={(e) => e.stopPropagation()}>
                                     <input
                                         type="checkbox"
                                         checked={wifiOn}
-                                        onChange={toggleWifi('App')}
+                                        onChange={() => toggleWifi('App')}
                                     />
                                     <span className="toggle-slider"></span>
                                 </label>
@@ -95,7 +95,7 @@ function Home({ setCurrentPage }) {
                                 <input
                                     type="checkbox"
                                     checked={bluetoothOn}
-                                    onChange={toggleBluetooth('App')}
+                                    onChange={() => toggleBluetooth('App')}
                                 />
                                 <span className="toggle-slider"></span>
                             </label>
