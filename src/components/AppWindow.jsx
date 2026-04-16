@@ -1,6 +1,10 @@
 import { Rnd } from 'react-rnd';
 import { useState, useEffect } from 'react';
 import { dispatchDesktopEvent } from "../utils/eventBus";
+import Unresponsive from '../components/Unresponsive.jsx';
+import { UnresponsiveContext } from '../components/UnresponsiveContext.jsx';
+import { useContext } from 'react';
+
 
 function AppWindow({
     name,
@@ -44,6 +48,7 @@ function AppWindow({
     };
 
     if (!isOpen || isMinimized) return null;
+    const { showUnresponsive, setShowUnresponsive } = useContext(UnresponsiveContext);
 
     return (
         <Rnd
@@ -97,9 +102,12 @@ function AppWindow({
                         </a>
                     </div>
                 </div>
+                <div className={showUnresponsive ? "file-explorer-unresponsive" : "file-explorer"}>
                 <div className="window-content">
                     {content}
                 </div>
+                </div>
+                {showUnresponsive && <Unresponsive />}
             </div>
         </Rnd>
     );
