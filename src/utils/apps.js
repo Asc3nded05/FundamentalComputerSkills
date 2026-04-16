@@ -4,8 +4,6 @@ import desktopIcon from '../assets/DesktopIconPlaceholder.png';
  * Shared app registry: metadata for all apps in the system
  * Each app object contains: id, name, icon, content component name, default size,
  * whether it can have multiple instances open, and for Notepad, the starting text content.
- * 
- * Now that the desktop is dynamic, just edit this to change all the apps that are displayed.
  */
 export const APP_REGISTRY = [
     {

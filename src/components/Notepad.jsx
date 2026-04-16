@@ -1,23 +1,44 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus";
 import Mark from "mark.js";
 
-function Notepad({initialContent="Hello, this is text"}) {
+function Notepad({ initialContent = "Hello, this is text", onContentChange }) {
 
+    const notepadRef = useRef(null);
+    const contentRef = useRef(initialContent ?? "Hello, this is text");
+    const hasInitializedContent = useRef(false);
     const [searchTerm, setSearchterm] = useState("");
     const [currentMark, setCurrentMark] = useState(-1);
 
+    useEffect(() => {
+        if (hasInitializedContent.current) return;
+
+        const nextText = initialContent ?? "Hello, this is text";
+        contentRef.current = nextText;
+        if (notepadRef.current) {
+            notepadRef.current.innerText = nextText;
+        }
+        hasInitializedContent.current = true;
+    }, [initialContent]);
+
     const handleSearch = (event) => {
+        const query = event.target.value;
         const markInstance = new Mark(document.querySelector("#search-node"));
-        setSearchterm(event.target.value);
+        setSearchterm(query);
         markInstance.unmark({
             done: () => {
-                markInstance.mark(event.target.value, {
+                markInstance.mark(query, {
                     done: (count) => setCurrentMark(count > 0 ? 0 : -1)
                 });
             }
         });
+    };
+
+    const handleContentInput = (event) => {
+        const nextContent = event.currentTarget.innerText;
+        contentRef.current = nextContent;
+        onContentChange?.(nextContent);
     };
 
     // Update active mark on currentMark change (Next/Prev buttons)
@@ -119,17 +140,14 @@ function Notepad({initialContent="Hello, this is text"}) {
             </div>
         </div>
         <div id="search-node" className="notepad-content">
-            <p 
-            id="myTextArea"
-            className="notepad-body" 
-            contentEditable="true"
-            onInput={handleSearch}
-            // onCopy={() => dispatchDesktopEvent("NotepadCopy")} // Broadast events for copy/paste/cut
-            // onCut={() => dispatchDesktopEvent("NotepadCut")}
-            // onPaste={() => dispatchDesktopEvent("NotepadPaste")}
-            >
-                This is text
-            </p>
+            <p
+                ref={notepadRef}
+                id="myTextArea"
+                className="notepad-body"
+                contentEditable="true"
+                suppressContentEditableWarning={true}
+                onInput={handleContentInput}
+            />
         </div>
     </>
     );

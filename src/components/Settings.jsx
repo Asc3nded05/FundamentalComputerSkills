@@ -17,16 +17,16 @@ import '../css/Settings.css';
 import { useEffect, useState } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus";
 
-function Settings({ startingPage = 'home', backgroundImage, onBackgroundChange, onResetDefault  }) {
+function Settings({ startingPage = 'home', currentPage: currentPageProp, settingsState = {}, onSettingsStateChange, backgroundImage, onBackgroundChange, onResetDefault, onPageChange }) {
 
     const [query, setQuery] = useState('');
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [currentPage, setCurrentPage] = useState(startingPage); // default page (can be passed from different places to open to specific pages)
+    const [currentPage, setCurrentPage] = useState(currentPageProp || startingPage); // default page (can be passed from different places to open to specific pages)
 
-    // Update internal state when the prop changes (e.g., when re‑opening the same window)
+    // Update internal state when props change (e.g., when re‑opening the same window)
     useEffect(() => {
-        setCurrentPage(startingPage);
-    }, [startingPage]);
+        setCurrentPage(currentPageProp || startingPage);
+    }, [currentPageProp, startingPage]);
 
     // Update state on input change
     const handleSearch = (e) => setQuery(e.target.value);
@@ -53,15 +53,26 @@ function Settings({ startingPage = 'home', backgroundImage, onBackgroundChange, 
     const renderContent = () => {
         switch (currentPage) {
             case 'home':
-                return <Home setCurrentPage={setCurrentPage} />
+                return <Home navigateToPage={(page) => {
+                    setCurrentPage(page);
+                    onPageChange?.(page);
+                }} />
             case 'system':
                 return <System/>
             case 'bluetooth':
-                return <BluetoothDevices />;
+                return <BluetoothDevices
+                    subPage={settingsState?.bluetoothSubPage || 'main'}
+                    onSubPageChange={(subPage) => onSettingsStateChange?.({ bluetoothSubPage: subPage })}
+                />;
             case 'network':
-                return <Network/>
+                return <Network
+                    subPage={settingsState?.networkSubPage || 'main'}
+                    onSubPageChange={(subPage) => onSettingsStateChange?.({ networkSubPage: subPage })}
+                />;
             case 'personalization':
                 return <Personalization 
+                    subPage={settingsState?.personalizationSubPage || 'main'}
+                    onSubPageChange={(subPage) => onSettingsStateChange?.({ personalizationSubPage: subPage })}
                     backgroundImage={backgroundImage}
                     onBackgroundChange={onBackgroundChange}
                     onResetDefault={onResetDefault}
@@ -110,6 +121,7 @@ function Settings({ startingPage = 'home', backgroundImage, onBackgroundChange, 
                             onClick={() => {
                                 setCurrentPage(key);
                                 setSidebarOpen(false);
+                                onPageChange?.(key);
                                 dispatchDesktopEvent(pages[key].event);
                             }}
                         >

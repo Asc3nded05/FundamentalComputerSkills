@@ -2,8 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { dispatchDesktopEvent } from '../../utils/eventBus';
 
 
-const Personalization = ({ backgroundImage, onBackgroundChange, onResetDefault }) => {
-    const [subPage, setSubPage] = useState('main'); // 'main' or 'background'
+const Personalization = ({ subPage = 'main', onSubPageChange, backgroundImage, onBackgroundChange, onResetDefault }) => {
     const [bgType, setBgType] = useState('picture');
     const [solidColor, setSolidColor] = useState('#0078d4');
 
@@ -53,7 +52,7 @@ const Personalization = ({ backgroundImage, onBackgroundChange, onResetDefault }
                 <h1>Personalization</h1>
                 <div className="settings-grid">
                     <div className="settings-card interactable" onClick={() => {
-                        setSubPage('background');
+                        onSubPageChange?.('background');
                         dispatchDesktopEvent('SettingsPersonalizationBackgroundSubPageClicked');
                     }}>
                         <h3 className="card-title">Background</h3>
@@ -108,7 +107,7 @@ const Personalization = ({ backgroundImage, onBackgroundChange, onResetDefault }
     if (subPage === 'background') {
         return (
             <div className="settings-section">
-                <button className="back-button" onClick={() => {setSubPage('main'); dispatchDesktopEvent('SettingsPersonalizationPageClicked')}}>
+                <button className="back-button" onClick={() => {onSubPageChange?.('main'); dispatchDesktopEvent('SettingsPersonalizationPageClicked')}}>
                     ← Back to Personalization
                 </button>
                 <h1>Background</h1>
