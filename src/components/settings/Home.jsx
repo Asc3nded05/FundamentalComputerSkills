@@ -1,6 +1,6 @@
 import { useSettingsContext } from "../../utils/settings/settingsContext";
 
-function Home({ setCurrentPage }) {
+function Home({ navigateToPage }) {
 
     // Use synced settings from the react context
     const {
@@ -31,7 +31,7 @@ function Home({ setCurrentPage }) {
                     <h3 className="card-title">Recommended Settings</h3>
                     <p className="card-description">Recent and commonly used settings</p>
                     <div className="settings-list">
-                        <div className="settings-list-item interactable" onClick={() => setCurrentPage('bluetooth')}>
+                        <div className="settings-list-item interactable" onClick={() => navigateToPage('bluetooth')}>
                             <span>Bluetooth</span>
                             <div className="settings-list-controls" onClick={(e) => e.stopPropagation()}>
                                 <label className="toggle toggle--small" onClick={(e) => e.stopPropagation()}>
@@ -45,7 +45,7 @@ function Home({ setCurrentPage }) {
                                 <span className="card-arrow">&rsaquo;</span>
                             </div>
                         </div>
-                        <div className="settings-list-item interactable" onClick={() => setCurrentPage('network')}>
+                        <div className="settings-list-item interactable" onClick={() => navigateToPage('network')}>
                             <span>Network & Internet</span>
                             <div className="settings-list-controls" onClick={(e) => e.stopPropagation()}>
                                 <label className="toggle toggle--small" onClick={(e) => e.stopPropagation()}>
@@ -59,7 +59,7 @@ function Home({ setCurrentPage }) {
                                 <span className="card-arrow">&rsaquo;</span>
                             </div>
                         </div>
-                        <div className="settings-list-item interactable" onClick={() => setCurrentPage('personalization')}>
+                        <div className="settings-list-item interactable" onClick={() => navigateToPage('personalization')}>
                             <span>Personalization</span>
                             <span className="card-arrow">&rsaquo;</span>
                         </div>
@@ -103,10 +103,10 @@ function Home({ setCurrentPage }) {
                         <p className="bluetooth-device-name">Discoverable as "LAPTOP-ABC123"</p>
 
                         <div className="bluetooth-actions">
-                            <button className="btn btn-small interactable" onClick={() => setCurrentPage('bluetooth')}>Add Device</button>
+                            <button className="btn btn-small interactable" onClick={() => navigateToPage('bluetooth')}>Add Device</button>
                             <span className="card-arrow">&rsaquo;</span>
                         </div>
-                        <button className="btn btn-text" onClick={() => setCurrentPage('bluetooth')}>
+                        <button className="btn btn-text" onClick={() => navigateToPage('bluetooth')}>
                             View all devices &rarr;
                         </button>
                     </div>
@@ -133,7 +133,7 @@ function Home({ setCurrentPage }) {
                         </select>
                     </div>
 
-                    <button className="btn btn-text" onClick={() => setCurrentPage('personalization')}>
+                    <button className="btn btn-text" onClick={() => navigateToPage('personalization')}>
                         Browse more backgrounds, colors, and themes &rarr;
                     </button>
                 </div>
