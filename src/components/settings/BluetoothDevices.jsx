@@ -111,7 +111,7 @@ function BluetoothDevices() {
                                 <input
                                     type="checkbox"
                                     checked={bluetoothOn}
-                                    onChange={toggleBluetooth}
+                                    onChange={toggleBluetooth('App')}
                                 />
                                 <span className="toggle-slider"></span>
                             </label>
@@ -221,7 +221,7 @@ function BluetoothDevices() {
                             <input
                                 type="checkbox"
                                 checked={bluetoothOn}
-                                onChange={toggleBluetooth}
+                                onChange={toggleBluetooth('App')}
                             />
                             <span className="toggle-slider"></span>
                         </label>
@@ -284,7 +284,7 @@ function BluetoothDevices() {
                                                     onClick={(e) => {
                                                         e.stopPropagation(); // prevent card click
                                                         if (status !== "connecting" && status !== "disconnecting") {
-                                                            toggleBluetoothConnection(device);
+                                                            toggleBluetoothConnection(device, 'App');
                                                         }
                                                     }}
                                                     disabled={status === "connecting" || status === "disconnecting"}

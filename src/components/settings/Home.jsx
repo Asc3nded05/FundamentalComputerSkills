@@ -38,7 +38,7 @@ function Home({ setCurrentPage }) {
                                     <input
                                         type="checkbox"
                                         checked={bluetoothOn}
-                                        onChange={toggleBluetooth}
+                                        onChange={toggleBluetooth('App')}
                                     />
                                     <span className="toggle-slider"></span>
                                 </label>
@@ -52,7 +52,7 @@ function Home({ setCurrentPage }) {
                                     <input
                                         type="checkbox"
                                         checked={wifiOn}
-                                        onChange={toggleWifi}
+                                        onChange={toggleWifi('App')}
                                     />
                                     <span className="toggle-slider"></span>
                                 </label>
@@ -95,7 +95,7 @@ function Home({ setCurrentPage }) {
                                 <input
                                     type="checkbox"
                                     checked={bluetoothOn}
-                                    onChange={toggleBluetooth}
+                                    onChange={toggleBluetooth('App')}
                                 />
                                 <span className="toggle-slider"></span>
                             </label>

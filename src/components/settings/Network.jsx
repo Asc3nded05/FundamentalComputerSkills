@@ -66,7 +66,7 @@ function Network() {
                                 <input
                                     type="checkbox"
                                     checked={wifiOn}
-                                    onChange={toggleWifi}
+                                    onChange={toggleWifi('App')}
                                 />
                                 <span className="toggle-slider"></span>
                             </label>
@@ -159,7 +159,7 @@ function Network() {
                                 <input
                                     type="checkbox"
                                     checked={wifiOn}
-                                    onChange={toggleWifi}
+                                    onChange={toggleWifi('App')}
                                 />
                                 <span className="toggle-slider"></span>
                             </label>
@@ -225,7 +225,7 @@ function Network() {
                                                                 onClick={(e) => {
                                                                     e.stopPropagation();
                                                                     if (!isConnectingOrDisconnecting) {
-                                                                        toggleWifiConnection(network);
+                                                                        toggleWifiConnection(network, 'App');
                                                                     }
                                                                 }}
                                                                 disabled={isDisabled}
@@ -250,7 +250,7 @@ function Network() {
                                                             className="btn btn-secondary"
                                                             onClick={() => {
                                                                 if (!isConnectingOrDisconnecting) {
-                                                                    toggleWifiConnection(network);
+                                                                    toggleWifiConnection(network, 'App');
                                                                 }
                                                             }}
                                                             disabled={isDisabled}
