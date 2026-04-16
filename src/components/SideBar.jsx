@@ -167,7 +167,6 @@ function SideBar(props) {
                     <div className="lesson-progress">
                         <div className={"lesson-progress-bar"} style={{ width: `${progressPercent}%` }}></div>
                     </div>
-                    <p className="lesson-progress-text">{completedSteps} of {stepCount} steps complete ({progressPercent}%)</p>
                 </div>
                 {/* <p className="wrong-event">{wrongEvent}</p> */}
                 <p className="step-instructions">{stepInstructions}</p>
