@@ -148,8 +148,14 @@
 
 .qs-detail-header {
     display: flex;
-    justify-content: left;
+    justify-content: space-between;
     padding: 8px 16px 0 16px;
+}
+
+.qs-header-left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .qs-back {

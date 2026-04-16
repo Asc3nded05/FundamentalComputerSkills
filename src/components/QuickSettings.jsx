@@ -208,33 +208,37 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                         {activeDetail && (
                             <div className="qs-detail-panel">
                                 <div className="qs-detail-header"> 
-                                    <button 
-                                        className="qs-back" 
-                                        onClick={() => {
-                                            setActiveDetail(null);
-                                            dispatchDesktopEvent("ReturnToMainQuickSettings");
-                                        }}>
-                                        ‹- 
-                                    </button>
-                                    <div className="qs-detail-title">
-                                        {activeDetail === "wifi" && "Wi‑Fi"}
-                                        {activeDetail === "bluetooth" && "Bluetooth"}
-                                        {activeDetail === "accessibility" && "Accessibility"}
-                                        {activeDetail === "project" && "Project"}
+                                    <div className="qs-header-left">
+                                        <button 
+                                            className="qs-back" 
+                                            onClick={() => {
+                                                setActiveDetail(null);
+                                                dispatchDesktopEvent("ReturnToMainQuickSettings");
+                                            }}>
+                                            &#8592;
+                                        </button>
+                                        <div className="qs-detail-title">
+                                            {activeDetail === "wifi" && "Wi‑Fi"}
+                                            {activeDetail === "bluetooth" && "Bluetooth"}
+                                            {activeDetail === "accessibility" && "Accessibility"}
+                                            {activeDetail === "project" && "Project"}
+                                        </div>
                                     </div>
 
                                     {/* Top-right toggle */}
                                     {(activeDetail === "wifi" || activeDetail === "bluetooth") && (
-                                        <button
-                                            className="qs-detail-toggle-switch"
-                                            onClick={() =>
-                                                activeDetail === "wifi"
-                                                    ? toggleWifi('QS')
-                                                    : toggleBluetooth('QS')
-                                            }
-                                        >
-                                            {(activeDetail === "wifi" ? wifiOn : bluetoothOn) ? "On" : "Off"}
-                                        </button>
+                                        <label className="toggle toggle--small" onClick={(e) => e.stopPropagation()}>
+                                            <input
+                                                type="checkbox"
+                                                checked={activeDetail === "wifi" ? wifiOn : bluetoothOn}
+                                                onChange={() =>
+                                                    activeDetail === "wifi"
+                                                        ? toggleWifi('QS')
+                                                        : toggleBluetooth('QS')
+                                                }
+                                            />
+                                            <span className="toggle-slider"></span>
+                                        </label>
                                     )}
                                 </div>
 
