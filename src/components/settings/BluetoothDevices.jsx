@@ -111,7 +111,7 @@ function BluetoothDevices() {
                                 <input
                                     type="checkbox"
                                     checked={bluetoothOn}
-                                    onChange={toggleBluetooth('App')}
+                                    onChange={() => toggleBluetooth('App')}
                                 />
                                 <span className="toggle-slider"></span>
                             </label>
@@ -221,7 +221,7 @@ function BluetoothDevices() {
                             <input
                                 type="checkbox"
                                 checked={bluetoothOn}
-                                onChange={toggleBluetooth('App')}
+                                onChange={() => toggleBluetooth('App')}
                             />
                             <span className="toggle-slider"></span>
                         </label>
@@ -324,6 +324,8 @@ function BluetoothDevices() {
             </div>
         );
     }
+    // Default case - should not happen
+    return null;
 };
     return (
         <div>

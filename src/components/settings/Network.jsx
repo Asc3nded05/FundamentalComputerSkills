@@ -66,7 +66,7 @@ function Network() {
                                 <input
                                     type="checkbox"
                                     checked={wifiOn}
-                                    onChange={toggleWifi('App')}
+                                    onChange={() => toggleWifi('App')}
                                 />
                                 <span className="toggle-slider"></span>
                             </label>
@@ -105,7 +105,7 @@ function Network() {
                                 <input
                                     type="checkbox"
                                     checked={airplaneOn}
-                                    onChange={toggleAirplane}
+                                    onChange={() => toggleAirplane()}
                                 />
                                 <span className="toggle-slider"></span>
                             </label>
@@ -159,7 +159,7 @@ function Network() {
                                 <input
                                     type="checkbox"
                                     checked={wifiOn}
-                                    onChange={toggleWifi('App')}
+                                    onChange={() => toggleWifi('App')}
                                 />
                                 <span className="toggle-slider"></span>
                             </label>
