@@ -32,18 +32,18 @@ function Network() {
                 <h1>Network & internet</h1>
 
                 {/* Network status card */}
-                {connectedNetwork && (
+                {wifiOn && (
                     <div className="info-card">
                         <div className="network-header">
                             <img src={wifi} alt="Wi-Fi" className="wifi-icon" />
                             <div className="network-details">
-                                <h3 className="card-title">Wi-Fi ({connectedNetwork})</h3>              
+                                <h3 className="card-title">Wi-Fi ({connectedNetwork ? `${connectedNetwork}` : 'Not Connected'})</h3>
                                 <p className="card-description">
                                     {connectedNetwork
-                                    ? 'Connected, secured'
-                                    : isConnecting
-                                    ? 'Connecting...'
-                                    : 'No internet connection'}
+                                        ? 'Connected, secured'
+                                        : isConnecting
+                                            ? 'Connecting...'
+                                            : 'No internet connection'}
                                 </p>
                                 <p className="network-property">Properties: Private network, 5 GHz</p>
                             </div>
@@ -56,8 +56,8 @@ function Network() {
 
                 {/* Settings grid */}
                 <div className="settings-grid">
-                    <div className="settings-card control-card">
-                        <div className="card-content" onClick={() => {dispatchDesktopEvent('SettingsNetworkWifiSubPageClicked'); setSubPage('wifi')}}>
+                    <div className="settings-card control-card interactable">
+                        <div className="card-content" onClick={() => { dispatchDesktopEvent('SettingsNetworkWifiSubPageClicked'); setSubPage('wifi') }}>
                             <h3 className="card-title">Wi-Fi</h3>
                             <p className="card-description">Connect, manage known networks, metered network</p>
                         </div>
@@ -66,7 +66,7 @@ function Network() {
                                 <input
                                     type="checkbox"
                                     checked={wifiOn}
-                                    onChange={toggleWifi}
+                                    onChange={toggleWifi('App')}
                                 />
                                 <span className="toggle-slider"></span>
                             </label>
@@ -78,7 +78,6 @@ function Network() {
                     <div className="settings-card">
                         <h3 className="card-title">VPN</h3>
                         <p className="card-description">Add, connect, manage</p>
-                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
 
                     {/* Mobile hotspot */}
@@ -93,7 +92,6 @@ function Network() {
                                 <span className="toggle-slider"></span>
                             </label>
                         </div>
-                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
 
                     {/* Airplane mode */}
@@ -112,28 +110,24 @@ function Network() {
                                 <span className="toggle-slider"></span>
                             </label>
                         </div>
-                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
 
                     {/* Proxy */}
                     <div className="settings-card">
                         <h3 className="card-title">Proxy</h3>
                         <p className="card-description">Proxy server for Wi-Fi and Ethernet connections</p>
-                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
 
                     {/* Dial-up */}
                     <div className="settings-card">
                         <h3 className="card-title">Dial-up</h3>
                         <p className="card-description">Set up a dial-up internet connection</p>
-                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
 
                     {/* Advanced network settings */}
                     <div className="settings-card">
                         <h3 className="card-title">Advanced network settings</h3>
                         <p className="card-description">View all network adapters, network reset</p>
-                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
                 </div>
             </div>
@@ -165,7 +159,7 @@ function Network() {
                                 <input
                                     type="checkbox"
                                     checked={wifiOn}
-                                    onChange={toggleWifi}
+                                    onChange={toggleWifi('App')}
                                 />
                                 <span className="toggle-slider"></span>
                             </label>
@@ -176,9 +170,15 @@ function Network() {
                         <>
                             <div className="settings-card">
                                 <h3 className="card-title">{connectedNetwork ? `${connectedNetwork}` : 'WiFi'} Properties</h3>
-                                <p className="card-description">Connected, secured</p>
+                                <p className="card-description">
+                                    {connectedNetwork
+                                        ? 'Connected, secured'
+                                        : isConnecting
+                                            ? 'Connecting...'
+                                            : 'No internet connection'}
+                                </p>
                             </div>
-                            <h3 className="subsection-title">Manage known networks</h3>
+                            <h3 className="subsection-title">Available Networks:</h3>
                             {Object.keys(wifiStatuses).length === 0 ? (
                                 <p className="card-description">No networks found.</p>
                             ) : (
@@ -198,7 +198,7 @@ function Network() {
                                             <div key={network} className="device-card-wrapper">
                                                 {/* Main card - click toggles dropdown */}
                                                 <div
-                                                    className="settings-card"
+                                                    className="settings-card interactable"
                                                     onClick={() => {
                                                         dispatchDesktopEvent("WiFiNetworkSelected", { networkName: network });
                                                         setOpenDropdownNetwork(isOpen ? null : network);
@@ -225,7 +225,7 @@ function Network() {
                                                                 onClick={(e) => {
                                                                     e.stopPropagation();
                                                                     if (!isConnectingOrDisconnecting) {
-                                                                        toggleWifiConnection(network);
+                                                                        toggleWifiConnection(network, 'App');
                                                                     }
                                                                 }}
                                                                 disabled={isDisabled}
@@ -250,7 +250,7 @@ function Network() {
                                                             className="btn btn-secondary"
                                                             onClick={() => {
                                                                 if (!isConnectingOrDisconnecting) {
-                                                                    toggleWifiConnection(network);
+                                                                    toggleWifiConnection(network, 'App');
                                                                 }
                                                             }}
                                                             disabled={isDisabled}

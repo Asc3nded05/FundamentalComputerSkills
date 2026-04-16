@@ -10,11 +10,13 @@ function AppWindow({
     onMinimize,
     onMaximize,
     onClose,
-    closeEventName,
+    onDragStop,
+    onResizeStop,
     zIndex,
     bringToFront,
     content,
-    initialSize = { width: 600, height: 400 },
+    size = { width: 600, height: 400 },
+    position,
     scale,
     baseHeight,
     baseWidth,
@@ -35,17 +37,25 @@ function AppWindow({
         }
     };
 
+    const windowSize = size;
+    const windowPosition = position || {
+        x: (baseWidth - windowSize.width) / 2 + offset,
+        y: (baseHeight - windowSize.height - 56) / 2 + offset,
+    };
+
+    if (!isOpen || isMinimized) return null;
+
     return (
         <Rnd
-            default={{
-                x: (baseWidth - initialSize.width) / 2 + offset, // Center new windows on desktop
-                y: (baseHeight - initialSize.height - 56) / 2 + offset,
-                width: initialSize.width,
-                height: initialSize.height,
-            }}
+            position={windowPosition}
+            size={windowSize}
             minWidth={300}
             minHeight={100}
             onMouseDown={handleFocus}
+            onDragStop={(e, d) => onDragStop?.({ x: d.x, y: d.y })}
+            onResizeStop={(e, direction, ref, delta, position) => {
+                onResizeStop?.({ width: ref.offsetWidth, height: ref.offsetHeight, position });
+            }}
             dragHandleClassName='window-header'
             bounds={"parent"} // prevent dragging outside of desktop area
             className={`appWindow ${isOpen ? 'open' : ''}`}
@@ -60,14 +70,22 @@ function AppWindow({
                         <a
                             href="#"
                             className="appWindowMinimize"
-                            // onClick={onMinimize}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                onMinimize?.();
+                            }}
                         >
                             ─
                         </a>
                         <a
                             href="#"
                             className="appWindowMaximize"
-                            // onClick={onMaximize}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                onMaximize?.();
+                            }}
                         >
                             &#9744;
                         </a>

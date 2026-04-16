@@ -8,7 +8,8 @@ export async function runLesson(
     updateHintText,
     updateHintVideo,
     updateWrongEvent, 
-    setEventName
+    setEventName,
+    updateCompletedSteps
 ) {
     // call backend API to retrieve steps by lessonId
     console.log("Running lesson with ID:", lessonId);
@@ -79,6 +80,7 @@ export async function runLesson(
         }
 
         await runStep(step);
+        updateCompletedSteps(currentStepNumber);
 
         // Increment to the next step in the lesson.
         currentStepNumber++;

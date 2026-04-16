@@ -14,7 +14,7 @@ export const APP_REGISTRY = [
         icon: desktopIcon,
         component: 'FileExplorer',
         defaultSize: { width: 800, height: 600 },
-        canHaveMultipleInstances: true,
+        canHaveMultipleInstances: false,
     },
     {
         id: 'Notepad',
@@ -22,7 +22,7 @@ export const APP_REGISTRY = [
         icon: desktopIcon,
         component: 'Notepad',
         defaultSize: { width: 500, height: 400 },
-        canHaveMultipleInstances: true,
+        canHaveMultipleInstances: false,
         initialContent: ''
     },
     {

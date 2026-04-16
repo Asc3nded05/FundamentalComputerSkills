@@ -165,6 +165,8 @@ function Desktop() {
         closeApp,
         minimizeApp,
         maximizeApp,
+        updateWindowPosition,
+        updateWindowSize,
     } = useAppWindowManager(lessonAppRegistry, BASE_WIDTH, BASE_HEIGHT);
 
     const baseApps = useMemo(() => apps.filter(app => !app.instanceId), [apps]);
@@ -206,7 +208,7 @@ function Desktop() {
             name: app.name,
             icon: app.icon,
             eventName: `${app.id}StartOpen`,
-            openWindow: () => openApp(app.id, { createNewInstance: app.canHaveMultipleInstances }),
+            openWindow: () => openApp(app.id, { createNewInstance: false }),
             isAppOpen: app.isOpen,
             variant: 'start-menu',
             appId: app.id
@@ -313,8 +315,7 @@ function Desktop() {
                                     name={app.name}
                                     icon={app.icon}
                                     eventName={`${app.id}DesktopOpen`}
-                                    // openWindow={() => openApp(app.id)}
-                                    openWindow={() => openApp(app.id, { createNewInstance: true })} // Open a new instance (if app allows)
+                                    openWindow={() => openApp(app.id, { createNewInstance: false })}
                                     variant="desktop"
                                     isAppOpen={app.isOpen}
                                 />
@@ -406,7 +407,7 @@ function Desktop() {
                     />
 
                     {/* Dynamic app windows */}
-                    {sortedWindows.map((app) => (
+                    {sortedWindows.filter(app => !app.isMinimized).map((app) => (
                         <AppWindow
                             key={app.instanceId || app.id}
                             name={app.name}
@@ -414,12 +415,14 @@ function Desktop() {
                             isMinimized={app.isMinimized}
                             isMaximized={app.isMaximized}
                             onClose={() => closeApp(app.instanceId || app.id)}
-                            // onMinimize={() => minimizeApp(app.instanceId || app.id)}
-                            // onMaximize={() => maximizeApp(app.instanceId || app.id)}
+                            onMinimize={() => minimizeApp(app.instanceId || app.id)}
+                            onMaximize={() => maximizeApp(app.instanceId || app.id)}
+                            onDragStop={(position) => updateWindowPosition(app.instanceId || app.id, position)}
+                            onResizeStop={({ width, height, position }) => updateWindowSize(app.instanceId || app.id, { width, height }, position)}
                             zIndex={app.zIndex}
                             bringToFront={() => bringToFront(app.instanceId || app.id)}
                             content={renderAppContent(app)}
-                            initialSize={app.size}
+                            size={app.size}
                             position={app.position}
                             scale={scale}
                             baseHeight={BASE_HEIGHT}

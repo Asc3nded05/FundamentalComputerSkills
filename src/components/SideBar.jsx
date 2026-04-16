@@ -22,6 +22,7 @@ function SideBar(props) {
     const [lessonState, setLessonState] = useState("NotStarted");
 
     const [readAloud, setReadAloud] = useState(true);
+    const [voiceIndex, setVoiceIndex] = useState(12);
     
     const {volume} = useSettingsContext();
 
@@ -31,10 +32,21 @@ function SideBar(props) {
     //Starts Lesson
       async function handleStartLesson() {
         console.log("Starting lesson...");
+        setCompletedSteps(0);
         setLessonState("InProgress");
 
         //Runs lesson and listens for events
-        await runLesson(steps, currentLesson, setStepInstructions, setNextStep, setHintText, setHintVideo, setWrongEvent, setEventName, eventName);
+        await runLesson(
+            steps,
+            currentLesson,
+            setStepInstructions,
+            setNextStep,
+            setHintText,
+            setHintVideo,
+            setWrongEvent,
+            setEventName,
+            setCompletedSteps
+        );
     }
 
     //Dispatch Next event when Next button is clicked
@@ -62,6 +74,7 @@ function SideBar(props) {
     const [hintText, setHintText] = useState(null);
     const [hintVideo, setHintVideo] = useState(null);
     const [wrongEvent, setWrongEvent] = useState(null);
+    const [completedSteps, setCompletedSteps] = useState(0);
    
     // State for video demo
     const [showVideo, setShowVideo] = useState(false);
@@ -70,11 +83,33 @@ function SideBar(props) {
     useEffect(() => {
         if (stepInstructions && readAloud) {
             const audio = new SpeechSynthesisUtterance(stepInstructions);
+            const voices = window.speechSynthesis.getVoices();
+            console.log("Available voices:", voices);
+            if (voices.length > 0) {
+                audio.voice = voices[voiceIndex % voices.length];
+            }
             audio.pitch = 1; // Value of 1 to 2
+            audio.rate = 1; // Speed of the text read
             audio.volume = volume / 100;
             window.speechSynthesis.speak(audio);
         }
-    }, [stepInstructions, readAloud]);
+        return () => {
+            window.speechSynthesis.cancel();
+        };
+    }, [stepInstructions, readAloud, voiceIndex]);
+
+    // Change voice with "V"
+    useEffect(() => {
+        const handleVoiceKey = (e) => {
+            if (e.key.toLowerCase() === 'v') {
+                const voices = window.speechSynthesis.getVoices();
+                if (voices.length === 0) return;
+                setVoiceIndex((prev) => (prev + 1) % voices.length);
+            }
+        };
+        window.addEventListener('keydown', handleVoiceKey);
+        return () => window.removeEventListener('keydown', handleVoiceKey);
+    }, []);
 
     // Effect to stop audio when read-aloud is turned off
     useEffect(() => {
@@ -82,6 +117,15 @@ function SideBar(props) {
             window.speechSynthesis.cancel();
         }
     }, [readAloud]);
+
+    const stepCount = steps?.length || 0;
+    const progressPercent = stepCount ? Math.round((completedSteps / stepCount) * 100) : 0;
+
+    useEffect(() => {
+        if (stepCount > 0 && completedSteps === stepCount) {
+            setLessonState("Completed");
+        }
+    }, [completedSteps, stepCount]);
 
     // Handles loading and error states
     if (loading) return <Loading />;
@@ -112,12 +156,11 @@ function SideBar(props) {
                 <div className='lesson-num'>
                     <p>Lesson #{currentLesson}</p>
                     <div className="lesson-progress">
-                        <div className={"lesson-progress-bar"}
-                            // style={{width: `${(currentStepId / steps.length * 100)}%`}}
-                        ></div>
+                        <div className={"lesson-progress-bar"} style={{ width: `${progressPercent}%` }}></div>
                     </div>
+                    <p className="lesson-progress-text">{completedSteps} of {stepCount} steps complete ({progressPercent}%)</p>
                 </div>
-                <p className="wrong-event">{wrongEvent}</p>
+                {/* <p className="wrong-event">{wrongEvent}</p> */}
                 <p className="step-instructions">{stepInstructions}</p>
                 <p className="next-step">{nextStep}</p>
                 {/* Next button Component for Conditional Rendering */}
