@@ -91,7 +91,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                     {/* Wi‑Fi */}
                                     <div>
                                         <div className={`qs-tile ${wifiOn ? "qs-tile-on" : ""}`}>
-                                            <button className="qs-tile-left" onClick={toggleWifi('QS')}>
+                                            <button className="qs-tile-left" onClick={() => toggleWifi('QS')}>
                                                 <img className="qs-icon" src={placeholderImage} alt="Wifi" />
                                             </button>
                                             <button className="qs-tile-right" onClick={() => openDetail("wifi")}>
@@ -104,7 +104,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                     {/* Bluetooth */}
                                     <div>
                                         <div className={`qs-tile ${bluetoothOn ? "qs-tile-on" : ""}`}>
-                                            <button className="qs-tile-left" onClick={toggleBluetooth('QS')}>
+                                            <button className="qs-tile-left" onClick={() => toggleBluetooth('QS')}>
                                                 <img className="qs-icon" src={placeholderImage} alt="Bluetooth" />
                                             </button>
                                             <button className="qs-tile-right" onClick={() => openDetail("bluetooth")}>
@@ -117,7 +117,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                     {/* Airplane Mode */}
                                     <div>
                                         <div className={`qs-tile ${airplaneOn ? "qs-tile-on" : ""}`}>
-                                            <button className="qs-tile-single" onClick={toggleAirplane}>
+                                            <button className="qs-tile-single" onClick={() => toggleAirplane()}>
                                                 <img className="qs-icon" src={placeholderImage} alt="Airplane Mode" />
                                             </button>
                                         </div>
@@ -127,7 +127,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                     {/* Energy Saver */}
                                     <div>
                                         <div className={`qs-tile ${energyOn ? "qs-tile-on" : ""}`}>
-                                            <button className="qs-tile-single" onClick={toggleEnergy}>
+                                            <button className="qs-tile-single" onClick={() => toggleEnergy()}>
                                                 <img className="qs-icon" src={placeholderImage} alt="Energy Saver" />
                                             </button>
                                         </div>

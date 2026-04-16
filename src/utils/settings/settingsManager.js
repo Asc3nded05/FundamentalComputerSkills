@@ -294,12 +294,12 @@ export const useSettings = () => {
 
   const addBluetoothDevice = useCallback((deviceName) => {
     addBluetoothStatusKey(deviceName, 'disconnected');
-    dispatchDesktopEvent('BluetoothDeviceAddApp', { deviceName });
+    dispatchDesktopEvent('BluetoothDeviceAdd', { deviceName });
   }, [addBluetoothStatusKey]);
 
   const removeBluetoothDevice = useCallback((deviceName) => {
     removeBluetoothStatusKey(deviceName);
-    dispatchDesktopEvent('BluetoothDeviceRemoveApp', { deviceName });
+    dispatchDesktopEvent('BluetoothDeviceRemove', { deviceName });
   }, [removeBluetoothStatusKey]);
 
   // Return all state and actions
