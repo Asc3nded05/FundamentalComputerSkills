@@ -12,6 +12,8 @@ import Loading from './Loading.jsx';
 import React from 'react';
 import { createPortal } from 'react-dom';
 import { useSettingsContext } from '../utils/settings/settingsContext.jsx';
+import { useContext } from 'react';
+import { UnresponsiveContext } from './UnresponsiveContext.jsx';
 // import hintVideo from '../assets/TestVideo.mp4';
 
 function SideBar(props) {
@@ -28,6 +30,8 @@ function SideBar(props) {
 
     //Event name to determine which button to show
     const [eventName, setEventName] = useState(null);
+
+    const { showUnresponsive, setShowUnresponsive } = useContext(UnresponsiveContext);
 
     //Starts Lesson
       async function handleStartLesson() {
@@ -53,6 +57,11 @@ function SideBar(props) {
      function handleNext() {
         dispatchDesktopEvent("Next");
     }
+
+    // //Temporary function to create unresponsive state for testing
+    // function handleCreateUnresponsive() {
+       
+    // }
 
     
     const videoShowButton = document.getElementById('hint-demo');
@@ -170,6 +179,7 @@ function SideBar(props) {
                     lessonState={lessonState}
                     eventName={eventName}
                 />
+                <button onClick={() => setShowUnresponsive(prev => !prev)}>Create Unresponsive</button>
 
                 {/* Help buttons */}
                 <div className="help-buttons">

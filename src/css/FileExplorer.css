@@ -2,6 +2,11 @@
     overflow: auto;
 }
 
+.file-explorer-unresponsive{
+    overflow: hidden;
+    height: 100%;
+}
+
 /* Right-click menu */
 .wx-menu.wx-XMmAGqVx {
     z-index: 1000 !important;

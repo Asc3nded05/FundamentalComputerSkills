@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import Files from '../pages/Files.jsx';
 import '../css/FileExplorer.css';
+import Unresponsive from './Unresponsive.jsx';
+import { UnresponsiveContext } from './UnresponsiveContext.jsx';
 
 function FileExplorer() {
- return <>
-    <div className="file-explorer">
-        <Files/>
-    </div>
- </>
+    const { showUnresponsive, setShowUnresponsive } = useContext(UnresponsiveContext);
+    
+    return <>
+        <div className={showUnresponsive ? "file-explorer-unresponsive" : "file-explorer"}>
+            <Files/>
+            <button onClick={() => setShowUnresponsive(true)}>Simulate Unresponsive</button>
+            {showUnresponsive && <Unresponsive />}
+        </div>
+    </>
 }
 
 
