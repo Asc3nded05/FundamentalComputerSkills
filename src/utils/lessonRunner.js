@@ -48,6 +48,7 @@ export async function runLesson(
 
     // Runs the specified step
     async function runStep(step) {
+        console.log(`Running step ${step.orderNumber}`);
         updateInstructions(step.text);
         updateNextStep(step.nextStep);
         updateHintText(step.hintText);

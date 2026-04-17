@@ -33,6 +33,7 @@ function SideBar(props) {
 
     const { showUnresponsive, setShowUnresponsive } = useContext(UnresponsiveContext);
 
+
     //Starts Lesson
       async function handleStartLesson() {
         console.log("Starting lesson...");
@@ -76,6 +77,7 @@ function SideBar(props) {
 
     // Fetches step data for the current lesson
     const {response: steps} = useStep(currentLesson);
+    console.log("Steps:", steps);   
 
     // State to track the current step's instructions and any wrong events
     const [stepInstructions, setStepInstructions] = useState("Press Start Lesson to Begin");
@@ -135,6 +137,14 @@ function SideBar(props) {
             setLessonState("Completed");
         }
     }, [completedSteps, stepCount]);
+
+    useEffect(() => {
+        console.log("Next step:", nextStep);
+        if (nextStep === "45"){
+            console.log("Next step is 45");
+        }
+
+    }, [nextStep]);
 
     // Handles loading and error states
     if (loading) return <Loading />;
