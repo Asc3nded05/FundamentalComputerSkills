@@ -102,12 +102,14 @@ function AppWindow({
                         </a>
                     </div>
                 </div>
-                <div className={showUnresponsive ? "file-explorer-unresponsive" : "file-explorer"}>
-                <div className="window-content">
-                    {content}
+                <div className={showUnresponsive && name=="File Explorer" ? "file-explorer-unresponsive" : "file-explorer"}>
+                    <div className="window-content">
+                        {content}
+                    </div>
+                    {showUnresponsive && name=="File Explorer" && <Unresponsive />}
                 </div>
-                </div>
-                {showUnresponsive && <Unresponsive />}
+
+                
             </div>
         </Rnd>
     );
