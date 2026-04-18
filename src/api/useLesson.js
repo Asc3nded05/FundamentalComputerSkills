@@ -7,7 +7,7 @@ export function useLesson(lessonId) {
         fetch(`https://fcscapstone.duckdns.org/api/lessons/${lessonId}`)
             .then(res => res.json())
             .then(data => {
-                console.log('Fetched lessons:', data);
+                // console.log('Fetched lessons:', data);
                 setResponse(data);
                 setLoading(false);
             })

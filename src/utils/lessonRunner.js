@@ -1,4 +1,5 @@
 import { eventBus } from "./eventBus";
+import {startUnresponsive} from './unresponsive.js';
 
 export async function runLesson(
     steps,
@@ -9,11 +10,10 @@ export async function runLesson(
     updateHintVideo,
     updateWrongEvent, 
     setEventName,
-    updateCompletedSteps
+    updateCompletedSteps,
+    setShowUnresponsive
 ) {
     // call backend API to retrieve steps by lessonId
-    console.log("Running lesson with ID:", lessonId);
-    console.log("Steps:", steps);
 
     if (!steps || steps.length === 0) {
         console.error("No steps found for lesson", lessonId);
@@ -48,11 +48,11 @@ export async function runLesson(
 
     // Runs the specified step
     async function runStep(step) {
-        console.log(`Running step ${step.orderNumber}`);
         updateInstructions(step.text);
         updateNextStep(step.nextStep);
         updateHintText(step.hintText);
         updateHintVideo(step.hintVideo);
+         
 
         const validEventNames = step.events.map(e => e.eventName);
         setEventName(validEventNames);
@@ -74,11 +74,12 @@ export async function runLesson(
         // Select and run the current step
         updateWrongEvent(null);
         const step = sortedSteps.find(step => step.orderNumber === currentStepNumber);
-
         if (!step) {
             console.error(`No step found with orderNumber ${currentStepNumber}`);
             break;
         }
+
+        await startUnresponsive(step.stepId, setShowUnresponsive);
 
         await runStep(step);
         updateCompletedSteps(currentStepNumber);

@@ -7,7 +7,7 @@ export function useStep(lessonId) {
         fetch(`https://fcscapstone.duckdns.org/api/steps/lesson/${lessonId}`)
             .then(res => res.json())
             .then(data => {
-                console.log('Fetched step:', data);
+                // console.log('Fetched step:', data);
                 setResponse(data);
                 setLoading(false);
             })

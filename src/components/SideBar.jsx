@@ -50,7 +50,8 @@ function SideBar(props) {
             setHintVideo,
             setWrongEvent,
             setEventName,
-            setCompletedSteps
+            setCompletedSteps,
+            setShowUnresponsive
         );
     }
 
@@ -188,7 +189,7 @@ function SideBar(props) {
                     lessonState={lessonState}
                     eventName={eventName}
                 />
-                <button onClick={() => setShowUnresponsive(prev => !prev)}>Create Unresponsive</button>
+                {/* <button onClick={() => setShowUnresponsive(prev => !prev)}>Create Unresponsive</button> */}
 
                 {/* Help buttons */}
                 <div className="help-buttons">
