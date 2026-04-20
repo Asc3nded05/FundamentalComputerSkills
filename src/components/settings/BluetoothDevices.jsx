@@ -3,8 +3,7 @@ import { useSettingsContext } from "../../utils/settings/settingsContext";
 import { dispatchDesktopEvent } from "../../utils/eventBus";
 import config from "../../utils/settings/settingsConfig.json";
 
-function BluetoothDevices() {
-    const [subPage, setSubPage] = useState('main'); // 'main', 'devices'
+function BluetoothDevices({ subPage = 'main', onSubPageChange }) {
     const [openDropdown, setOpenDropdown] = useState(null); // track which device dropdown is open
     const [showAddDeviceModal, setShowAddDeviceModal] = useState(false);
 
@@ -92,7 +91,7 @@ function BluetoothDevices() {
                 <div style={{ marginBottom: '24px' }}>
                     <button className="btn btn-secondary" onClick={() => {
                         dispatchDesktopEvent("SettingsBluetoothDevicesSubPageClicked");
-                        setSubPage('devices')
+                        onSubPageChange?.('devices');
                     }}>
                         View more devices
                     </button>
@@ -121,7 +120,7 @@ function BluetoothDevices() {
                     {/* Devices */}
                     <div className="settings-card interactable" onClick={() => {
                         dispatchDesktopEvent("SettingsBluetoothDevicesSubPageClicked");
-                        setSubPage('devices');
+                        onSubPageChange?.('devices');
                     }}>
                         <h3 className="card-title">Devices</h3>
                         <p className="card-description">Mouse, keyboard, pen, audio, displays and docks, other devices</p>
@@ -201,7 +200,7 @@ function BluetoothDevices() {
                 <button
                     className="btn btn-text"
                     onClick={() => {
-                        setSubPage("main");
+                        onSubPageChange?.('main');
                         dispatchDesktopEvent("SettingsBluetoothPageClicked");
                     }}
                 >

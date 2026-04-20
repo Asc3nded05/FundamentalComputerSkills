@@ -167,6 +167,7 @@ function Desktop() {
         maximizeApp,
         updateWindowPosition,
         updateWindowSize,
+        updateAppData,
     } = useAppWindowManager(lessonAppRegistry, BASE_WIDTH, BASE_HEIGHT);
 
     const baseApps = useMemo(() => apps.filter(app => !app.instanceId), [apps]);
@@ -217,18 +218,28 @@ function Desktop() {
 
     // Render appropriate app content
     const renderAppContent = (app) => {
+        const identifier = app.instanceId || app.id;
+
         switch (app.component) {
             case 'FileExplorer':
-                return <FileExplorer key={app.instanceId} />;
+                return <FileExplorer key={identifier} />;
             case 'Notepad':
-                return <Notepad key={app.instanceId} initialContent={app.initialContent} />;
+                return <Notepad
+                    key={identifier}
+                    initialContent={app.initialContent}
+                    onContentChange={(content) => updateAppData(identifier, { initialContent: content })}
+                />;
             case 'Settings':
                 return <Settings
-                    key={app.instanceId}
-                    startingPage={app.startingPage}
+                    key={identifier}
+                    startingPage={app.currentPage || app.startingPage}
+                    currentPage={app.currentPage || app.startingPage}
+                    settingsState={app.settingsState}
+                    onSettingsStateChange={(changes) => updateAppData(identifier, { settingsState: { ...app.settingsState, ...changes } })}
                     backgroundImage={backgroundImage}
                     onBackgroundChange={handleBackgroundChange}
                     onResetDefault={resetToDefaultBackground}
+                    onPageChange={(page) => updateAppData(identifier, { currentPage: page, startingPage: page })}
                 />;
             case 'TaskManager':
                 return <TaskManager key={app.instanceId} sortedWindows={sortedWindows} closeApp={closeApp} />;
@@ -429,6 +440,7 @@ function Desktop() {
                             baseWidth={BASE_WIDTH}
                             offset={app.offset}
                         />
+                        
                     ))}
 
                 </div>

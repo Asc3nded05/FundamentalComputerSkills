@@ -2,7 +2,7 @@ import { Filemanager } from "@svar-ui/react-filemanager";
 import "@svar-ui/react-filemanager/all.css";
 import { Willow } from "@svar-ui/react-filemanager";
 import { dispatchDesktopEvent } from "../utils/eventBus";
-
+  
 
 const rawdata = [
   {
@@ -135,6 +135,7 @@ const rawdata = [
 // https://docs.svar.dev/react/filemanager/api/overview/api_overview
 function Files() {
   return <>
+
     <Willow>
       <Filemanager
         data={rawdata}

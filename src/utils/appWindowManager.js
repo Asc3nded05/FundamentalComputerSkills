@@ -23,7 +23,12 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
             previousPosition: {
                 x: (baseWidth - (app.defaultSize?.width || 400)) / 2,
                 y: (baseHeight - (app.defaultSize?.height || 300) - 56) / 2,
-            }
+            },
+            defaultInitialContent: app.initialContent || '',
+            defaultStartingPage: app.startingPage || 'home',
+            currentPage: app.startingPage || 'home',
+            initialContent: app.initialContent || '',
+            settingsState: {}
         }))
     );
 
@@ -38,7 +43,12 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
             zIndex: 0,
             size: app.defaultSize || { width: 400, height: 300 },
             isMinimized: false,
-            isMaximized: false
+            isMaximized: false,
+            defaultInitialContent: app.initialContent || '',
+            defaultStartingPage: app.startingPage || 'home',
+            currentPage: app.startingPage || 'home',
+            initialContent: app.initialContent || '',
+            settingsState: {}
         })));
     }, [initialApps]);
 
@@ -198,7 +208,11 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
                         previousPosition: {
                             x: (baseWidth - (app.defaultSize?.width || 400)) / 2,
                             y: (baseHeight - (app.defaultSize?.height || 300) - 56) / 2,
-                        }
+                        },
+                        initialContent: app.defaultInitialContent || '',
+                        startingPage: app.defaultStartingPage || 'home',
+                        currentPage: app.defaultStartingPage || 'home',
+                        settingsState: {}
                     };
                 }
                 return app;
@@ -246,6 +260,17 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
                         previousPosition: position || app.position,
                         isMaximized: false,
                     }
+                    : app
+            )
+        );
+    }, []);
+
+    // Update arbitrary app metadata (e.g. Notepad content, Settings page)
+    const updateAppData = useCallback((identifier, data) => {
+        setApps(prev =>
+            prev.map(app =>
+                (app.id === identifier || app.instanceId === identifier)
+                    ? { ...app, ...data }
                     : app
             )
         );
@@ -318,6 +343,7 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
         maximizeApp,
         updateWindowPosition,
         updateWindowSize,
+        updateAppData,
         highestZIndex
     };
 }

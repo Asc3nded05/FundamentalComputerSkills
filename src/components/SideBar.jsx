@@ -12,6 +12,8 @@ import Loading from './Loading.jsx';
 import React from 'react';
 import { createPortal } from 'react-dom';
 import { useSettingsContext } from '../utils/settings/settingsContext.jsx';
+import { useContext } from 'react';
+import { UnresponsiveContext } from './UnresponsiveContext.jsx';
 // import hintVideo from '../assets/TestVideo.mp4';
 
 function SideBar(props) {
@@ -29,6 +31,9 @@ function SideBar(props) {
     //Event name to determine which button to show
     const [eventName, setEventName] = useState(null);
 
+    const { showUnresponsive, setShowUnresponsive } = useContext(UnresponsiveContext);
+
+
     //Starts Lesson
       async function handleStartLesson() {
         console.log("Starting lesson...");
@@ -45,7 +50,8 @@ function SideBar(props) {
             setHintVideo,
             setWrongEvent,
             setEventName,
-            setCompletedSteps
+            setCompletedSteps,
+            setShowUnresponsive
         );
     }
 
@@ -53,6 +59,11 @@ function SideBar(props) {
      function handleNext() {
         dispatchDesktopEvent("Next");
     }
+
+    // //Temporary function to create unresponsive state for testing
+    // function handleCreateUnresponsive() {
+       
+    // }
 
     
     const videoShowButton = document.getElementById('hint-demo');
@@ -67,6 +78,7 @@ function SideBar(props) {
 
     // Fetches step data for the current lesson
     const {response: steps} = useStep(currentLesson);
+    console.log("Steps:", steps);   
 
     // State to track the current step's instructions and any wrong events
     const [stepInstructions, setStepInstructions] = useState("Press Start Lesson to Begin");
@@ -127,6 +139,14 @@ function SideBar(props) {
         }
     }, [completedSteps, stepCount]);
 
+    useEffect(() => {
+        console.log("Next step:", nextStep);
+        if (nextStep === "45"){
+            console.log("Next step is 45");
+        }
+
+    }, [nextStep]);
+
     // Handles loading and error states
     if (loading) return <Loading />;
     if (error) return <div>Error loading lesson data</div>;
@@ -158,7 +178,6 @@ function SideBar(props) {
                     <div className="lesson-progress">
                         <div className={"lesson-progress-bar"} style={{ width: `${progressPercent}%` }}></div>
                     </div>
-                    <p className="lesson-progress-text">{completedSteps} of {stepCount} steps complete ({progressPercent}%)</p>
                 </div>
                 {/* <p className="wrong-event">{wrongEvent}</p> */}
                 <p className="step-instructions">{stepInstructions}</p>
@@ -170,6 +189,7 @@ function SideBar(props) {
                     lessonState={lessonState}
                     eventName={eventName}
                 />
+                {/* <button onClick={() => setShowUnresponsive(prev => !prev)}>Create Unresponsive</button> */}
 
                 {/* Help buttons */}
                 <div className="help-buttons">

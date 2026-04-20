@@ -3,8 +3,7 @@ import wifi from "../../assets/WifiPlaceholder.png"
 import { useSettingsContext } from "../../utils/settings/settingsContext";
 import { dispatchDesktopEvent } from "../../utils/eventBus";
 
-function Network() {
-    const [subPage, setSubPage] = useState('main'); // 'main', 'wifi'
+function Network({ subPage = 'main', onSubPageChange }) {
     const [openDropdownNetwork, setOpenDropdownNetwork] = useState(null); // track which network dropdown is open
 
     const {
@@ -57,7 +56,7 @@ function Network() {
                 {/* Settings grid */}
                 <div className="settings-grid">
                     <div className="settings-card control-card interactable">
-                        <div className="card-content" onClick={() => { dispatchDesktopEvent('SettingsNetworkWifiSubPageClicked'); setSubPage('wifi') }}>
+                        <div className="card-content" onClick={() => { dispatchDesktopEvent('SettingsNetworkWifiSubPageClicked'); onSubPageChange?.('wifi') }}>
                             <h3 className="card-title">Wi-Fi</h3>
                             <p className="card-description">Connect, manage known networks, metered network</p>
                         </div>
@@ -140,7 +139,7 @@ function Network() {
                 <button
                     className="btn btn-text"
                     onClick={() => {
-                        setSubPage("main");
+                        onSubPageChange?.('main');
                         dispatchDesktopEvent("SettingsNetworkPageClicked");
                     }}
                 >
