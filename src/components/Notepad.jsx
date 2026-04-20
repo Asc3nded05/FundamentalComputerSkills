@@ -1,9 +1,8 @@
-import React from "react";
 import { useEffect, useState } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus";
 import Mark from "mark.js";
 
-function Notepad({initialContent="Hello, this is text"}) {
+function Notepad({initialContent=""}) {
 
     const [searchTerm, setSearchterm] = useState("");
     const [currentMark, setCurrentMark] = useState(-1);
@@ -123,13 +122,12 @@ function Notepad({initialContent="Hello, this is text"}) {
             id="myTextArea"
             className="notepad-body" 
             contentEditable="true"
+            suppressContentEditableWarning={true}
             onInput={handleSearch}
             // onCopy={() => dispatchDesktopEvent("NotepadCopy")} // Broadast events for copy/paste/cut
             // onCut={() => dispatchDesktopEvent("NotepadCut")}
             // onPaste={() => dispatchDesktopEvent("NotepadPaste")}
-            >
-                This is text
-            </p>
+            ></p>
         </div>
     </>
     );
