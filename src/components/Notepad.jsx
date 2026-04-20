@@ -10,6 +10,7 @@ function Notepad({ initialContent = "Hello, this is text", onContentChange }) {
     const hasInitializedContent = useRef(false);
     const [searchTerm, setSearchterm] = useState("");
     const [currentMark, setCurrentMark] = useState(-1);
+    const [totalMarks, setTotalMarks] = useState(0);
 
     useEffect(() => {
         if (hasInitializedContent.current) return;
@@ -29,7 +30,10 @@ function Notepad({ initialContent = "Hello, this is text", onContentChange }) {
         markInstance.unmark({
             done: () => {
                 markInstance.mark(query, {
-                    done: (count) => setCurrentMark(count > 0 ? 0 : -1)
+                    done: (count) => {
+                        setTotalMarks(count);
+                        setCurrentMark(count > 0 ? 0 : -1)
+                    },
                 });
             }
         });
@@ -51,12 +55,13 @@ function Notepad({ initialContent = "Hello, this is text", onContentChange }) {
 
     const findNext = () => {
         dispatchDesktopEvent("NotepadFindNext");
-        setCurrentMark(prev => (prev + 1))
+        setCurrentMark(prev => ((prev % totalMarks) + 1))
+
     };
 
     const findPrev = () => {
         dispatchDesktopEvent("NotepadFindPrev");
-        setCurrentMark(prev => (prev - 1))
+        setCurrentMark(prev => (prev - 2 + totalMarks) % totalMarks + 1)
     };
 
     const showFindBar = () => {
@@ -78,7 +83,11 @@ function Notepad({ initialContent = "Hello, this is text", onContentChange }) {
             const markInstance = new Mark(document.querySelector("#search-node"));
             markInstance.unmark(); // Remove highlights when closing find bar
         }
+        setSearchterm(""); // Clear search term state
+        setCurrentMark(-1);
+        setTotalMarks(0);
     };
+
 
     // Keyboard shortcut broadcasting
     useEffect(() => {
@@ -129,8 +138,13 @@ function Notepad({ initialContent = "Hello, this is text", onContentChange }) {
         <div className="notepad-full">
             <div className="notepad-find-options" style={{ display: "none" }}>
                 <input id="myInput" type="text" placeholder="Find..." className="notepad-find" value={searchTerm} onChange={handleSearch} />
-                <button className="notepad-find-next" onClick={findNext}>Next</button>
-                <button className="notepad-find-prev" onClick={findPrev}>Prev</button>
+                <div className="notepad-find-counter">
+                    {currentMark > 0
+                        ? `${currentMark}/${totalMarks}`
+                        : "0/0"}
+                </div>
+                <button className="notepad-find-next-prev" onClick={findNext}>Next</button>
+                <button className="notepad-find-next-prev" onClick={findPrev}>Prev</button>
                 <button className="notepad-find-close" onClick={closeFindBar}>x</button>
             </div>
             <div className="notepad-inner">
@@ -148,7 +162,8 @@ function Notepad({ initialContent = "Hello, this is text", onContentChange }) {
                     className="notepad-body"
                     contentEditable="true"
                     suppressContentEditableWarning={true}
-                    onInput={handleContentInput}
+                    onInput={handleContentInput} 
+                    onMouseDown={closeFindBar}
                 />
             </div>
             </div>
