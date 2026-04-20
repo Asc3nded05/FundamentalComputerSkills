@@ -51,12 +51,12 @@ function Notepad({ initialContent = "Hello, this is text", onContentChange }) {
 
     const findNext = () => {
         dispatchDesktopEvent("NotepadFindNext");
-        setCurrentMark(prev => (prev +1))
+        setCurrentMark(prev => (prev + 1))
     };
 
     const findPrev = () => {
         dispatchDesktopEvent("NotepadFindPrev");
-        setCurrentMark(prev => (prev -1))
+        setCurrentMark(prev => (prev - 1))
     };
 
     const showFindBar = () => {
@@ -69,7 +69,7 @@ function Notepad({ initialContent = "Hello, this is text", onContentChange }) {
             }
         }
     };
-    
+
     const closeFindBar = () => {
         const findBar = document.querySelector(".notepad-find-options");
         if (findBar) {
@@ -125,29 +125,33 @@ function Notepad({ initialContent = "Hello, this is text", onContentChange }) {
         };
     }, []);
 
-    return ( <>
-        <div className="notepad-bottom-top-nav"> 
-            <div className="notepad-options">
-                <button>File</button>
-                <button>Edit</button>
-                <button>View</button>
-            </div>
-            <div className="notepad-find-options" style={{display: "none"}}>
-                <input id="myInput" type="text" placeholder="Find..." className="notepad-find" value={searchTerm} onChange={handleSearch}/>
+    return (<>
+        <div className="notepad-full">
+            <div className="notepad-find-options" style={{ display: "none" }}>
+                <input id="myInput" type="text" placeholder="Find..." className="notepad-find" value={searchTerm} onChange={handleSearch} />
                 <button className="notepad-find-next" onClick={findNext}>Next</button>
                 <button className="notepad-find-prev" onClick={findPrev}>Prev</button>
                 <button className="notepad-find-close" onClick={closeFindBar}>x</button>
             </div>
-        </div>
-        <div id="search-node" className="notepad-content">
-            <p
-                ref={notepadRef}
-                id="myTextArea"
-                className="notepad-body"
-                contentEditable="true"
-                suppressContentEditableWarning={true}
-                onInput={handleContentInput}
-            />
+            <div className="notepad-inner">
+            <div className="notepad-bottom-top-nav">
+                <div className="notepad-options">
+                    <button>File</button>
+                    <button>Edit</button>
+                    <button>View</button>
+                </div>
+            </div>
+            <div id="search-node" className="notepad-content">
+                <p
+                    ref={notepadRef}
+                    id="myTextArea"
+                    className="notepad-body"
+                    contentEditable="true"
+                    suppressContentEditableWarning={true}
+                    onInput={handleContentInput}
+                />
+            </div>
+            </div>
         </div>
     </>
     );

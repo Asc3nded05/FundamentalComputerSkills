@@ -1,3 +1,7 @@
+.notepad-fill {
+    position: relative;
+}
+
 .notepad-bottom-top-nav {
     display: flex;
     justify-content: space-between;
@@ -8,10 +12,15 @@
 .notepad-find-options {
     display: flex;
     justify-content: right;
-    gap: 10px;
-    padding: 10px;
-    background: #e6f0f4;
-    padding-top: 0;
+    gap: 5px;
+    padding: 2px;
+    background: #ffffff;
+    border: 1px solid black;
+    border-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .notepad-find-options input {
@@ -23,7 +32,7 @@
 
 .notepad-find-options button {
     border: none;
-    background-color: #e6f0f4;
+    background-color: #ffffff;
     cursor: pointer;
     font-size: 14px;
     border-radius: 3px;
@@ -50,6 +59,17 @@
     flex: 1;
     display: flex;
     overflow: auto;
+}
+
+.notepad-content p {
+    margin: 0;
+    position: absolute; 
+    left: 0; 
+    right: 0;
+}
+
+.notepad-content p:focus {
+    outline: none;
 }
 
 .notepad-body {
