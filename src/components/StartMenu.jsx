@@ -11,6 +11,7 @@ function StartMenu({ closeStartMenu, isOpen, apps = [] }) {
 
     const handleClose = () => {
         closeStartMenu();
+        setPowerMenuOpen(false);
         dispatchDesktopEvent("StartMenuClose");
     };
 
@@ -76,7 +77,7 @@ function StartMenu({ closeStartMenu, isOpen, apps = [] }) {
                         tabIndex={-1}
                         onMouseDown={(e) => e.stopPropagation()}
                     >
-                        <div className="start-menu-top">
+                        <div className="start-menu-top" onClick={closePowerMenu}>
                             <input
                                 className="start-menu-search"
                                 type="text"
@@ -86,7 +87,7 @@ function StartMenu({ closeStartMenu, isOpen, apps = [] }) {
                             />
                         </div>
                         {/* App Grid */}
-                        <div className="start-app-grid">
+                        <div className="start-app-grid" onClick={closePowerMenu}>
                             {chunked.map((row, rowIndex) => (
                                 <div key={rowIndex} className="start-row">
                                 {row.map((app, colIndex) => (
@@ -118,12 +119,15 @@ function StartMenu({ closeStartMenu, isOpen, apps = [] }) {
                                 <img className="user-profile-image" src={placeholderImage} alt="User Profile" />
                                 <span>User Profile</span>
                             </div>
-                            <div className="power-button" onClick={togglePowerMenu}>
+                            <div className="power-button" onClick={(e) => {
+                                e.stopPropagation();
+                                togglePowerMenu();
+                            }}>
                                 <img src={placeholderImage} alt="Power" />
                             </div>
                         </div>
                         {powerMenuOpen && (
-                            <div className="power-menu">
+                            <div className="power-menu" onClick={(e) => e.stopPropagation()}>
                                 <div className="power-menu-item">
                                     <img src={placeholderImage} alt="Lock" />
                                     <span>Lock</span>
