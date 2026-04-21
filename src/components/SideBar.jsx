@@ -208,7 +208,7 @@ function SideBar(props) {
                         Questions
                     </button>
                     <div id="chat-content" popover="auto" className="chat-content">
-                        {/* <AIChat steps={steps} completedSteps={completedSteps} stepInstructions={stepInstructions} nextStep={nextStep} /> */}
+                        <AIChat steps={steps} completedSteps={completedSteps} stepInstructions={stepInstructions} nextStep={nextStep} />
                     </div>
                 </div>
             </div>
