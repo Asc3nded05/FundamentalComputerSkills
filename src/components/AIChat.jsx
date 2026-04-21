@@ -7,6 +7,7 @@ function AIChat({steps, completedSteps, stepInstructions, nextStep}) {
     const [userInput, setUserInput] = useState('');
     const [messages, setMessages] = useState([]);
 
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
     const AI = new GoogleGenerativeAI(apiKey);
     const model = AI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
 
