@@ -1,4 +1,5 @@
 import { dispatchDesktopEvent } from "../utils/eventBus";
+import "../css/AppSearchIcon.css";
 
 function AppSearchIcon({ name, icon, eventName, openWindow, variant = "search", isAppOpen = false, closeMenu }) {
     const handleIconClick = (e) => {
