@@ -3,8 +3,8 @@ import { UnresponsiveContext } from '../components/UnresponsiveContext.jsx';
 
 
 export async function startUnresponsive(stepId, setShowUnresponsive) {
-    // Define the step ID that should trigger unresponsive behavior
-    const unresponsiveStepId = 0; // Change this to the desired step ID
+    console.log(`Checking if step ID ${stepId} should trigger unresponsive behavior...`);
+    const unresponsiveStepId = 96; // Change this stepId that needs Unresponsive
     if (stepId === unresponsiveStepId) {
         setShowUnresponsive(true);
         console.log(`Starting unresponsive behavior for step ID ${unresponsiveStepId}`);
