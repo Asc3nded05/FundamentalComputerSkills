@@ -7,18 +7,23 @@
             "detailType": "wifi",
             "networks": {
                 "Wifi Network 1": {
-                    "defaultStatus": "connected"
+                    "password": false,
+                    "defaultStatus": "disconnected"
                 },
                 "Wifi Network 2": {
+                    "password": false,
                     "defaultStatus": "disconnected"
                 },
                 "Wifi Network 3": {
+                    "password": true,
                     "defaultStatus": "disconnected"
                 },
                 "Wifi Network 4": {
+                    "password": true,
                     "defaultStatus": "disconnected"
                 },
                 "Wifi Network 5": {
+                    "password": false,
                     "defaultStatus": "disconnected"
                 }
             }
