@@ -14,7 +14,7 @@ import { createPortal } from 'react-dom';
 import { useSettingsContext } from '../utils/settings/settingsContext.jsx';
 import { useContext } from 'react';
 import { UnresponsiveContext } from './UnresponsiveContext.jsx';
-// import AIChat from './AIChat.jsx';
+import AIChat from './AIChat.jsx';
 // import hintVideo from '../assets/TestVideo.mp4';
 
 function SideBar(props) {
@@ -190,7 +190,7 @@ function SideBar(props) {
                     lessonState={lessonState}
                     eventName={eventName}
                 />
-                {/* <button onClick={() => setShowUnresponsive(prev => !prev)}>Create Unresponsive</button> */}
+                <button onClick={() => setShowUnresponsive(prev => !prev)}>Create Unresponsive</button>
 
                 {/* Help buttons */}
                 <div className="help-buttons">

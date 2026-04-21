@@ -28,9 +28,11 @@ function AppWindow({
 }) {
 
     const handleClose = (e) => {
+        if (showUnresponsive === false) {
         e.preventDefault();
         e.stopPropagation();
         onClose();
+        }
     };
 
     const handleFocus = (e) => {
@@ -76,9 +78,11 @@ function AppWindow({
                             href="#"
                             className="appWindowMinimize"
                             onClick={(e) => {
+                                if (showUnresponsive === false) {
                                 e.preventDefault();
                                 e.stopPropagation();
                                 onMinimize?.();
+                                }
                             }}
                         >
                             ─
@@ -87,9 +91,11 @@ function AppWindow({
                             href="#"
                             className="appWindowMaximize"
                             onClick={(e) => {
+                                if (showUnresponsive === false) {
                                 e.preventDefault();
                                 e.stopPropagation();
                                 onMaximize?.();
+                                }
                             }}
                         >
                             &#9744;
