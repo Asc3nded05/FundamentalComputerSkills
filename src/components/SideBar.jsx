@@ -14,6 +14,7 @@ import { createPortal } from 'react-dom';
 import { useSettingsContext } from '../utils/settings/settingsContext.jsx';
 import { useContext } from 'react';
 import { UnresponsiveContext } from './UnresponsiveContext.jsx';
+import AIChat from './AIChat.jsx';
 // import hintVideo from '../assets/TestVideo.mp4';
 
 function SideBar(props) {
@@ -24,7 +25,7 @@ function SideBar(props) {
     const [lessonState, setLessonState] = useState("NotStarted");
 
     const [readAloud, setReadAloud] = useState(true);
-    const [voiceIndex, setVoiceIndex] = useState(12);
+    const [voiceIndex, setVoiceIndex] = useState(0);
     
     const {volume} = useSettingsContext();
 
@@ -110,18 +111,18 @@ function SideBar(props) {
         };
     }, [stepInstructions, readAloud, voiceIndex]);
 
-    // Change voice with "V"
-    useEffect(() => {
-        const handleVoiceKey = (e) => {
-            if (e.key.toLowerCase() === 'v') {
-                const voices = window.speechSynthesis.getVoices();
-                if (voices.length === 0) return;
-                setVoiceIndex((prev) => (prev + 1) % voices.length);
-            }
-        };
-        window.addEventListener('keydown', handleVoiceKey);
-        return () => window.removeEventListener('keydown', handleVoiceKey);
-    }, []);
+    // // Change voice with "V"
+    // useEffect(() => {
+    //     const handleVoiceKey = (e) => {
+    //         if (e.key.toLowerCase() === 'v') {
+    //             const voices = window.speechSynthesis.getVoices();
+    //             if (voices.length === 0) return;
+    //             setVoiceIndex((prev) => (prev + 1) % voices.length);
+    //         }
+    //     };
+    //     window.addEventListener('keydown', handleVoiceKey);
+    //     return () => window.removeEventListener('keydown', handleVoiceKey);
+    // }, []);
 
     // Effect to stop audio when read-aloud is turned off
     useEffect(() => {
@@ -203,22 +204,17 @@ function SideBar(props) {
                         <button popoverTarget="big-demo" className="hint-demo" id="hint-demo" onClick={() => setShowVideo(true)}>Demo</button>
                     </div>
                     
-                    {/* Demo gif popover */}
-                    {/* <div id="big-demo" popover='auto'>
-                        <video autoPlay loop muted controls={false}>
-                            <source src={hintVideo} type="video/mp4"/>
-                        </video>  
-                    </div> */}
-
-                    <button className="chat-button">
+                    <button popoverTarget="chat-content" className="chat-button">
                         Questions
                     </button>
+                    <div id="chat-content" popover="auto" className="chat-content">
+                        <AIChat steps={steps} completedSteps={completedSteps} stepInstructions={stepInstructions} nextStep={nextStep} />
+                    </div>
                 </div>
-                
             </div>
         </div>
         {showVideo && props.desktopRef?.current && createPortal(
-            <div id="big-demo" onClick={() => setShowVideo(false)} style={{ /* add positioning/styles as needed */ }}>
+            <div id="big-demo" onClick={() => setShowVideo(false)}>
                 <video autoPlay loop muted controls={false}>
                     <source src={hintVideo} type="video/mp4"/>
                 </video>
