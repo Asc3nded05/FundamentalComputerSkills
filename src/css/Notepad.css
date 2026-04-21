@@ -23,17 +23,29 @@
     right: 0;
 }
 
-.notepad-find-options input {
+.notepad-find-w-counter {
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 3px;
+    margin: 7px;
+}
+
+.notepad-find {
     font-size: 14px;
-    padding: 5px;
-    margin: 5px;
     width: 200px;
+    border: none;
+    margin-left: 5px;
+}
+
+.notepad-find:focus {
+    outline: none;
 }
 
 .notepad-find-counter {
     font-size: 14px;
-    margin-right: 5px;
-    margin-top: 12px
+    color: rgba(0, 0, 0, 0.6);
+    padding-right: 5px;
 }
 
 .notepad-find-next-prev {
@@ -42,8 +54,8 @@
     cursor: pointer;
     font-size: 14px;
     border-radius: 3px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 7px;
+    margin-bottom: 7px;
     padding: 2px;
 }
 

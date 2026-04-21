@@ -32,7 +32,7 @@ function Notepad({ initialContent = "Hello, this is text", onContentChange }) {
                 markInstance.mark(query, {
                     done: (count) => {
                         setTotalMarks(count);
-                        setCurrentMark(count > 0 ? 0 : -1)
+                        setCurrentMark(count > 0 ? 1 : -1)
                     },
                 });
             }
@@ -49,7 +49,7 @@ function Notepad({ initialContent = "Hello, this is text", onContentChange }) {
     useEffect(() => {
         const marks = document.querySelectorAll("#search-node mark");
         marks.forEach((m, i) => {
-            m.classList.toggle('active', i === (currentMark-1)); // Add 'active' class to current mark
+            m.classList.toggle('active', i === (currentMark - 1)); // Add 'active' class to current mark
         });
     }, [currentMark]);
 
@@ -136,11 +136,13 @@ function Notepad({ initialContent = "Hello, this is text", onContentChange }) {
     return (<>
         <div className="notepad-full">
             <div className="notepad-find-options" style={{ display: "none" }}>
-                <input id="myInput" type="text" placeholder="Find..." className="notepad-find" value={searchTerm} onChange={handleSearch} />
-                <div className="notepad-find-counter">
-                    {currentMark > 0
-                        ? `${currentMark}/${totalMarks}`
-                        : "0/0"}
+                <div className="notepad-find-w-counter">
+                    <input id="myInput" type="text" placeholder="Find..." className="notepad-find" value={searchTerm} onChange={handleSearch} />
+                    <div className="notepad-find-counter">
+                        {currentMark > 0
+                            ? `${currentMark}/${totalMarks}`
+                            : "0/0"}
+                    </div>
                 </div>
                 <button className="notepad-find-next-prev" onClick={findNext}>Next</button>
                 <button className="notepad-find-next-prev" onClick={findPrev}>Prev</button>
