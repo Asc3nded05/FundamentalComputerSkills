@@ -81,6 +81,7 @@ function BluetoothDevices({ subPage = 'main', onSubPageChange }) {
                         <div className="add-device-content">
                             <span className="plus-icon">+</span>
                             <h3 className="card-title" onClick={() => {
+                                dispatchDesktopEvent("BluetoothAddDeviceClicked");
                                 setShowAddDeviceModal(true);
                             }}>Add device</h3>
                         </div>
@@ -126,6 +127,7 @@ function BluetoothDevices({ subPage = 'main', onSubPageChange }) {
                         <p className="card-description">Mouse, keyboard, pen, audio, displays and docks, other devices</p>
                         <button className="btn btn-primary" onClick={(e) => {
                             e.stopPropagation(); // prevent card click
+                            dispatchDesktopEvent("BluetoothAddDeviceClicked");
                             setShowAddDeviceModal(true);
                         }}>Add device</button>
                         <span className="card-arrow">&rsaquo;</span>
