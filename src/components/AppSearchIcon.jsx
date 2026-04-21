@@ -1,6 +1,6 @@
 import { dispatchDesktopEvent } from "../utils/eventBus";
 
-function AppIcon({ name, icon, eventName, openWindow, variant = "search", isAppOpen = false, closeMenu }) {
+function AppSearchIcon({ name, icon, eventName, openWindow, variant = "search", isAppOpen = false, closeMenu }) {
     const handleIconClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -30,7 +30,7 @@ function AppIcon({ name, icon, eventName, openWindow, variant = "search", isAppO
             className={`app-icon ${variant}`} 
             onClick={(variant === "taskbar" || variant === "start-menu") ? handleIconClick : undefined}
             // onDoubleClick={variant === "desktop" ? handleDoubleClick : undefined}
-        >   <div>
+        >   <div className="app-icon-content">
                 <img className="app-icon-image" src={icon} alt={name} />
                 <p className="app-icon-name">{name}</p>
             </div>
@@ -48,4 +48,4 @@ function AppIcon({ name, icon, eventName, openWindow, variant = "search", isAppO
     );
 }
 
-export default AppIcon;
+export default AppSearchIcon;

@@ -14,7 +14,7 @@ import { createPortal } from 'react-dom';
 import { useSettingsContext } from '../utils/settings/settingsContext.jsx';
 import { useContext } from 'react';
 import { UnresponsiveContext } from './UnresponsiveContext.jsx';
-import AIChat from './AIChat.jsx';
+// import AIChat from './AIChat.jsx';
 // import hintVideo from '../assets/TestVideo.mp4';
 
 function SideBar(props) {
@@ -208,7 +208,7 @@ function SideBar(props) {
                         Questions
                     </button>
                     <div id="chat-content" popover="auto" className="chat-content">
-                        <AIChat steps={steps} completedSteps={completedSteps} stepInstructions={stepInstructions} nextStep={nextStep} />
+                        {/* <AIChat steps={steps} completedSteps={completedSteps} stepInstructions={stepInstructions} nextStep={nextStep} /> */}
                     </div>
                 </div>
             </div>
