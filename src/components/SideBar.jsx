@@ -34,7 +34,6 @@ function SideBar(props) {
 
     const { showUnresponsive, setShowUnresponsive } = useContext(UnresponsiveContext);
 
-
     //Starts Lesson
       async function handleStartLesson() {
         console.log("Starting lesson...");

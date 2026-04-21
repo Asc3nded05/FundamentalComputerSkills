@@ -3,7 +3,6 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import ReactMarkdown from 'react-markdown'
 
 function AIChat({steps, completedSteps, stepInstructions, nextStep}) {
-    console.log("AIChat props:", { steps, completedSteps, stepInstructions, nextStep });
     const [userInput, setUserInput] = useState('');
     const [messages, setMessages] = useState([]);
 

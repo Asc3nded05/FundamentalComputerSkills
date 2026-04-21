@@ -7,7 +7,9 @@ function Home({ navigateToPage }) {
         bluetoothOn,
         toggleBluetooth,
         wifiOn,
-        toggleWifi,
+        connectedNetwork,
+        isConnecting,
+        toggleWifi
     } = useSettingsContext();
 
     return (
@@ -19,8 +21,14 @@ function Home({ navigateToPage }) {
             <p className="card-description">HP model 123456</p>
 
             {/* Quick status cards */}
-            <h3 className="card-title">WiFi Network 1</h3>
-            <p className="card-description">Connected</p>
+            <h3 className="card-title">Wi-Fi ({connectedNetwork ? `${connectedNetwork}` : 'Not Connected'})</h3>
+            <p className="card-description">
+                {connectedNetwork
+                    ? 'Connected, secured'
+                    : isConnecting
+                        ? 'Connecting...'
+                        : 'No internet connection'}
+            </p>
             <h3 className="card-title">Windows Update</h3>
             <p className="card-description">Last checked: 10 minutes ago</p>
 

@@ -133,5 +133,9 @@
             "default": 50,
             "event": "VolumeChange"
         }
+    },
+    "user": {
+        "username": "",
+        "userEmail": ""
     }
 }
