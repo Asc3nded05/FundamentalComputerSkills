@@ -35,7 +35,7 @@
             "detailType": "bluetooth",
             "devices": {
                 "Headphone 1": {
-                    "defaultStatus": "connected"
+                    "defaultStatus": "disconnected"
                 },
                 "Headphone 2": {
                     "defaultStatus": "disconnected"
