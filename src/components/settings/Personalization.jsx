@@ -153,7 +153,11 @@ const Personalization = ({ subPage = 'main', onSubPageChange, backgroundImage, o
                                 />
                                 <button
                                     className="btn btn-secondary"
-                                    onClick={onResetDefault}
+                                    onClick={() => {
+                                        dispatchDesktopEvent('SettingsPersonalizationBackgroundResetClicked');
+                                        onResetDefault();
+                                    }
+                                    }
                                 >
                                     Reset to default
                                 </button>
