@@ -98,6 +98,7 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
                                     y: (baseHeight - (a.defaultSize?.height || 300) - 56) / 2,
                                 },
                                 startingPage: startingPage || a.startingPage,
+                                currentPage: startingPage ? startingPage : a.currentPage,
                             }
                             : a
                     );
@@ -112,6 +113,7 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
                                 isMinimized: false,
                                 initialContent: initialContent !== undefined ? initialContent : a.initialContent,
                                 startingPage: startingPage || a.startingPage,
+                                currentPage: startingPage || a.startingPage,
                                 size: a.size || a.previousSize || a.defaultSize || { width: 400, height: 300 },
                                 position: a.position || a.previousPosition || {
                                     x: (baseWidth - (a.defaultSize?.width || 400)) / 2,
@@ -157,6 +159,7 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
                     initialContent: initialContent !== undefined ? initialContent : (app.initialContent || ''),
                     fileIdentifier: fileIdentifier || undefined,
                     startingPage: startingPage || app.startingPage,
+                    currentPage: startingPage || app.startingPage,
                     offset
                 };
 

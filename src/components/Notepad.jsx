@@ -23,6 +23,12 @@ function Notepad({ initialContent = "Hello, this is text", onContentChange }) {
         hasInitializedContent.current = true;
     }, [initialContent]);
 
+    const handleContentInput = (event) => {
+        const nextContent = event.currentTarget.innerText;
+        contentRef.current = nextContent;
+        onContentChange?.(nextContent);
+    };
+
     const handleSearch = (event) => {
         const query = event.target.value;
         const markInstance = new Mark(document.querySelector("#search-node"));
@@ -39,19 +45,13 @@ function Notepad({ initialContent = "Hello, this is text", onContentChange }) {
         });
     };
 
-    const handleContentInput = (event) => {
-        const nextContent = event.currentTarget.innerText;
-        contentRef.current = nextContent;
-        onContentChange?.(nextContent);
-    };
-
     // Update active mark on currentMark change (Next/Prev buttons)
     useEffect(() => {
         const marks = document.querySelectorAll("#search-node mark");
         marks.forEach((m, i) => {
             m.classList.toggle('active', i === (currentMark - 1)); // Add 'active' class to current mark
         });
-    }, [currentMark]);
+    }, [currentMark, totalMarks]);
 
     const findNext = () => {
         dispatchDesktopEvent("NotepadFindNext");
@@ -81,7 +81,7 @@ function Notepad({ initialContent = "Hello, this is text", onContentChange }) {
             findBar.style.display = "none"; // Hide the find bar
             setSearchterm(""); // Clear search term state
             setCurrentMark(-1);
-            setTotalMarks(0);
+            setTotalMarks(-1);
             const markInstance = new Mark(document.querySelector("#search-node"));
             markInstance.unmark(); // Remove highlights when closing find bar
         }
