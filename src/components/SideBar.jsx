@@ -40,7 +40,7 @@ function SideBar(props) {
 
     //Starts Lesson
     async function handleStartLesson() {
-        console.log("Starting lesson...");
+        // console.log("Starting lesson...");
         setCompletedSteps(0);
         setLessonState("InProgress");
 
@@ -88,7 +88,7 @@ function SideBar(props) {
 
     // Fetches step data for the current lesson
     const { response: steps } = useStep(currentLesson);
-    console.log("Steps:", steps);
+    // console.log("Steps:", steps);
 
     // State to track the current step's instructions and any wrong events
     const [stepInstructions, setStepInstructions] = useState("Press Start Lesson to Begin");
@@ -105,7 +105,7 @@ function SideBar(props) {
         if (stepInstructions && readAloud) {
             const audio = new SpeechSynthesisUtterance(stepInstructions);
             const voices = window.speechSynthesis.getVoices();
-            console.log("Available voices:", voices);
+            // console.log("Available voices:", voices);
             if (voices.length > 0) {
                 audio.voice = voices[voiceIndex % voices.length];
             }
@@ -148,13 +148,13 @@ function SideBar(props) {
         }
     }, [completedSteps, stepCount]);
 
-    useEffect(() => {
-        console.log("Next step:", nextStep);
-        if (nextStep === "45") {
-            console.log("Next step is 45");
-        }
+    // useEffect(() => {
+    //     // console.log("Next step:", nextStep);
+    //     if (nextStep === "45") {
+    //         // console.log("Next step is 45");
+    //     }
 
-    }, [nextStep]);
+    // }, [nextStep]);
 
 
     const [activeId, setActiveId] = useState(1);
