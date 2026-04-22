@@ -8,6 +8,16 @@
   position: relative;
 }
 
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sidebar-tab {
+  flex-grow: 1;
+}
+
 .lesson-num {
   margin-top: 4vh;
   width: 100%;
