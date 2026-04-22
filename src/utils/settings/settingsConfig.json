@@ -135,7 +135,7 @@
         }
     },
     "user": {
-        "username": "",
-        "userEmail": ""
+        "username": "User",
+        "userEmail": "userEmail@domain.com"
     }
 }
