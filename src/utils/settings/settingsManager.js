@@ -72,6 +72,10 @@ export const useSettings = () => {
   // Project selection
   const [selectedProject, setSelectedProject] = useState(config.project.default);
 
+  // User info
+  const [username, setUsername] = useState(config.user.username);
+  const [userEmail, setUserEmail] = useState(config.user.userEmail);
+
   // Sliders
   const [brightness, setBrightness] = useState(config.sliders.brightness.default);
   const [volume, setVolume] = useState(config.sliders.volume.default);
@@ -316,6 +320,9 @@ export const useSettings = () => {
 
     // Sliders
     brightness, volume, setBrightnessValue, setVolumeValue,
+
+    // User
+    username, setUsername, userEmail, setUserEmail,
 
     // Wi‑Fi
     wifiStatuses, selectedWifi, setSelectedWifi, toggleWifiConnection,
