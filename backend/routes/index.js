@@ -20,6 +20,7 @@ router.get("/test-db", async (req, res) => {
 
 router.use('/lessons', lessonRoutes);
 router.use('/steps', stepRoutes);
+router.use('/chat', chatRoutes);
 
 export default router;
 
