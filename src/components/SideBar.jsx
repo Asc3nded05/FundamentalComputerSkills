@@ -1,13 +1,9 @@
 import { useLesson } from '../api/useLesson.js';
-import { useLessons } from '../api/useLessons.js';
 import { runLesson } from '../utils/lessonRunner.js';
 import { useState, useEffect } from 'react';
 import { useStep } from '../api/useStep.js';
-import { Link } from 'react-router-dom';
 import { dispatchDesktopEvent } from '../utils/eventBus.js';
-import { MdArrowBack } from 'react-icons/md';
 import { MdVolumeUp, MdVolumeOff } from 'react-icons/md';
-import NextButton from './NextButton.jsx';
 import '../css/SideBar.css';
 import Loading from './Loading.jsx';
 import React from 'react';
@@ -20,8 +16,6 @@ import Lessons from '../pages/Lessons.jsx';
 // import hintVideo from '../assets/TestVideo.mp4';
 
 function SideBar(props) {
-    const lessonId = props.lessonId || 1;
-    const desktopRef = props.desktopRef;
     // Sets Current LessonID or Default to lesson 1 if no lessonId is provided
     const currentLesson = props.lessonId || 1;
 
@@ -81,15 +75,9 @@ function SideBar(props) {
     // Fetches lesson data
     const { loading, error } = useLesson(currentLesson);
 
-    //Fetches lesson data for all lessons to pass to SideBarLesson component
-    const { lessonResponse, lessonLoading, lessonError } = useLessons();
-    // Handles loading and error states for lessons 
-    if (lessonLoading) return <Loading />;
-    if (lessonError) return <div>Error loading lessons</div>;
-
     // Fetches step data for the current lesson
     const { response: steps } = useStep(currentLesson);
-    // console.log("Steps:", steps);
+    //console.log("Steps:", steps);
 
     // State to track the current step's instructions and any wrong events
     const [stepInstructions, setStepInstructions] = useState("Press Start Lesson to Begin");
@@ -176,6 +164,27 @@ function SideBar(props) {
         content = null;
     }
 
+    let nextButton;
+    if (lessonState === "NotStarted") {
+        nextButton = <button onClick={handleStartLesson} className='lesson-start-button'>Start Lesson</button>
+    } else if (lessonState === "InProgress" && eventName?.includes("Next")) {
+        nextButton = (
+            <button className='next-button' onClick={handleNext}>Next</button>
+        );
+    } else if (eventName?.includes("Finish")) {
+        nextButton = (
+            <button className='next-button' onClick={handleFinish}>Finish</button>
+        );
+    } else {
+        nextButton = null;
+    }
+
+    function handleFinish() {
+        dispatchDesktopEvent("Finish");
+        setStepInstructions("Lesson Completed! Great Job!");
+        setActiveId(2);
+    }
+
     // Handles loading and error states
     if (loading) return <Loading />;
     if (error) return <div>Error loading lesson data</div>;
@@ -216,13 +225,8 @@ function SideBar(props) {
                             {/* <p className="wrong-event">{wrongEvent}</p> */}
                             <p className="step-instructions">{stepInstructions}</p>
                             <p className="next-step">{nextStep}</p>
-                            {/* Next button Component for Conditional Rendering */}
-                            <NextButton
-                                handleStartLesson={handleStartLesson}
-                                handleNext={handleNext}
-                                lessonState={lessonState}
-                                eventName={eventName}
-                            />
+                            {/* Next button for Conditional Rendering */}
+                            {nextButton}
                             {/* <button onClick={() => setShowUnresponsive(prev => !prev)}>Create Unresponsive</button> */}
 
                             {/* Help buttons */}
@@ -252,7 +256,7 @@ function SideBar(props) {
                 </div>
             </div>
             {showVideo && props.desktopRef?.current && createPortal(
-                <div id="big-demo" onClick={() => setShowVideo(false)} style={{ zIndex: 1000, position: 'absolute'}}>
+                <div id="big-demo" onClick={() => setShowVideo(false)} style={{ zIndex: 1000, position: 'absolute' }}>
                     <video autoPlay loop muted controls={false}>
                         <source src={hintVideo} type="video/mp4" />
                     </video>

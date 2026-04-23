@@ -1,9 +1,6 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 // @ts-ignore
 import Desktop from './pages/Desktop.jsx'
-import Lessons from './pages/Lessons.jsx'
-import Login from './pages/Login.jsx'
-import Files from './pages/Files.jsx'
 
 import './css/App.css'
 import './css/AppIcon.css'
@@ -34,9 +31,6 @@ function App() {
               </UnresponsiveProvider>
             </SettingsProvider>
           } />
-          <Route path="/lessons" element={<Lessons />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/files" element={<Files />} />
         </Routes>
       </div>
     </BrowserRouter>
