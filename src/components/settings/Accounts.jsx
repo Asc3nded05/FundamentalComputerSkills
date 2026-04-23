@@ -1,9 +1,11 @@
+import { useSettingsContext } from "../../utils/settings/settingsContext";
+
 function Accounts() {
-    // For now, hardcoded user info – later can pass as prop
-    const user = {
-        name: "User",
-        email: "Example@domain.com"
-    };
+    
+    const {
+        username,
+        userEmail
+    } = useSettingsContext();
 
     return (
         <div className="settings-section">
@@ -11,8 +13,8 @@ function Accounts() {
 
             {/* User info block */}
             <div className="settings-user-info">
-                <h2>{user.name}</h2>
-                <p>{user.email}</p>
+                <h2>{username}</h2>
+                <p>{userEmail}</p>
             </div>
 
             {/* Rewards & OneDrive row */}

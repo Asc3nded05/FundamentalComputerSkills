@@ -87,6 +87,13 @@ export const useSettings = () => {
   const { statuses: wifiStatuses, setStatusWithDelay: setWifiStatusWithDelay, updateImmediate: updateWifiStatus } =
     useAsyncStatus(initialWifiStatuses);
 
+  // Wi‑Fi network password requirements
+  const [wifiRequiresPassword] = useState(() =>
+    Object.fromEntries(
+      Object.entries(config.toggles.wifi.networks).map(([name, data]) => [name, data.requiresPassword])
+    )
+  );
+
   // Bluetooth device statuses
   const initialBluetoothStatuses = Object.fromEntries(
     Object.entries(config.toggles.bluetooth.devices).map(([name, data]) => [name, data.defaultStatus])
@@ -216,6 +223,20 @@ export const useSettings = () => {
   const toggleWifiConnection = useCallback((network, source = '') => {
     if (!wifiOn) return;
 
+    const networkConfig = config.toggles.wifi.networks[network];
+    if (networkConfig && networkConfig.requiresPassword) {
+      const userPassword = prompt(`Enter password for ${network}:`);
+      if (userPassword === null) {
+        // User cancelled the prompt
+        return;
+      } else if (userPassword !== networkConfig.password) {
+        alert('Incorrect password');
+        return;
+      } else {
+        dispatchDesktopEvent(`WiFiNetworkPasswordCorrect${source}`, { networkName: network });
+      }
+    }
+
     const currentStatus = wifiStatuses[network];
     if (currentStatus === 'connecting' || currentStatus === 'disconnecting') return;
 
@@ -325,7 +346,7 @@ export const useSettings = () => {
     username, setUsername, userEmail, setUserEmail,
 
     // Wi‑Fi
-    wifiStatuses, selectedWifi, setSelectedWifi, toggleWifiConnection,
+    wifiStatuses, selectedWifi, setSelectedWifi, toggleWifiConnection, wifiRequiresPassword,
 
     // Bluetooth
     bluetoothStatuses, toggleBluetoothConnection, addBluetoothDevice, removeBluetoothDevice,

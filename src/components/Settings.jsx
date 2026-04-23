@@ -16,6 +16,7 @@ import '../css/Settings.css';
 
 import { useEffect, useState } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus";
+import { useSettingsContext } from "../utils/settings/settingsContext";
 
 function Settings({ startingPage = 'home', currentPage: currentPageProp, settingsState = {}, onSettingsStateChange, backgroundImage, onBackgroundChange, onResetDefault, onPageChange }) {
 
@@ -49,6 +50,11 @@ function Settings({ startingPage = 'home', currentPage: currentPageProp, setting
         privacy: { name: 'Privacy & Security', icon: '🔒', event: 'SettingsPrivacySecurityPageClicked' },
         updates: { name: 'Windows Update', icon: '📦', event: 'SettingsUpdatePageClicked' },
     };
+
+    const {
+        username, 
+        userEmail
+    } = useSettingsContext();
 
     const renderContent = () => {
         switch (currentPage) {
@@ -111,8 +117,8 @@ function Settings({ startingPage = 'home', currentPage: currentPageProp, setting
             <div className="settings-content">
                 <div className={`settings-sidebar ${!sidebarOpen ? 'd-none' : ''}`}>
                     <div className="settings-user-info">
-                        <h2>User</h2>
-                        <p>Example@domain.com</p>
+                        <h2>{username}</h2>
+                        <p>{userEmail}</p>
                     </div>
                     {Object.entries(pages).map(([key, { name, icon }]) => (
                         <div
