@@ -1,22 +1,22 @@
 import { useLesson } from '../api/useLesson.js';
 import { useLessons } from '../api/useLessons.js';
 import { runLesson } from '../utils/lessonRunner.js';
-import { useState, useEffect, act } from 'react';
+import { useState, useEffect } from 'react';
 import { useStep } from '../api/useStep.js';
 import { Link } from 'react-router-dom';
 import { dispatchDesktopEvent } from '../utils/eventBus.js';
 import { MdArrowBack } from 'react-icons/md';
 import { MdVolumeUp, MdVolumeOff } from 'react-icons/md';
+import NextButton from './NextButton.jsx';
 import '../css/SideBar.css';
 import Loading from './Loading.jsx';
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { useSettingsContext } from '../utils/settings/settingsContext.jsx';
 import { useContext } from 'react';
 import { UnresponsiveContext } from './UnresponsiveContext.jsx';
-
-import SideBarMain from './SideBarMain.jsx';
-import Lessons from '../pages/Lessons.jsx';
 import AIChat from './AIChat.jsx';
+import Lessons from '../pages/Lessons.jsx';
 // import hintVideo from '../assets/TestVideo.mp4';
 
 function SideBar(props) {
@@ -37,6 +37,7 @@ function SideBar(props) {
     const [eventName, setEventName] = useState(null);
 
     const { showUnresponsive, setShowUnresponsive } = useContext(UnresponsiveContext);
+
 
     //Starts Lesson
     async function handleStartLesson() {
@@ -79,12 +80,12 @@ function SideBar(props) {
 
     // Fetches lesson data
     const { loading, error } = useLesson(currentLesson);
+
     //Fetches lesson data for all lessons to pass to SideBarLesson component
-    const { lessonResponse, lessonLoading, lessonError} = useLessons();
+    const { lessonResponse, lessonLoading, lessonError } = useLessons();
     // Handles loading and error states for lessons 
     if (lessonLoading) return <Loading />;
     if (lessonError) return <div>Error loading lessons</div>;
-
 
     // Fetches step data for the current lesson
     const { response: steps } = useStep(currentLesson);
@@ -95,6 +96,7 @@ function SideBar(props) {
     const [nextStep, setNextStep] = useState(null);
     const [hintText, setHintText] = useState(null);
     const [hintVideo, setHintVideo] = useState(null);
+    const [wrongEvent, setWrongEvent] = useState(null);
     const [completedSteps, setCompletedSteps] = useState(0);
 
     // State for video demo
@@ -156,7 +158,7 @@ function SideBar(props) {
 
     }, [nextStep]);
 
-
+    // side bar tabs handled here
     const [activeId, setActiveId] = useState(1);
 
     const buttons = [
@@ -166,15 +168,13 @@ function SideBar(props) {
     ];
 
     let content;
-    if (activeId === 1) {
-        content = <SideBarMain lessonId={lessonId} desktopRef={desktopRef} />;
-    } else if (activeId === 2) {
+    if (activeId === 2) {
         content = <Lessons />;
     } else if (activeId === 3) {
-        content = <AIChat steps={steps} completedSteps={completedSteps} stepInstructions={stepInstructions} nextStep={nextStep}/>;
+        content = <AIChat steps={steps} completedSteps={completedSteps} stepInstructions={stepInstructions} nextStep={nextStep} />;
+    } else {
+        content = null;
     }
-
-
 
     // Handles loading and error states
     if (loading) return <Loading />;
@@ -192,33 +192,73 @@ function SideBar(props) {
                             style={{
                                 backgroundColor: activeId === btn.id ? 'lightgrey' : 'white',
                                 color: 'black',
-                                margin: '5px'
+                                margin: '5px',
+                                padding: '10px',
                             }}
                         >
                             {btn.label}
                         </button>
                     ))}
-                    <button
-                        className="read-aloud-link link"
-                        onClick={() => setReadAloud(!readAloud)}
-                        title={readAloud ? 'Turn off read aloud' : 'Turn on read aloud'}
-                    >
-                        {readAloud ? <MdVolumeUp size={30} /> : <MdVolumeOff size={30} />}
-                        Read Aloud
-                    </button>
-
                 </div>
-                <div id='sidebar-tab' className='sidebar-tab'>
+                <div id='sidebar-tab' className='sidebar-tab' style={(activeId === 1) ? { zIndex: '0' } : { zIndex: '10' }}>
                     {content}
-                    {/*
-                    {(() => {
-                        if (activeId === 1) return <p>Result 1</p>;
-                        if (activeId === 2) return <p>Result 2</p>;
-                        return <p>Result 3</p>;
-                    })()}
-                        */}
+                </div>
+                <div className='sidebar-main' style={(activeId === 1) ? { zIndex: '10' } : { zIndex: '0' }}>
+                    <div className='sidebar-container'>
+                        <div id='sidebar' className='sidebar'>
+                            {/* Lesson number and progress */}
+                            <div className='lesson-num'>
+                                <p>Lesson #{currentLesson}</p>
+                                <div className="lesson-progress">
+                                    <div className={"lesson-progress-bar"} style={{ width: `${progressPercent}%` }}></div>
+                                </div>
+                            </div>
+                            {/* <p className="wrong-event">{wrongEvent}</p> */}
+                            <p className="step-instructions">{stepInstructions}</p>
+                            <p className="next-step">{nextStep}</p>
+                            {/* Next button Component for Conditional Rendering */}
+                            <NextButton
+                                handleStartLesson={handleStartLesson}
+                                handleNext={handleNext}
+                                lessonState={lessonState}
+                                eventName={eventName}
+                            />
+                            {/* <button onClick={() => setShowUnresponsive(prev => !prev)}>Create Unresponsive</button> */}
+
+                            {/* Help buttons */}
+                            <div className="help-buttons">
+                                <button popoverTarget="hint-content" className="hint-button">
+                                    Hints
+                                </button>
+                                {/* Uses the Popover API */}
+                                {/* Hint content popover */}
+                                <div id="hint-content" popover="auto" className="hint-content">
+                                    <p>{hintText}</p>
+                                    <button popoverTarget="big-demo" className="hint-demo" id="hint-demo" onClick={() => setShowVideo(true)}>Demo</button>
+                                </div>
+
+                                <button
+                                    className="read-aloud-link link"
+                                    onClick={() => setReadAloud(!readAloud)}
+                                    title={readAloud ? 'Turn off read aloud' : 'Turn on read aloud'}
+                                >
+                                    {readAloud ? <MdVolumeUp size={30} /> : <MdVolumeOff size={30} />}
+                                    Read Aloud
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            {showVideo && props.desktopRef?.current && createPortal(
+                <div id="big-demo" onClick={() => setShowVideo(false)} style={{ zIndex: 1000, position: 'absolute'}}>
+                    <video autoPlay loop muted controls={false}>
+                        <source src={hintVideo} type="video/mp4" />
+                    </video>
+                </div>,
+                props.desktopRef.current
+            )}
         </>
     );
 }
