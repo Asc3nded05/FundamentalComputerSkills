@@ -41,7 +41,7 @@ function SideBar(props) {
 
     //Starts Lesson
     async function handleStartLesson() {
-        // console.log("Starting lesson...");
+        //console.log("Starting lesson...");
         setCompletedSteps(0);
         setLessonState("InProgress");
 
