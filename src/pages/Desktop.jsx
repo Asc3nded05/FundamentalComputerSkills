@@ -404,7 +404,7 @@ function Desktop() {
                     />
 
                     <SearchMenu
-                        closeStartMenu={() => setIsSearchOpen(false)}
+                        closeSearchMenu={() => {setIsSearchOpen(false)}}
                         isOpen={isSearchOpen}
                         apps={startMenuApps}
                         query={query}
