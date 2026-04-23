@@ -2,26 +2,16 @@ import { generateChatResponse } from '../services/chatService.js';
 
 export const sendMessage = async (req, res) => {
   try {
-    const { messages, userInput, stepTexts, stepInstructions, nextStep } = req.body;
-
-    if (!userInput || typeof userInput !== 'string') {
-      return res.status(400).json({ error: 'Missing or invalid userInput' });
+    const { prompt } = req.body;
+    if (!prompt || typeof prompt !== 'string') {
+      return res.status(400).json({ error: 'Missing or invalid prompt' });
     }
 
-    const aiText = await generateChatResponse({
-      messages: messages || [],
-      userInput,
-      stepTexts: stepTexts || [],
-      stepInstructions: stepInstructions || '',
-      nextStep: nextStep || '',
-    });
-
+    const aiText = await generateChatResponse(prompt);
     return res.json({ response: aiText });
   } catch (error) {
     console.error('Chat error:', error.message);
-    const message = error.message;
-
-    switch (message) {
+    switch (error.message) {
       case 'RATE_LIMITED':
         return res.status(429).json({ error: 'Too many requests. Please try again later.' });
       case 'MODEL_OVERLOADED':

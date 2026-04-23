@@ -1,19 +1,35 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
+import { useChat } from '../api/useChat';   // adjust the path to your folder
 
 function AIChat({ steps, completedSteps, stepInstructions, nextStep }) {
   const [userInput, setUserInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Reset chat when the lesson changes (based on steps array identity or length)
+  // Reset chat when the lesson context changes (effectively a resetChat)
   useEffect(() => {
     setMessages([]);
-  }, [steps, stepInstructions]); // dependency on lesson-specific data
+  }, [steps, stepInstructions]);
 
-  // Optional: expose a resetChat function to parent via ref or prop
-  // For simplicity, the useEffect above does it automatically.
-  // If you need a manual trigger, add a function and maybe call it from outside.
+  const buildPrompt = (userMessage) => {
+    const stepTexts = steps ? steps.map(s => s.text).join(', ') : '';
+    const lessonContext = `You are an AI assistant helping a user learn computer skills in a website that contains a simulated desktop environment similar to Windows 11. The desktop, taskbar, and start menu have app icons for: File Explorer, Notepad, Settings, and Task Manager. Not every functionality is the same as Windows 11, but they are similar. The instructions are in a sidebar to the right of the simulated desktop.
+
+The user is currently in the following lesson: ${stepTexts}.
+Current step instruction: "${stepInstructions}".
+Next step will be: "${nextStep}".
+
+Answer the user's question clearly and helpfully, focusing on the current lesson context.`;
+
+    // Build conversation history for context (previous messages)
+    const history = messages
+      .map(m => `${m.role === 'user' ? 'User' : 'AI'}: ${m.text}`)
+      .join('\n');
+
+    // Full prompt = system + history + latest user query
+    return `${lessonContext}\n\nConversation history:\n${history}\nUser: ${userMessage}\nAI:`;
+  };
 
   const handleSendMessage = async () => {
     if (!userInput.trim()) return;
@@ -22,40 +38,14 @@ function AIChat({ steps, completedSteps, stepInstructions, nextStep }) {
     const updatedMessages = [...messages, newUserMessage];
     setMessages(updatedMessages);
     setUserInput('');
-    setLoading(true);
 
     try {
-      const stepTexts = steps ? steps.map(s => s.text) : [];
-
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          messages: updatedMessages.slice(0, -1), // send history without the latest user message
-          userInput,
-          stepTexts,
-          stepInstructions,
-          nextStep,
-        }),
-      });
-
-      if (!response.ok) {
-        const data = await response.json().catch(() => ({}));
-        throw new Error(data.error || `Request failed with status ${response.status}`);
-      }
-
-      const data = await response.json();
-      const aiMessage = { role: 'ai', text: data.response };
-      setMessages(prev => [...prev, aiMessage]);
-    } catch (error) {
-      console.error('Chat error:', error);
-      const errorMessage = {
-        role: 'ai',
-        text: `Error: ${error.message || 'Unknown error'}`,
-      };
-      setMessages(prev => [...prev, errorMessage]);
-    } finally {
-      setLoading(false);
+      const fullPrompt = buildPrompt(userInput);
+      const aiText = await sendMessage(fullPrompt);
+      setMessages(prev => [...prev, { role: 'ai', text: aiText }]);
+    } catch (err) {
+      const errMsg = err.message || 'Unknown error';
+      setMessages(prev => [...prev, { role: 'ai', text: `Error: ${errMsg}` }]);
     }
   };
 
@@ -70,15 +60,12 @@ function AIChat({ steps, completedSteps, stepInstructions, nextStep }) {
     <div className="chat-container">
       <div className="chat-messages">
         {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`chat-message ${msg.role === 'user' ? 'user-message' : 'ai-message'}`}
-          >
+          <div key={index} className={`chat-message ${msg.role === 'user' ? 'user-message' : 'ai-message'}`}>
             <strong>{msg.role === 'user' ? 'You:' : 'AI:'}</strong>{' '}
             <ReactMarkdown>{msg.text}</ReactMarkdown>
           </div>
         ))}
-        {loading && <div className="chat-message ai-message"><em>Thinking...</em></div>}
+        {loading && <div className="chat-message ai-message"><em>Thinking…</em></div>}
       </div>
       <div className="chat-input-area">
         <input
