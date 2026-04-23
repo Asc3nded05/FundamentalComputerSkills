@@ -7,6 +7,8 @@ function AIChat({ steps, completedSteps, stepInstructions, nextStep }) {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const { sendMessage, loading, error } = useChat();
+
   // Reset chat when the lesson context changes (effectively a resetChat)
   useEffect(() => {
     setMessages([]);
