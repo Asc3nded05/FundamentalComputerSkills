@@ -5,7 +5,6 @@ import { useChat } from '../api/useChat';   // adjust the path to your folder
 function AIChat({ steps, completedSteps, stepInstructions, nextStep }) {
   const [userInput, setUserInput] = useState('');
   const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   const { sendMessage, loading, error } = useChat();
 
