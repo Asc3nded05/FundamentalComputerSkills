@@ -578,6 +578,42 @@ input:checked+.toggle-slider:before {
     margin-top: 4px;
 }
 
+/* Icon used next to network names */
+.card-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* Container for the main clickable card content */
+.network-card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* Left side: icon + title + optional status */
+.network-card-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Text block inside the card (title + status) */
+.network-card-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-status {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+
 @media (max-width: 768px) {
     .network-header {
         flex-direction: column;
@@ -834,7 +870,7 @@ input:checked+.toggle-slider:before {
   background-color: #f3f3f3;  /* slightly darker than white */
   border-radius: 8px;
   margin-top: 4px;
-  padding: 8px 0;
+  padding: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
 }

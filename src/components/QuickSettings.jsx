@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus";
 import { useSettingsContext } from "../utils/settings/settingsContext";
 import placeholderImage from "../assets/WifiPlaceholder.png"
+import wifiIcon from "../assets/WifiPlaceholder.png";
+import wifiLockedIcon from "../assets/WifiLockPlaceholder.png";
 import "../css/QuickSettings.css";
 
 function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
@@ -18,6 +20,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
         brightness, volume, setBrightnessValue, setVolumeValue,
         wifiStatuses, selectedWifi, setSelectedWifi, toggleWifiConnection,
         bluetoothStatuses, toggleBluetoothConnection,
+        wifiRequiresPassword,
     } = useSettingsContext();
 
     // Helper to select a Wi‑Fi network (toggles selection + dispatches event)
@@ -255,41 +258,46 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                                 </div>
                                             ) : (
                                                 <div className="qs-detail-list">
-                                                    {Object.keys(wifiStatuses).map(network => (
+                                                    {Object.keys(wifiStatuses).map(network => {
+                                                        const status = wifiStatuses[network];
+                                                        const requiresPassword = wifiRequiresPassword[network];
+                                                        const showStatus = status === "connected" || status === "connecting";
+                                                        return (
                                                         <div key={network}>
                                                             <button
                                                                 className="qs-detail-list-item"
                                                                 onClick={() => selectWifiNetwork(network)}
                                                             >
                                                                 <div className="qs-network-info">
-                                                                    <img className="qs-icon" src={placeholderImage} alt={network} />
+                                                                    <img className="qs-icon" src={requiresPassword ? wifiLockedIcon : wifiIcon} alt={network} />
                                                                     <span>{network}</span>
                                                                 </div>
 
-                                                                {wifiStatuses[network] !== "disconnected" && (
-                                                                    <span className="qs-connected-indicator">
-                                                                        {wifiStatuses[network]}
+                                                                {showStatus && (
+                                                                    <span className="qs-connected-indicator">                          
+                                                                        {status === "connected" ? "Connected" : "Connecting..."}
                                                                     </span>
                                                                 )}
                                                             </button>
 
                                                             {selectedWifi === network && (
                                                                 <button
-                                                                    className={`qs-connect-button ${wifiStatuses[network] === "connected" ? "disconnect" : ""
-                                                                        }`}
+                                                                    className={`qs-connect-button ${
+                                                                        status === "connected" ? "disconnect" : ""
+                                                                    }`}
                                                                     onClick={() => toggleWifiConnection(network, 'QS')}
                                                                 >
-                                                                    {wifiStatuses[network] === "connected"
+                                                                    {status === "connected"
                                                                         ? "Disconnect"
-                                                                        : wifiStatuses[network] === "connecting"
-                                                                            ? "Connecting..."
-                                                                            : wifiStatuses[network] === "disconnecting"
-                                                                                ? "Disconnecting..."
-                                                                                : "Connect"}
+                                                                        : status === "connecting"
+                                                                        ? "Connecting..."
+                                                                        : status === "disconnecting"
+                                                                        ? "Disconnecting..."
+                                                                        : "Connect"}
                                                                 </button>
                                                             )}
                                                         </div>
-                                                    ))}
+                                                    )})}
                                                 </div>
                                             )}
                                         </div>

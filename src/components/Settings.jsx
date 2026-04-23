@@ -56,8 +56,6 @@ function Settings({ startingPage = 'home', currentPage: currentPageProp, setting
         userEmail
     } = useSettingsContext();
 
-    console.log('Settings context values:', { username, userEmail });
-
     const renderContent = () => {
         switch (currentPage) {
             case 'home':
