@@ -1,21 +1,42 @@
 import { useState, useEffect } from 'react';
+
+let lessonsCache = null;
+let lessonsPromise = null;
+
 export function useLessons() {
-    const [response, setResponse] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [response, setResponse] = useState(lessonsCache);
+    const [loading, setLoading] = useState(!lessonsCache);
     const [error, setError] = useState(null);
+
     useEffect(() => {
-        fetch(`https://fundamentalcomputerskills.duckdns.org/api/lessons`)
-            .then(res => res.json())
+        if (lessonsCache) {
+            return;
+        }
+
+        if (!lessonsPromise) {
+            lessonsPromise = fetch(`https://fcscapstone.duckdns.org/api/lessons`)
+                .then(res => res.json())
+                .then(data => {
+                    lessonsCache = data;
+                    return data;
+                })
+                .catch(err => {
+                    lessonsPromise = null;
+                    throw err;
+                });
+        }
+
+        lessonsPromise
             .then(data => {
-                console.log('Fetched lessons:', data);
                 setResponse(data);
                 setLoading(false);
             })
-            .catch(error => {
-                setError(error);
+            .catch(err => {
+                setError(err);
                 setLoading(false);
             });
     }, []);
+
     return { response, loading, error };
 }
 

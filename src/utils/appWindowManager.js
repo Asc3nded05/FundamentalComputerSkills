@@ -13,8 +13,22 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
             isOpen: false,
             zIndex: 0,
             size: app.defaultSize || { width: 400, height: 300 },
+            position: {
+                x: (baseWidth - (app.defaultSize?.width || 400)) / 2,
+                y: (baseHeight - (app.defaultSize?.height || 300) - 56) / 2,
+            },
             isMinimized: false,
-            isMaximized: false
+            isMaximized: false,
+            previousSize: app.defaultSize || { width: 400, height: 300 },
+            previousPosition: {
+                x: (baseWidth - (app.defaultSize?.width || 400)) / 2,
+                y: (baseHeight - (app.defaultSize?.height || 300) - 56) / 2,
+            },
+            defaultInitialContent: app.initialContent || '',
+            defaultStartingPage: app.startingPage || 'home',
+            currentPage: app.startingPage || 'home',
+            initialContent: app.initialContent || '',
+            settingsState: {}
         }))
     );
 
@@ -29,7 +43,12 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
             zIndex: 0,
             size: app.defaultSize || { width: 400, height: 300 },
             isMinimized: false,
-            isMaximized: false
+            isMaximized: false,
+            defaultInitialContent: app.initialContent || '',
+            defaultStartingPage: app.startingPage || 'home',
+            currentPage: app.startingPage || 'home',
+            initialContent: app.initialContent || '',
+            settingsState: {}
         })));
     }, [initialApps]);
 
@@ -64,11 +83,23 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
             const shouldCreateNewInstance = createNewInstance && app.canHaveMultipleInstances;
 
             if (!shouldCreateNewInstance) {
-                // If app is already open, just bring it to front
+                // If app is already open, just bring it to front or restore it if minimized
                 if (app.isOpen) {
                     return prev.map(a =>
                         a.id === appId
-                            ? { ...a, isOpen: true, zIndex: highestZIndex + 1, isMinimized: false, startingPage: startingPage || a.startingPage }
+                            ? {
+                                ...a,
+                                isOpen: true,
+                                zIndex: highestZIndex + 1,
+                                isMinimized: false,
+                                size: a.size || a.previousSize || a.defaultSize || { width: 400, height: 300 },
+                                position: a.position || a.previousPosition || {
+                                    x: (baseWidth - (a.defaultSize?.width || 400)) / 2,
+                                    y: (baseHeight - (a.defaultSize?.height || 300) - 56) / 2,
+                                },
+                                startingPage: startingPage || a.startingPage,
+                                currentPage: startingPage ? startingPage : a.currentPage,
+                            }
                             : a
                     );
                 } else {
@@ -76,9 +107,18 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
                     return prev.map(a =>
                         a.id === appId
                             ? {
-                                ...a, isOpen: true, zIndex: highestZIndex + 1, isMinimized: false,
+                                ...a,
+                                isOpen: true,
+                                zIndex: highestZIndex + 1,
+                                isMinimized: false,
                                 initialContent: initialContent !== undefined ? initialContent : a.initialContent,
                                 startingPage: startingPage || a.startingPage,
+                                currentPage: startingPage || a.startingPage,
+                                size: a.size || a.previousSize || a.defaultSize || { width: 400, height: 300 },
+                                position: a.position || a.previousPosition || {
+                                    x: (baseWidth - (a.defaultSize?.width || 400)) / 2,
+                                    y: (baseHeight - (a.defaultSize?.height || 300) - 56) / 2,
+                                },
                             }
                             : a
                     );
@@ -100,15 +140,26 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
                 const offset = openInstanceCount * CASCADE_STEP;
 
                 // Create a new instance of the app
+                const windowSize = size || app.defaultSize;
                 const newInstance = {
                     ...app,
                     instanceId: `${app.id}-${Date.now()}-${Math.random()}`,
                     isOpen: true,
                     zIndex: highestZIndex + 1,
-                    size: size || app.defaultSize,
+                    size: windowSize,
+                    position: {
+                        x: (baseWidth - windowSize.width) / 2 + offset,
+                        y: (baseHeight - windowSize.height - 56) / 2 + offset,
+                    },
+                    previousSize: windowSize,
+                    previousPosition: {
+                        x: (baseWidth - windowSize.width) / 2 + offset,
+                        y: (baseHeight - windowSize.height - 56) / 2 + offset,
+                    },
                     initialContent: initialContent !== undefined ? initialContent : (app.initialContent || ''),
                     fileIdentifier: fileIdentifier || undefined,
                     startingPage: startingPage || app.startingPage,
+                    currentPage: startingPage || app.startingPage,
                     offset
                 };
 
@@ -143,9 +194,29 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
                 if (app.instanceId === identifier) {
                     return null;
                 }
-                // If it's a base app being closed, just set isOpen to false
+                // If it's a base app being closed, reset it to defaults
                 if (app.id === identifier && !app.instanceId) {
-                    return { ...app, isOpen: false };
+                    return {
+                        ...app,
+                        isOpen: false,
+                        isMinimized: false,
+                        isMaximized: false,
+                        zIndex: 0,
+                        size: app.defaultSize || { width: 400, height: 300 },
+                        position: {
+                            x: (baseWidth - (app.defaultSize?.width || 400)) / 2,
+                            y: (baseHeight - (app.defaultSize?.height || 300) - 56) / 2,
+                        },
+                        previousSize: app.defaultSize || { width: 400, height: 300 },
+                        previousPosition: {
+                            x: (baseWidth - (app.defaultSize?.width || 400)) / 2,
+                            y: (baseHeight - (app.defaultSize?.height || 300) - 56) / 2,
+                        },
+                        initialContent: app.defaultInitialContent || '',
+                        startingPage: app.defaultStartingPage || 'home',
+                        currentPage: app.defaultStartingPage || 'home',
+                        settingsState: {}
+                    };
                 }
                 return app;
             }).filter(app => app !== null);
@@ -157,7 +228,52 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
         setApps(prev =>
             prev.map(app =>
                 (app.id === identifier || app.instanceId === identifier)
-                    ? { ...app, isMinimized: true }
+                    ? {
+                        ...app,
+                        isMinimized: true,
+                        previousSize: app.size || app.previousSize,
+                        previousPosition: app.position || app.previousPosition,
+                    }
+                    : app
+            )
+        );
+    }, []);
+
+    // Update window position after drag
+    const updateWindowPosition = useCallback((identifier, position) => {
+        setApps(prev =>
+            prev.map(app =>
+                (app.id === identifier || app.instanceId === identifier)
+                    ? { ...app, position, previousPosition: position }
+                    : app
+            )
+        );
+    }, []);
+
+    // Update window size after resize
+    const updateWindowSize = useCallback((identifier, size, position) => {
+        setApps(prev =>
+            prev.map(app =>
+                (app.id === identifier || app.instanceId === identifier)
+                    ? {
+                        ...app,
+                        size: { width: size.width, height: size.height },
+                        position: position || app.position,
+                        previousSize: { width: size.width, height: size.height },
+                        previousPosition: position || app.position,
+                        isMaximized: false,
+                    }
+                    : app
+            )
+        );
+    }, []);
+
+    // Update arbitrary app metadata (e.g. Notepad content, Settings page)
+    const updateAppData = useCallback((identifier, data) => {
+        setApps(prev =>
+            prev.map(app =>
+                (app.id === identifier || app.instanceId === identifier)
+                    ? { ...app, ...data }
                     : app
             )
         );
@@ -165,20 +281,42 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
 
     // Maximize app
     const maximizeApp = useCallback((identifier) => {
+        const taskbarHeight = Math.max(60, Math.round(baseHeight * 0.08));
+        const edgeMargin = 10;
+        const maximizedSize = {
+            width: Math.max(300, baseWidth - edgeMargin * 2),
+            height: Math.max(200, baseHeight - taskbarHeight - edgeMargin * 2),
+        };
+        const maximizedPosition = {
+            x: edgeMargin,
+            y: edgeMargin,
+        };
+
         setApps(prev =>
             prev.map(app => {
                 if (app.id === identifier || app.instanceId === identifier) {
+                    if (app.isMaximized) {
+                        return {
+                            ...app,
+                            isMaximized: false,
+                            size: app.previousSize || app.size,
+                            position: app.previousPosition || app.position,
+                        };
+                    }
+
                     return {
                         ...app,
-                        isMaximized: !app.isMaximized,
-                        previousSize: app.isMaximized ? app.previousSize : app.size,
-                        size: app.isMaximized ? app.previousSize || app.size : { width: window.innerWidth - 40, height: window.innerHeight - 100 },
+                        isMaximized: true,
+                        previousSize: app.size,
+                        previousPosition: app.position,
+                        size: maximizedSize,
+                        position: maximizedPosition,
                     };
                 }
                 return app;
             })
         );
-    }, []);
+    }, [baseHeight, baseWidth]);
 
     // Get open windows
     const openWindows = useMemo(() =>
@@ -206,6 +344,9 @@ export function useAppWindowManager(initialApps = APP_REGISTRY, baseWidth, baseH
         closeApp,
         minimizeApp,
         maximizeApp,
+        updateWindowPosition,
+        updateWindowSize,
+        updateAppData,
         highestZIndex
     };
 }

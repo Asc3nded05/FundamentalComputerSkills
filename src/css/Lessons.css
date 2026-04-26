@@ -28,12 +28,11 @@ Lessons Page Styles
 }
 
 .lesson-content {
-  padding: 50px 50px 50px 50px;
-  margin-top: 10px;
   display: block;
   overflow: hidden;
   background-color: #ffffff;
-  margin-bottom: 10px;
   width: 100%;
+  position: relative;
+  z-index: 0;
 }
 

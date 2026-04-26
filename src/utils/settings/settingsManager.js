@@ -26,6 +26,23 @@ const useAsyncStatus = (initialStatuses, onUpdate) => {
     if (onUpdate) onUpdate(key, status);
   }, [onUpdate]);
 
+  const addStatusKey = useCallback((key, initialStatus = 'disconnected') => {
+    setStatuses(prev => {
+      if (prev[key]) return prev; // already exists
+      const updated = { ...prev, [key]: initialStatus };
+      if (onUpdate) onUpdate(key, initialStatus);
+      return updated;
+    });
+  }, [onUpdate]);
+
+  const removeStatusKey = useCallback((key) => {
+    setStatuses(prev => {
+      const { [key]: _, ...rest } = prev; // remove key
+      if (onUpdate) onUpdate(key, null); // notify removal
+      return rest;
+    });
+  }, [onUpdate]);
+
   // Cleanup timeouts on unmount
   useEffect(() => {
     return () => {
@@ -33,7 +50,7 @@ const useAsyncStatus = (initialStatuses, onUpdate) => {
     };
   }, []);
 
-  return { statuses, setStatusWithDelay, updateImmediate };
+  return { statuses, setStatusWithDelay, updateImmediate, addStatusKey, removeStatusKey };
 };
 
 export const useSettings = () => {
@@ -55,6 +72,10 @@ export const useSettings = () => {
   // Project selection
   const [selectedProject, setSelectedProject] = useState(config.project.default);
 
+  // User info
+  const [username, setUsername] = useState(config.user.username);
+  const [userEmail, setUserEmail] = useState(config.user.userEmail);
+
   // Sliders
   const [brightness, setBrightness] = useState(config.sliders.brightness.default);
   const [volume, setVolume] = useState(config.sliders.volume.default);
@@ -66,11 +87,18 @@ export const useSettings = () => {
   const { statuses: wifiStatuses, setStatusWithDelay: setWifiStatusWithDelay, updateImmediate: updateWifiStatus } =
     useAsyncStatus(initialWifiStatuses);
 
+  // Wi‑Fi network password requirements
+  const [wifiRequiresPassword] = useState(() =>
+    Object.fromEntries(
+      Object.entries(config.toggles.wifi.networks).map(([name, data]) => [name, data.requiresPassword])
+    )
+  );
+
   // Bluetooth device statuses
   const initialBluetoothStatuses = Object.fromEntries(
     Object.entries(config.toggles.bluetooth.devices).map(([name, data]) => [name, data.defaultStatus])
   );
-  const { statuses: bluetoothStatuses, setStatusWithDelay: setBluetoothStatusWithDelay, updateImmediate: updateBluetoothStatus } =
+  const { statuses: bluetoothStatuses, setStatusWithDelay: setBluetoothStatusWithDelay, updateImmediate: updateBluetoothStatus, addStatusKey: addBluetoothStatusKey, removeStatusKey: removeBluetoothStatusKey } =
     useAsyncStatus(initialBluetoothStatuses);
 
   // Selected Wi‑Fi network (for showing connect button)
@@ -90,7 +118,7 @@ export const useSettings = () => {
   }, []);
 
   // Toggle functions with event dispatching
-  const toggleWifi = useCallback(() => {
+  const toggleWifi = useCallback((source = '') => {
     setWifiOn(prev => {
       const next = !prev;
       if (next && airplaneOn) return prev; // Can't turn on WiFi if Airplane Mode is on
@@ -100,12 +128,15 @@ export const useSettings = () => {
           updateWifiStatus(network, 'disconnected');
         });
       }
-      dispatchDesktopEvent(next ? config.toggles.wifi.eventOn : config.toggles.wifi.eventOff);
+      const eventName = next
+        ? `${config.toggles.wifi.eventOn}${source}`
+        : `${config.toggles.wifi.eventOff}${source}`;
+      dispatchDesktopEvent(eventName);
       return next;
     });
   }, [wifiStatuses, updateWifiStatus, airplaneOn]);
 
-  const toggleBluetooth = useCallback(() => {
+  const toggleBluetooth = useCallback((source = '') => {
     setBluetoothOn(prev => {
       const next = !prev;
       if (next && airplaneOn) return prev; // Can't turn on Bluetooth if Airplane Mode is on
@@ -114,7 +145,10 @@ export const useSettings = () => {
           updateBluetoothStatus(device, 'disconnected');
         });
       }
-      dispatchDesktopEvent(next ? config.toggles.bluetooth.eventOn : config.toggles.bluetooth.eventOff);
+      const eventName = next
+        ? `${config.toggles.bluetooth.eventOn}${source}`
+        : `${config.toggles.bluetooth.eventOff}${source}`;
+      dispatchDesktopEvent(eventName);
       return next;
     });
   }, [bluetoothStatuses, updateBluetoothStatus, airplaneOn]);
@@ -186,46 +220,51 @@ export const useSettings = () => {
   }, []);
 
   // Wi‑Fi connection logic
-  const toggleWifiConnection = useCallback((network) => {
+  const toggleWifiConnection = useCallback((network, source = '') => {
     if (!wifiOn) return;
 
-    const currentStatus = wifiStatuses[network];
+    const networkConfig = config.toggles.wifi.networks[network];
+    if (networkConfig && networkConfig.requiresPassword) {
+      const userPassword = prompt(`Enter password for ${network}:`);
+      if (userPassword === null) {
+        // User cancelled the prompt
+        return;
+      } else if (userPassword !== networkConfig.password) {
+        alert('Incorrect password');
+        return;
+      } else {
+        dispatchDesktopEvent(`WiFiNetworkPasswordCorrect${source}`, { networkName: network });
+      }
+    }
 
-    // Prevent multiple clicks while connecting/disconnecting
+    const currentStatus = wifiStatuses[network];
     if (currentStatus === 'connecting' || currentStatus === 'disconnecting') return;
 
-    // If network is already connected, disconnect it
     if (currentStatus === 'connected') {
-      // Immediately set to "disconnecting"
       updateWifiStatus(network, 'disconnecting');
-      dispatchDesktopEvent('WiFiNetworkDisconnect', { networkName: network });
+      const eventName = `WiFiNetworkDisconnect${source}`;
+      dispatchDesktopEvent(eventName, { networkName: network });
 
-      // Schedule final "disconnected" after 1 second
       const timeoutId = setTimeout(() => {
         updateWifiStatus(network, 'disconnected');
       }, 1000);
-      // Store timeout for cleanup (optional)
-      // We'll use a ref to store timeouts per network
       if (timeoutsRef.current[network]) clearTimeout(timeoutsRef.current[network]);
       timeoutsRef.current[network] = timeoutId;
       return;
     }
 
-    // Otherwise, attempt to connect
-    // First, disconnect any currently connected network
     const currentConnected = Object.keys(wifiStatuses).find(n => wifiStatuses[n] === 'connected');
     if (currentConnected) {
-      // Disconnect current network immediately
       updateWifiStatus(currentConnected, 'disconnecting');
-      dispatchDesktopEvent('WiFiNetworkDisconnect', { networkName: currentConnected });
+      const disconnectEventName = `WiFiNetworkDisconnect${source}`;
+      dispatchDesktopEvent(disconnectEventName, { networkName: currentConnected });
 
-      // After 1 second, finish disconnect and start connecting to the new network
       const disconnectTimeout = setTimeout(() => {
         updateWifiStatus(currentConnected, 'disconnected');
 
-        // Now connect to the target network
         updateWifiStatus(network, 'connecting');
-        dispatchDesktopEvent('WiFiNetworkConnect', { networkName: network });
+        const connectEventName = `WiFiNetworkConnect${source}`;
+        dispatchDesktopEvent(connectEventName, { networkName: network });
 
         const connectTimeout = setTimeout(() => {
           updateWifiStatus(network, 'connected');
@@ -236,9 +275,9 @@ export const useSettings = () => {
       if (timeoutsRef.current[currentConnected]) clearTimeout(timeoutsRef.current[currentConnected]);
       timeoutsRef.current[currentConnected] = disconnectTimeout;
     } else {
-      // No current connection – connect directly
       updateWifiStatus(network, 'connecting');
-      dispatchDesktopEvent('WiFiNetworkConnect', { networkName: network });
+      const eventName = `WiFiNetworkConnect${source}`;
+      dispatchDesktopEvent(eventName, { networkName: network });
 
       const connectTimeout = setTimeout(() => {
         updateWifiStatus(network, 'connected');
@@ -249,18 +288,16 @@ export const useSettings = () => {
   }, [wifiOn, wifiStatuses, updateWifiStatus]);
 
   // Bluetooth connection logic
-  const toggleBluetoothConnection = useCallback((device) => {
+  const toggleBluetoothConnection = useCallback((device, source = '') => {
     if (!bluetoothOn) return;
 
     const currentStatus = bluetoothStatuses[device];
-
-    // Prevent multiple clicks
     if (currentStatus === 'connecting' || currentStatus === 'disconnecting') return;
 
     if (currentStatus === 'connected') {
-      // Disconnect
       updateBluetoothStatus(device, 'disconnecting');
-      dispatchDesktopEvent('BluetoothDeviceDisconnect', { deviceName: device });
+      const eventName = `BluetoothDeviceDisconnect${source}`;
+      dispatchDesktopEvent(eventName, { deviceName: device });
 
       const timeoutId = setTimeout(() => {
         updateBluetoothStatus(device, 'disconnected');
@@ -268,9 +305,9 @@ export const useSettings = () => {
       if (timeoutsRef.current[device]) clearTimeout(timeoutsRef.current[device]);
       timeoutsRef.current[device] = timeoutId;
     } else if (currentStatus === 'disconnected') {
-      // Connect
       updateBluetoothStatus(device, 'connecting');
-      dispatchDesktopEvent('BluetoothDeviceConnect', { deviceName: device });
+      const eventName = `BluetoothDeviceConnect${source}`;
+      dispatchDesktopEvent(eventName, { deviceName: device });
 
       const timeoutId = setTimeout(() => {
         updateBluetoothStatus(device, 'connected');
@@ -279,6 +316,16 @@ export const useSettings = () => {
       timeoutsRef.current[device] = timeoutId;
     }
   }, [bluetoothOn, bluetoothStatuses, updateBluetoothStatus]);
+
+  const addBluetoothDevice = useCallback((deviceName) => {
+    addBluetoothStatusKey(deviceName, 'disconnected');
+    dispatchDesktopEvent('BluetoothDeviceAdd', { deviceName });
+  }, [addBluetoothStatusKey]);
+
+  const removeBluetoothDevice = useCallback((deviceName) => {
+    removeBluetoothStatusKey(deviceName);
+    dispatchDesktopEvent('BluetoothDeviceRemove', { deviceName });
+  }, [removeBluetoothStatusKey]);
 
   // Return all state and actions
   return {
@@ -295,10 +342,13 @@ export const useSettings = () => {
     // Sliders
     brightness, volume, setBrightnessValue, setVolumeValue,
 
+    // User
+    username, setUsername, userEmail, setUserEmail,
+
     // Wi‑Fi
-    wifiStatuses, selectedWifi, setSelectedWifi, toggleWifiConnection,
+    wifiStatuses, selectedWifi, setSelectedWifi, toggleWifiConnection, wifiRequiresPassword,
 
     // Bluetooth
-    bluetoothStatuses, toggleBluetoothConnection,
+    bluetoothStatuses, toggleBluetoothConnection, addBluetoothDevice, removeBluetoothDevice,
   };
 };

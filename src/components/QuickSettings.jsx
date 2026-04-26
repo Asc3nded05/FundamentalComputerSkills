@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus";
 import { useSettingsContext } from "../utils/settings/settingsContext";
 import placeholderImage from "../assets/WifiPlaceholder.png"
+import wifiIcon from "../assets/WifiPlaceholder.png";
+import wifiLockedIcon from "../assets/WifiLockPlaceholder.png";
 import "../css/QuickSettings.css";
 
 function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
@@ -18,6 +20,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
         brightness, volume, setBrightnessValue, setVolumeValue,
         wifiStatuses, selectedWifi, setSelectedWifi, toggleWifiConnection,
         bluetoothStatuses, toggleBluetoothConnection,
+        wifiRequiresPassword,
     } = useSettingsContext();
 
     // Helper to select a Wi‑Fi network (toggles selection + dispatches event)
@@ -91,7 +94,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                     {/* Wi‑Fi */}
                                     <div>
                                         <div className={`qs-tile ${wifiOn ? "qs-tile-on" : ""}`}>
-                                            <button className="qs-tile-left" onClick={toggleWifi}>
+                                            <button className="qs-tile-left" onClick={() => toggleWifi('QS')}>
                                                 <img className="qs-icon" src={placeholderImage} alt="Wifi" />
                                             </button>
                                             <button className="qs-tile-right" onClick={() => openDetail("wifi")}>
@@ -104,7 +107,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                     {/* Bluetooth */}
                                     <div>
                                         <div className={`qs-tile ${bluetoothOn ? "qs-tile-on" : ""}`}>
-                                            <button className="qs-tile-left" onClick={toggleBluetooth}>
+                                            <button className="qs-tile-left" onClick={() => toggleBluetooth('QS')}>
                                                 <img className="qs-icon" src={placeholderImage} alt="Bluetooth" />
                                             </button>
                                             <button className="qs-tile-right" onClick={() => openDetail("bluetooth")}>
@@ -117,7 +120,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                     {/* Airplane Mode */}
                                     <div>
                                         <div className={`qs-tile ${airplaneOn ? "qs-tile-on" : ""}`}>
-                                            <button className="qs-tile-single" onClick={toggleAirplane}>
+                                            <button className="qs-tile-single" onClick={() => toggleAirplane()}>
                                                 <img className="qs-icon" src={placeholderImage} alt="Airplane Mode" />
                                             </button>
                                         </div>
@@ -127,7 +130,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                     {/* Energy Saver */}
                                     <div>
                                         <div className={`qs-tile ${energyOn ? "qs-tile-on" : ""}`}>
-                                            <button className="qs-tile-single" onClick={toggleEnergy}>
+                                            <button className="qs-tile-single" onClick={() => toggleEnergy()}>
                                                 <img className="qs-icon" src={placeholderImage} alt="Energy Saver" />
                                             </button>
                                         </div>
@@ -208,33 +211,37 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                         {activeDetail && (
                             <div className="qs-detail-panel">
                                 <div className="qs-detail-header"> 
-                                    <button 
-                                        className="qs-back" 
-                                        onClick={() => {
-                                            setActiveDetail(null);
-                                            dispatchDesktopEvent("ReturnToMainQuickSettings");
-                                        }}>
-                                        ‹- 
-                                    </button>
-                                    <div className="qs-detail-title">
-                                        {activeDetail === "wifi" && "Wi‑Fi"}
-                                        {activeDetail === "bluetooth" && "Bluetooth"}
-                                        {activeDetail === "accessibility" && "Accessibility"}
-                                        {activeDetail === "project" && "Project"}
+                                    <div className="qs-header-left">
+                                        <button 
+                                            className="qs-back" 
+                                            onClick={() => {
+                                                setActiveDetail(null);
+                                                dispatchDesktopEvent("ReturnToMainQuickSettings");
+                                            }}>
+                                            &#8592;
+                                        </button>
+                                        <div className="qs-detail-title">
+                                            {activeDetail === "wifi" && "Wi‑Fi"}
+                                            {activeDetail === "bluetooth" && "Bluetooth"}
+                                            {activeDetail === "accessibility" && "Accessibility"}
+                                            {activeDetail === "project" && "Project"}
+                                        </div>
                                     </div>
 
                                     {/* Top-right toggle */}
                                     {(activeDetail === "wifi" || activeDetail === "bluetooth") && (
-                                        <button
-                                            className="qs-detail-toggle-switch"
-                                            onClick={() =>
-                                                activeDetail === "wifi"
-                                                    ? toggleWifi()
-                                                    : toggleBluetooth()
-                                            }
-                                        >
-                                            {(activeDetail === "wifi" ? wifiOn : bluetoothOn) ? "On" : "Off"}
-                                        </button>
+                                        <label className="toggle toggle--small" onClick={(e) => e.stopPropagation()}>
+                                            <input
+                                                type="checkbox"
+                                                checked={activeDetail === "wifi" ? wifiOn : bluetoothOn}
+                                                onChange={() =>
+                                                    activeDetail === "wifi"
+                                                        ? toggleWifi('QS')
+                                                        : toggleBluetooth('QS')
+                                                }
+                                            />
+                                            <span className="toggle-slider"></span>
+                                        </label>
                                     )}
                                 </div>
 
@@ -251,41 +258,46 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                                 </div>
                                             ) : (
                                                 <div className="qs-detail-list">
-                                                    {Object.keys(wifiStatuses).map(network => (
+                                                    {Object.keys(wifiStatuses).map(network => {
+                                                        const status = wifiStatuses[network];
+                                                        const requiresPassword = wifiRequiresPassword[network];
+                                                        const showStatus = status === "connected" || status === "connecting";
+                                                        return (
                                                         <div key={network}>
                                                             <button
                                                                 className="qs-detail-list-item"
                                                                 onClick={() => selectWifiNetwork(network)}
                                                             >
                                                                 <div className="qs-network-info">
-                                                                    <img className="qs-icon" src={placeholderImage} alt={network} />
+                                                                    <img className="qs-icon" src={requiresPassword ? wifiLockedIcon : wifiIcon} alt={network} />
                                                                     <span>{network}</span>
                                                                 </div>
 
-                                                                {wifiStatuses[network] !== "disconnected" && (
-                                                                    <span className="qs-connected-indicator">
-                                                                        {wifiStatuses[network]}
+                                                                {showStatus && (
+                                                                    <span className="qs-connected-indicator">                          
+                                                                        {status === "connected" ? "Connected" : "Connecting..."}
                                                                     </span>
                                                                 )}
                                                             </button>
 
                                                             {selectedWifi === network && (
                                                                 <button
-                                                                    className={`qs-connect-button ${wifiStatuses[network] === "connected" ? "disconnect" : ""
-                                                                        }`}
-                                                                    onClick={() => toggleWifiConnection(network)}
+                                                                    className={`qs-connect-button ${
+                                                                        status === "connected" ? "disconnect" : ""
+                                                                    }`}
+                                                                    onClick={() => toggleWifiConnection(network, 'QS')}
                                                                 >
-                                                                    {wifiStatuses[network] === "connected"
+                                                                    {status === "connected"
                                                                         ? "Disconnect"
-                                                                        : wifiStatuses[network] === "connecting"
-                                                                            ? "Connecting..."
-                                                                            : wifiStatuses[network] === "disconnecting"
-                                                                                ? "Disconnecting..."
-                                                                                : "Connect"}
+                                                                        : status === "connecting"
+                                                                        ? "Connecting..."
+                                                                        : status === "disconnecting"
+                                                                        ? "Disconnecting..."
+                                                                        : "Connect"}
                                                                 </button>
                                                             )}
                                                         </div>
-                                                    ))}
+                                                    )})}
                                                 </div>
                                             )}
                                         </div>
@@ -305,7 +317,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                                         <button
                                                             key={device}
                                                             className="qs-detail-list-item"
-                                                            onClick={() => toggleBluetoothConnection(device)}
+                                                            onClick={() => toggleBluetoothConnection(device, 'QS')}
                                                         >
                                                             <div className="qs-bluetooth-name">
                                                                 <img className="qs-icon" src={placeholderImage} alt={device} /> {device}
