@@ -90,6 +90,9 @@ function SideBar(props) {
     // State for video demo
     const [showVideo, setShowVideo] = useState(false);
 
+    // State for chat messages (persists across tab switches)
+    const [messages, setMessages] = useState([]);
+
     // Effect to read nextStep aloud when it changes
     useEffect(() => {
         if (stepInstructions && readAloud) {
@@ -138,6 +141,11 @@ function SideBar(props) {
         }
     }, [completedSteps, stepCount]);
 
+    // Reset chat when lesson changes
+    useEffect(() => {
+        setMessages([]);
+    }, [currentLesson]);
+
     // useEffect(() => {
     //     // console.log("Next step:", nextStep);
     //     if (nextStep === "45") {
@@ -159,7 +167,7 @@ function SideBar(props) {
     if (activeId === 2) {
         content = <Lessons />;
     } else if (activeId === 3) {
-        content = <AIChat steps={steps} completedSteps={completedSteps} stepInstructions={stepInstructions} nextStep={nextStep} />;
+        content = <AIChat lessonId={currentLesson} steps={steps} completedSteps={completedSteps} stepInstructions={stepInstructions} nextStep={nextStep} messages={messages} setMessages={setMessages} />;
     } else {
         content = null;
     }
