@@ -1,15 +1,13 @@
 import { useSettingsContext } from "../../utils/settings/settingsContext";
 
-function Home({ navigateToPage }) {
+function Home({ setCurrentPage }) {
 
     // Use synced settings from the react context
     const {
         bluetoothOn,
         toggleBluetooth,
         wifiOn,
-        connectedNetwork,
-        isConnecting,
-        toggleWifi
+        toggleWifi,
     } = useSettingsContext();
 
     return (
@@ -21,14 +19,8 @@ function Home({ navigateToPage }) {
             <p className="card-description">HP model 123456</p>
 
             {/* Quick status cards */}
-            <h3 className="card-title">Wi-Fi ({connectedNetwork ? `${connectedNetwork}` : 'Not Connected'})</h3>
-            <p className="card-description">
-                {connectedNetwork
-                    ? 'Connected, secured'
-                    : isConnecting
-                        ? 'Connecting...'
-                        : 'No internet connection'}
-            </p>
+            <h3 className="card-title">WiFi Network 1</h3>
+            <p className="card-description">Connected</p>
             <h3 className="card-title">Windows Update</h3>
             <p className="card-description">Last checked: 10 minutes ago</p>
 
@@ -39,35 +31,35 @@ function Home({ navigateToPage }) {
                     <h3 className="card-title">Recommended Settings</h3>
                     <p className="card-description">Recent and commonly used settings</p>
                     <div className="settings-list">
-                        <div className="settings-list-item interactable" onClick={() => navigateToPage('bluetooth')}>
+                        <div className="settings-list-item" onClick={() => setCurrentPage('bluetooth')}>
                             <span>Bluetooth</span>
                             <div className="settings-list-controls" onClick={(e) => e.stopPropagation()}>
-                                <label className="toggle toggle--small" onClick={(e) => e.stopPropagation()}>
+                                <label className="toggle toggle--small">
                                     <input
                                         type="checkbox"
                                         checked={bluetoothOn}
-                                        onChange={() => toggleBluetooth('App')}
+                                        onChange={toggleBluetooth}
                                     />
                                     <span className="toggle-slider"></span>
                                 </label>
                                 <span className="card-arrow">&rsaquo;</span>
                             </div>
                         </div>
-                        <div className="settings-list-item interactable" onClick={() => navigateToPage('network')}>
+                        <div className="settings-list-item" onClick={() => setCurrentPage('network')}>
                             <span>Network & Internet</span>
                             <div className="settings-list-controls" onClick={(e) => e.stopPropagation()}>
-                                <label className="toggle toggle--small" onClick={(e) => e.stopPropagation()}>
+                                <label className="toggle toggle--small">
                                     <input
                                         type="checkbox"
                                         checked={wifiOn}
-                                        onChange={() => toggleWifi('App')}
+                                        onChange={toggleWifi}
                                     />
                                     <span className="toggle-slider"></span>
                                 </label>
                                 <span className="card-arrow">&rsaquo;</span>
                             </div>
                         </div>
-                        <div className="settings-list-item interactable" onClick={() => navigateToPage('personalization')}>
+                        <div className="settings-list-item" onClick={() => setCurrentPage('personalization')}>
                             <span>Personalization</span>
                             <span className="card-arrow">&rsaquo;</span>
                         </div>
@@ -103,7 +95,7 @@ function Home({ navigateToPage }) {
                                 <input
                                     type="checkbox"
                                     checked={bluetoothOn}
-                                    onChange={() => toggleBluetooth('App')}
+                                    onChange={toggleBluetooth}
                                 />
                                 <span className="toggle-slider"></span>
                             </label>
@@ -111,10 +103,10 @@ function Home({ navigateToPage }) {
                         <p className="bluetooth-device-name">Discoverable as "LAPTOP-ABC123"</p>
 
                         <div className="bluetooth-actions">
-                            <button className="btn btn-small interactable" onClick={() => navigateToPage('bluetooth')}>Add Device</button>
+                            <button className="btn btn-small" onClick={() => setCurrentPage('bluetooth')}>Add Device</button>
                             <span className="card-arrow">&rsaquo;</span>
                         </div>
-                        <button className="btn btn-text" onClick={() => navigateToPage('bluetooth')}>
+                        <button className="btn btn-text" onClick={() => setCurrentPage('bluetooth')}>
                             View all devices &rarr;
                         </button>
                     </div>
@@ -141,7 +133,7 @@ function Home({ navigateToPage }) {
                         </select>
                     </div>
 
-                    <button className="btn btn-text" onClick={() => navigateToPage('personalization')}>
+                    <button className="btn btn-text" onClick={() => setCurrentPage('personalization')}>
                         Browse more backgrounds, colors, and themes &rarr;
                     </button>
                 </div>

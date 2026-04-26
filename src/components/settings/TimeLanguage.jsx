@@ -22,18 +22,22 @@ function TimeLanguage() {
                 <div className="settings-card">
                     <h3 className="card-title">Date & time</h3>
                     <p className="card-description">Time zones, automatic clock settings, calendar display</p>
+                    {/* <span className="card-arrow">&rsaquo;</span> */}
                 </div>
                 <div className="settings-card">
                     <h3 className="card-title">Language & region</h3>
                     <p className="card-description">Windows display language, preferred languages, regional formats</p>
+                    {/* <span className="card-arrow">&rsaquo;</span> */}
                 </div>
                 <div className="settings-card">
                     <h3 className="card-title">Typing</h3>
                     <p className="card-description">Touch keyboard, text suggestions, preferences</p>
+                    {/* <span className="card-arrow">&rsaquo;</span> */}
                 </div>
                 <div className="settings-card">
                     <h3 className="card-title">Speech</h3>
                     <p className="card-description">Speech language, speech recognition microphone setup, voices</p>
+                    {/* <span className="card-arrow">&rsaquo;</span> */}
                 </div>
             </div>
         </div>

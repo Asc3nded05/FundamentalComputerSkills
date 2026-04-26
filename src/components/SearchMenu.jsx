@@ -1,13 +1,12 @@
 import { useEffect, useRef } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus.js";
 import AppSearchIcon from "./AppSearchIcon.jsx";
-import "../css/SearchMenu.css";
 
-function SearchMenu({ closeSearchMenu, isOpen, apps = [] , query, setQuery}) {
+function StartMenu({ closeStartMenu, isOpen, apps = [] , query, setQuery}) {
     const nodeRef = useRef(null);
 
     const handleClose = () => {
-        closeSearchMenu();
+        closeStartMenu();
         dispatchDesktopEvent("SearchClose");
     };
 
@@ -16,59 +15,74 @@ function SearchMenu({ closeSearchMenu, isOpen, apps = [] , query, setQuery}) {
         function handleKey(e) {
             if (!isOpen) return;
             if (e.key === "Escape") {
-                handleClose();
+                closeStartMenu?.();
+                dispatchDesktopEvent("SearchClosed");
             }
         }
         document.addEventListener("keydown", handleKey);
         return () => document.removeEventListener("keydown", handleKey);
-    }, [isOpen, closeSearchMenu]);
+    }, [isOpen, closeStartMenu]);
 
+    // Focus trap
     useEffect(() => {
-    if (isOpen) {
-        dispatchDesktopEvent("SearchMenuOpen");
-    } else {
-        if (document.activeElement) {
-            document.activeElement.blur();
+        if (isOpen && nodeRef.current) {
+            const firstFocusable = nodeRef.current.querySelector('input');
+            if (firstFocusable) firstFocusable.focus();
+            dispatchDesktopEvent("StartMenuOpen");
         }
-    }
-}, [isOpen]);
+    }, [isOpen]);
 
     // Filter apps by search
     const filteredApps = apps.filter(app =>
         query === "" ? true : app.name.toLowerCase().includes(query.toLowerCase())
     );
 
+    // Chunk into rows of 6
+    const chunked = [];
+    for (let i = 0; i < filteredApps.length; i += 6) {
+        chunked.push(filteredApps.slice(i, i + 6));
+    }
+
+    // Pad last row with invisible placeholders
+    if (chunked.length > 0) {
+        const lastRow = chunked[chunked.length - 1];
+        while (lastRow.length < 6) {
+            lastRow.push({ placeholder: true, id: `placeholder-${lastRow.length}` });
+        }
+    }
 
     return (
         <>
             {isOpen && (
-                <div className="search-menu-overlay" onMouseDown={handleClose}>
+                <div className="start-menu-overlay" onMouseDown={handleClose}>
                     <div
                         ref={nodeRef}
-                        className={`search-menu ${isOpen ? "open" : ""}`}
+                        className={`start-menu ${isOpen ? "open" : ""}`}
                         tabIndex={-1}
                         onMouseDown={(e) => e.stopPropagation()}
                     >
                         {/* App Grid */}
-                        <div className="search-app-grid">
-                            {filteredApps.length === 0 ? (
-                                <p className="no-results">No apps found</p>
-                            ) : (
-                                filteredApps.map((app, index) => (
+                        <div className="start-app-grid">
+                            {filteredApps.map((app, index) => (
+                                <div key={index} className="start-row">
+                                    {!app.placeholder ? (
+                                        <div className="start-menu-tile">
                                         <AppSearchIcon
-                                            key={index}
                                             name={app.name}
                                             icon={app.icon}
                                             eventName={app.eventName}
                                             openWindow={app.openWindow}
-                                            variant={app.variant || "search-menu"}
+                                            variant={app.variant || "start-menu"}
                                             isAppOpen={app.isAppOpen}
                                             closeMenu={handleClose}
                                             className="search-apps"
                                         />
-                                    )
-                                )
-                            )}
+                                        </div>
+                                    ) : (
+                                        <div className="start-menu-placeholder start-menu-tile" />
+                                    )}
+                                    </div>
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -77,4 +91,4 @@ function SearchMenu({ closeSearchMenu, isOpen, apps = [] , query, setQuery}) {
     );
 }
 
-export default SearchMenu;
+export default StartMenu;

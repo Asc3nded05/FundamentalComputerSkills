@@ -1,10 +1,10 @@
 import { useState } from "react";
-import wifiIcon from "../../assets/WifiPlaceholder.png";
-import wifiLockedIcon from "../../assets/WifiLockPlaceholder.png";
+import wifi from "../../assets/WifiPlaceholder.png"
 import { useSettingsContext } from "../../utils/settings/settingsContext";
 import { dispatchDesktopEvent } from "../../utils/eventBus";
 
-function Network({ subPage = 'main', onSubPageChange }) {
+function Network() {
+    const [subPage, setSubPage] = useState('main'); // 'main', 'wifi'
     const [openDropdownNetwork, setOpenDropdownNetwork] = useState(null); // track which network dropdown is open
 
     const {
@@ -13,7 +13,6 @@ function Network({ subPage = 'main', onSubPageChange }) {
         airplaneOn,
         toggleAirplane,
         wifiStatuses,
-        wifiRequiresPassword,
         selectedWifi,
         setSelectedWifi,
         toggleWifiConnection,
@@ -33,18 +32,18 @@ function Network({ subPage = 'main', onSubPageChange }) {
                 <h1>Network & internet</h1>
 
                 {/* Network status card */}
-                {wifiOn && (
+                {connectedNetwork && (
                     <div className="info-card">
                         <div className="network-header">
-                            <img src={wifiIcon} alt="Wi-Fi" className="wifi-icon" />
+                            <img src={wifi} alt="Wi-Fi" className="wifi-icon" />
                             <div className="network-details">
-                                <h3 className="card-title">Wi-Fi ({connectedNetwork ? `${connectedNetwork}` : 'Not Connected'})</h3>
+                                <h3 className="card-title">Wi-Fi ({connectedNetwork})</h3>              
                                 <p className="card-description">
                                     {connectedNetwork
-                                        ? 'Connected, secured'
-                                        : isConnecting
-                                            ? 'Connecting...'
-                                            : 'No internet connection'}
+                                    ? 'Connected, secured'
+                                    : isConnecting
+                                    ? 'Connecting...'
+                                    : 'No internet connection'}
                                 </p>
                                 <p className="network-property">Properties: Private network, 5 GHz</p>
                             </div>
@@ -57,8 +56,8 @@ function Network({ subPage = 'main', onSubPageChange }) {
 
                 {/* Settings grid */}
                 <div className="settings-grid">
-                    <div className="settings-card control-card interactable">
-                        <div className="card-content" onClick={() => { dispatchDesktopEvent('SettingsNetworkWifiSubPageClicked'); onSubPageChange?.('wifi') }}>
+                    <div className="settings-card control-card">
+                        <div className="card-content" onClick={() => {dispatchDesktopEvent('SettingsNetworkWifiSubPageClicked'); setSubPage('wifi')}}>
                             <h3 className="card-title">Wi-Fi</h3>
                             <p className="card-description">Connect, manage known networks, metered network</p>
                         </div>
@@ -67,7 +66,7 @@ function Network({ subPage = 'main', onSubPageChange }) {
                                 <input
                                     type="checkbox"
                                     checked={wifiOn}
-                                    onChange={() => toggleWifi('App')}
+                                    onChange={toggleWifi}
                                 />
                                 <span className="toggle-slider"></span>
                             </label>
@@ -79,6 +78,7 @@ function Network({ subPage = 'main', onSubPageChange }) {
                     <div className="settings-card">
                         <h3 className="card-title">VPN</h3>
                         <p className="card-description">Add, connect, manage</p>
+                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
 
                     {/* Mobile hotspot */}
@@ -93,6 +93,7 @@ function Network({ subPage = 'main', onSubPageChange }) {
                                 <span className="toggle-slider"></span>
                             </label>
                         </div>
+                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
 
                     {/* Airplane mode */}
@@ -106,29 +107,33 @@ function Network({ subPage = 'main', onSubPageChange }) {
                                 <input
                                     type="checkbox"
                                     checked={airplaneOn}
-                                    onChange={() => toggleAirplane()}
+                                    onChange={toggleAirplane}
                                 />
                                 <span className="toggle-slider"></span>
                             </label>
                         </div>
+                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
 
                     {/* Proxy */}
                     <div className="settings-card">
                         <h3 className="card-title">Proxy</h3>
                         <p className="card-description">Proxy server for Wi-Fi and Ethernet connections</p>
+                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
 
                     {/* Dial-up */}
                     <div className="settings-card">
                         <h3 className="card-title">Dial-up</h3>
                         <p className="card-description">Set up a dial-up internet connection</p>
+                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
 
                     {/* Advanced network settings */}
                     <div className="settings-card">
                         <h3 className="card-title">Advanced network settings</h3>
                         <p className="card-description">View all network adapters, network reset</p>
+                        {/* <span className="card-arrow">&rsaquo;</span> */}
                     </div>
                 </div>
             </div>
@@ -141,7 +146,7 @@ function Network({ subPage = 'main', onSubPageChange }) {
                 <button
                     className="btn btn-text"
                     onClick={() => {
-                        onSubPageChange?.('main');
+                        setSubPage("main");
                         dispatchDesktopEvent("SettingsNetworkPageClicked");
                     }}
                 >
@@ -160,7 +165,7 @@ function Network({ subPage = 'main', onSubPageChange }) {
                                 <input
                                     type="checkbox"
                                     checked={wifiOn}
-                                    onChange={() => toggleWifi('App')}
+                                    onChange={toggleWifi}
                                 />
                                 <span className="toggle-slider"></span>
                             </label>
@@ -170,93 +175,95 @@ function Network({ subPage = 'main', onSubPageChange }) {
                     {wifiOn && (
                         <>
                             <div className="settings-card">
-                            <h3 className="card-title">
-                                {connectedNetwork ? connectedNetwork : 'WiFi'} Properties
-                            </h3>
-                            <p className="card-description">
-                                {connectedNetwork
-                                ? 'Connected, secured'
-                                : isConnecting
-                                ? 'Connecting...'
-                                : 'No internet connection'}
-                            </p>
+                                <h3 className="card-title">{connectedNetwork ? `${connectedNetwork}` : 'WiFi'} Properties</h3>
+                                <p className="card-description">Connected, secured</p>
                             </div>
-
-                            <h3 className="subsection-title">Available Networks:</h3>
-
+                            <h3 className="subsection-title">Manage known networks</h3>
                             {Object.keys(wifiStatuses).length === 0 ? (
-                            <p className="card-description">No networks found.</p>
+                                <p className="card-description">No networks found.</p>
                             ) : (
-                            <div className="settings-grid" style={{ marginBottom: '32px' }}>
-                                {Object.keys(wifiStatuses).map((network) => {
-                                const status = wifiStatuses[network];
-                                const isOpen = openDropdownNetwork === network;
-                                const isConnectingOrDisconnecting =
-                                    status === 'connecting' || status === 'disconnecting';
-                                const isDisabled = !wifiOn || isConnectingOrDisconnecting;
-                                const requiresPassword = wifiRequiresPassword[network];
+                                <div className="settings-grid" style={{ marginBottom: '32px' }}>
+                                    {Object.keys(wifiStatuses).map((network) => {
+                                        const status = wifiStatuses[network];
+                                        const isOpen = openDropdownNetwork === network;
+                                        const isConnectingOrDisconnecting = status === 'connecting' || status === 'disconnecting';
+                                        const isDisabled = !wifiOn || isConnectingOrDisconnecting;
 
-                                const statusText =
-                                    status === 'connected'
-                                    ? 'Connected'
-                                    : status === 'connecting'
-                                    ? 'Connecting...'
-                                    : '';
+                                        let buttonLabel = 'Connect';
+                                        if (status === 'connected') buttonLabel = 'Disconnect';
+                                        else if (status === 'connecting') buttonLabel = 'Connecting...';
+                                        else if (status === 'disconnecting') buttonLabel = 'Disconnecting...';
 
-                                let buttonLabel = 'Connect';
-                                if (status === 'connected') buttonLabel = 'Disconnect';
-                                else if (status === 'connecting') buttonLabel = 'Connecting...';
-                                else if (status === 'disconnecting') buttonLabel = 'Disconnecting...';
+                                        return (
+                                            <div key={network} className="device-card-wrapper">
+                                                {/* Main card - click toggles dropdown */}
+                                                <div
+                                                    className="settings-card"
+                                                    onClick={() => {
+                                                        dispatchDesktopEvent("WiFiNetworkSelected", { networkName: network });
+                                                        setOpenDropdownNetwork(isOpen ? null : network);
+                                                    }}
+                                                    style={{ cursor: "pointer" }}
+                                                >
+                                                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                                        <div>
+                                                            <h3 className="card-title">{network}</h3>
+                                                            <p className="card-description">
+                                                                {status === "connected"
+                                                                    ? "Connected"
+                                                                    : status === "connecting"
+                                                                        ? "Connecting..."
+                                                                        : status === "disconnecting"
+                                                                            ? "Disconnecting..."
+                                                                            : "Disconnected"}
+                                                            </p>
+                                                        </div>
+                                                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                                                            {/* Connect/Disconnect button */}
+                                                            <button
+                                                                className="btn btn-secondary"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    if (!isConnectingOrDisconnecting) {
+                                                                        toggleWifiConnection(network);
+                                                                    }
+                                                                }}
+                                                                disabled={isDisabled}
+                                                            >
+                                                                {buttonLabel}
+                                                            </button>
+                                                            {/* Dropdown indicator */}
+                                                            <span className="card-arrow" style={{ fontSize: "20px", lineHeight: 1 }}>
+                                                                v
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                return (
-                                    <div key={network} className="device-card-wrapper">
-                                    {/* Main card */}
-                                    <div
-                                        className="settings-card interactable"
-                                        onClick={() => {
-                                        dispatchDesktopEvent('WiFiNetworkSelected', { networkName: network });
-                                        setOpenDropdownNetwork(isOpen ? null : network);
-                                        }}
-                                    >
-                                        <div className="network-card-content">
-                                        <div className="network-card-left">
-                                            <img
-                                            src={requiresPassword ? wifiLockedIcon : wifiIcon}
-                                            alt={requiresPassword ? 'Secured network' : 'Open network'}
-                                            className="card-icon"
-                                            />
-                                            <div className="network-card-text">
-                                            <h3 className="card-title">{network}</h3>
-                                            {statusText && (
-                                                <p className="card-description">{statusText}</p>
-                                            )}
+                                                {/* Dropdown panel */}
+                                                {isOpen && (
+                                                    <div className="dropdown-panel">
+                                                        <p className="card-description" style={{ marginBottom: "8px" }}>
+                                                            Status: {status}
+                                                        </p>
+                                                        <button
+                                                            className="btn btn-secondary"
+                                                            onClick={() => {
+                                                                if (!isConnectingOrDisconnecting) {
+                                                                    toggleWifiConnection(network);
+                                                                }
+                                                            }}
+                                                            disabled={isDisabled}
+                                                            style={{ marginTop: "8px" }}
+                                                        >
+                                                            {buttonLabel}
+                                                        </button>
+                                                    </div>
+                                                )}
                                             </div>
-                                        </div>
-                                        <span className="card-arrow" style={{ fontSize: "20px", lineHeight: 1 }}>v</span>
-                                        </div>
-                                    </div>
-
-                                    {/* Dropdown panel */}
-                                    {isOpen && (
-                                        <div className="dropdown-panel">
-                                        <p className="dropdown-status">Status: {status}</p>
-                                        <button
-                                            className="btn btn-secondary"
-                                            onClick={() => {
-                                            if (!isConnectingOrDisconnecting) {
-                                                toggleWifiConnection(network, 'App');
-                                            }
-                                            }}
-                                            disabled={isDisabled}
-                                        >
-                                            {buttonLabel}
-                                        </button>
-                                        </div>
-                                    )}
-                                    </div>
-                                );
-                                })}
-                            </div>
+                                        );
+                                    })}
+                                </div>
                             )}
                         </>
                     )}

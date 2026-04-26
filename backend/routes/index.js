@@ -1,7 +1,6 @@
 import express from 'express';
 import lessonRoutes from './lessons.js';
 import stepRoutes from './steps.js';
-import chatRoutes from './chat.js';
 import initOracle from "../database/oracle.js";
 
 const router = express.Router();
@@ -21,7 +20,6 @@ router.get("/test-db", async (req, res) => {
 
 router.use('/lessons', lessonRoutes);
 router.use('/steps', stepRoutes);
-router.use('/chat', chatRoutes);
 
 export default router;
 

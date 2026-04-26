@@ -7,25 +7,18 @@
             "detailType": "wifi",
             "networks": {
                 "Wifi Network 1": {
-                    "requiresPassword": false,
-                    "defaultStatus": "disconnected"
+                    "defaultStatus": "connected"
                 },
                 "Wifi Network 2": {
-                    "requiresPassword": false,
                     "defaultStatus": "disconnected"
                 },
                 "Wifi Network 3": {
-                    "requiresPassword": true,
-                    "password": "password",
                     "defaultStatus": "disconnected"
                 },
                 "Wifi Network 4": {
-                    "requiresPassword": true,
-                    "password": "network123",
                     "defaultStatus": "disconnected"
                 },
                 "Wifi Network 5": {
-                    "requiresPassword": false,
                     "defaultStatus": "disconnected"
                 }
             }
@@ -37,7 +30,7 @@
             "detailType": "bluetooth",
             "devices": {
                 "Headphone 1": {
-                    "defaultStatus": "disconnected"
+                    "defaultStatus": "connected"
                 },
                 "Headphone 2": {
                     "defaultStatus": "disconnected"
@@ -135,9 +128,5 @@
             "default": 50,
             "event": "VolumeChange"
         }
-    },
-    "user": {
-        "username": "User",
-        "userEmail": "userEmail@domain.com"
     }
 }

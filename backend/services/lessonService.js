@@ -9,19 +9,16 @@ export async function getAllLessons() {
         connection = await initOracle();
 
         const result = await connection.execute(
-        `SELECT l.lessonId, l.lessonName, l.categoryId, c.categoryName, c.categoryOrderNumber, l.orderNumber
-        FROM ADMIN.Lesson l
-        INNER JOIN ADMIN.Category c ON l.categoryId = c.categoryId
-        ORDER BY c.categoryOrderNumber, l.orderNumber`
+        `SELECT lessonId, lessonName, categoryId, orderNumber
+        FROM ADMIN.Lesson
+        ORDER BY categoryId, orderNumber`
         );
 
         return result.rows.map(row => ({
         lessonId: row[0],
         lessonName: row[1],
         categoryId: row[2],
-        categoryName: row[3],
-        categoryOrderNumber: row[4],
-        orderNumber: row[5]
+        orderNumber: row[3]
         }));
     } finally {
         if (connection) await connection.close();

@@ -16,18 +16,17 @@ import '../css/Settings.css';
 
 import { useEffect, useState } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus";
-import { useSettingsContext } from "../utils/settings/settingsContext";
 
-function Settings({ startingPage = 'home', currentPage: currentPageProp, settingsState = {}, onSettingsStateChange, backgroundImage, onBackgroundChange, onResetDefault, onPageChange }) {
+function Settings({ startingPage = 'home', backgroundImage, onBackgroundChange, onResetDefault  }) {
 
     const [query, setQuery] = useState('');
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [currentPage, setCurrentPage] = useState(currentPageProp || startingPage); // default page (can be passed from different places to open to specific pages)
+    const [currentPage, setCurrentPage] = useState(startingPage); // default page (can be passed from different places to open to specific pages)
 
-    // Update internal state when props change (e.g., when re‑opening the same window)
+    // Update internal state when the prop changes (e.g., when re‑opening the same window)
     useEffect(() => {
-        setCurrentPage(currentPageProp || startingPage);
-    }, [currentPageProp, startingPage]);
+        setCurrentPage(startingPage);
+    }, [startingPage]);
 
     // Update state on input change
     const handleSearch = (e) => setQuery(e.target.value);
@@ -51,34 +50,18 @@ function Settings({ startingPage = 'home', currentPage: currentPageProp, setting
         updates: { name: 'Windows Update', icon: '📦', event: 'SettingsUpdatePageClicked' },
     };
 
-    const {
-        username, 
-        userEmail
-    } = useSettingsContext();
-
     const renderContent = () => {
         switch (currentPage) {
             case 'home':
-                return <Home navigateToPage={(page) => {
-                    setCurrentPage(page);
-                    onPageChange?.(page);
-                }} />
+                return <Home setCurrentPage={setCurrentPage} />
             case 'system':
                 return <System/>
             case 'bluetooth':
-                return <BluetoothDevices
-                    subPage={settingsState?.bluetoothSubPage || 'main'}
-                    onSubPageChange={(subPage) => onSettingsStateChange?.({ bluetoothSubPage: subPage })}
-                />;
+                return <BluetoothDevices />;
             case 'network':
-                return <Network
-                    subPage={settingsState?.networkSubPage || 'main'}
-                    onSubPageChange={(subPage) => onSettingsStateChange?.({ networkSubPage: subPage })}
-                />;
+                return <Network/>
             case 'personalization':
                 return <Personalization 
-                    subPage={settingsState?.personalizationSubPage || 'main'}
-                    onSubPageChange={(subPage) => onSettingsStateChange?.({ personalizationSubPage: subPage })}
                     backgroundImage={backgroundImage}
                     onBackgroundChange={onBackgroundChange}
                     onResetDefault={onResetDefault}
@@ -117,8 +100,8 @@ function Settings({ startingPage = 'home', currentPage: currentPageProp, setting
             <div className="settings-content">
                 <div className={`settings-sidebar ${!sidebarOpen ? 'd-none' : ''}`}>
                     <div className="settings-user-info">
-                        <h2>{username}</h2>
-                        <p>{userEmail}</p>
+                        <h2>User</h2>
+                        <p>Example@domain.com</p>
                     </div>
                     {Object.entries(pages).map(([key, { name, icon }]) => (
                         <div
@@ -127,7 +110,6 @@ function Settings({ startingPage = 'home', currentPage: currentPageProp, setting
                             onClick={() => {
                                 setCurrentPage(key);
                                 setSidebarOpen(false);
-                                onPageChange?.(key);
                                 dispatchDesktopEvent(pages[key].event);
                             }}
                         >

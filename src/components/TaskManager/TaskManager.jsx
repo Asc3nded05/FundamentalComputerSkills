@@ -50,8 +50,8 @@ function TaskManager({sortedWindows, closeApp}) {
 
     // Get all available items (windows + system processes)
     const getAllItems = () => {
-        const windows = sortedWindows?.map(w => ({ id: w.instanceId || w.id, type: 'window', name: w.name, cpuMin: w.cpuMin, cpuMax: w.cpuMax, memMin: w.memMin, memMax: w.memMax, diskMin: w.diskMin, diskMax: w.diskMax, netMin: w.netMin, netMax: w.netMax })) || [];
-        const processes = systemProcesses.map(p => ({ id: p.id, type: 'process', name: p.name, cpuMin: p.cpuMin, cpuMax: p.cpuMax, memMin: p.memMin, memMax: p.memMax, diskMin: p.diskMin, diskMax: p.diskMax, netMin: p.netMin, netMax: p.netMax }));
+        const windows = sortedWindows?.map(w => ({ id: w.instanceId || w.id, type: 'window' })) || [];
+        const processes = systemProcesses.map(p => ({ id: p.id, type: 'process' }));
         return [...windows, ...processes];
     };
 
@@ -118,29 +118,32 @@ function TaskManager({sortedWindows, closeApp}) {
 
 
     useEffect(() => {
+        const allItemProcesses = getAllItemProcesses();
+        console.log("All item processes in Task Manager:", allItemProcesses);
         const interval = setInterval(() => {
-            const newMetrics = {};
-            let totalCpu = 0;
-            let totalMemory = 0;
-            let totalDisk = 0;
-
-            getAllItems().forEach(item => {
-                const cpu = getRandomNumber(item.cpuMin || 0, item.cpuMax || 0, 1);
-                const memory = getRandomNumber(item.memMin || 0, item.memMax || 0, 0);
-                const disk = getRandomNumber(item.diskMin || 0, item.diskMax || 0, 1);
-                const network = getRandomNumber(item.netMin || 0, item.netMax || 0, 2);
-
-                newMetrics[item.id] = { cpu, memory, disk, network };
-                totalCpu += cpu;
-                totalMemory += memory;
-                totalDisk += disk;
-            });
-
-            setProcessMetrics(newMetrics);
-            setCpuTotal(totalCpu);
-            setMemoryTotal(totalMemory);
-            setDiskTotal(totalDisk);
-        }, 2000);
+            setCpuTotal(0);
+            setCpuUsage(systemProcesses.map(proc => {
+                const nextVal = Number(getRandomNumber(proc.cpuMin, proc.cpuMax, 1));
+                setCpuTotal(prev => prev + nextVal);
+                return nextVal;
+            }));
+            setMemoryTotal(0);
+            setMemoryUsage(systemProcesses.map(proc => {
+                const nextVal = Number(getRandomNumber(proc.memMin, proc.memMax, 0));
+                setMemoryTotal(prev => prev + nextVal);
+                return nextVal;
+            }));
+            setDiskTotal(0);
+            setDiskUsage(systemProcesses.map(proc => {
+                const nextVal = Number(getRandomNumber(proc.diskMin, proc.diskMax, 1));
+                setDiskTotal(prev => prev + nextVal);
+                return nextVal;
+            }));
+            setNetworkUsage(systemProcesses.map(proc => {
+                const nextVal = Number(getRandomNumber(proc.netMin, proc.netMax, 2));
+                return nextVal;
+            }));
+    }, 2000);
 
         return () => clearInterval(interval);
     }, [systemProcesses, sortedWindows]);    
@@ -207,7 +210,7 @@ function TaskManager({sortedWindows, closeApp}) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {getAllItems().map((item) => {
+                                {allItems.map((item) => {
                                     const rowId = item.id;
                                     const metrics = processMetrics[rowId] || { cpu: 0, memory: 0, disk: 0, network: 0 };
 

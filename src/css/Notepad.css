@@ -1,70 +1,32 @@
-.notepad-fill {
-    position: relative;
-}
-
 .notepad-bottom-top-nav {
     display: flex;
     justify-content: space-between;
     background: #e6f0f4;
     padding-top: 0;
-    height: 50px;
 }
 
 .notepad-find-options {
     display: flex;
-    gap: 5px;
-    padding: 2px;
-    background: #ffffff;
-    border: 1px solid black;
-    border-radius: 5px;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
-    position: absolute;
-    top: 0;
-    right: 0;
+    justify-content: right;
+    gap: 10px;
+    padding: 10px;
+    background: #e6f0f4;
+    padding-top: 0;
 }
 
-.notepad-find-w-counter {
-    display: flex;
-    align-items: center;
-    border: 1px solid black;
-    border-radius: 3px;
-    margin: 7px;
-}
-
-.notepad-find {
+.notepad-find-options input {
     font-size: 14px;
+    padding: 5px;
+    margin: 5px;
     width: 200px;
+}
+
+.notepad-find-options button {
     border: none;
-    margin-left: 5px;
-}
-
-.notepad-find:focus {
-    outline: none;
-}
-
-.notepad-find-counter {
-    font-size: 14px;
-    color: rgba(0, 0, 0, 0.6);
-    padding-right: 5px;
-}
-
-.notepad-find-next-prev {
-    border: 1px solid black;
-    background-color: #ffffff;
+    background-color: #e6f0f4;
     cursor: pointer;
     font-size: 14px;
     border-radius: 3px;
-    margin-top: 7px;
-    margin-bottom: 7px;
-    padding: 5px;
-}
-
-.notepad-find-close {
-    border: none;
-    background-color: transparent;
-    font-size: 16px;
-    cursor: pointer;
-    padding: 5px;
 }
 
 .notepad-options {
@@ -88,16 +50,6 @@
     flex: 1;
     display: flex;
     overflow: auto;
-}
-
-.notepad-content p {
-    margin: 0;
-    position: absolute; 
-    height: 90%;
-}
-
-.notepad-content p:focus {
-    outline: none;
 }
 
 .notepad-body {

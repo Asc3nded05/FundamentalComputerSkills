@@ -2,25 +2,13 @@ import { useEffect, useState, useRef } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus";
 import AppIcon from "./AppIcon.jsx";
 
-import placeholderImage from "../assets/WifiPlaceholder.png"
-
 function StartMenu({ closeStartMenu, isOpen, apps = [] }) {
     const nodeRef = useRef(null);
     const [query, setQuery] = useState("");
-    const [powerMenuOpen, setPowerMenuOpen] = useState(false);
 
     const handleClose = () => {
         closeStartMenu();
-        setPowerMenuOpen(false);
         dispatchDesktopEvent("StartMenuClose");
-    };
-
-    const togglePowerMenu = () => {
-        setPowerMenuOpen(!powerMenuOpen);
-    };
-
-    const closePowerMenu = () => {
-        setPowerMenuOpen(false);
     };
 
     // Escape to close
@@ -30,7 +18,6 @@ function StartMenu({ closeStartMenu, isOpen, apps = [] }) {
             if (e.key === "Escape") {
                 closeStartMenu?.();
                 dispatchDesktopEvent("StartMenuClosed");
-                closePowerMenu();
             }
         }
         document.addEventListener("keydown", handleKey);
@@ -77,7 +64,7 @@ function StartMenu({ closeStartMenu, isOpen, apps = [] }) {
                         tabIndex={-1}
                         onMouseDown={(e) => e.stopPropagation()}
                     >
-                        <div className="start-menu-top" onClick={closePowerMenu}>
+                        <div className="start-menu-top">
                             <input
                                 className="start-menu-search"
                                 type="text"
@@ -87,7 +74,7 @@ function StartMenu({ closeStartMenu, isOpen, apps = [] }) {
                             />
                         </div>
                         {/* App Grid */}
-                        <div className="start-app-grid" onClick={closePowerMenu}>
+                        <div className="start-app-grid">
                             {chunked.map((row, rowIndex) => (
                                 <div key={rowIndex} className="start-row">
                                 {row.map((app, colIndex) => (
@@ -115,37 +102,9 @@ function StartMenu({ closeStartMenu, isOpen, apps = [] }) {
 
                         {/* Bottom bar */}
                         <div className="start-menu-bottom">
-                            <div className="user-profile-button">
-                                <img className="user-profile-image" src={placeholderImage} alt="User Profile" />
-                                <span>User Profile</span>
-                            </div>
-                            <div className="power-button" onClick={(e) => {
-                                e.stopPropagation();
-                                togglePowerMenu();
-                            }}>
-                                <img src={placeholderImage} alt="Power" />
-                            </div>
+                            <div className="user-profile-button">User Profile</div>
+                            <div className="power-button">Power Button</div>
                         </div>
-                        {powerMenuOpen && (
-                            <div className="power-menu" onClick={(e) => e.stopPropagation()}>
-                                <div className="power-menu-item">
-                                    <img src={placeholderImage} alt="Lock" />
-                                    <span>Lock</span>
-                                </div>
-                                <div className="power-menu-item">
-                                    <img src={placeholderImage} alt="Sleep" />
-                                    <span>Sleep</span>
-                                </div>
-                                <div className="power-menu-item">
-                                    <img src={placeholderImage} alt="Shut down" />
-                                    <span>Shut down</span>
-                                </div>
-                                <div className="power-menu-item">
-                                    <img src={placeholderImage} alt="Restart" />
-                                    <span>Restart</span>
-                                </div>
-                            </div>
-                        )}
                     </div>
                 </div>
             )}

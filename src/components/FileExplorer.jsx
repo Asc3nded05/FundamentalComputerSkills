@@ -1,15 +1,13 @@
+import React, { useState } from 'react';
 import Files from '../pages/Files.jsx';
 import '../css/FileExplorer.css';
 
-
 function FileExplorer() {
-    
-    return <>
-        {/* <div className={showUnresponsive ? "file-explorer-unresponsive" : "file-explorer"}> */}
-            <Files className="file-explorer"/>
-            {/* {showUnresponsive && <Unresponsive />} */}
-        {/* </div> */}
-    </>
+ return <>
+    <div className="file-explorer">
+        <Files/>
+    </div>
+ </>
 }
 
 

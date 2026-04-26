@@ -165,9 +165,6 @@ function Desktop() {
         closeApp,
         minimizeApp,
         maximizeApp,
-        updateWindowPosition,
-        updateWindowSize,
-        updateAppData,
     } = useAppWindowManager(lessonAppRegistry, BASE_WIDTH, BASE_HEIGHT);
 
     const baseApps = useMemo(() => apps.filter(app => !app.instanceId), [apps]);
@@ -209,7 +206,7 @@ function Desktop() {
             name: app.name,
             icon: app.icon,
             eventName: `${app.id}StartOpen`,
-            openWindow: () => openApp(app.id, { createNewInstance: false }),
+            openWindow: () => openApp(app.id, { createNewInstance: app.canHaveMultipleInstances }),
             isAppOpen: app.isOpen,
             variant: 'start-menu',
             appId: app.id
@@ -218,28 +215,18 @@ function Desktop() {
 
     // Render appropriate app content
     const renderAppContent = (app) => {
-        const identifier = app.instanceId || app.id;
-
         switch (app.component) {
             case 'FileExplorer':
-                return <FileExplorer key={identifier} />;
+                return <FileExplorer key={app.instanceId} />;
             case 'Notepad':
-                return <Notepad
-                    key={identifier}
-                    initialContent={app.initialContent}
-                    onContentChange={(content) => updateAppData(identifier, { initialContent: content })}
-                />;
+                return <Notepad key={app.instanceId} initialContent={app.initialContent} />;
             case 'Settings':
                 return <Settings
-                    key={identifier}
-                    startingPage={app.currentPage || app.startingPage}
-                    currentPage={app.currentPage || app.startingPage}
-                    settingsState={app.settingsState}
-                    onSettingsStateChange={(changes) => updateAppData(identifier, { settingsState: { ...app.settingsState, ...changes } })}
+                    key={app.instanceId}
+                    startingPage={app.startingPage}
                     backgroundImage={backgroundImage}
                     onBackgroundChange={handleBackgroundChange}
                     onResetDefault={resetToDefaultBackground}
-                    onPageChange={(page) => updateAppData(identifier, { currentPage: page, startingPage: page })}
                 />;
             case 'TaskManager':
                 return <TaskManager key={app.instanceId} sortedWindows={sortedWindows} closeApp={closeApp} />;
@@ -326,7 +313,8 @@ function Desktop() {
                                     name={app.name}
                                     icon={app.icon}
                                     eventName={`${app.id}DesktopOpen`}
-                                    openWindow={() => openApp(app.id, { createNewInstance: false })}
+                                    // openWindow={() => openApp(app.id)}
+                                    openWindow={() => openApp(app.id, { createNewInstance: true })} // Open a new instance (if app allows)
                                     variant="desktop"
                                     isAppOpen={app.isOpen}
                                 />
@@ -404,7 +392,7 @@ function Desktop() {
                     />
 
                     <SearchMenu
-                        closeSearchMenu={() => {setIsSearchOpen(false)}}
+                        closeStartMenu={() => setIsSearchOpen(false)}
                         isOpen={isSearchOpen}
                         apps={startMenuApps}
                         query={query}
@@ -418,7 +406,7 @@ function Desktop() {
                     />
 
                     {/* Dynamic app windows */}
-                    {sortedWindows.filter(app => !app.isMinimized).map((app) => (
+                    {sortedWindows.map((app) => (
                         <AppWindow
                             key={app.instanceId || app.id}
                             name={app.name}
@@ -426,21 +414,18 @@ function Desktop() {
                             isMinimized={app.isMinimized}
                             isMaximized={app.isMaximized}
                             onClose={() => closeApp(app.instanceId || app.id)}
-                            onMinimize={() => minimizeApp(app.instanceId || app.id)}
-                            onMaximize={() => maximizeApp(app.instanceId || app.id)}
-                            onDragStop={(position) => updateWindowPosition(app.instanceId || app.id, position)}
-                            onResizeStop={({ width, height, position }) => updateWindowSize(app.instanceId || app.id, { width, height }, position)}
+                            // onMinimize={() => minimizeApp(app.instanceId || app.id)}
+                            // onMaximize={() => maximizeApp(app.instanceId || app.id)}
                             zIndex={app.zIndex}
                             bringToFront={() => bringToFront(app.instanceId || app.id)}
                             content={renderAppContent(app)}
-                            size={app.size}
+                            initialSize={app.size}
                             position={app.position}
                             scale={scale}
                             baseHeight={BASE_HEIGHT}
                             baseWidth={BASE_WIDTH}
                             offset={app.offset}
                         />
-                        
                     ))}
 
                 </div>
