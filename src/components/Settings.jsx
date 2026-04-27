@@ -12,6 +12,19 @@ import Accessibility from "./settings/Accessibility";
 import PrivacySecurity from "./settings/PrivacySecurity";
 import WindowsUpdate from "./settings/WindowsUpdate";
 
+import homeIcon from '../assets/Icons/Settings Home Icon.png';
+import systemIcon from '../assets/Icons/Settings System Icon.png';
+import bluetoothIcon from '../assets/Icons/Settings Bluetooth and Devices Icon.png';
+import networkIcon from '../assets/Icons/Settings Network and Internet Icon.png';
+import personalizationIcon from '../assets/Icons/Settings Personalization Icon.png';
+import appsIcon from '../assets/Icons/Settings Apps Icon.png';
+import accountsIcon from '../assets/Icons/Settings Account Icon.png';
+import timeIcon from '../assets/Icons/Settings Time and Language Icon.png';
+import gamingIcon from '../assets/Icons/Settings Gaming Icon.png';
+import accessibilityIcon from '../assets/Icons/Settings Accessibility Icon.png';
+import privacyIcon from '../assets/Icons/Settings Privacy and Security Icon.png';
+import updatesIcon from '../assets/Icons/Settings Windows Update Icon.png';
+
 import '../css/Settings.css';
 
 import { useEffect, useState } from "react";
@@ -35,20 +48,19 @@ function Settings({ startingPage = 'home', currentPage: currentPageProp, setting
     // Toggle sidebar visibility
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
-    // NOTE: Later, we can add custom icons for each page instead of emojis
     const pages = {
-        home: { name: 'Home', icon: '🏠', event: 'SettingsHomePageClicked' },
-        system: { name: 'System', icon: '⚙️', event: 'SettingsSystemPageClicked' },
-        bluetooth: { name: 'Bluetooth & Devices', icon: '🔌', event: 'SettingsBluetoothPageClicked' },
-        network: { name: 'Network & Internet', icon: '🌐', event: 'SettingsNetworkPageClicked' },
-        personalization: { name: 'Personalization', icon: '🎨', event: 'SettingsPersonalizationPageClicked' },
-        apps: { name: 'Apps', icon: '📱', event: 'SettingsAppsPageClicked' },
-        accounts: { name: 'Accounts', icon: '👤', event: 'SettingsAccountsPageClicked' },
-        time: { name: 'Time & Language', icon: '🕐', event: 'SettingsTimeLanguagePageClicked' },
-        gaming: { name: 'Gaming', icon: '🎮', event: 'SettingsGamingPageClicked' },
-        accessibility: { name: 'Accessibility', icon: '♿', event: 'SettingsAccessibilityPageClicked' },
-        privacy: { name: 'Privacy & Security', icon: '🔒', event: 'SettingsPrivacySecurityPageClicked' },
-        updates: { name: 'Windows Update', icon: '📦', event: 'SettingsUpdatePageClicked' },
+        home: { name: 'Home', icon: homeIcon, event: 'SettingsHomePageClicked' },
+        system: { name: 'System', icon: systemIcon, event: 'SettingsSystemPageClicked' },
+        bluetooth: { name: 'Bluetooth & Devices', icon: bluetoothIcon, event: 'SettingsBluetoothPageClicked' },
+        network: { name: 'Network & Internet', icon: networkIcon, event: 'SettingsNetworkPageClicked' },
+        personalization: { name: 'Personalization', icon: personalizationIcon, event: 'SettingsPersonalizationPageClicked' },
+        apps: { name: 'Apps', icon: appsIcon, event: 'SettingsAppsPageClicked' },
+        accounts: { name: 'Accounts', icon: accountsIcon, event: 'SettingsAccountsPageClicked' },
+        time: { name: 'Time & Language', icon: timeIcon, event: 'SettingsTimeLanguagePageClicked' },
+        gaming: { name: 'Gaming', icon: gamingIcon, event: 'SettingsGamingPageClicked' },
+        accessibility: { name: 'Accessibility', icon: accessibilityIcon, event: 'SettingsAccessibilityPageClicked' },
+        privacy: { name: 'Privacy & Security', icon: privacyIcon, event: 'SettingsPrivacySecurityPageClicked' },
+        updates: { name: 'Windows Update', icon: updatesIcon, event: 'SettingsUpdatePageClicked' },
     };
 
     const {
@@ -131,7 +143,7 @@ function Settings({ startingPage = 'home', currentPage: currentPageProp, setting
                                 dispatchDesktopEvent(pages[key].event);
                             }}
                         >
-                            {icon} {name}
+                            <img src={icon} style={{width: '20px'}}></img> {name}
                         </div>
                     ))}
                 </div>

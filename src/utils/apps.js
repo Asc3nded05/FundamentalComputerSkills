@@ -1,4 +1,7 @@
-import desktopIcon from '../assets/DesktopIconPlaceholder.png';
+import fileExplorerIcon from '../assets/Icons/File Explorer.png';
+import notepadIcon from '../assets/Icons/Notepad.png';
+import settingsIcon from '../assets/Icons/Settings.png';
+import taskManagerIcon from '../assets/Icons/Task Manager.png';
 
 /**
  * Shared app registry: metadata for all apps in the system
@@ -9,7 +12,7 @@ export const APP_REGISTRY = [
     {
         id: 'FileExplorer',
         name: 'File Explorer',
-        icon: desktopIcon,
+        icon: fileExplorerIcon,
         component: 'FileExplorer',
         defaultSize: { width: 800, height: 600 },
         canHaveMultipleInstances: false,
@@ -17,7 +20,7 @@ export const APP_REGISTRY = [
     {
         id: 'Notepad',
         name: 'Notepad',
-        icon: desktopIcon,
+        icon: notepadIcon,
         component: 'Notepad',
         defaultSize: { width: 500, height: 400 },
         canHaveMultipleInstances: false,
@@ -26,7 +29,7 @@ export const APP_REGISTRY = [
     {
         id: 'Settings',
         name: 'Settings',
-        icon: desktopIcon,
+        icon: settingsIcon,
         component: 'Settings',
         defaultSize: { width: 800, height: 600 },
         canHaveMultipleInstances: false,
@@ -35,17 +38,17 @@ export const APP_REGISTRY = [
     {
         id: 'TaskManager',
         name: 'Task Manager',
-        icon: desktopIcon,
+        icon: taskManagerIcon,
         component: 'TaskManager',
         defaultSize: { width: 800, height: 600 },
         canHaveMultipleInstances: false
-    },
-    {
-        id: 'FrameApp',
-        name: 'Frame App',
-        icon: desktopIcon,
-        component: 'FrameApp',
-        defaultSize: { width: 200, height: 200 },
-        canHaveMultipleInstances: false
-    },
+    }
+    // {
+    //     id: 'FrameApp',
+    //     name: 'Frame App',
+    //     icon: desktopIcon,
+    //     component: 'FrameApp',
+    //     defaultSize: { width: 200, height: 200 },
+    //     canHaveMultipleInstances: false
+    // },
 ];

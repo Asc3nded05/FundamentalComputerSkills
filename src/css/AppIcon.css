@@ -79,10 +79,8 @@
 }
 
 .app-icon.desktop .app-icon-image {
-  width: 80%;
-  height: 80%;
-  /* Turn the black icon white */
-  filter: invert(100%);
+  width: 60%;
+  height: 60%;
 }
 
 .app-icon-tooltip.desktop {
@@ -99,8 +97,6 @@
 .app-icon.taskbar .app-icon-image {
   width: auto;
   height: 30px;
-  /* Turn the black icon white */
-  filter: invert(100%);
 }
 
 .app-icon.taskbar .app-icon-name {
@@ -130,7 +126,6 @@
 .app-icon.start-menu .app-icon-image {
   width: 4rem;
   height: 4rem;
-  filter: invert(100%);
 }
 
 .app-icon.start-menu .app-icon-name {

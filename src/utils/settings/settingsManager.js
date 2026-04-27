@@ -100,6 +100,16 @@ export const useSettings = () => {
   );
   const { statuses: bluetoothStatuses, setStatusWithDelay: setBluetoothStatusWithDelay, updateImmediate: updateBluetoothStatus, addStatusKey: addBluetoothStatusKey, removeStatusKey: removeBluetoothStatusKey } =
     useAsyncStatus(initialBluetoothStatuses);
+  // Bluetooth device icons
+  const [bluetoothIcons] = useState(() =>
+    Object.fromEntries(
+      Object.entries(config.toggles.bluetooth.devices).map(([name, data]) => [
+        name,
+        data.icon
+      ])
+    )
+  );
+
 
   // Selected Wi‑Fi network (for showing connect button)
   const [selectedWifi, setSelectedWifi] = useState(null);
@@ -349,6 +359,6 @@ export const useSettings = () => {
     wifiStatuses, selectedWifi, setSelectedWifi, toggleWifiConnection, wifiRequiresPassword,
 
     // Bluetooth
-    bluetoothStatuses, toggleBluetoothConnection, addBluetoothDevice, removeBluetoothDevice,
+    bluetoothStatuses, bluetoothIcons, toggleBluetoothConnection, addBluetoothDevice, removeBluetoothDevice,
   };
 };

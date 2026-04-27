@@ -1,4 +1,4 @@
-import icon from "../assets/StartMenuIcon.svg"
+import windowsIcon from '../assets/Icons/Windows Icon.png';
 
 function StartButton({ toggleStartMenu }) {
     const stop = (e) => {
@@ -14,7 +14,7 @@ function StartButton({ toggleStartMenu }) {
             onMouseDown={stop}
             onTouchStart={stop}
         >
-            <img className="start-button-icon" src={icon} alt="Start" />
+            <img className="start-button-icon" src={windowsIcon} alt="Start" />
         </div>
     )
 }

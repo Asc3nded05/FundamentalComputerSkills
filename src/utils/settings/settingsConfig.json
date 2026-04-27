@@ -37,19 +37,24 @@
             "detailType": "bluetooth",
             "devices": {
                 "Headphone 1": {
-                    "defaultStatus": "disconnected"
+                    "defaultStatus": "disconnected",
+                    "icon": "headphoneDeviceIcon"
                 },
                 "Headphone 2": {
-                    "defaultStatus": "disconnected"
+                    "defaultStatus": "disconnected",
+                    "icon": "headphoneDeviceIcon"
                 },
                 "Headphone 3": {
-                    "defaultStatus": "disconnected"
+                    "defaultStatus": "disconnected",
+                    "icon": "headphoneDeviceIcon"
                 },
                 "Speaker": {
-                    "defaultStatus": "disconnected"
+                    "defaultStatus": "disconnected",
+                    "icon": "speakerDeviceIcon"
                 },
                 "Phone Link": {
-                    "defaultStatus": "disconnected"
+                    "defaultStatus": "disconnected",
+                    "icon": "phoneDeviceIcon"
                 }
             }
         },
