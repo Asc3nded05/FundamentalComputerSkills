@@ -26,6 +26,9 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
     // "wifi" | "bluetooth" | "accessibility" | "project" | null
     const [activeDetail, setActiveDetail] = useState(null);
 
+    const [passwords, setPasswords] = useState({});
+    const [passwordErrors, setPasswordErrors] = useState({});
+
     // Functions from settings Manager
     const {
         wifiOn, bluetoothOn, airplaneOn, energyOn,
@@ -285,9 +288,9 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                         <div className="qs-detail-content">
                                             {!wifiOn ? (
                                                 <div className="qs-radio-off-message">
-                                                    <div className="qs-radio-off-title">Wi‑Fi is off</div>
+                                                    <div className="qs-radio-off-title">Wi-Fi is off</div>
                                                     <div className="qs-radio-off-body">
-                                                        Turn Wi‑Fi back on to see available networks.
+                                                        Turn Wi-Fi back on to see available networks.
                                                     </div>
                                                 </div>
                                             ) : (
@@ -315,11 +318,55 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                                             </button>
 
                                                             {selectedWifi === network && (
+                                                                <>
+                                                                {requiresPassword && status !== 'connected' && (
+                                                                    <div style={{ marginTop: '8px' }}>
+                                                                        <input
+                                                                        type="password"
+                                                                        placeholder="Network password"
+                                                                        value={passwords[network] || ''}
+                                                                        onChange={(e) => {
+                                                                            setPasswords(prev => ({ ...prev, [network]: e.target.value }));
+                                                                            // clear error while typing
+                                                                            if (passwordErrors[network]) {
+                                                                            setPasswordErrors(prev => ({ ...prev, [network]: false }));
+                                                                            }
+                                                                        }}
+                                                                        disabled={status === 'connecting' || status === 'disconnecting'}
+                                                                        className="qs-password-input"   // add your own class
+                                                                        />
+                                                                        {passwordErrors[network] && (
+                                                                        <p style={{ color: 'white', margin: '4px 0 0', fontSize: '0.85em' }}>
+                                                                            Incorrect password
+                                                                        </p>
+                                                                        )}
+                                                                    </div>
+                                                                )}
                                                                 <button
                                                                     className={`qs-connect-button ${
                                                                         status === "connected" ? "disconnect" : ""
                                                                     }`}
-                                                                    onClick={() => toggleWifiConnection(network, 'QS')}
+                                                                    onClick={() => {
+                                                                        const pwd = passwords[network] || '';
+                                                                        // clear previous error
+                                                                        setPasswordErrors(prev => ({ ...prev, [network]: false }));
+
+                                                                        const result = toggleWifiConnection(
+                                                                            network,
+                                                                            'QS',
+                                                                            status === 'connected' ? undefined : pwd   // disconnect doesn’t need password
+                                                                        );
+
+                                                                        if (result?.action === 'passwordIncorrect') {
+                                                                            setPasswordErrors(prev => ({ ...prev, [network]: true }));
+                                                                            setPasswords(prev => ({ ...prev, [network]: '' }));
+                                                                            return;
+                                                                        }
+
+                                                                        // On any success, clear the password and error
+                                                                        setPasswords(prev => ({ ...prev, [network]: '' }));
+                                                                        setPasswordErrors(prev => ({ ...prev, [network]: false }));
+                                                                    }}
                                                                 >
                                                                     {status === "connected"
                                                                         ? "Disconnect"
@@ -329,6 +376,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                                                         ? "Disconnecting..."
                                                                         : "Connect"}
                                                                 </button>
+                                                                </>
                                                             )}
                                                         </div>
                                                     )})}

@@ -1,11 +1,14 @@
 import { useState } from "react";
-import wifiIcon from "../../assets/WifiPlaceholder.png";
-import wifiLockedIcon from "../../assets/WifiLockPlaceholder.png";
+import wifiIcon from "../../assets/icons/Wifi Full.png";
+import wifiLockedIcon from "../../assets/icons/Wifi Lock.png";
 import { useSettingsContext } from "../../utils/settings/settingsContext";
 import { dispatchDesktopEvent } from "../../utils/eventBus";
 
 function Network({ subPage = 'main', onSubPageChange }) {
     const [openDropdownNetwork, setOpenDropdownNetwork] = useState(null); // track which network dropdown is open
+
+    const [passwords, setPasswords] = useState({});
+    const [passwordErrors, setPasswordErrors] = useState({});
 
     const {
         wifiOn,
@@ -240,12 +243,59 @@ function Network({ subPage = 'main', onSubPageChange }) {
                                     {isOpen && (
                                         <div className="dropdown-panel">
                                         <p className="dropdown-status">Status: {status}</p>
+                                        {requiresPassword && status !== 'connected' && (
+                                            <div style={{ marginTop: '8px' }}>
+                                                <input
+                                                type="password"
+                                                placeholder="Network password"
+                                                value={passwords[network] || ''}
+                                                onChange={(e) => {
+                                                    setPasswords(prev => ({ ...prev, [network]: e.target.value }));
+                                                    // Clear error when user starts typing
+                                                    if (passwordErrors[network]) {
+                                                    setPasswordErrors(prev => ({ ...prev, [network]: false }));
+                                                    }
+                                                }}
+                                                disabled={isConnectingOrDisconnecting}
+                                                className="password-input"  // add your own CSS class
+                                                />
+                                                {passwordErrors[network] && (
+                                                <p className="error-message" style={{ color: 'red', margin: '4px 0 0' }}>
+                                                    Incorrect password
+                                                </p>
+                                                )}
+                                            </div>
+                                        )}
                                         <button
                                             className="btn btn-secondary"
                                             onClick={() => {
-                                            if (!isConnectingOrDisconnecting) {
-                                                toggleWifiConnection(network, 'App');
-                                            }
+                                                if (isConnectingOrDisconnecting) return;
+                                                const pwd = passwords[network] || '';    // get entered password, if any
+
+                                                // Clear previous error for this network
+                                                setPasswordErrors(prev => ({ ...prev, [network]: false }));
+
+                                                const result = toggleWifiConnection(
+                                                network,
+                                                'App',
+                                                status === 'connected' ? undefined : pwd   // disconnect doesn't need password
+                                                );
+
+                                                // If password was incorrect, show error and clear the entered password
+                                                if (result?.action === 'passwordIncorrect') {
+                                                setPasswordErrors(prev => ({ ...prev, [network]: true }));
+                                                setPasswords(prev => ({ ...prev, [network]: '' }));
+                                                return;
+                                                }
+
+                                                // Connection/disconnect started – clear the password input and error
+                                                if (result?.action === 'disconnectStarted' || 
+                                                    result?.action === 'connectStarted' || 
+                                                    result?.action === 'switchStarted') {
+                                                setPasswords(prev => ({ ...prev, [network]: '' }));
+                                                setPasswordErrors(prev => ({ ...prev, [network]: false }));
+                                                }
+                                                {buttonLabel}
                                             }}
                                             disabled={isDisabled}
                                         >

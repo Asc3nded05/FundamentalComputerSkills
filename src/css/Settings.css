@@ -557,9 +557,9 @@ input:checked+.toggle-slider:before {
 }
 
 .wifi-icon {
-    width: 48px;
-    height: 48px;
+    width: 60px;
     object-fit: contain;
+    filter: invert(1);
 }
 
 .network-details {
@@ -584,6 +584,7 @@ input:checked+.toggle-slider:before {
   height: 20px;
   object-fit: contain;
   flex-shrink: 0;
+  filter: invert(1);
 }
 
 /* Container for the main clickable card content */
@@ -613,6 +614,12 @@ input:checked+.toggle-slider:before {
   color: #666;
 }
 
+.password-input {
+  width: 100%;
+  padding: 6px;
+  box-sizing: border-box;
+}
+
 
 @media (max-width: 768px) {
     .network-header {
@@ -623,6 +630,7 @@ input:checked+.toggle-slider:before {
     .wifi-icon {
         width: 40px;
         height: 40px;
+        filter: invert(1);
     }
 }
 

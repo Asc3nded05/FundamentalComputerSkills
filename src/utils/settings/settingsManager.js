@@ -229,52 +229,51 @@ export const useSettings = () => {
     }, 500);
   }, []);
 
-  // Wi‑Fi connection logic
-  const toggleWifiConnection = useCallback((network, source = '') => {
+  const toggleWifiConnection = useCallback((network, source = '', password = undefined) => {
     if (!wifiOn) return;
 
-    const networkConfig = config.toggles.wifi.networks[network];
-    if (networkConfig && networkConfig.requiresPassword) {
-      const userPassword = prompt(`Enter password for ${network}:`);
-      if (userPassword === null) {
-        // User cancelled the prompt
-        return;
-      } else if (userPassword !== networkConfig.password) {
-        alert('Incorrect password');
-        return;
-      } else {
-        dispatchDesktopEvent(`WiFiNetworkPasswordCorrect${source}`, { networkName: network });
-      }
+    const currentStatus = wifiStatuses[network];
+    if (currentStatus === 'connecting' || currentStatus === 'disconnecting') {
+      return { action: 'none' };
     }
 
-    const currentStatus = wifiStatuses[network];
-    if (currentStatus === 'connecting' || currentStatus === 'disconnecting') return;
-
+    // ----- DISCONNECT PATH (no password needed) -----
     if (currentStatus === 'connected') {
       updateWifiStatus(network, 'disconnecting');
-      const eventName = `WiFiNetworkDisconnect${source}`;
-      dispatchDesktopEvent(eventName, { networkName: network });
+      dispatchDesktopEvent(`WiFiNetworkDisconnect${source}`, { networkName: network });
 
       const timeoutId = setTimeout(() => {
         updateWifiStatus(network, 'disconnected');
       }, 1000);
       if (timeoutsRef.current[network]) clearTimeout(timeoutsRef.current[network]);
       timeoutsRef.current[network] = timeoutId;
-      return;
+      return { action: 'disconnectStarted' };
     }
 
+    // ----- CONNECT PATH (password checked here) -----
+    const networkConfig = config.toggles.wifi.networks[network];
+    if (networkConfig && networkConfig.requiresPassword) {
+      if (password === undefined || password === null) {
+        return { action: 'passwordIncorrect' };
+      }
+      if (password !== networkConfig.password) {
+        return { action: 'passwordIncorrect' };
+      }
+      // Password is correct
+      dispatchDesktopEvent(`WiFiNetworkPasswordCorrect${source}`, { networkName: network });
+    }
+
+    // Disconnect from current network if connected, then connect to new one
     const currentConnected = Object.keys(wifiStatuses).find(n => wifiStatuses[n] === 'connected');
     if (currentConnected) {
       updateWifiStatus(currentConnected, 'disconnecting');
-      const disconnectEventName = `WiFiNetworkDisconnect${source}`;
-      dispatchDesktopEvent(disconnectEventName, { networkName: currentConnected });
+      dispatchDesktopEvent(`WiFiNetworkDisconnect${source}`, { networkName: currentConnected });
 
       const disconnectTimeout = setTimeout(() => {
         updateWifiStatus(currentConnected, 'disconnected');
 
         updateWifiStatus(network, 'connecting');
-        const connectEventName = `WiFiNetworkConnect${source}`;
-        dispatchDesktopEvent(connectEventName, { networkName: network });
+        dispatchDesktopEvent(`WiFiNetworkConnect${source}`, { networkName: network });
 
         const connectTimeout = setTimeout(() => {
           updateWifiStatus(network, 'connected');
@@ -284,16 +283,17 @@ export const useSettings = () => {
       }, 1000);
       if (timeoutsRef.current[currentConnected]) clearTimeout(timeoutsRef.current[currentConnected]);
       timeoutsRef.current[currentConnected] = disconnectTimeout;
+      return { action: 'switchStarted' };
     } else {
       updateWifiStatus(network, 'connecting');
-      const eventName = `WiFiNetworkConnect${source}`;
-      dispatchDesktopEvent(eventName, { networkName: network });
+      dispatchDesktopEvent(`WiFiNetworkConnect${source}`, { networkName: network });
 
       const connectTimeout = setTimeout(() => {
         updateWifiStatus(network, 'connected');
       }, 1000);
       if (timeoutsRef.current[network]) clearTimeout(timeoutsRef.current[network]);
       timeoutsRef.current[network] = connectTimeout;
+      return { action: 'connectStarted' };
     }
   }, [wifiOn, wifiStatuses, updateWifiStatus]);
 
