@@ -2,7 +2,11 @@ import { useEffect, useState, useRef } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus";
 import AppIcon from "./AppIcon.jsx";
 
-import placeholderImage from "../assets/WifiPlaceholder.png"
+import accountIcon from '../assets/Icons/Settings Account Icon.png';
+import powerIcon from '../assets/Icons/Power Icon.png';
+import lockIcon from '../assets/Icons/Lock.png';
+import sleepIcon from '../assets/Icons/Sleep Icon.png';
+import restartIcon from '../assets/Icons/Restart.png';
 
 function StartMenu({ closeStartMenu, isOpen, apps = [] }) {
     const nodeRef = useRef(null);
@@ -116,32 +120,32 @@ function StartMenu({ closeStartMenu, isOpen, apps = [] }) {
                         {/* Bottom bar */}
                         <div className="start-menu-bottom">
                             <div className="user-profile-button">
-                                <img className="user-profile-image" src={placeholderImage} alt="User Profile" />
+                                <img className="user-profile-image" src={accountIcon} alt="User Profile" />
                                 <span>User Profile</span>
                             </div>
                             <div className="power-button" onClick={(e) => {
                                 e.stopPropagation();
                                 togglePowerMenu();
                             }}>
-                                <img src={placeholderImage} alt="Power" />
+                                <img src={powerIcon} alt="Power" />
                             </div>
                         </div>
                         {powerMenuOpen && (
                             <div className="power-menu" onClick={(e) => e.stopPropagation()}>
                                 <div className="power-menu-item">
-                                    <img src={placeholderImage} alt="Lock" />
+                                    <img src={lockIcon} alt="Lock" />
                                     <span>Lock</span>
                                 </div>
                                 <div className="power-menu-item">
-                                    <img src={placeholderImage} alt="Sleep" />
+                                    <img src={sleepIcon} alt="Sleep" />
                                     <span>Sleep</span>
                                 </div>
                                 <div className="power-menu-item">
-                                    <img src={placeholderImage} alt="Shut down" />
+                                    <img src={powerIcon} alt="Shut down" />
                                     <span>Shut down</span>
                                 </div>
                                 <div className="power-menu-item">
-                                    <img src={placeholderImage} alt="Restart" />
+                                    <img src={restartIcon} alt="Restart" />
                                     <span>Restart</span>
                                 </div>
                             </div>

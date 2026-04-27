@@ -19,9 +19,6 @@ import headphoneDeviceIcon from '../assets/Icons/Bluetooth Headphone Device.png'
 import phoneDeviceIcon from '../assets/Icons/Bluetooth Phone Device.png';
 import speakerDeviceIcon from '../assets/Icons/Bluetooth Speaker Device.png';
 
-import placeholderImage from "../assets/WifiPlaceholder.png"
-
-
 import "../css/QuickSettings.css";
 
 function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
