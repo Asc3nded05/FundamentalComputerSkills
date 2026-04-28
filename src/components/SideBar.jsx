@@ -106,7 +106,7 @@ function SideBar(props) {
 
     // Effect to read nextStep aloud when it changes
     useEffect(() => {
-        if (stepInstructions && readAloud) {
+        if (stepInstructions && readAloud && stepInstructions !== "Lesson Completed! Great Job!") {
             const audio = new SpeechSynthesisUtterance(stepInstructions);
             const voices = window.speechSynthesis.getVoices();
             // console.log("Available voices:", voices);
