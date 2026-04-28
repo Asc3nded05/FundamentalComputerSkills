@@ -1,8 +1,8 @@
 import Accordion from 'react-bootstrap/Accordion';
-//import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function LessonAccordian({ lessons, resetLessonState, lessonState }) {
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const startLesson = (lesson) => {
     if (lessonState === "InProgress") {
@@ -13,8 +13,8 @@ function LessonAccordian({ lessons, resetLessonState, lessonState }) {
       const data = {
         lessonId: lesson.lessonId,
       };
+      navigate('/', { state: data });
       resetLessonState(data);
-      //navigate('/', { state: data });
   }
 
   const categories = lessons?.reduce((acc, lesson) => {
