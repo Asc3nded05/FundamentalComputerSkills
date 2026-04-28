@@ -8,10 +8,15 @@
   color: white;
   pointer-events: auto;
   touch-action: manipulation;
+ 
 
   position: static !important;
   transform: none !important;
 
+}
+
+.app-icon:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Visual feedback for clicks - but not for start menu icons */
@@ -87,6 +92,7 @@
 .app-icon-tooltip.desktop {
   bottom: 40%;
   left: 50%;
+  display: none;
 }
 
 /* Taskbar Icons ------------------------------------------------------------------------------------------------------------*/
@@ -106,7 +112,7 @@
 }
 
 .app-icon-tooltip.taskbar {
-  top: 0rem;
+  top: -2rem;
 }
 
 /* Indicator bar for open apps in taskbar */
