@@ -84,7 +84,7 @@ function SideBar(props) {
     });
 
     // Fetches lesson data
-    const { loading, error } = useLesson(currentLesson);
+    const { response, loading, error } = useLesson(currentLesson);
 
     // Fetches step data for the current lesson
     const { response: steps } = useStep(currentLesson);
@@ -236,7 +236,7 @@ function SideBar(props) {
                         <div id='sidebar' className='sidebar'>
                             {/* Lesson number and progress */}
                             <div className='lesson-num'>
-                                <p>Lesson #{currentLesson}</p>
+                                <p>{response.lessonName}</p>
                                 <div className="lesson-progress">
                                     <div className={"lesson-progress-bar"} style={{ width: `${progressPercent}%` }}></div>
                                 </div>
