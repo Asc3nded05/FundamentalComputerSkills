@@ -3,7 +3,7 @@ import { useLessons } from '../api/useLessons.js';
 import LessonAccordian from '../components/LessonAccordian.jsx';
 import Loading from '../components/Loading.jsx';
 import '../css/Lessons.css';
-function Lessons() {
+function Lessons( {resetLessonState, lessonState} ) {
     //Fetches lesson data
     const { response, loading, error} = useLessons();
 
@@ -14,7 +14,7 @@ function Lessons() {
     return (
         // Lesson Accordian component to display list of lessons and their steps
         <div className='lesson-content'>
-            <LessonAccordian lessons={response} />
+            <LessonAccordian lessons={response} resetLessonState={resetLessonState} lessonState={lessonState}/>
         </div>
 
   );

@@ -1,14 +1,20 @@
 import Accordion from 'react-bootstrap/Accordion';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 
-function LessonAccordian({ lessons }) {
-  const navigate = useNavigate();
+function LessonAccordian({ lessons, resetLessonState, lessonState }) {
+  //const navigate = useNavigate();
 
   const startLesson = (lesson) => {
+    if (lessonState === "InProgress") {
+      if (!window.confirm("You have an ongoing lesson. Starting a new lesson will lose your current progress. Do you want to continue?")) {
+        return;
+      }
+    }
       const data = {
         lessonId: lesson.lessonId,
       };
-      navigate('/', { state: data });
+      resetLessonState(data);
+      //navigate('/', { state: data });
   }
 
   const categories = lessons?.reduce((acc, lesson) => {

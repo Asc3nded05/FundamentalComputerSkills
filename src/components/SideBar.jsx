@@ -17,7 +17,18 @@ import Lessons from '../pages/Lessons.jsx';
 
 function SideBar(props) {
     // Sets Current LessonID or Default to lesson 1 if no lessonId is provided
-    const currentLesson = props.lessonId || 1;
+    const [currentLesson, setCurrentLesson] = useState(props.lessonId || 1);
+
+    const resetLessonState = (lessonData) => {
+        setCurrentLesson(lessonData.lessonId);
+        setLessonState("NotStarted");
+        setStepInstructions("Press Start Lesson to Begin");
+        setEventName(null);
+        setCompletedSteps(0);
+        setNextStep(null);
+        setActiveId(1);
+    };
+    
 
     // "NotStarted", "InProgress", "Completed"
     const [lessonState, setLessonState] = useState("NotStarted");
@@ -165,7 +176,7 @@ function SideBar(props) {
 
     let content;
     if (activeId === 2) {
-        content = <Lessons />;
+        content = <Lessons resetLessonState={resetLessonState} lessonState={lessonState}/>;
     } else if (activeId === 3) {
         content = <AIChat lessonId={currentLesson} steps={steps} completedSteps={completedSteps} stepInstructions={stepInstructions} nextStep={nextStep} messages={messages} setMessages={setMessages} />;
     } else {
