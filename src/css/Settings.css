@@ -22,8 +22,31 @@
     flex: 0 0 auto;
 }
 
-.settings-header input {
+.settings-search-wrapper {
+    position: relative;
     flex: 0 0 300px;
+    display: flex;
+    align-items: center;
+}
+
+.settings-search {
+    color: black;
+    border: 1px solid #e0e0e0;
+    height: 2rem;
+    width: 100%;
+    padding: 0.5rem 2rem 0.5rem 1rem;
+}
+
+.settings-search-icon {
+    position: absolute;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 0;
+    line-height: 1;
+    color: #666;
 }
 
 .settings-content {
@@ -232,12 +255,12 @@
 }
 
 .btn-primary {
-    background: #0078d4;
+    background: #2f77e3;
     color: white;
 }
 
 .btn-primary:hover {
-    background: #005a9e;
+    background: #1a62c4;
 }
 
 .btn-secondary {
@@ -259,7 +282,7 @@
 .btn-text {
     background: none;
     border: none;
-    color: #0078d4;
+    color: #2f77e3;
     padding: 8px 0;
 }
 
@@ -309,7 +332,7 @@
 }
 
 input:checked+.toggle-slider {
-    background-color: #0078d4;
+    background-color: #2f77e3;
 }
 
 input:checked+.toggle-slider:before {
@@ -388,7 +411,7 @@ input:checked+.toggle-slider:before {
 .plus-icon {
     font-size: 24px;
     font-weight: 300;
-    color: #0078d4;
+    color: #2f77e3;
 }
 
 
@@ -445,7 +468,7 @@ input:checked+.toggle-slider:before {
 
 .storage-bar-fill {
     height: 100%;
-    background-color: #0078d4;
+    background-color: #2f77e3;
     border-radius: 4px;
 }
 
@@ -485,7 +508,7 @@ input:checked+.toggle-slider:before {
 .button-text {
     background: none;
     border: none;
-    color: #0078d4;
+    color: #2f77e3;
     cursor: pointer;
     padding: 8px 0;
     font-size: 14px;
@@ -728,8 +751,8 @@ input:checked+.toggle-slider:before {
 .update-available {
     margin: 8px 0 0 0;
     font-size: 14px;
-    color: #0078d4;
-    background: #f0f7ff;
+    color: #2f77e3;
+    background: #eaf1fc;
     padding: 8px 12px;
     border-radius: 6px;
     display: inline-block;
@@ -821,7 +844,7 @@ input:checked+.toggle-slider:before {
 }
 
 .button-primary {
-    background: #0078d4;
+    background: #2f77e3;
     color: white;
     border: none;
     padding: 8px 16px;
@@ -833,7 +856,7 @@ input:checked+.toggle-slider:before {
 }
 
 .button-primary:hover {
-    background: #005a9e;
+    background: #1a62c4;
 }
 
 .color-picker-section {
@@ -932,4 +955,22 @@ input:checked+.toggle-slider:before {
 
 .device-list li:hover {
     background-color: #f0f0f0;
+}
+
+
+.user-email {
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #393838;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+
+.user-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e1e1e;
+    padding-top: 0px;
+    margin-top: 0px;
 }

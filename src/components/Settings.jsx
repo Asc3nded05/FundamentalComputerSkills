@@ -123,14 +123,20 @@ function Settings({ startingPage = 'home', currentPage: currentPageProp, setting
         <div className="settings">
             <div className="settings-header">
                 <button className="hamburger-menu" onClick={toggleSidebar}>☰</button>
-                &lt;- Settings
-                <input type="text" placeholder="Find a setting..." value={query} onChange={handleSearch} />
+                <i class="fa-solid fa-arrow-left"></i>
+                <div className="settings-search-wrapper ml-auto">
+                    <input className="settings-search" type="text" placeholder="Search" value={query} onChange={handleSearch} />
+                    {query
+                        ? <button className="settings-search-icon" onClick={() => setQuery('')}>✕</button>
+                        : <span className="settings-search-icon"><i className="fa-solid fa-magnifying-glass fa-flip-horizontal"></i></span>
+                    }
+                </div>
             </div>
             <div className="settings-content">
                 <div className={`settings-sidebar ${!sidebarOpen ? 'd-none' : ''}`}>
                     <div className="settings-user-info">
-                        <h2>{username}</h2>
-                        <p>{userEmail}</p>
+                        <h5 className="user-name">{username}</h5>
+                        <p className="user-email">{userEmail}</p>
                     </div>
                     {Object.entries(pages).map(([key, { name, icon }]) => (
                         <div
