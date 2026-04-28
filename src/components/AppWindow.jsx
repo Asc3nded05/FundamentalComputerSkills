@@ -27,14 +27,6 @@ function AppWindow({
     offset = 0
 }) {
 
-    const handleClose = (e) => {
-        if (showUnresponsive === false) {
-        e.preventDefault();
-        e.stopPropagation();
-        onClose();
-        }
-    };
-
     const handleFocus = (e) => {
         // When window is clicked, bring it to front (function is managed by Desktop.jsx)
         e.stopPropagation();
@@ -51,6 +43,8 @@ function AppWindow({
 
     if (!isOpen || isMinimized) return null;
     const { showUnresponsive, setShowUnresponsive } = useContext(UnresponsiveContext);
+
+    const isThisWindowUnresponsive = showUnresponsive && name === "File Explorer";
 
     return (
         <Rnd
@@ -72,16 +66,16 @@ function AppWindow({
             <div className="window">
                 <div className="window-header">
                     <div className="top-header">
-                        <p>{name}</p>
+                        <p>{name}{isThisWindowUnresponsive ? " (Not responding)" : ""}</p>
 
                         <a
                             href="#"
                             className="appWindowMinimize"
                             onClick={(e) => {
-                                if (showUnresponsive === false) {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                onMinimize?.();
+                                if (!isThisWindowUnresponsive) {
+                                    onMinimize?.();
                                 }
                             }}
                         >
@@ -91,10 +85,10 @@ function AppWindow({
                             href="#"
                             className="appWindowMaximize"
                             onClick={(e) => {
-                                if (showUnresponsive === false) {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                onMaximize?.();
+                                if (!isThisWindowUnresponsive) {
+                                    onMaximize?.();
                                 }
                             }}
                         >
@@ -103,7 +97,13 @@ function AppWindow({
                         <a
                             href="#"
                             className="appWindowClose"
-                            onClick={handleClose}>
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                if (!isThisWindowUnresponsive) {
+                                    onClose();
+                                }
+                            }}>
                             &times;
                         </a>
                     </div>

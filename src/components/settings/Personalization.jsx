@@ -129,8 +129,16 @@ const Personalization = ({ subPage = 'main', onSubPageChange, backgroundImage, o
                         <h3 className="card-title">Choose your background</h3>
                         <select
                             className="settings-select interactable"
-                            value={bgType}
-                            onChange={(e) => setBgType(e.target.value)}
+                            value={bgType}onChange={(e) => {
+                                const newBgType = e.target.value;
+                                setBgType(newBgType);
+                                
+                                if (newBgType === 'picture') {
+                                    dispatchDesktopEvent('SettingsPersonalizationBackgroundPictureSelected');
+                                } else if (newBgType === 'solid') {
+                                    dispatchDesktopEvent('SettingsPersonalizationBackgroundColorSelected');
+                                }
+                            }}
                         >
                             <option value="picture">Picture</option>
                             <option value="solid">Solid color</option>

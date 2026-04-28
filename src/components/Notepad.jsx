@@ -3,10 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus";
 import Mark from "mark.js";
 
-function Notepad({ initialContent = "Hello, this is text", onContentChange }) {
+function Notepad({ initialContent, onContentChange }) {
 
     const notepadRef = useRef(null);
-    const contentRef = useRef(initialContent ?? "Hello, this is text");
+    const contentRef = useRef(initialContent ?? "This is text");
     const hasInitializedContent = useRef(false);
     const [searchTerm, setSearchterm] = useState("");
     const [currentMark, setCurrentMark] = useState(-1);
@@ -15,7 +15,7 @@ function Notepad({ initialContent = "Hello, this is text", onContentChange }) {
     useEffect(() => {
         if (hasInitializedContent.current) return;
 
-        const nextText = initialContent ?? "Hello, this is text";
+        const nextText = initialContent ?? "This is text";
         contentRef.current = nextText;
         if (notepadRef.current) {
             notepadRef.current.innerText = nextText;
