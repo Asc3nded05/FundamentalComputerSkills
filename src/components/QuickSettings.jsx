@@ -236,6 +236,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                     <button className="qs-settings-button">
                                         <img className="qs-icon" src={settingsQSIcon} alt="Settings"
                                             onClick={() => {
+                                                handleClose();
                                                 openApp('Settings', { startingPage: 'home' });
                                                 dispatchDesktopEvent("OpenSettingsFromQS")
                                             }} />
@@ -460,6 +461,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                     {activeDetail === "wifi" && (
                                         <button className="qs-detail-footer-button"
                                             onClick={() => {
+                                                handleClose();
                                                 openApp('Settings', { startingPage: 'network' });
                                                 dispatchDesktopEvent("OpenWiFiSettingsFromQS");;
                                             }}>
@@ -470,6 +472,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                     {activeDetail === "bluetooth" && (
                                         <button className="qs-detail-footer-button"
                                             onClick={() => {
+                                                handleClose();
                                                 openApp('Settings', { startingPage: 'bluetooth' });
                                                 dispatchDesktopEvent("OpenBluetoothSettingsFromQS");
                                             }}>
@@ -480,6 +483,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                     {activeDetail === "accessibility" && (
                                         <button className="qs-detail-footer-button"
                                             onClick={() => {
+                                                handleClose();
                                                 openApp('Settings', { startingPage: 'accessibility' });
                                                 dispatchDesktopEvent("OpenAccessibilitySettingsFromQS");
                                             }}>
@@ -490,6 +494,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                     {activeDetail === "project" && (
                                         <button className="qs-detail-footer-button"
                                             onClick={() => {
+                                                handleClose();
                                                 openApp('Settings', { startingPage: 'system' });
                                                 dispatchDesktopEvent("OpenProjectSettingsFromQS")
                                             }}>
