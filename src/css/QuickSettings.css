@@ -59,7 +59,7 @@
 }
 
 .qs-tile-on {
-    background: rgba(0, 120, 215, 0.8); 
+    background: color-mix(in srgb, var(--accent) 80%, transparent);
 }
 
 .qs-tile-left {
@@ -97,7 +97,7 @@
 
 .qs-slider {
     margin-bottom: 16px;
-    accent-color: rgba(0, 120, 215, 0.8);
+    accent-color: var(--accent);
 }
 
 .qs-slider input[type="range"] {
@@ -227,7 +227,7 @@
 }
 
 .qs-detail-toggle.on {
-    background: rgba(0, 120, 215, 0.8);
+    background: color-mix(in srgb, var(--accent) 80%, transparent);
 }
 
 .qs-detail-toggle-text {
@@ -264,7 +264,7 @@
 
 .qs-connect-button {
     width: 100%;
-    background: rgba(0, 120, 215, 0.8);
+    background: color-mix(in srgb, var(--accent) 80%, transparent);
     border: none;
     color: white;
     padding: 8px;
@@ -275,7 +275,7 @@
 }
 
 .qs-connect-button:hover {
-    background: rgba(0, 120, 215, 1);
+    background: var(--accent);
 }
 
 .qs-connect-button.disconnect {
@@ -304,11 +304,11 @@
 }
 
 .qs-project-selected {
-    background: rgba(0, 120, 215, 0.8);
+    background: color-mix(in srgb, var(--accent) 80%, transparent);
 }
 
 .qs-project-selected:hover {
-    background: rgba(0, 120, 215, 1);
+    background: var(--accent);
 }
 
 .qs-radio-off-message {

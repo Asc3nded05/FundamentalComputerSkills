@@ -50,7 +50,7 @@
 
 .taskManager-row.selected {
     background-color: #e5f1fb; 
-    outline: 1px solid #0078d4; 
+    outline: 1px solid var(--accent);
     outline-offset: -1px;
 }
 
