@@ -2,6 +2,8 @@ import { Filemanager } from "@svar-ui/react-filemanager";
 import "@svar-ui/react-filemanager/all.css";
 import { Willow } from "@svar-ui/react-filemanager";
 import { dispatchDesktopEvent } from "../utils/eventBus";
+import { useState } from 'react';
+import "../css/FileExplorer.css";
   
 
 const rawdata = [
@@ -134,35 +136,47 @@ const rawdata = [
 // Refer to for help with file manager:
 // https://docs.svar.dev/react/filemanager/api/overview/api_overview
 function Files() {
-  return <>
-
-    <Willow>
-      <Filemanager
-        data={rawdata}
-        init={(api) => {
-          console.log("Filemanager API ready", api);
-          api.on("set-path", ({ id, panel }) => {
-            if (!id) return;
-            const dispatchName = "FileExplorer" + id.replace(/\W/g, "") + "Clicked";
-            dispatchDesktopEvent(dispatchName, { id, panel });
-            api.intercept("create-file", ({ file, parent }) => {
-              dispatchDesktopEvent("FileExplorerNewFolderCreated");
+  const [mode, setMode] = useState("table")
+  return (
+    <div className="files-wrapper">
+      <select
+        className="files-mode-select"
+        value={mode}
+        onChange={(e) => setMode(e.target.value)}
+      >
+        <option value="table">Table</option>
+        <option value="cards">Cards</option>
+        <option value="panels">Panels</option>
+      </select>
+      <Willow>
+        <Filemanager
+          data={rawdata}
+          init={(api) => {
+            console.log("Filemanager API ready", api);
+            api.on("set-path", ({ id, panel }) => {
+              if (!id) return;
+              const dispatchName = "FileExplorer" + id.replace(/\W/g, "") + "Clicked";
+              dispatchDesktopEvent(dispatchName, { id, panel });
+              api.intercept("create-file", ({ file, parent }) => {
+                dispatchDesktopEvent("FileExplorerNewFolderCreated");
+              });
             });
-          });
 
-          api.on("open-file", ({ id }) => {
-            if (!id) return;
-            const file = rawdata.find(f => f.id === id);
-            if (!file?.name) return;
+            api.on("open-file", ({ id }) => {
+              if (!id) return;
+              const file = rawdata.find(f => f.id === id);
+              if (!file?.name) return;
 
-            if (file.name.endsWith(".txt") || id.endsWith(".txt")) {
-              dispatchDesktopEvent("OpenTextFile", { file });
-            }
-          });
-        }}
-      />
-    </Willow>
-  </>;
+              if (file.name.endsWith(".txt") || id.endsWith(".txt")) {
+                dispatchDesktopEvent("OpenTextFile", { file });
+              }
+            });
+          }}
+          mode={mode}
+        />
+      </Willow>
+    </div>
+  );
 }
 
 export default Files;
