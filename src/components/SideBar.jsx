@@ -13,6 +13,7 @@ import { useContext } from 'react';
 import { UnresponsiveContext } from './UnresponsiveContext.jsx';
 import AIChat from './AIChat.jsx';
 import Lessons from '../pages/Lessons.jsx';
+import { useNavigate } from 'react-router-dom';
 // import hintVideo from '../assets/TestVideo.mp4';
 
 function SideBar(props) {
@@ -32,7 +33,7 @@ function SideBar(props) {
         setShowUnresponsive(false);
     };
 
-    // "NotStarted", "InProgress", "Completed"
+    // "NotStarted", "InProgress", "Completed", "Sandbox"
     const [lessonState, setLessonState] = useState("NotStarted");
 
     const [readAloud, setReadAloud] = useState(true);
@@ -200,9 +201,14 @@ function SideBar(props) {
         nextButton = null;
     }
 
+    // When finishing a lesson, the desktop is populated by the state of lesson 5, which has all the apps in it. 
+    // If this changes, change the setCurrentLesson(5) and the navigate below it to the appropriate lesson
+    const navigate = useNavigate();
     function handleFinish() {
         setActiveId(2);
-        setCurrentLesson(1);
+        // Lesson 5 currently loads all apps, if this changes we will need to update this to show all apps
+        setCurrentLesson(5);
+        navigate('/', { state: { lessonId: 5 } });
         setLessonState("Sandbox");
         setStepInstructions("To start a new lesson, go to the Lessons tab and select a lesson.");
         setEventName(null);
