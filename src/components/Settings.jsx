@@ -11,6 +11,8 @@ import Gaming from "./settings/Gaming";
 import Accessibility from "./settings/Accessibility";
 import PrivacySecurity from "./settings/PrivacySecurity";
 import WindowsUpdate from "./settings/WindowsUpdate";
+import accountIcon from '../assets/Icons/Settings Account Icon.png';
+
 
 import homeIcon from '../assets/Icons/Settings Home Icon.png';
 import systemIcon from '../assets/Icons/Settings System Icon.png';
@@ -135,8 +137,13 @@ function Settings({ startingPage = 'home', currentPage: currentPageProp, setting
             <div className="settings-content">
                 <div className={`settings-sidebar ${!sidebarOpen ? 'd-none' : ''}`}>
                     <div className="settings-user-info">
-                        <h5 className="user-name">{username}</h5>
-                        <p className="user-email">{userEmail}</p>
+                        <div className="settings-user-row">
+                            <img className="user-profile-image" src={accountIcon} alt="User Profile" />
+                            <div className="settings-user-text">
+                                <h5 className="user-name">{username}</h5>
+                                <p className="user-email">{userEmail}</p>
+                            </div>
+                        </div>
                     </div>
                     {Object.entries(pages).map(([key, { name, icon }]) => (
                         <div

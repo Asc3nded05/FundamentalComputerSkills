@@ -109,8 +109,8 @@ button {
 
 .selection-box {
   position: fixed;
-  border: 1.5px dotted #0078d4;
-  background-color: rgba(0, 120, 212, 0.1);
+  border: 1.5px dotted var(--accent);
+  background-color: rgba(55, 169, 239, 0.1);
   pointer-events: none;
   z-index: 1000;
 }
