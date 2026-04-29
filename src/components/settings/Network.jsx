@@ -1,6 +1,6 @@
 import { useState } from "react";
-import wifiIcon from "../../assets/icons/Wifi Full.png";
-import wifiLockedIcon from "../../assets/icons/Wifi Lock.png";
+import wifiIcon from "../../assets/icons/WifiPlaceholder.png";
+import wifiLockedIcon from "../../assets/Icons/WifiLockPlaceholder.png";
 import { useSettingsContext } from "../../utils/settings/settingsContext";
 import { dispatchDesktopEvent } from "../../utils/eventBus";
 
