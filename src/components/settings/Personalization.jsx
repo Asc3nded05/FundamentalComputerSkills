@@ -15,7 +15,6 @@ const Personalization = ({ subPage = 'main', onSubPageChange, backgroundImage, o
     }, []);
 
     const handleFileUpload = (e) => {
-        dispatchDesktopEvent('SettingsPersonalizationBackgroundImageUploaded');
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
@@ -156,6 +155,11 @@ const Personalization = ({ subPage = 'main', onSubPageChange, backgroundImage, o
                                     type="file"
                                     id="bg-upload"
                                     accept="image/*"
+                                    onClick={() => {
+                                        setTimeout(() => {
+                                            dispatchDesktopEvent('SettingsPersonalizationBackgroundImageUploaded')
+                                        }, 1000)
+                                    }}
                                     onChange={handleFileUpload}
                                     style={{ display: 'none' }}
                                 />

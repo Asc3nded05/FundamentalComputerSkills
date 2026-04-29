@@ -17,7 +17,7 @@ function QuickSettingsButton({ toggleQuickSettings }) {
             onTouchStart={stop}
         >
             <img className="start-button-icon" src={wifi} alt="Wifi" style={{height: '20px', marginRight: '5px'}}/>
-            <img className="start-button-icon" src={speaker} alt="Speaker" style={{height: '20px', marginRight: '5px'}}/>
+            <img className="start-button-icon" src={speaker} alt="Speaker" style={{height: '20px', marginRight: '8px'}}/>
             <img className="start-button-icon" src={battery} alt="Battery" style={{height: '15px', marginRight: '5px'}}/>
         </div>
     )
