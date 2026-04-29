@@ -27,8 +27,10 @@ function SideBar(props) {
         setCompletedSteps(0);
         setNextStep(null);
         setActiveId(1);
+        setHintText(null);
+        setHintVideo(null);
+        setShowUnresponsive(false);
     };
-    
 
     // "NotStarted", "InProgress", "Completed"
     const [lessonState, setLessonState] = useState("NotStarted");
@@ -144,7 +146,7 @@ function SideBar(props) {
     }, [readAloud]);
 
     const stepCount = steps?.length || 0;
-    const progressPercent = stepCount ? Math.round((completedSteps / stepCount) * 100) : 0;
+    const progressPercent = stepCount ? Math.round((completedSteps / (stepCount-1)) * 100) : 0;
 
     useEffect(() => {
         if (stepCount > 0 && completedSteps === stepCount) {
@@ -170,7 +172,7 @@ function SideBar(props) {
 
     const buttons = [
         { id: 1, label: 'Main' },
-        { id: 2, label: 'Lesson' },
+        { id: 2, label: 'Lessons' },
         { id: 3, label: 'AI Chat' },
     ];
 
@@ -199,9 +201,16 @@ function SideBar(props) {
     }
 
     function handleFinish() {
-        dispatchDesktopEvent("Finish");
-        setStepInstructions("Lesson Completed! Great Job!");
         setActiveId(2);
+        setCurrentLesson(1);
+        setLessonState("Sandbox");
+        setStepInstructions("To start a new lesson, go to the Lessons tab and select a lesson.");
+        setEventName(null);
+        setCompletedSteps(0);
+        setNextStep(null);
+        setHintText(null);
+        setHintVideo(null);
+        setShowUnresponsive(false);
     }
 
     // Handles loading and error states
@@ -235,14 +244,14 @@ function SideBar(props) {
                     <div className='sidebar-container'>
                         <div id='sidebar' className='sidebar'>
                             {/* Lesson number and progress */}
-                            <div className='lesson-num'>
+                            <div className='lesson-num' style={(lessonState === "Sandbox") ? { display: 'none' } : { display: 'block' }}>
                                 <p>{response.lessonName}</p>
                                 <div className="lesson-progress">
                                     <div className={"lesson-progress-bar"} style={{ width: `${progressPercent}%` }}></div>
                                 </div>
                             </div>
                             {/* <p className="wrong-event">{wrongEvent}</p> */}
-                            <p className="step-instructions">{stepInstructions}</p>
+                            <p className="step-instructions" style={(lessonState === "Sandbox") ? { paddingTop: '20px' } : { paddingTop: 'none' }}>{stepInstructions}</p>
                             <p className="next-step">{nextStep}</p>
                             {/* Next button for Conditional Rendering */}
                             {nextButton}
@@ -257,8 +266,9 @@ function SideBar(props) {
                                 {/* Hint content popover */}
                                 <div id="hint-content" popover="auto" className="hint-content">
                                     <p>{hintText}</p>
-                                    <button popoverTarget="big-demo" className="hint-demo" id="hint-demo" onClick={() => setShowVideo(true)}>Demo</button>
                                 </div>
+
+                                <button popoverTarget="big-demo" className="hint-demo" id="hint-demo" onClick={() => setShowVideo(true)}>Demo</button>
 
                                 <button
                                     className="read-aloud-link link"
