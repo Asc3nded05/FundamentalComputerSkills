@@ -13,6 +13,7 @@ import { useContext } from 'react';
 import { UnresponsiveContext } from './UnresponsiveContext.jsx';
 import AIChat from './AIChat.jsx';
 import Lessons from '../pages/Lessons.jsx';
+import { useNavigate } from 'react-router-dom';
 // import hintVideo from '../assets/TestVideo.mp4';
 
 function SideBar(props) {
@@ -27,10 +28,12 @@ function SideBar(props) {
         setCompletedSteps(0);
         setNextStep(null);
         setActiveId(1);
+        setHintText(null);
+        setHintVideo(null);
+        setShowUnresponsive(false);
     };
-    
 
-    // "NotStarted", "InProgress", "Completed"
+    // "NotStarted", "InProgress", "Completed", "Sandbox"
     const [lessonState, setLessonState] = useState("NotStarted");
 
     const [readAloud, setReadAloud] = useState(true);
@@ -144,7 +147,7 @@ function SideBar(props) {
     }, [readAloud]);
 
     const stepCount = steps?.length || 0;
-    const progressPercent = stepCount ? Math.round((completedSteps / stepCount) * 100) : 0;
+    const progressPercent = stepCount ? Math.round((completedSteps / (stepCount-1)) * 100) : 0;
 
     useEffect(() => {
         if (stepCount > 0 && completedSteps === stepCount) {
@@ -170,7 +173,7 @@ function SideBar(props) {
 
     const buttons = [
         { id: 1, label: 'Main' },
-        { id: 2, label: 'Lesson' },
+        { id: 2, label: 'Lessons' },
         { id: 3, label: 'AI Chat' },
     ];
 
@@ -198,10 +201,22 @@ function SideBar(props) {
         nextButton = null;
     }
 
+    // When finishing a lesson, the desktop is populated by the state of lesson 5, which has all the apps in it. 
+    // If this changes, change the setCurrentLesson(5) and the navigate below it to the appropriate lesson
+    const navigate = useNavigate();
     function handleFinish() {
-        dispatchDesktopEvent("Finish");
-        setStepInstructions("Lesson Completed! Great Job!");
         setActiveId(2);
+        // Lesson 5 currently loads all apps, if this changes we will need to update this to show all apps
+        setCurrentLesson(5);
+        navigate('/', { state: { lessonId: 5 } });
+        setLessonState("Sandbox");
+        setStepInstructions("To start a new lesson, go to the Lessons tab and select a lesson.");
+        setEventName(null);
+        setCompletedSteps(0);
+        setNextStep(null);
+        setHintText(null);
+        setHintVideo(null);
+        setShowUnresponsive(false);
     }
 
     // Handles loading and error states
@@ -235,14 +250,14 @@ function SideBar(props) {
                     <div className='sidebar-container'>
                         <div id='sidebar' className='sidebar'>
                             {/* Lesson number and progress */}
-                            <div className='lesson-num'>
+                            <div className='lesson-num' style={(lessonState === "Sandbox") ? { display: 'none' } : { display: 'block' }}>
                                 <p>{response.lessonName}</p>
                                 <div className="lesson-progress">
                                     <div className={"lesson-progress-bar"} style={{ width: `${progressPercent}%` }}></div>
                                 </div>
                             </div>
                             {/* <p className="wrong-event">{wrongEvent}</p> */}
-                            <p className="step-instructions">{stepInstructions}</p>
+                            <p className="step-instructions" style={(lessonState === "Sandbox") ? { paddingTop: '20px' } : { paddingTop: 'none' }}>{stepInstructions}</p>
                             <p className="next-step">{nextStep}</p>
                             {/* Next button for Conditional Rendering */}
                             {nextButton}
@@ -257,8 +272,9 @@ function SideBar(props) {
                                 {/* Hint content popover */}
                                 <div id="hint-content" popover="auto" className="hint-content">
                                     <p>{hintText}</p>
-                                    <button popoverTarget="big-demo" className="hint-demo" id="hint-demo" onClick={() => setShowVideo(true)}>Demo</button>
                                 </div>
+
+                                <button popoverTarget="big-demo" className="hint-demo" id="hint-demo" onClick={() => setShowVideo(true)}>Demo</button>
 
                                 <button
                                     className="read-aloud-link link"
