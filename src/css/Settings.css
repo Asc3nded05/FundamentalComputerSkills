@@ -100,6 +100,7 @@
 .settings-button.active {
     background-color: #f0f0f0;
     border-left: 5px solid var(--accent);
+    padding: 0.5rem;
 }
 
 .settings-main {
@@ -947,4 +948,38 @@ input:checked+.toggle-slider:before {
     padding-top: 0;
     margin-top: 0;
     margin-bottom: 0;
+}
+
+.search-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    z-index: 200;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.search-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #1e1e1e;
+}
+
+.search-dropdown-item:hover {
+    background: #f0f0f0;
+}
+
+.search-dropdown-empty {
+    padding: 10px 12px;
+    font-size: 13px;
+    color: #888;
 }

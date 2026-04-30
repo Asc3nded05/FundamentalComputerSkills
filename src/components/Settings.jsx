@@ -10,188 +10,310 @@ import Gaming from "./settings/Gaming";
 import Accessibility from "./settings/Accessibility";
 import PrivacySecurity from "./settings/PrivacySecurity";
 import WindowsUpdate from "./settings/WindowsUpdate";
-import accountIcon from '../assets/Icons/Settings Account Icon.png';
+import accountIcon from "../assets/Icons/Settings Account Icon.png";
 
+import homeIcon from "../assets/Icons/Settings Home Icon.png";
+import systemIcon from "../assets/Icons/Settings System Icon.png";
+import bluetoothIcon from "../assets/Icons/Settings Bluetooth and Devices Icon.png";
+import networkIcon from "../assets/Icons/Settings Network and Internet Icon.png";
+import personalizationIcon from "../assets/Icons/Settings Personalization Icon.png";
+import appsIcon from "../assets/Icons/Settings Apps Icon.png";
+import accountsIcon from "../assets/Icons/Settings Account Icon.png";
+import timeIcon from "../assets/Icons/Settings Time and Language Icon.png";
+import gamingIcon from "../assets/Icons/Settings Gaming Icon.png";
+import accessibilityIcon from "../assets/Icons/Settings Accessibility Icon.png";
+import privacyIcon from "../assets/Icons/Settings Privacy and Security Icon.png";
+import updatesIcon from "../assets/Icons/Settings Windows Update Icon.png";
 
-import homeIcon from '../assets/Icons/Settings Home Icon.png';
-import systemIcon from '../assets/Icons/Settings System Icon.png';
-import bluetoothIcon from '../assets/Icons/Settings Bluetooth and Devices Icon.png';
-import networkIcon from '../assets/Icons/Settings Network and Internet Icon.png';
-import personalizationIcon from '../assets/Icons/Settings Personalization Icon.png';
-import appsIcon from '../assets/Icons/Settings Apps Icon.png';
-import accountsIcon from '../assets/Icons/Settings Account Icon.png';
-import timeIcon from '../assets/Icons/Settings Time and Language Icon.png';
-import gamingIcon from '../assets/Icons/Settings Gaming Icon.png';
-import accessibilityIcon from '../assets/Icons/Settings Accessibility Icon.png';
-import privacyIcon from '../assets/Icons/Settings Privacy and Security Icon.png';
-import updatesIcon from '../assets/Icons/Settings Windows Update Icon.png';
-
-import '../css/Settings.css';
+import "../css/Settings.css";
 
 import { useEffect, useRef, useState } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus";
 import { useSettingsContext } from "../utils/settings/settingsContext";
 
-function Settings({ startingPage = 'home', currentPage: currentPageProp, settingsState = {}, onSettingsStateChange, backgroundImage, onBackgroundChange, onResetDefault, onPageChange }) {
+function Settings({
+  startingPage = "home",
+  currentPage: currentPageProp,
+  settingsState = {},
+  onSettingsStateChange,
+  backgroundImage,
+  onBackgroundChange,
+  onResetDefault,
+  onPageChange,
+}) {
+  const [query, setQuery] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(
+    currentPageProp || startingPage,
+  ); // default page (can be passed from different places to open to specific pages)
+  const [pageHistory, setPageHistory] = useState([]);
+  const currentPageRef = useRef(currentPage);
+  const searchWrapperRef = useRef(null);
 
-    const [query, setQuery] = useState('');
-    const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [currentPage, setCurrentPage] = useState(currentPageProp || startingPage); // default page (can be passed from different places to open to specific pages)
-    const [pageHistory, setPageHistory] = useState([]);
-    const currentPageRef = useRef(currentPage);
+  useEffect(() => {
+    currentPageRef.current = currentPage;
+  }, [currentPage]);
 
-    useEffect(() => { currentPageRef.current = currentPage; }, [currentPage]);
-
-    // Update internal state when props change (e.g., when re‑opening the same window)
-    useEffect(() => {
-        const newPage = currentPageProp || startingPage;
-        if (newPage !== currentPageRef.current) {
-            setPageHistory(prev => [...prev, currentPageRef.current]);
-            setCurrentPage(newPage);
-        }
-    }, [currentPageProp, startingPage]);
-
-    function navigateTo(page) {
-        setPageHistory(prev => [...prev, currentPageRef.current]);
-        setCurrentPage(page);
-        onPageChange?.(page);
+  // Update internal state when props change (e.g., when re‑opening the same window)
+  useEffect(() => {
+    const newPage = currentPageProp || startingPage;
+    if (newPage !== currentPageRef.current) {
+      setPageHistory((prev) => [...prev, currentPageRef.current]);
+      setCurrentPage(newPage);
     }
+  }, [currentPageProp, startingPage]);
 
-    function goBack() {
-        console.log("Go Back")
-        setPageHistory(prev => {
-            console.log(prev)
-            if (prev.length === 0) return prev;
-            const history = [...prev];
-            const lastPage = history.pop();
-            setCurrentPage(lastPage);
-            onPageChange?.(lastPage);
-            console.log(history)
-            return history;
-        });
-    }
-    // Update state on input change
-    const handleSearch = (e) => setQuery(e.target.value);
+  function navigateTo(page) {
+    setPageHistory((prev) => [...prev, currentPageRef.current]);
+    setCurrentPage(page);
+    onPageChange?.(page);
+  }
 
-    // Toggle sidebar visibility
-    const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
-
-    const pages = {
-        home: { name: 'Home', icon: homeIcon, event: 'SettingsHomePageClicked' },
-        system: { name: 'System', icon: systemIcon, event: 'SettingsSystemPageClicked' },
-        bluetooth: { name: 'Bluetooth & Devices', icon: bluetoothIcon, event: 'SettingsBluetoothPageClicked' },
-        network: { name: 'Network & Internet', icon: networkIcon, event: 'SettingsNetworkPageClicked' },
-        personalization: { name: 'Personalization', icon: personalizationIcon, event: 'SettingsPersonalizationPageClicked' },
-        apps: { name: 'Apps', icon: appsIcon, event: 'SettingsAppsPageClicked' },
-        accounts: { name: 'Accounts', icon: accountsIcon, event: 'SettingsAccountsPageClicked' },
-        time: { name: 'Time & Language', icon: timeIcon, event: 'SettingsTimeLanguagePageClicked' },
-        gaming: { name: 'Gaming', icon: gamingIcon, event: 'SettingsGamingPageClicked' },
-        accessibility: { name: 'Accessibility', icon: accessibilityIcon, event: 'SettingsAccessibilityPageClicked' },
-        privacy: { name: 'Privacy & Security', icon: privacyIcon, event: 'SettingsPrivacySecurityPageClicked' },
-        updates: { name: 'Windows Update', icon: updatesIcon, event: 'SettingsUpdatePageClicked' },
+  function goBack() {
+    console.log("Go Back");
+    setPageHistory((prev) => {
+      console.log(prev);
+      if (prev.length === 0) return prev;
+      const history = [...prev];
+      const lastPage = history.pop();
+      setCurrentPage(lastPage);
+      onPageChange?.(lastPage);
+      console.log(history);
+      return history;
+    });
+  }
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (searchWrapperRef.current && !searchWrapperRef.current.contains(e.target)) {
+        setShowDropdown(false);
+      }
     };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-    const {
-        username, 
-        userEmail
-    } = useSettingsContext();
+  const handleSearch = (e) => {
+    setQuery(e.target.value);
+    setShowDropdown(e.target.value.length > 0);
+  };
 
-    function clickAccount(){
-        setCurrentPage("accounts")
+  // Toggle sidebar visibility
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
+  const pages = {
+    home: { name: "Home", icon: homeIcon, event: "SettingsHomePageClicked" },
+    system: {
+      name: "System",
+      icon: systemIcon,
+      event: "SettingsSystemPageClicked",
+    },
+    bluetooth: {
+      name: "Bluetooth & Devices",
+      icon: bluetoothIcon,
+      event: "SettingsBluetoothPageClicked",
+    },
+    network: {
+      name: "Network & Internet",
+      icon: networkIcon,
+      event: "SettingsNetworkPageClicked",
+    },
+    personalization: {
+      name: "Personalization",
+      icon: personalizationIcon,
+      event: "SettingsPersonalizationPageClicked",
+    },
+    apps: { name: "Apps", icon: appsIcon, event: "SettingsAppsPageClicked" },
+    accounts: {
+      name: "Accounts",
+      icon: accountsIcon,
+      event: "SettingsAccountsPageClicked",
+    },
+    time: {
+      name: "Time & Language",
+      icon: timeIcon,
+      event: "SettingsTimeLanguagePageClicked",
+    },
+    gaming: {
+      name: "Gaming",
+      icon: gamingIcon,
+      event: "SettingsGamingPageClicked",
+    },
+    accessibility: {
+      name: "Accessibility",
+      icon: accessibilityIcon,
+      event: "SettingsAccessibilityPageClicked",
+    },
+    privacy: {
+      name: "Privacy & Security",
+      icon: privacyIcon,
+      event: "SettingsPrivacySecurityPageClicked",
+    },
+    updates: {
+      name: "Windows Update",
+      icon: updatesIcon,
+      event: "SettingsUpdatePageClicked",
+    },
+  };
+
+  const { username, userEmail } = useSettingsContext();
+
+  function clickAccount() {
+    setCurrentPage("accounts");
+  }
+
+  const renderContent = () => {
+    switch (currentPage) {
+      case "home":
+        return <Home navigateToPage={navigateTo} />;
+      case "system":
+        return <System />;
+      case "bluetooth":
+        return (
+          <BluetoothDevices
+            subPage={settingsState?.bluetoothSubPage || "main"}
+            onSubPageChange={(subPage) =>
+              onSettingsStateChange?.({ bluetoothSubPage: subPage })
+            }
+          />
+        );
+      case "network":
+        return (
+          <Network
+            subPage={settingsState?.networkSubPage || "main"}
+            onSubPageChange={(subPage) =>
+              onSettingsStateChange?.({ networkSubPage: subPage })
+            }
+          />
+        );
+      case "personalization":
+        return (
+          <Personalization
+            subPage={settingsState?.personalizationSubPage || "main"}
+            onSubPageChange={(subPage) =>
+              onSettingsStateChange?.({ personalizationSubPage: subPage })
+            }
+            backgroundImage={backgroundImage}
+            onBackgroundChange={onBackgroundChange}
+            onResetDefault={onResetDefault}
+          />
+        );
+      case "apps":
+        return <Apps />;
+      case "accounts":
+        return <Accounts />;
+      case "time":
+        return <TimeLanguage />;
+      case "gaming":
+        return <Gaming />;
+      case "accessibility":
+        return <Accessibility />;
+      case "privacy":
+        return <PrivacySecurity />;
+      case "updates":
+        return <WindowsUpdate />;
+      default:
+        return (
+          <div className="settings-placeholder">
+            <h2>{pages[currentPage]?.name || "Settings"}</h2>
+            <p>This section is under construction.</p>
+          </div>
+        );
     }
+  };
 
-    const renderContent = () => {
-        switch (currentPage) {
-            case 'home':
-                return <Home navigateToPage={navigateTo} />
-            case 'system':
-                return <System/>
-            case 'bluetooth':
-                return <BluetoothDevices
-                    subPage={settingsState?.bluetoothSubPage || 'main'}
-                    onSubPageChange={(subPage) => onSettingsStateChange?.({ bluetoothSubPage: subPage })}
-                />;
-            case 'network':
-                return <Network
-                    subPage={settingsState?.networkSubPage || 'main'}
-                    onSubPageChange={(subPage) => onSettingsStateChange?.({ networkSubPage: subPage })}
-                />;
-            case 'personalization':
-                return <Personalization 
-                    subPage={settingsState?.personalizationSubPage || 'main'}
-                    onSubPageChange={(subPage) => onSettingsStateChange?.({ personalizationSubPage: subPage })}
-                    backgroundImage={backgroundImage}
-                    onBackgroundChange={onBackgroundChange}
-                    onResetDefault={onResetDefault}
-                />;
-            case 'apps':
-                return <Apps/>
-            case 'accounts':
-                return <Accounts/>
-            case 'time':
-                return <TimeLanguage/>
-            case 'gaming':
-                return <Gaming/>
-            case 'accessibility':
-                return <Accessibility/>
-            case 'privacy':
-                return <PrivacySecurity/>
-            case 'updates':
-                return <WindowsUpdate/>
-            default:
-                return (
-                    <div className="settings-placeholder">
-                        <h2>{pages[currentPage]?.name || 'Settings'}</h2>
-                        <p>This section is under construction.</p>
+  return (
+    <>
+      <div className="settings">
+        <div className="settings-header">
+          <button className="hamburger-menu" onClick={toggleSidebar}>
+            ☰
+          </button>
+          <i className="fa-solid fa-arrow-left" onClick={goBack}></i>
+          <div className="settings-search-wrapper ml-auto" ref={searchWrapperRef}>
+            <input
+              className="settings-search"
+              type="text"
+              placeholder="Search"
+              value={query}
+              onChange={handleSearch}
+              onFocus={() => query && setShowDropdown(true)}
+            />
+            {query ? (
+              <button
+                className="settings-search-icon"
+                onClick={() => { setQuery(""); setShowDropdown(false); }}
+              >
+                ✕
+              </button>
+            ) : (
+              <span className="settings-search-icon">
+                <i className="fa-solid fa-magnifying-glass fa-flip-horizontal"></i>
+              </span>
+            )}
+            {showDropdown && (() => {
+              const filtered = Object.entries(pages).filter(([, { name }]) =>
+                name.toLowerCase().includes(query.toLowerCase())
+              );
+              return filtered.length > 0 ? (
+                <div className="search-dropdown">
+                  {filtered.map(([key, { name, icon }]) => (
+                    <div
+                      key={key}
+                      className="search-dropdown-item"
+                      onMouseDown={() => {
+                        navigateTo(key);
+                        setQuery("");
+                        setShowDropdown(false);
+                      }}
+                    >
+                      <img src={icon} alt="" style={{ width: "16px" }} />
+                      {name}
                     </div>
-                );
-        }
-    };
-
-    return <>
-        <div className="settings">
-            <div className="settings-header">
-                <button className="hamburger-menu" onClick={toggleSidebar}>☰</button>
-                <i class="fa-solid fa-arrow-left" onClick={goBack}></i>
-                <div className="settings-search-wrapper ml-auto">
-                    <input className="settings-search" type="text" placeholder="Search" value={query} onChange={handleSearch} />
-                    {query
-                        ? <button className="settings-search-icon" onClick={() => setQuery('')}>✕</button>
-                        : <span className="settings-search-icon"><i className="fa-solid fa-magnifying-glass fa-flip-horizontal"></i></span>
-                    }
+                  ))}
                 </div>
-            </div>
-            <div className="settings-content">
-                <div className={`settings-sidebar ${!sidebarOpen ? 'd-none' : ''}`}>
-                    <div className="settings-user-info">
-                        <div className="settings-user-row" onClick={clickAccount}>
-                            <img className="user-profile-image" src={accountIcon} alt="User Profile" style={{width: 'auto', height: '35px'}}/>
-                            <div className="settings-user-text">
-                                <h5 className="user-name">{username}</h5>
-                                <p className="user-email">{userEmail}</p>
-                            </div>
-                        </div>
-                    </div>
-                    {Object.entries(pages).map(([key, { name, icon }]) => (
-                        <div
-                            key={key}
-                            className={`settings-button ${currentPage === key ? 'active' : ''}`}
-                            onClick={() => {
-                                navigateTo(key)
-                                setSidebarOpen(false);
-                                dispatchDesktopEvent(pages[key].event);
-                            }}
-                        >
-                            <img src={icon} style={{width: '20px'}}></img> {name}
-                        </div>
-                    ))}
+              ) : (
+                <div className="search-dropdown">
+                  <div className="search-dropdown-empty">No results found</div>
                 </div>
-                <div className="settings-main">
-                    {renderContent()}
-                </div>
-            </div>
+              );
+            })()}
+          </div>
         </div>
-
-    </>;
+        <div className="settings-content">
+          <div className={`settings-sidebar ${!sidebarOpen ? "d-none" : ""}`}>
+            <div className="settings-user-info">
+              <div className="settings-user-row" onClick={clickAccount}>
+                <img
+                  className="user-profile-image"
+                  src={accountIcon}
+                  alt="User Profile"
+                  style={{ width: "auto", height: "35px" }}
+                />
+                <div className="settings-user-text">
+                  <h5 className="user-name">{username}</h5>
+                  <p className="user-email">{userEmail}</p>
+                </div>
+              </div>
+            </div>
+            {Object.entries(pages).map(([key, { name, icon }]) => (
+              <div
+                key={key}
+                className={`settings-button ${currentPage === key ? "active" : ""}`}
+                onClick={() => {
+                  navigateTo(key);
+                  setSidebarOpen(false);
+                  dispatchDesktopEvent(pages[key].event);
+                }}
+              >
+                <img src={icon} style={{ width: "20px" }}></img> {name}
+              </div>
+            ))}
+          </div>
+          <div className="settings-main">{renderContent()}</div>
+        </div>
+      </div>
+    </>
+  );
 }
 export default Settings;
