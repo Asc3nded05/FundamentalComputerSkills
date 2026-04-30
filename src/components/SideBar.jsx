@@ -104,6 +104,10 @@ function SideBar(props) {
     // State for video demo
     const [showVideo, setShowVideo] = useState(false);
 
+    const toggleShowVideo = () => {
+        setShowVideo(prev => !prev);
+    };
+
     // State for chat messages (persists across tab switches)
     const [messages, setMessages] = useState([]);
 
