@@ -1,9 +1,9 @@
 .sidebar {
   display: flex;
-  width: auto;
+  align-items: center;
+  width: 100%;
   flex: 1;
   flex-direction: column;
-  width: 14rem;
   position: relative;
 }
 
@@ -12,6 +12,7 @@
   flex-direction: column;
   align-items: center;
   position: relative;
+  width: 100%;
 }
 
 .sidebar-tab {
@@ -33,6 +34,8 @@
 }
 
 .lesson-num {
+  font-size: 1.2rem;
+  font-weight: lighter;
   margin-top: 4vh;
   width: 100%;
   text-align: center;
@@ -43,8 +46,8 @@
   background-color: #f1f1f1;
   border: 2px solid black;
   border-radius: 20px;
-  padding: 0.25rem;
-  margin: 1rem;
+  padding: 0.15rem;
+  margin: 1rem 1.8rem;
   min-height: 1rem;
   overflow: hidden;
 }
@@ -91,6 +94,9 @@
   width: 100%;
   justify-content: space-around;
   margin-top: auto;
+  padding: 0 1rem;
+  anchor-name: --hint-button;
+  position: relative;
 }
 
 .lesson-start-button {
@@ -141,21 +147,18 @@
 
 .step-instructions {
   text-align: left;
+  padding: 0 2rem;
 }
 
 .next-step {
   text-align: center;
   font-weight: bold;
+  padding-top: 0.5rem;
 }
 
 .help-buttons div {
   flex-direction: column;
   align-items: center;
-}
-
-.help-buttons {
-  anchor-name: --hint-button;
-  position: relative;
 }
 
 .hint-content {
@@ -174,6 +177,11 @@
   min-height: 20%;
   overflow: auto;
   
+}
+.disabled {
+  color: rgb(190, 190, 190);
+  border: 2px solid rgb(190, 190, 190) !important;
+  pointer-events: none;
 }
 
 #demo-content {

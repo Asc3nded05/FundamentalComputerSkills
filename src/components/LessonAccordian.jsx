@@ -1,8 +1,10 @@
 import Accordion from 'react-bootstrap/Accordion';
 import { useNavigate } from 'react-router-dom';
+import { useLessonCompletion } from '../utils/useLessonCompletion.js';
 
 function LessonAccordian({ lessons, resetLessonState, lessonState }) {
   const navigate = useNavigate();
+  const { isLessonCompleted, markLessonComplete } = useLessonCompletion();
 
   const startLesson = (lesson) => {
     if (lessonState === "InProgress") {
@@ -15,6 +17,8 @@ function LessonAccordian({ lessons, resetLessonState, lessonState }) {
       };
       navigate('/', { state: data });
       resetLessonState(data);
+      // Mark lesson as completed when started
+      markLessonComplete(lesson.lessonId);
   }
 
   const categories = lessons?.reduce((acc, lesson) => {
@@ -44,7 +48,12 @@ function LessonAccordian({ lessons, resetLessonState, lessonState }) {
             <Accordion.Body>
               {category.lessons.map((lesson) => (
                 <div key={lesson.lessonId}>
-                  <button className="lesson-button" onClick={() => startLesson(lesson)}>{lesson.lessonName}</button>
+                  <button 
+                    className={`lesson-button ${isLessonCompleted(lesson.lessonId) ? 'lesson-completed' : 'lesson-not-completed'}`}
+                    onClick={() => startLesson(lesson)}
+                  >
+                    {lesson.lessonName}
+                  </button>
                 </div>
               ))}
             </Accordion.Body>

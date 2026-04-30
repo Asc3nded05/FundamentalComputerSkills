@@ -208,6 +208,9 @@ function SideBar(props) {
     if (loading) return <Loading />;
     if (error) return <div>Error loading lesson data</div>;
 
+    console.log(hintText);
+    console.log(!hintText);
+
 
     return (
         <>
@@ -250,16 +253,18 @@ function SideBar(props) {
 
                             {/* Help buttons */}
                             <div className="help-buttons">
-                                <button popoverTarget="hint-content" className="hint-button">
-                                    Hints
+                                <button popoverTarget="hint-content" className={`hint-button ${!hintText ? 'disabled' : ''}`}>
+                                    Hint
                                 </button>
-                                {/* Uses the Popover API */}
                                 {/* Hint content popover */}
                                 <div id="hint-content" popover="auto" className="hint-content">
                                     <p>{hintText}</p>
-                                    <button popoverTarget="big-demo" className="hint-demo" id="hint-demo" onClick={() => setShowVideo(true)}>Demo</button>
                                 </div>
-
+                                
+                                <button popoverTarget="big-demo" className={`hint-demo ${!hintVideo ? 'disabled' : ''}`} id="hint-demo" onClick={() => toggleShowVideo()}>
+                                    Demo
+                                </button>
+                                
                                 <button
                                     className="read-aloud-link link"
                                     onClick={() => setReadAloud(!readAloud)}
