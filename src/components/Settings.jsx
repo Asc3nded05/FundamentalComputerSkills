@@ -1,4 +1,3 @@
-
 import Home from "./settings/Home";
 import System from "./settings/System";
 import BluetoothDevices from "./settings/BluetoothDevices";
@@ -29,7 +28,7 @@ import updatesIcon from '../assets/Icons/Settings Windows Update Icon.png';
 
 import '../css/Settings.css';
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { dispatchDesktopEvent } from "../utils/eventBus";
 import { useSettingsContext } from "../utils/settings/settingsContext";
 
@@ -38,12 +37,39 @@ function Settings({ startingPage = 'home', currentPage: currentPageProp, setting
     const [query, setQuery] = useState('');
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(currentPageProp || startingPage); // default page (can be passed from different places to open to specific pages)
+    const [pageHistory, setPageHistory] = useState([]);
+    const currentPageRef = useRef(currentPage);
+
+    useEffect(() => { currentPageRef.current = currentPage; }, [currentPage]);
 
     // Update internal state when props change (e.g., when re‑opening the same window)
     useEffect(() => {
-        setCurrentPage(currentPageProp || startingPage);
+        const newPage = currentPageProp || startingPage;
+        if (newPage !== currentPageRef.current) {
+            setPageHistory(prev => [...prev, currentPageRef.current]);
+            setCurrentPage(newPage);
+        }
     }, [currentPageProp, startingPage]);
 
+    function navigateTo(page) {
+        setPageHistory(prev => [...prev, currentPageRef.current]);
+        setCurrentPage(page);
+        onPageChange?.(page);
+    }
+
+    function goBack() {
+        console.log("Go Back")
+        setPageHistory(prev => {
+            console.log(prev)
+            if (prev.length === 0) return prev;
+            const history = [...prev];
+            const lastPage = history.pop();
+            setCurrentPage(lastPage);
+            onPageChange?.(lastPage);
+            console.log(history)
+            return history;
+        });
+    }
     // Update state on input change
     const handleSearch = (e) => setQuery(e.target.value);
 
@@ -70,13 +96,14 @@ function Settings({ startingPage = 'home', currentPage: currentPageProp, setting
         userEmail
     } = useSettingsContext();
 
+    function clickAccount(){
+        setCurrentPage("accounts")
+    }
+
     const renderContent = () => {
         switch (currentPage) {
             case 'home':
-                return <Home navigateToPage={(page) => {
-                    setCurrentPage(page);
-                    onPageChange?.(page);
-                }} />
+                return <Home navigateToPage={navigateTo} />
             case 'system':
                 return <System/>
             case 'bluetooth':
@@ -125,7 +152,7 @@ function Settings({ startingPage = 'home', currentPage: currentPageProp, setting
         <div className="settings">
             <div className="settings-header">
                 <button className="hamburger-menu" onClick={toggleSidebar}>☰</button>
-                <i class="fa-solid fa-arrow-left"></i>
+                <i class="fa-solid fa-arrow-left" onClick={goBack}></i>
                 <div className="settings-search-wrapper ml-auto">
                     <input className="settings-search" type="text" placeholder="Search" value={query} onChange={handleSearch} />
                     {query
@@ -137,8 +164,8 @@ function Settings({ startingPage = 'home', currentPage: currentPageProp, setting
             <div className="settings-content">
                 <div className={`settings-sidebar ${!sidebarOpen ? 'd-none' : ''}`}>
                     <div className="settings-user-info">
-                        <div className="settings-user-row">
-                            <img className="user-profile-image" src={accountIcon} alt="User Profile" />
+                        <div className="settings-user-row" onClick={clickAccount}>
+                            <img className="user-profile-image" src={accountIcon} alt="User Profile" style={{width: 'auto', height: '35px'}}/>
                             <div className="settings-user-text">
                                 <h5 className="user-name">{username}</h5>
                                 <p className="user-email">{userEmail}</p>
@@ -150,9 +177,8 @@ function Settings({ startingPage = 'home', currentPage: currentPageProp, setting
                             key={key}
                             className={`settings-button ${currentPage === key ? 'active' : ''}`}
                             onClick={() => {
-                                setCurrentPage(key);
+                                navigateTo(key)
                                 setSidebarOpen(false);
-                                onPageChange?.(key);
                                 dispatchDesktopEvent(pages[key].event);
                             }}
                         >

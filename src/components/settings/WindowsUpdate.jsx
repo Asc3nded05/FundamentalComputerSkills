@@ -1,4 +1,4 @@
-import updateImage from "../../assets/UpdatePlaceholder.png"
+import updatesIcon from '../../assets/Icons/Settings Windows Update Icon.png';
 
 function WindowsUpdate() {
 
@@ -15,9 +15,9 @@ function WindowsUpdate() {
             <div className="windows-update-status">
                 <div className="status-icon">
                     <img 
-                        src={updateImage}
+                        src={updatesIcon}
                         alt="Windows Update" 
-                        className="wifi-icon" 
+                        style={{height: '65px', width: 'auto'}}
                     />
                 </div>
                 <div className="status-text">

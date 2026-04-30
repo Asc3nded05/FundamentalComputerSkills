@@ -120,32 +120,32 @@ function StartMenu({ closeStartMenu, isOpen, apps = [] }) {
                         {/* Bottom bar */}
                         <div className="start-menu-bottom">
                             <div className="user-profile-button">
-                                <img className="user-profile-image" src={accountIcon} alt="User Profile" />
+                                <img className="user-profile-image" src={accountIcon} alt="User Profile" style={{height: '25px', width: 'auto'}}/>
                                 <span>User Profile</span>
                             </div>
                             <div className="power-button" onClick={(e) => {
                                 e.stopPropagation();
                                 togglePowerMenu();
                             }}>
-                                <img src={powerIcon} alt="Power" />
+                                <img src={powerIcon} alt="Power" style={{height: '25px', width: 'auto'}}/>
                             </div>
                         </div>
                         {powerMenuOpen && (
                             <div className="power-menu" onClick={(e) => e.stopPropagation()}>
                                 <div className="power-menu-item">
-                                    <img src={lockIcon} alt="Lock" />
+                                    <img src={lockIcon} alt="Lock" style={{height: '17px', width: 'auto'}}/>
                                     <span>Lock</span>
                                 </div>
                                 <div className="power-menu-item">
-                                    <img src={sleepIcon} alt="Sleep" />
+                                    <img src={sleepIcon} alt="Sleep" style={{height: '15px', width: 'auto'}}/>
                                     <span>Sleep</span>
                                 </div>
                                 <div className="power-menu-item">
-                                    <img src={powerIcon} alt="Shut down" />
+                                    <img src={powerIcon} alt="Shut down" style={{height: '15px', width: 'auto'}}/>
                                     <span>Shut down</span>
                                 </div>
                                 <div className="power-menu-item">
-                                    <img src={restartIcon} alt="Restart" />
+                                    <img src={restartIcon} alt="Restart" style={{height: '15px', width: 'auto'}}/>
                                     <span>Restart</span>
                                 </div>
                             </div>
