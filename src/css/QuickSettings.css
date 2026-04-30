@@ -59,7 +59,8 @@
 }
 
 .qs-tile-on {
-    background: color-mix(in srgb, var(--accent) 80%, transparent);
+    /* background: color-mix(in srgb, var(--accent) 80%, transparent); */
+    background: var(--accent);
 }
 
 .qs-tile-left {
@@ -227,7 +228,8 @@
 }
 
 .qs-detail-toggle.on {
-    background: color-mix(in srgb, var(--accent) 80%, transparent);
+    /* background: color-mix(in srgb, var(--accent) 80%, transparent); */
+    background: var(--accent);
 }
 
 .qs-detail-toggle-text {
@@ -264,7 +266,8 @@
 
 .qs-connect-button {
     width: 100%;
-    background: color-mix(in srgb, var(--accent) 80%, transparent);
+    /* background: color-mix(in srgb, var(--accent) 80%, transparent); */
+    background: var(--accent);
     border: none;
     color: white;
     padding: 8px;
@@ -304,7 +307,8 @@
 }
 
 .qs-project-selected {
-    background: color-mix(in srgb, var(--accent) 80%, transparent);
+    /* background: color-mix(in srgb, var(--accent) 80%, transparent); */
+    background: var(--accent);
 }
 
 .qs-project-selected:hover {

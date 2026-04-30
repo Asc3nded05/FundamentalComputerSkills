@@ -40,7 +40,9 @@
 
 .window-header {
   padding-bottom: 20px;
-  background: #e6f0f4;
+  /* background: #e6f0f4; */
+  background: var(--accent);
+  /* background: color-mix(in srgb, var(--accent) 100%, transparent); */
   user-select: none;
   display: flex;
   flex-direction: column;

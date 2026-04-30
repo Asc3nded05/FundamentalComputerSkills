@@ -5,7 +5,8 @@
 .notepad-bottom-top-nav {
     display: flex;
     justify-content: space-between;
-    background: #e6f0f4;
+    /* background: #e6f0f4; */
+    background: var(--accent);
     padding-top: 0;
     height: 50px;
 }
@@ -72,13 +73,15 @@
     justify-content: left;
     gap: 10px;
     padding: 10px;
-    background: #e6f0f4;
+    /* background: #e6f0f4; */
+    background: var(--accent);
     padding-top: 0;
 }
 
 .notepad-options button {
     border: none;
-    background-color: #e6f0f4;
+    /* background-color: #e6f0f4; */
+    background-color: var(--accent);
     cursor: pointer;
     font-size: 14px;
     border-radius: 3px;
