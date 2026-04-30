@@ -1,4 +1,3 @@
-
 import Home from "./settings/Home";
 import System from "./settings/System";
 import BluetoothDevices from "./settings/BluetoothDevices";
@@ -166,7 +165,7 @@ function Settings({ startingPage = 'home', currentPage: currentPageProp, setting
                 <div className={`settings-sidebar ${!sidebarOpen ? 'd-none' : ''}`}>
                     <div className="settings-user-info">
                         <div className="settings-user-row" onClick={clickAccount}>
-                            <img className="user-profile-image" src={accountIcon} alt="User Profile" />
+                            <img className="user-profile-image" src={accountIcon} alt="User Profile" style={{width: 'auto', height: '35px'}}/>
                             <div className="settings-user-text">
                                 <h5 className="user-name">{username}</h5>
                                 <p className="user-email">{userEmail}</p>
