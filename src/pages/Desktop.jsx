@@ -32,7 +32,7 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 function Desktop() {
     const location = useLocation();
     const { state } = location;
-    const lessonId = state?.lessonId || 1;
+    const lessonId = state?.lessonId ?? 1;
     const [query, setQuery] = useState("")
     const [backgroundImage, setBackgroundImage] = useState(
         localStorage.getItem('backgroundImage') || '../assets/background-image.jpg'
@@ -134,6 +134,11 @@ function Desktop() {
 
     const { response: lessonApps, loading: lessonAppsLoading, error: lessonAppsError } = useLessonApps(lessonId);
     const lessonAppRegistry = useMemo(() => {
+        // ⭐ Sandbox mode → load ALL apps
+        if (lessonId === 0) {
+            return APP_REGISTRY;
+        }
+
         if (lessonAppsLoading) return [];
         if (lessonAppsError || !lessonApps) return APP_REGISTRY;
 
@@ -154,7 +159,8 @@ function Desktop() {
                 netMin: appDetailsByRegistryId.get(app.id)?.netMin || 0,
                 netMax: appDetailsByRegistryId.get(app.id)?.netMax || 0
             }));
-    }, [lessonApps, lessonAppsLoading, lessonAppsError]);
+    }, [lessonId, lessonApps, lessonAppsLoading, lessonAppsError]);
+
 
     // Custom hook to manage app windows
     const {

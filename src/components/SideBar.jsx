@@ -205,14 +205,15 @@ function SideBar(props) {
         nextButton = null;
     }
 
-    // When finishing a lesson, the desktop is populated by the state of lesson 5, which has all the apps in it. 
-    // If this changes, change the setCurrentLesson(5) and the navigate below it to the appropriate lesson
+    // When finishing a lesson, the desktop is switched to a sandbox mode which has all the apps in it. 
     const navigate = useNavigate();
     function handleFinish() {
         setActiveId(2);
-        // Lesson 5 currently loads all apps, if this changes we will need to update this to show all apps
-        setCurrentLesson(5);
-        navigate('/', { state: { lessonId: 5 } });
+
+        // Enter sandbox mode
+        setCurrentLesson(0);
+        navigate('/', { state: { lessonId: 0 } });
+
         setLessonState("Sandbox");
         setStepInstructions("To start a new lesson, go to the Lessons tab and select a lesson.");
         setEventName(null);
