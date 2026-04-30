@@ -14,7 +14,7 @@ export const APP_REGISTRY = [
         name: 'File Explorer',
         icon: fileExplorerIcon,
         component: 'FileExplorer',
-        defaultSize: { width: 800, height: 600 },
+        defaultSize: { width: 775, height: 465 },
         canHaveMultipleInstances: false,
     },
     {
@@ -22,7 +22,7 @@ export const APP_REGISTRY = [
         name: 'Notepad',
         icon: notepadIcon,
         component: 'Notepad',
-        defaultSize: { width: 500, height: 400 },
+        defaultSize: { width: 440, height: 470 },
         canHaveMultipleInstances: false,
         initialContent: 'This is a notepad app. It has text in it. The text can be very repetitive. This is a notepad app where text is written. The text here is written inside of a notepad app. Text is a series of characters like a b c d e and so on. This sort of text is in this notepad app. Hello, my name is Larry, I am trapped in a notepad app! No one knows why... After all, this is a text editor app, so it only makes sense that there is text in it. This is a notepad app. It has text in it. The text can be very redundant. But it is not an exact copy. This is a notepad app where text is written. You can change the text. The text here is written inside of a notepad app, and thats how notepad apps work. This sort of text is in this notepad app. After all, this is a text editor app, so it only makes sense that there is text in it.'
     },
@@ -31,7 +31,7 @@ export const APP_REGISTRY = [
         name: 'Settings',
         icon: settingsIcon,
         component: 'Settings',
-        defaultSize: { width: 1000, height: 600 },
+        defaultSize: { width: 900, height: 575 },
         canHaveMultipleInstances: false,
         startingPage: 'home' // default page to open to (can be overridden when opening app)
     },
@@ -40,7 +40,7 @@ export const APP_REGISTRY = [
         name: 'Task Manager',
         icon: taskManagerIcon,
         component: 'TaskManager',
-        defaultSize: { width: 900, height: 600 },
+        defaultSize: { width: 775, height: 430 },
         canHaveMultipleInstances: false
     }
     // {

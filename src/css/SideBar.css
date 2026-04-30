@@ -206,6 +206,8 @@
   object-fit: cover; /* Adjust to 'contain' if you prefer to show the entire video without cropping */
 }
 
+
+/* AI Chat Panel */
 .chat-content {
   position: absolute;
   position-anchor: --hint-button; 
