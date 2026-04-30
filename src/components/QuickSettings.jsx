@@ -10,6 +10,7 @@ import accessibilityIcon from '../assets/Icons/Accessibility Mode.png';
 import projectIcon from '../assets/Icons/Project Icon.png';
 import settingsQSIcon from '../assets/Icons/Settings (QS).png';
 import batteryIcon from '../assets/Icons/Battery.png';
+import batterySaverOnIcon from '../assets/Icons/Battery Saver On.png';
 import pcScreenOnlyIcon from '../assets/Icons/PC Screen Only.png';
 import duplicateIcon from '../assets/Icons/Duplicate.png';
 import extendIcon from '../assets/Icons/Extend.png';
@@ -42,7 +43,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
         wifiRequiresPassword,
     } = useSettingsContext();
 
-    console.log (bluetoothStatuses);
+    const batteryIconToShow = energyOn ? batterySaverOnIcon : batteryIcon;
 
     // Helper to select a Wi‑Fi network (toggles selection + dispatches event)
     const selectWifiNetwork = (network) => {
@@ -248,7 +249,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
 
                                 <div className="qs-battery-row">
                                     <div className="qs-battery">
-                                        <img className="qs-icon" src={batteryIcon} alt="Battery" style={{height: '15px', width: 'auto'}}/>
+                                        <img className="qs-icon" src={batteryIconToShow} alt="Battery" style={{height: '15px', width: 'auto'}}/>
                                         87%
                                     </div>
                                     <button className="qs-settings-button">
