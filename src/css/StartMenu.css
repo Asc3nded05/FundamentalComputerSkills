@@ -56,6 +56,10 @@
 	pointer-events: auto !important;
 } 
 
+.start-menu.open .app-icon-image {
+	height: auto;
+}
+
 .start-app-grid {
 	width: 100%;
 	height: 100%;
@@ -213,6 +217,7 @@
 .power-menu-item {
 	display: flex;
 	align-items: center;
+	justify-content: flex-start;
 	padding: 0.5rem;
 	cursor: pointer;
 	border-radius: 4px;

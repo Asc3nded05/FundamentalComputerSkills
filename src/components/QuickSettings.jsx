@@ -18,6 +18,7 @@ import wifiLockedIcon from '../assets/Icons/Wifi Lock.png';
 import headphoneDeviceIcon from '../assets/Icons/Bluetooth Headphone Device.png';
 import phoneDeviceIcon from '../assets/Icons/Bluetooth Phone Device.png';
 import speakerDeviceIcon from '../assets/Icons/Bluetooth Speaker Device.png';
+import mouseDeviceIcon from '../assets/Icons/Bluetooth Mouse Device.png';
 
 import "../css/QuickSettings.css";
 
@@ -107,13 +108,30 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
         }
     };
 
-    const getBluetoothIcon = (icon) => {
+    const getBluetoothIcon = (icon, deviceName) => {
+        // If deviceName is missing, avoid crashing
+        if (!deviceName || typeof deviceName !== "string") {
+            return bluetoothIcon; // generic fallback
+        }
+
+        // 1. If icon string exists, map it
         switch (icon) {
             case "headphoneDeviceIcon": return headphoneDeviceIcon;
             case "speakerDeviceIcon": return speakerDeviceIcon;
             case "phoneDeviceIcon": return phoneDeviceIcon;
+            case "mouseDeviceIcon": return mouseDeviceIcon;
         }
-    }
+
+        // 2. Infer icon from device name
+        const lower = deviceName.toLowerCase();
+        if (lower.includes("speaker")) return speakerDeviceIcon;
+        if (lower.includes("mouse")) return mouseDeviceIcon;
+        if (lower.includes("headphone")) return headphoneDeviceIcon;
+        if (lower.includes("phone")) return phoneDeviceIcon;
+
+        // 3. Final fallback
+        return bluetoothIcon;
+    };
 
     return (
         <>
@@ -132,7 +150,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                     <div>
                                         <div className={`qs-tile ${wifiOn ? "qs-tile-on" : ""}`}>
                                             <button className="qs-tile-left" onClick={() => toggleWifi('QS')}>
-                                                <img className="qs-icon" src={wifiIcon} alt="Wifi" />
+                                                <img className="qs-icon" src={wifiIcon} alt="Wifi" style={{height: '15px', width: 'auto'}}/>
                                             </button>
                                             <button className="qs-tile-right" onClick={() => openDetail("wifi")}>
                                                 {"›"}
@@ -145,7 +163,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                     <div>
                                         <div className={`qs-tile ${bluetoothOn ? "qs-tile-on" : ""}`}>
                                             <button className="qs-tile-left" onClick={() => toggleBluetooth('QS')}>
-                                                <img className="qs-icon" src={bluetoothIcon} alt="Bluetooth" />
+                                                <img className="qs-icon" src={bluetoothIcon} alt="Bluetooth" style={{height: '20px', width: 'auto'}}/>
                                             </button>
                                             <button className="qs-tile-right" onClick={() => openDetail("bluetooth")}>
                                                 {"›"}
@@ -181,7 +199,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                                 className="qs-tile-single"
                                                 onClick={() => openDetail("accessibility")}
                                             >
-                                                <img className="qs-icon" src={accessibilityIcon} alt="Accessibility" /> {"›"}
+                                                <img className="qs-icon" src={accessibilityIcon} alt="Accessibility" style={{height: '20px', width: 'auto'}}/> {"›"}
                                             </button>
                                         </div>
                                         <div className="qs-label">Accessibility</div>
@@ -230,11 +248,11 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
 
                                 <div className="qs-battery-row">
                                     <div className="qs-battery">
-                                        <img className="qs-icon" src={batteryIcon} alt="Battery" />
+                                        <img className="qs-icon" src={batteryIcon} alt="Battery" style={{height: '15px', width: 'auto'}}/>
                                         87%
                                     </div>
                                     <button className="qs-settings-button">
-                                        <img className="qs-icon" src={settingsQSIcon} alt="Settings"
+                                        <img className="qs-icon" src={settingsQSIcon} alt="Settings" style={{height: '20px', width: 'auto'}}
                                             onClick={() => {
                                                 handleClose();
                                                 openApp('Settings', { startingPage: 'home' });
@@ -307,7 +325,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                                                 onClick={() => selectWifiNetwork(network)}
                                                             >
                                                                 <div className="qs-network-info">
-                                                                    <img className="qs-icon" src={requiresPassword ? wifiLockedIcon : wifiIcon} alt={network} />
+                                                                    <img className="qs-icon" src={requiresPassword ? wifiLockedIcon : wifiIcon} alt={network} style={{height: '15px', width: 'auto'}}/>
                                                                     <span>{network}</span>
                                                                 </div>
 
@@ -403,7 +421,13 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                                             onClick={() => toggleBluetoothConnection(device, 'QS')}
                                                         >
                                                             <div className="qs-bluetooth-name">
-                                                                <img className="qs-icon" src={getBluetoothIcon(bluetoothIcons[device])} alt={device} /> {device}
+                                                                <img
+                                                                    className="qs-icon"
+                                                                    src={getBluetoothIcon(bluetoothIcons[device], device)}
+                                                                    alt={device}
+                                                                    style={{ height: "20px", width: "auto", paddingRight: '8px'}}
+                                                                    />
+                                                                    {device}
                                                             </div>
                                                             <span className="qs-device-status">
                                                                 {bluetoothStatuses[device] === "connected"
@@ -449,7 +473,7 @@ function QuickSettings({ isOpen, closeQuickSettings, openApp }) {
                                                     onClick={() => setProject(option.label)}
                                                 >
                                                     <div>
-                                                        <img className="qs-icon" src={getProjectIcon(option.label)} alt={option.label} /> {option.label}
+                                                        <img className="qs-icon" src={getProjectIcon(option.label)} alt={option.label} style={{height: '15px', width: 'auto'}}/> {option.label}
                                                     </div>
                                                 </button>
                                             ))}
