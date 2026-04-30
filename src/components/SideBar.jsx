@@ -14,6 +14,8 @@ import { UnresponsiveContext } from './UnresponsiveContext.jsx';
 import AIChat from './AIChat.jsx';
 import Lessons from '../pages/Lessons.jsx';
 import { useNavigate } from 'react-router-dom';
+import { useLessonCompletionContext } from '../components/LessonCompletionContext.jsx';
+
 // import hintVideo from '../assets/TestVideo.mp4';
 
 function SideBar(props) {
@@ -46,6 +48,7 @@ function SideBar(props) {
 
     const { showUnresponsive, setShowUnresponsive } = useContext(UnresponsiveContext);
 
+    const { isLessonCompleted, markLessonComplete } = useLessonCompletionContext();
 
     //Starts Lesson
     async function handleStartLesson() {
@@ -130,20 +133,7 @@ function SideBar(props) {
         };
     }, [stepInstructions, readAloud, voiceIndex]);
 
-    // // Change voice with "V"
-    // useEffect(() => {
-    //     const handleVoiceKey = (e) => {
-    //         if (e.key.toLowerCase() === 'v') {
-    //             const voices = window.speechSynthesis.getVoices();
-    //             if (voices.length === 0) return;
-    //             setVoiceIndex((prev) => (prev + 1) % voices.length);
-    //         }
-    //     };
-    //     window.addEventListener('keydown', handleVoiceKey);
-    //     return () => window.removeEventListener('keydown', handleVoiceKey);
-    // }, []);
-
-    // Effect to stop audio when read-aloud is turned off
+    // Effect to stop audio when read-aloud is turned off or lesson changes
     useEffect(() => {
         if (!readAloud) {
             window.speechSynthesis.cancel();
@@ -209,6 +199,7 @@ function SideBar(props) {
     // If this changes, change the setCurrentLesson(5) and the navigate below it to the appropriate lesson
     const navigate = useNavigate();
     function handleFinish() {
+        markLessonComplete(currentLesson);
         setActiveId(2);
         // Lesson 5 currently loads all apps, if this changes we will need to update this to show all apps
         setCurrentLesson(5);
@@ -226,10 +217,6 @@ function SideBar(props) {
     // Handles loading and error states
     if (loading) return <Loading />;
     if (error) return <div>Error loading lesson data</div>;
-
-    console.log(hintText);
-    console.log(!hintText);
-
 
     return (
         <>

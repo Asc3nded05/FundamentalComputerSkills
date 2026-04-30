@@ -14,7 +14,7 @@ export const APP_REGISTRY = [
         name: 'File Explorer',
         icon: fileExplorerIcon,
         component: 'FileExplorer',
-        defaultSize: { width: 775, height: 465 },
+        defaultSize: { width: 850, height: 520 },
         canHaveMultipleInstances: false,
     },
     {
