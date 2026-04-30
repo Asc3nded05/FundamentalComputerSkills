@@ -8,6 +8,7 @@ import { useContext } from 'react';
 
 function AppWindow({
     name,
+    icon,
     isOpen,
     isMinimized = false,
     isMaximized = false,
@@ -66,8 +67,12 @@ function AppWindow({
             <div className="window">
                 <div className="window-header">
                     <div className="top-header">
-                        <p>{name}{isThisWindowUnresponsive ? " (Not responding)" : ""}</p>
+                        <div className='appName'>
+                            {icon && <img src={icon} alt="" className='appName-icon' />}
+                            <span>{name}{isThisWindowUnresponsive ? " (Not responding)" : ""}</span>
+                        </div>
 
+                        <div className="window-controls">
                         <a
                             href="#"
                             className="appWindowMinimize"
@@ -79,7 +84,7 @@ function AppWindow({
                                 }
                             }}
                         >
-                            ─
+                            <i class="fa-regular fa-window-minimize"></i>
                         </a>
                         <a
                             href="#"
@@ -92,7 +97,7 @@ function AppWindow({
                                 }
                             }}
                         >
-                            &#9744;
+                            <i class="fa-regular fa-window-restore"></i>
                         </a>
                         <a
                             href="#"
@@ -104,8 +109,9 @@ function AppWindow({
                                     onClose();
                                 }
                             }}>
-                            &times;
+                           <i class="fa-regular fa-x"></i>
                         </a>
+                        </div>
                     </div>
                 </div>
                 <div className={showUnresponsive && name=="File Explorer" ? "file-explorer-unresponsive" : "file-explorer"}>

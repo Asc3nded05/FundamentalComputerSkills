@@ -428,6 +428,7 @@ function Desktop() {
                         <AppWindow
                             key={app.instanceId || app.id}
                             name={app.name}
+                            icon={app.icon}
                             isOpen={app.isOpen}
                             isMinimized={app.isMinimized}
                             isMaximized={app.isMaximized}
