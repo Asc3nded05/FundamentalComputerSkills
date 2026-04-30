@@ -39,10 +39,11 @@ Lessons Page Styles
 .lesson-button {
   border: 2px solid black;
   border-radius: 10px;
-  padding: 5px;
-  margin: 5px;
   margin-top: 10px;
+  padding: 0.5rem 0;
   background-color: white;
+  width: 97%;
+  text-align: center;
 }
 
 /* Completed lesson styling */
@@ -50,8 +51,21 @@ Lessons Page Styles
   background-color: #4caf50;
   color: white;
 }
+.lesson-button.lesson-completed:hover {
+  background-color: #39823c;
+  color: white;
+}
 
 .accordion-button:focus {
     box-shadow: none;
     border-color: rgba(0,0,0,.125);
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #ddd;
+    color: #000;
+}
+
+.accordion-body {
+  padding: 0.5rem;
 }

@@ -76,3 +76,17 @@
   gap: 0.5rem;
   text-align: right;
 }
+
+.quick-settings-button {
+  padding: 10px 0;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.quick-settings-button:hover { 
+  background: rgba(255, 255, 255, 0.1);
+}
