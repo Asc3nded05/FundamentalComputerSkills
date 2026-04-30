@@ -15,12 +15,18 @@
   width: 100%;
 }
 
+.sidebar-links {
+  display: flex;
+  flex-direction: row;
+  min-height: 50px;
+}
+
 .sidebar-tab {
   overflow: auto;
   position: absolute;
   width: 95%;
   background-color: #ffffff;
-  top: 7.5%;
+  top: 58px;
   bottom: 0;
   z-index: 10;
 }
@@ -28,7 +34,7 @@
 .sidebar-main {
   flex-grow: 1;
   position: absolute;
-  top: 5.8%;
+  top: 45px;
   bottom: 0;
   z-index: 1;
 }
@@ -79,7 +85,7 @@
 
 .help-buttons button {
   border: 2px solid black;
-  border-radius: 10px;
+  border-radius: 0.5rem;
   width: 6rem;
   padding: 5px;
   margin: 5px;
@@ -111,7 +117,8 @@
 .next-button {
   border: 2px solid black;
   border-radius: 10px;
-  padding: 5px;
+  padding: 10px;
+  width: 80%;
   margin: 5px;
   margin-top: 10px;
   background-color: white;
@@ -209,10 +216,6 @@
 
 /* AI Chat Panel */
 .chat-content {
-  position: absolute;
-  position-anchor: --hint-button; 
-  position-area: top;
-  
   margin: 0;
   inset: auto;
 
@@ -220,14 +223,12 @@
   border-radius: 5px;
   width: 18%;
   padding: 10px;
-  min-height: 30%;
-  max-height: 40%;
   overflow: auto;
-  
 }
 
 .chat-container {
   width: 100%;
+  height: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -242,18 +243,23 @@
 
 .chat-input-area {
   display: flex;
-  padding: 10px;
+  padding: 10px 0;
+  height: 6.5rem;
 }
 
 .chat-input {
   flex: 1;
   margin-right: 10px;
+  border-radius: 0.5rem;
+  resize: none;
+  padding: 0.5rem;
+  overflow: auto;
 }
 
 .chat-send-button {
   border: 2px solid black;
-  border-radius: 5px;
-  background-color: white;
+  border-radius: 0.5rem;
+  background-color: #dddddd;
   padding: 5px 10px;
 }
 

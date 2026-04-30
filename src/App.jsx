@@ -17,6 +17,7 @@ import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import { SettingsProvider } from './utils/settings/settingsContext.jsx'
 import { UnresponsiveProvider } from './components/UnresponsiveContext.jsx'
+import { LessonCompletionProvider } from './components/LessonCompletionContext.jsx'
 
 function App() {
 
@@ -27,7 +28,9 @@ function App() {
           <Route path="/" element={
             <SettingsProvider>
               <UnresponsiveProvider>
-                <Desktop />
+                <LessonCompletionProvider>
+                  <Desktop />
+                </LessonCompletionProvider>
               </UnresponsiveProvider>
             </SettingsProvider>
           } />
