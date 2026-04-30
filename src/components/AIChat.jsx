@@ -1,21 +1,30 @@
 import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { useChat } from '../api/useChat';   // adjust the path to your folder
+import { useChat } from '../api/useChat';
 import { useLessons } from '../api/useLessons';
+import { useLessonCompletionContext } from '../components/LessonCompletionContext.jsx';
+
 
 function AIChat({ lessonId, steps, completedSteps, stepInstructions, nextStep, messages, setMessages }) {
   const [userInput, setUserInput] = useState('');
+  const [placeholder, setPlaceholder] = useState("Type a question here, like 'How do I open File Explorer?' or 'Why is it called a desktop?'");
 
   const { sendMessage, loading, error } = useChat();
-
-  const { response, loading: lessonsLoading, error: lessonsError } = useLessons(); // Get lessons data
+  const { response, loading: lessonsLoading, error: lessonsError } = useLessons();
+  const { completedLessons } = useLessonCompletionContext();
 
   const buildPrompt = (userMessage) => {
     const stepTexts = steps ? steps.map(s => s.text).join('\n') : '';
     let lessonContext = `You are an AI assistant helping a user learn computer skills in a website that contains a simulated desktop environment similar to Windows 11. The desktop, taskbar, and start menu have app icons for: File Explorer, Notepad, Settings, and Task Manager. Not every functionality is the same as Windows 11, but they are similar. The instructions, lesson selection, and AI chat are in a sidebar to the right of the simulated desktop. The Main instruction tab also has a button to display extra hints for the current step and a button with a volume icon to toggle read-aloud for the current step.
 
 The list of lessons is as follows: 
-${response ? response.map(l => l.lessonName).join('\n') : 'error'}`;
+${response?.length > 0
+    ? response.map(l => {
+        const completed = completedLessons[l.lessonId]?.completed || false;
+        return `- ${l.lessonName} (${completed ? 'Completed' : 'Not Completed'})`;
+      }).join('\n')
+    : 'No lessons data available.'
+}`;
 
     // Only add step-specific instructions if a lesson has started
     if (stepInstructions && stepInstructions !== 'Press Start Lesson to Begin') {
@@ -36,12 +45,16 @@ Action to perform next: "${nextStep}"`;
       .map(m => `${m.role === 'user' ? 'User' : 'AI'}: ${m.text}`)
       .join('\n');
 
+    console.log('Lesson context for AI:', lessonContext);
+
     // Full prompt = system + history + latest user query
     return `${lessonContext}\n\nConversation history:\n${history}\nUser: ${userMessage}\nAI:`;
   };
 
   const handleSendMessage = async () => {
     if (!userInput.trim()) return;
+
+    setPlaceholder("Type a question here...");
 
     const newUserMessage = { role: 'user', text: userInput };
     const updatedMessages = [...messages, newUserMessage];
@@ -78,12 +91,11 @@ Action to perform next: "${nextStep}"`;
         {loading && <div className="chat-message ai-message"><em>Thinking…</em></div>}
       </div>
       <div className="chat-input-area">
-        <input
-          type="text"
+        <textarea
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
           onKeyPress={handleKeyPress}
-          placeholder="Type your question here..."
+          placeholder={placeholder}
           className="chat-input"
           disabled={loading}
         />
