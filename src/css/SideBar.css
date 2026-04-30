@@ -15,12 +15,18 @@
   width: 100%;
 }
 
+.sidebar-links {
+  display: flex;
+  flex-direction: row;
+  min-height: 50px;
+}
+
 .sidebar-tab {
   overflow: auto;
   position: absolute;
   width: 95%;
   background-color: #ffffff;
-  top: 7.5%;
+  top: 58px;
   bottom: 0;
   z-index: 10;
 }
@@ -28,7 +34,7 @@
 .sidebar-main {
   flex-grow: 1;
   position: absolute;
-  top: 5.8%;
+  top: 45px;
   bottom: 0;
   z-index: 1;
 }
