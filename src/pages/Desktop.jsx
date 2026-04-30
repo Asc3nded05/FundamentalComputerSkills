@@ -295,7 +295,8 @@ function Desktop() {
 
 
     return <>
-        <div className="desktop-page" style={{}}>
+        <div className="desktop-background" style={{backgroundImage: `url('${backgroundImage}')`}}/>
+        <div className="desktop-page">
             <div className="desktop-area" ref={desktopAreaRef}>
                 <div
                     className="desktop-container"
