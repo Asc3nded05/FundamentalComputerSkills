@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { useAppWindowManager } from "../utils/appWindowManager.js";
 import { useLessonApps } from "../api/useLessonApps.js";
 import { eventBus } from "../utils/eventBus.js";
-import backgroundImageDefault from '../assets/background-image.jpg';
+import backgroundImageDefault from '../assets/Background.png';
 
 import AppIcon from '../components/AppIcon.jsx'
 import Clock from '../components/Clock.jsx'
