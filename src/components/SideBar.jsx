@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLessonCompletionContext } from '../components/LessonCompletionContext.jsx';
 
 // import hintVideo from '../assets/TestVideo.mp4';
-//import vid from '../assets/HintVideos/testHintVideo.mp4';
+//import vid from '../assets/HintVideos/FileExplorerTaskbarOpen.mp4';
 
 function SideBar(props) {
     // Sets Current LessonID or Default to lesson 1 if no lessonId is provided
@@ -34,6 +34,7 @@ function SideBar(props) {
         setHintText(null);
         setHintVideo(null);
         setShowUnresponsive(false);
+        // Something to close apps when reset
     };
 
     // "NotStarted", "InProgress", "Completed", "Sandbox"
