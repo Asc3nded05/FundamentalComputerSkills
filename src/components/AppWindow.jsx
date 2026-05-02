@@ -84,7 +84,7 @@ function AppWindow({
                                 }
                             }}
                         >
-                            <i class="fa-regular fa-window-minimize"></i>
+                            <i className="fa-regular fa-window-minimize"></i>
                         </a>
                         <a
                             href="#"
@@ -97,7 +97,7 @@ function AppWindow({
                                 }
                             }}
                         >
-                            <i class="fa-regular fa-window-restore"></i>
+                            <i className="fa-regular fa-window-restore"></i>
                         </a>
                         <a
                             href="#"
@@ -109,7 +109,7 @@ function AppWindow({
                                     onClose();
                                 }
                             }}>
-                           <i class="fa-regular fa-x"></i>
+                           <i className="fa-regular fa-x"></i>
                         </a>
                         </div>
                     </div>

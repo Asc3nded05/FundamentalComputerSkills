@@ -85,6 +85,7 @@
     cursor: pointer;
     font-size: 14px;
     border-radius: 3px;
+    color: white;
 }
 
 .notepad-content {

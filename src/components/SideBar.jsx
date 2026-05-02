@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLessonCompletionContext } from '../components/LessonCompletionContext.jsx';
 
 // import hintVideo from '../assets/TestVideo.mp4';
+//import vid from '../assets/HintVideos/testHintVideo.mp4';
 
 function SideBar(props) {
     // Sets Current LessonID or Default to lesson 1 if no lessonId is provided

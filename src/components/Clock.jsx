@@ -25,6 +25,8 @@ function Clock() {
         month: 'numeric',
         day: 'numeric'
         })}</p>
+        {/* <p>0:00 AM</p>
+        <p>0/0/0000</p> */}
     </div>
   );
 }
