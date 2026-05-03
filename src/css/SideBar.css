@@ -291,7 +291,7 @@
   margin-bottom: 10px;
 }
 
-.chat-message strong {
+.speaker-tag {
   color: var(--accent);
 }
 

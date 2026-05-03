@@ -84,7 +84,7 @@ Action to perform next: "${nextStep}"`;
       <div className="chat-messages">
         {messages.map((msg, index) => (
           <div key={index} className={`chat-message ${msg.role === 'user' ? 'user-message' : 'ai-message'}`}>
-            <strong>{msg.role === 'user' ? 'You:' : 'AI:'}</strong>{' '}
+            <strong className="speaker-tag">{msg.role === 'user' ? 'You:' : 'AI:'}</strong>{' '}
             <ReactMarkdown>{msg.text}</ReactMarkdown>
           </div>
         ))}
