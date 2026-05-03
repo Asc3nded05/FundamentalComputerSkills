@@ -39,9 +39,13 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
+.sidebar-links > .active {
+  background-color: var(--accent);
+}
+
 .sidebar-links > button {
   flex: 1;
-  background-color: var(--accent);
+  background-color: #ccc;
   color: white;
   margin: 0.3rem;
 }

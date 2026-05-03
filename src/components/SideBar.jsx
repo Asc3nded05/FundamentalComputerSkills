@@ -229,6 +229,7 @@ function SideBar(props) {
                         <button
                             key={btn.id}
                             onClick={() => setActiveId(btn.id)}
+                            className={activeId === btn.id ? 'active' : ''}
                         >
                             {btn.label}
                         </button>
