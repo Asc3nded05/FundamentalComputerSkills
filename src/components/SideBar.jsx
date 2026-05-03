@@ -184,7 +184,7 @@ function SideBar(props) {
 
     let nextButton;
     if (lessonState === "NotStarted") {
-        nextButton = <button onClick={handleStartLesson} className='lesson-start-button'>Start Lesson</button>
+        nextButton = <button onClick={handleStartLesson} className='next-button'>Start Lesson</button>
     } else if (lessonState === "InProgress" && eventName?.includes("Next")) {
         nextButton = (
             <button className='next-button' onClick={handleNext}>Next</button>
@@ -229,12 +229,6 @@ function SideBar(props) {
                         <button
                             key={btn.id}
                             onClick={() => setActiveId(btn.id)}
-                            style={{
-                                backgroundColor: activeId === btn.id ? 'lightgrey' : 'white',
-                                color: 'black',
-                                margin: '5px',
-                                padding: '10px',
-                            }}
                         >
                             {btn.label}
                         </button>
@@ -275,7 +269,7 @@ function SideBar(props) {
                                 </button>
                                 
                                 <button
-                                    className="read-aloud-link link"
+                                    className="read-aloud"
                                     onClick={() => setReadAloud(!readAloud)}
                                     title={readAloud ? 'Turn off read aloud' : 'Turn on read aloud'}
                                 >

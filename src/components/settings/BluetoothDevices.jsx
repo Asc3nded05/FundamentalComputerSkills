@@ -77,13 +77,13 @@ function BluetoothDevices({ subPage = 'main', onSubPageChange }) {
 
                 {/* Add device section - special tile with plus icon */}
                 <div className="settings-grid" style={{ marginBottom: '24px' }}>
-                    <div className="settings-card add-device-card">
-                        <div className="add-device-content">
-                            <span className="plus-icon">+</span>
-                            <h3 className="card-title" onClick={() => {
+                    <div className="settings-card add-device-card" onClick={() => {
                                 dispatchDesktopEvent("BluetoothAddDeviceClicked");
                                 setShowAddDeviceModal(true);
-                            }}>Add device</h3>
+                            }}>
+                        <div className="add-device-content">
+                            <span className="plus-icon">+</span>
+                            <h3 className="card-title">Add device</h3>
                         </div>
                     </div>
                 </div>

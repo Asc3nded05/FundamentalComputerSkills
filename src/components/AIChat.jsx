@@ -7,7 +7,7 @@ import { useLessonCompletionContext } from '../components/LessonCompletionContex
 
 function AIChat({ lessonId, steps, completedSteps, stepInstructions, nextStep, messages, setMessages }) {
   const [userInput, setUserInput] = useState('');
-  const [placeholder, setPlaceholder] = useState("Type a question here, like 'How do I open File Explorer?' or 'Why is it called a desktop?'");
+  const [placeholder, setPlaceholder] = useState("Type a question here, like 'How do I open File Explorer?'");
 
   const { sendMessage, loading, error } = useChat();
   const { response, loading: lessonsLoading, error: lessonsError } = useLessons();
