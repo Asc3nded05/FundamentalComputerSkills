@@ -223,7 +223,7 @@ function SideBar(props) {
 
     return (
         <>
-            <div className="sidebar-container">
+            <div className="sidebar-wrapper">
                 <div className="sidebar-links">
                     {buttons.map((btn) => (
                         <button
@@ -238,7 +238,7 @@ function SideBar(props) {
                     {content}
                 </div>
                 <div className='sidebar-main' style={(activeId === 1) ? { zIndex: '10' } : { zIndex: '0' }}>
-                    <div className='sidebar-container'>
+                    <div className='sidebar-main-container'>
                         <div id='sidebar' className='sidebar'>
                             {/* Lesson number and progress */}
                             <div className='lesson-num' style={(lessonState === "Sandbox") ? { display: 'none' } : { display: 'block' }}>

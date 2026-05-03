@@ -1,14 +1,27 @@
 .sidebar {
+  flex: 1;
   display: flex;
   align-items: center;
   width: 100%;
-  flex: 1;
+  height: 100%;
   flex-direction: column;
   position: relative;
+  overflow: visible;
+}
+
+.sidebar-main-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  background-color: #ffffff;
+  max-width: 280px;
   overflow: auto;
 }
 
-.sidebar-container {
+.sidebar-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,6 +35,8 @@
   flex-direction: row;
   min-height: 50px;
   width: 100%;
+  z-index: 15;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
 .sidebar-links > button {
@@ -46,6 +61,8 @@
 }
 
 .sidebar-main {
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
   position: absolute;
   background-color: #ffffff;
@@ -64,8 +81,9 @@
 }
 
 .lesson-progress {
-  background-color: #f1f1f1;
-  border: 2px solid black;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
   border-radius: 20px;
   padding: 0.15rem;
   margin: 1rem 1.8rem;
@@ -88,7 +106,6 @@
 }
 
 .lesson-instructions {
-  border: 2px solid black;
   border-radius: 5px;
   width: 90%;
   padding: 10px;
@@ -104,7 +121,6 @@
   color: white;
   padding: 5px 10px;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.4);
-
   width: 6rem;
   padding: 5px;
   margin: 5px;
@@ -140,8 +156,11 @@
 }
 
 .next-button{
-  border: 2px solid black;
-  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.25);
+  position: relative;
   padding: 10px 5px;
   margin: 5px;
   margin-top: 10px;
@@ -151,7 +170,7 @@
 }
 
 .next-button:hover {
-  background-color: lightgray;
+  background-color: #dbdbdb;
   cursor: pointer;
 }
 
@@ -190,13 +209,14 @@
   margin: 0;
   inset: auto;
 
-  border: 2px solid black;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+
   border-radius: 5px;
   width: 15rem;
   padding: 10px;
   min-height: 20%;
   overflow: auto;
-  
 }
 
 #demo-content {
@@ -223,16 +243,6 @@
 
 
 /* AI Chat Panel */
-.chat-content {
-  margin: 0;
-  inset: auto;
-
-  border: 2px solid black;
-  border-radius: 5px;
-  width: 18%;
-  padding: 10px;
-  overflow: auto;
-}
 
 .chat-container {
   width: 100%;

@@ -37,6 +37,7 @@
   background-position: center;
   box-shadow: 0px 0px 10px rgba(40, 40, 40, 0.8);
   border-radius: 5px;
+  overflow: visible;
 }
 
 .react-grid-placeholder {
@@ -54,7 +55,7 @@
 }
 
 
-.sidebar-container {
+.sidebar-wrapper {
   display: flex;
   width: 280px;
   height: 100%;
@@ -63,17 +64,10 @@
   top: 0;
   right: 0;
   align-items: center;
-  border: 3px solid black;
   border-radius: 5px;
   margin: 5px;
   overflow: hidden;
-}
-
-.sidebar-links {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-evenly;
+  box-shadow: 0px 0px 10px rgba(40, 40, 40, 0.8);
 }
 
 button {

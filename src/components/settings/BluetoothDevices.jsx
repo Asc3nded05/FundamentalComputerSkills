@@ -228,7 +228,8 @@ function BluetoothDevices({ subPage = 'main', onSubPageChange }) {
                         </label>
                     </div>
                 </div>
-
+                
+                {bluetoothOn && (<>
                 {/* Add device section */}
                 <div className="settings-card" style={{ marginBottom: "24px" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -316,6 +317,12 @@ function BluetoothDevices({ subPage = 'main', onSubPageChange }) {
                         })}
                     </div>
                 )}
+                </>
+                )}
+                {!bluetoothOn && (
+                    <p>Turn on bluetooth to see known devices.</p>
+                )}
+                
                 <div className="settings-card">
                     <h3 className="card-title">Help with Devices</h3>
 
