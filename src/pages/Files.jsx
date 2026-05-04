@@ -152,7 +152,7 @@ function Files() {
         <Filemanager
           data={rawdata}
           init={(api) => {
-            console.log("Filemanager API ready", api);
+            // console.log("Filemanager API ready", api);
             api.on("set-path", ({ id, panel }) => {
               if (!id) return;
               const dispatchName = "FileExplorer" + id.replace(/\W/g, "") + "Clicked";

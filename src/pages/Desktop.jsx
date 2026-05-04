@@ -187,7 +187,7 @@ function Desktop() {
     }
 
     function toggleSearch() {
-        console.log("toggleSearch")
+        // console.log("toggleSearch")
         setIsSearchOpen(prev => !prev);
     }
 

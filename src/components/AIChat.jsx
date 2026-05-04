@@ -45,7 +45,7 @@ Action to perform next: "${nextStep}"`;
       .map(m => `${m.role === 'user' ? 'User' : 'AI'}: ${m.text}`)
       .join('\n');
 
-    console.log('Lesson context for AI:', lessonContext);
+    // console.log('Lesson context for AI:', lessonContext);
 
     // Full prompt = system + history + latest user query
     return `${lessonContext}\n\nConversation history:\n${history}\nUser: ${userMessage}\nAI:`;
@@ -63,7 +63,7 @@ Action to perform next: "${nextStep}"`;
 
     try {
       const fullPrompt = buildPrompt(userInput);
-      console.log('AI prompt:', fullPrompt);
+      // console.log('AI prompt:', fullPrompt);
       const aiText = await sendMessage(fullPrompt);
       setMessages(prev => [...prev, { role: 'ai', text: aiText }]);
     } catch (err) {

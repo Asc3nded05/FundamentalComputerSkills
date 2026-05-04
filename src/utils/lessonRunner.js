@@ -31,8 +31,8 @@ export async function runLesson(
             const handler = (event) => {
                 const triggered = event.detail.type;
 
-                console.log(`User triggered event: ${triggered}`);
-                console.log(`Valid events: ${validEventNames.join(", ")}`);
+                // console.log(`User triggered event: ${triggered}`);
+                // console.log(`Valid events: ${validEventNames.join(", ")}`);
 
                 if (validEventNames.includes(triggered)) {
                     eventBus.removeEventListener("*", handler);

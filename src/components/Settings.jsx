@@ -71,15 +71,15 @@ function Settings({
   }
 
   function goBack() {
-    console.log("Go Back");
+    // console.log("Go Back");
     setPageHistory((prev) => {
-      console.log(prev);
+      // console.log(prev);
       if (prev.length === 0) return prev;
       const history = [...prev];
       const lastPage = history.pop();
       setCurrentPage(lastPage);
       onPageChange?.(lastPage);
-      console.log(history);
+      // console.log(history);
       return history;
     });
   }
