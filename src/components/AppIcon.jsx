@@ -33,7 +33,10 @@ function AppIcon({ name, icon, eventName, openWindow, variant = "desktop", isApp
         >
             <img className="app-icon-image" src={icon} alt={name} />
 
-            {(variant === "desktop" || variant === "start-menu") && (
+            {(variant === "start-menu") && (
+                <div className={`app-icon-name app-icon-${variant}`}>{name}</div>
+            )}
+            {(variant === "desktop") && (
                 <div className="app-icon-name">{name}</div>
             )}
 

@@ -56,6 +56,11 @@
 	pointer-events: auto !important;
 } 
 
+.start-menu.open .app-icon-name {
+	width: 140%;
+    overflow-wrap: break-word;
+} 
+
 .start-menu.open .app-icon-image {
 	height: auto;
 }

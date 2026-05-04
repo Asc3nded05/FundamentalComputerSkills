@@ -103,7 +103,7 @@ function StartMenu({ closeStartMenu, isOpen, apps = [] }) {
                                             icon={app.icon}
                                             eventName={app.eventName}
                                             openWindow={app.openWindow}
-                                            variant={app.variant || "start-menu"}
+                                            variant={"start-menu"}
                                             isAppOpen={app.isAppOpen}
                                             closeMenu={handleClose}
                                         />
